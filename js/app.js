@@ -23,16 +23,26 @@ const menuItems=[
     {icon:'\u{1F355}',title:'Margherita Slice',when:'Mon, 12:52 PM',amt:120,status:'Delivered'},
     {icon:'\u{1F964}',title:'Cold Coffee',when:'Mon, 9:15 AM',amt:45,status:'Delivered'},
   ];
-  let currentUser={name:'Nivedita',year:'2nd year',rollNo:'2503A52924',studentId:'2503A52924',phone:'91+1234567890'};
-  let loggedIn=true;
+  let currentUser=null;
+  let loggedIn=false;
   const $=(sel,el=document)=>el.querySelector(sel);
   const $$=(sel,el=document)=>Array.from(el.querySelectorAll(sel));
   function toast(msg){const w=$('#toastWrap');const t=document.createElement('div');t.className='toast';t.textContent=msg;w.appendChild(t);setTimeout(()=>t.remove(),2500);}
-  function initials(n){return n.trim().split(/\s+/).map(w=>w[0]).join('').slice(0,2).toUpperCase()||'ST';}
+  function initials(n){return n ? (n.trim().split(/\s+/).map(w=>w[0]).join('').slice(0,2).toUpperCase()||'ST') : 'GU';}
   function sbHTML(s){const m={available:'AVAIL',low:'LOW',out:'OUT'};return '<span class="status-badge '+s+'">'+m[s]+'</span>';}
   function gc(s){return s==='available'?'var(--fresh)':s==='low'?'var(--low)':'var(--alert)';}
   function gw(it){return Math.max(3,Math.min(100,Math.round(it.stock/40*100)));}
   function renderAccount(){
+    if(!loggedIn||!currentUser){
+      $('#sideAvatar').textContent='GU';
+      $('#sideName').textContent='Guest Student';
+      $('#sideRole').textContent='Log in / Sign up';
+      if($('#accountPanel')) $('#accountPanel').style.display='none';
+      if($('#authPanel')) $('#authPanel').style.display='block';
+      return;
+    }
+    if($('#accountPanel')) $('#accountPanel').style.display='block';
+    if($('#authPanel')) $('#authPanel').style.display='none';
     $('#sideAvatar').textContent=initials(currentUser.name);
     $('#sideName').textContent=currentUser.name;
     $('#sideRole').textContent=currentUser.year+' \u00B7 CSE';
