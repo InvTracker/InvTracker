@@ -11,26 +11,37 @@ const OrdersPage = () => {
         <div className="panel-sub">Track active orders or review previous meal receipts</div>
 
         <div className="stub-list">
-          {orders.map((o) => (
-            <div key={o.id} className="stub-list-item">
-              <div className="stub-icon">{o.icon}</div>
-              <div className="stub-info">
-                <div className="t">{o.title}</div>
-                <div className="s">{o.when}</div>
-              </div>
-              <div>
-                <div className="stub-amt mono">₹{o.amt}</div>
-                <div className={`stub-status ${o.status === 'Delivered' ? 'done' : 'progress'}`}>
-                  {o.status}
+          {orders.length === 0 ? (
+            <div className="empty-state" style={{ padding: '40px 0' }}>
+              <div className="em">📋</div>
+              No orders placed yet.
+              <br />
+              <button className="mini-btn" style={{ marginTop: '12px' }} onClick={() => switchPage('menu')}>
+                Browse menu
+              </button>
+            </div>
+          ) : (
+            orders.map((o) => (
+              <div key={o.id} className="stub-list-item">
+                <div className="stub-icon">{o.icon}</div>
+                <div className="stub-info">
+                  <div className="t">{o.title}</div>
+                  <div className="s">{o.when}</div>
+                </div>
+                <div>
+                  <div className="stub-amt mono">₹{o.amt}</div>
+                  <div className={`stub-status ${o.status === 'Delivered' ? 'done' : 'progress'}`}>
+                    {o.status}
+                  </div>
+                </div>
+                <div className="stub-actions">
+                  <button className="mini-btn" onClick={() => switchPage('home')}>
+                    Track
+                  </button>
                 </div>
               </div>
-              <div className="stub-actions">
-                <button className="mini-btn" onClick={() => switchPage('home')}>
-                  Track
-                </button>
-              </div>
-            </div>
-          ))}
+            ))
+          )}
         </div>
       </div>
     </div>

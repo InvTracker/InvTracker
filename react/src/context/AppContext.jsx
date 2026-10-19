@@ -9,14 +9,14 @@ export const AppProvider = ({ children }) => {
   const [orders, setOrders] = useState(initialOrders);
   const [currentUser, setCurrentUser] = useState(null);
   const [loggedIn, setLoggedIn] = useState(false);
-  const [stageIndex, setStageIndex] = useState(1);
+  const [stageIndex, setStageIndex] = useState(-1);
   const [activePage, setActivePage] = useState('home');
   const [theme, setTheme] = useState('default'); // 'default' or 'kitchen'
   const [searchQuery, setSearchQuery] = useState('');
   const [activeCat, setActiveCat] = useState('All');
   const [toasts, setToasts] = useState([]);
   const [notifOpen, setNotifOpen] = useState(false);
-  const [queueNo, setQueueNo] = useState('#A-042');
+  const [queueNo, setQueueNo] = useState('#---');
 
   // Update data-theme on body
   useEffect(() => {

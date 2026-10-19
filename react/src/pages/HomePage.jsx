@@ -24,11 +24,12 @@ const HomePage = () => {
     switchPage,
   } = useApp();
 
-  const currentLiveOrder = orders.find((o) => o.live) || orders[0];
+  const currentLiveOrder = orders.find((o) => o.live);
   const done = stageIndex >= stages.length - 1;
 
-  const activeTicketTitle = currentLiveOrder ? currentLiveOrder.title : 'Chicken Biryani';
-  const activeTicketAmt = currentLiveOrder ? currentLiveOrder.amt : 185;
+  const activeTicketTitle = currentLiveOrder ? currentLiveOrder.title : 'No active order';
+  const activeTicketDesc = currentLiveOrder ? 'Placed just now · Counter 2' : 'Browse the menu and place an order to get a live token';
+  const activeTicketAmt = currentLiveOrder ? currentLiveOrder.amt : 0;
 
   return (
     <div className="page active">
@@ -37,13 +38,15 @@ const HomePage = () => {
         <div className="ticket-main">
           <div className="ticket-eyebrow">Active Order · Digital Token</div>
           <div className="ticket-title">{activeTicketTitle}</div>
-          <div className="ticket-desc">Placed just now · Counter 2</div>
+          <div className="ticket-desc">{activeTicketDesc}</div>
 
           <div className="stepper">
             {stages.map((st, i) => {
               let cls = '';
-              if (i < stageIndex) cls = 'done';
-              else if (i === stageIndex) cls = 'now';
+              if (stageIndex >= 0) {
+                if (i < stageIndex) cls = 'done';
+                else if (i === stageIndex) cls = 'now';
+              }
               return (
                 <div key={st} className={`step ${cls}`}>
                   <div className="step-dot"></div>
@@ -61,7 +64,7 @@ const HomePage = () => {
 
           <div className="stub-row">
             <span className="stub-label">Token No</span>
-            <span className="stub-value mono">Counter 2</span>
+            <span className="stub-value mono">{currentLiveOrder ? 'Counter 2' : '---'}</span>
           </div>
 
           <div className="queue-no">{queueNo}</div>
@@ -71,14 +74,14 @@ const HomePage = () => {
             <span className="stub-value mono">₹{activeTicketAmt}</span>
           </div>
 
-          <div className="eta-pill">{etaMessages[stageIndex]}</div>
+          <div className="eta-pill">{stageIndex >= 0 ? etaMessages[stageIndex] : 'No active order'}</div>
 
           <button
             className="advance-btn"
             onClick={advanceStage}
-            disabled={done}
+            disabled={stageIndex < 0 || done}
           >
-            {done ? 'Picked up ✓' : `Mark "${stages[stageIndex + 1]}" →`}
+            {stageIndex < 0 ? 'No active order' : done ? 'Picked up ✓' : `Mark "${stages[stageIndex + 1]}" →`}
           </button>
         </div>
       </div>

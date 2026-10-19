@@ -4,37 +4,33 @@
  */
 
 // ==========================================
-// 1. DATA MODELS & INITIAL STATE
+// 1. DATA MODELS & INITIAL STATE (RESET)
 // ==========================================
 
 const menuItems = [
   { id: 'biryani', name: 'Chicken Biryani', emoji: '\u{1F372}', price: 185, cat: 'Mains', stock: 25, status: 'available' },
-  { id: 'vegbiryani', name: 'Veg Biryani', emoji: '\u{1F35A}', price: 150, cat: 'Mains', stock: 18, status: 'available' },
-  { id: 'dosa', name: 'Masala Dosa', emoji: '\u{1FAD3}', price: 90, cat: 'Mains', stock: 18, status: 'available' },
-  { id: 'burger', name: 'Burger', emoji: '\u{1F354}', price: 70, cat: 'Snacks', stock: 5, status: 'low' },
-  { id: 'sandwich', name: 'Veg Sandwich', emoji: '\u{1F96A}', price: 60, cat: 'Snacks', stock: 22, status: 'available' },
-  { id: 'pizza', name: 'Pizza Slice', emoji: '\u{1F355}', price: 120, cat: 'Snacks', stock: 0, status: 'out' },
-  { id: 'fries', name: 'Fries', emoji: '\u{1F35F}', price: 55, cat: 'Snacks', stock: 7, status: 'low' },
-  { id: 'coldcoffee', name: 'Cold Coffee', emoji: '\u{1F964}', price: 45, cat: 'Beverages', stock: 31, status: 'available' },
+  { id: 'vegbiryani', name: 'Veg Biryani', emoji: '\u{1F35A}', price: 150, cat: 'Mains', stock: 20, status: 'available' },
+  { id: 'dosa', name: 'Masala Dosa', emoji: '\u{1FAD3}', price: 90, cat: 'Mains', stock: 20, status: 'available' },
+  { id: 'burger', name: 'Burger', emoji: '\u{1F354}', price: 70, cat: 'Snacks', stock: 20, status: 'available' },
+  { id: 'sandwich', name: 'Veg Sandwich', emoji: '\u{1F96A}', price: 60, cat: 'Snacks', stock: 25, status: 'available' },
+  { id: 'pizza', name: 'Pizza Slice', emoji: '\u{1F355}', price: 120, cat: 'Snacks', stock: 15, status: 'available' },
+  { id: 'fries', name: 'Fries', emoji: '\u{1F35F}', price: 55, cat: 'Snacks', stock: 25, status: 'available' },
+  { id: 'coldcoffee', name: 'Cold Coffee', emoji: '\u{1F964}', price: 45, cat: 'Beverages', stock: 30, status: 'available' },
   { id: 'buttermilk', name: 'Buttermilk', emoji: '\u{1F95B}', price: 25, cat: 'Beverages', stock: 40, status: 'available' },
-  { id: 'coke', name: 'Coke', emoji: '\u{1F9C3}', price: 40, cat: 'Beverages', stock: 26, status: 'available' },
-  { id: 'gulabjamun', name: 'Gulab Jamun', emoji: '\u{1F36E}', price: 30, cat: 'Desserts', stock: 16, status: 'available' }
+  { id: 'coke', name: 'Coke', emoji: '\u{1F9C3}', price: 40, cat: 'Beverages', stock: 30, status: 'available' },
+  { id: 'gulabjamun', name: 'Gulab Jamun', emoji: '\u{1F36E}', price: 30, cat: 'Desserts', stock: 20, status: 'available' }
 ];
 
 const recommended = ['burger', 'coke', 'fries', 'gulabjamun'];
 const stages = ['Placed', 'Preparing', 'Ready', 'Picked up'];
 
 let cart = {};
-let stageIndex = 1;
+let stageIndex = -1; // -1: No active order initially
 let feedbackStars = 0;
 let activeCat = 'All';
 
-let orders = [
-  { icon: '\u{1F372}', title: 'Chicken Biryani', when: 'Today, 1:04 PM', amt: 185, status: 'In progress', live: true },
-  { icon: '\u{1F96A}', title: 'Veg Sandwich + Coffee', when: 'Yesterday, 4:40 PM', amt: 95, status: 'Delivered' },
-  { icon: '\u{1F355}', title: 'Margherita Slice', when: 'Mon, 12:52 PM', amt: 120, status: 'Delivered' },
-  { icon: '\u{1F964}', title: 'Cold Coffee', when: 'Mon, 9:15 AM', amt: 45, status: 'Delivered' }
-];
+// Clean initial state — beta test orders reset to empty
+let orders = [];
 
 let currentUser = null;
 let loggedIn = false;
@@ -124,9 +120,9 @@ function logout() {
   currentUser = null;
   $('#accountPanel').style.display = 'none';
   $('#authPanel').style.display = 'block';
-  $('#loginStudentId').value = '';
-  $('#loginPhone').value = '';
-  $('#loginError').classList.remove('show');
+  if ($('#loginStudentId')) $('#loginStudentId').value = '';
+  if ($('#loginPhone')) $('#loginPhone').value = '';
+  if ($('#loginError')) $('#loginError').classList.remove('show');
   renderAccount();
   switchPage('settings');
   toast('Logged out');
@@ -393,7 +389,11 @@ function placeOrder() {
   $('#ticketTitle').textContent = names;
   $('#ticketDesc').textContent = 'Placed just now · Counter 2';
   $('#ticketPaid').textContent = `₹${total}`;
-  $('#queueNo').textContent = `#A-0${43 + Math.floor(Math.random() * 9)}`;
+  const newToken = `#A-0${43 + Math.floor(Math.random() * 9)}`;
+  $('#queueNo').textContent = newToken;
+
+  const quickTrackSub = document.querySelector('[data-goto="orders"] .quick-sub');
+  if (quickTrackSub) quickTrackSub.textContent = `Token ${newToken}`;
 
   renderStepper();
   cart = {};
@@ -411,15 +411,31 @@ function placeOrder() {
 function renderStepper() {
   $$('#stepper .step').forEach((el, i) => {
     el.classList.remove('done', 'now');
-    if (i < stageIndex) el.classList.add('done');
-    else if (i === stageIndex) el.classList.add('now');
+    if (stageIndex >= 0) {
+      if (i < stageIndex) el.classList.add('done');
+      else if (i === stageIndex) el.classList.add('now');
+    }
   });
 
   const etaList = ['~12 min to ready', '~7 min to ready', 'Ready — head to Counter 2', 'Order complete'];
+  const advanceBtn = $('#advanceBtn');
+
+  if (stageIndex < 0) {
+    if ($('#etaPill')) $('#etaPill').textContent = 'No active order';
+    if ($('#ticketTitle')) $('#ticketTitle').textContent = 'No active order';
+    if ($('#ticketDesc')) $('#ticketDesc').textContent = 'Browse the menu and place an order to get a live token';
+    if ($('#ticketPaid')) $('#ticketPaid').textContent = '₹0';
+    if ($('#queueNo')) $('#queueNo').textContent = '#---';
+    if (advanceBtn) {
+      advanceBtn.disabled = true;
+      advanceBtn.textContent = 'No active order';
+    }
+    return;
+  }
+
   if ($('#etaPill')) $('#etaPill').textContent = etaList[stageIndex];
 
   const done = stageIndex >= stages.length - 1;
-  const advanceBtn = $('#advanceBtn');
   if (advanceBtn) {
     advanceBtn.disabled = done;
     advanceBtn.textContent = done ? 'Picked up ✓' : `Mark "${stages[stageIndex + 1]}" →`;
@@ -433,7 +449,7 @@ function renderStepper() {
 }
 
 function advanceStage() {
-  if (stageIndex < stages.length - 1) {
+  if (stageIndex >= 0 && stageIndex < stages.length - 1) {
     stageIndex++;
     renderStepper();
     toast(`Status updated: ${stages[stageIndex]}`);
@@ -461,12 +477,16 @@ function orderRowHTML(o, full = false) {
 function renderOrderLists() {
   const homeList = $('#homeOrderList');
   if (homeList) {
-    homeList.innerHTML = orders.slice(0, 4).map((o) => orderRowHTML(o, false)).join('');
+    homeList.innerHTML = orders.length
+      ? orders.slice(0, 4).map((o) => orderRowHTML(o, false)).join('')
+      : '<div class="empty-state" style="padding:24px 0;"><div class="em">📋</div>No past orders yet.</div>';
   }
 
   const fullList = $('#ordersFullList');
   if (fullList) {
-    fullList.innerHTML = orders.map((o) => orderRowHTML(o, true)).join('');
+    fullList.innerHTML = orders.length
+      ? orders.map((o) => orderRowHTML(o, true)).join('')
+      : '<div class="empty-state" style="padding:40px 0;"><div class="em">📋</div>No orders placed yet.<br><button class="mini-btn" style="margin-top:12px;" data-goto="menu">Browse menu</button></div>';
   }
 }
 
@@ -566,9 +586,9 @@ if (loginSubmit) {
 
     $('#loginError').classList.remove('show');
     currentUser = {
-      name: 'Nivedita',
+      name: 'Student User',
       year: '2nd year',
-      rollNo: '2503A52924',
+      rollNo: studentId,
       studentId: studentId,
       phone: phone
     };

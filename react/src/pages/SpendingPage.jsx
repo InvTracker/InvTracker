@@ -2,6 +2,9 @@ import React from 'react';
 import { spendingData } from '../data/initialData';
 
 const SpendingPage = () => {
+  const totalSpend = spendingData.reduce((acc, curr) => acc + curr.val, 0);
+  const orderCount = spendingData.filter((d) => d.val > 0).length;
+
   return (
     <div className="page active">
       <div className="panel">
@@ -20,8 +23,12 @@ const SpendingPage = () => {
         </div>
 
         <div className="spend-total" style={{ marginTop: '24px' }}>
-          <span className="amt">₹845</span>
-          <span className="lbl">Total spent this week across 7 canteen orders</span>
+          <span className="amt">₹{totalSpend}</span>
+          <span className="lbl">
+            {totalSpend > 0
+              ? `Total spent this week across ${orderCount} canteen order${orderCount > 1 ? 's' : ''}`
+              : 'spent this week · No orders placed yet'}
+          </span>
         </div>
       </div>
     </div>
