@@ -1,53 +1,167 @@
 /**
- * InvenTrack — Student Dashboard Stylesheet (React Port)
- * Responsive design tokens, typography, layout, components, and animations.
+ * InvenTrack — Google Material Design 3 (Material You / M3) Stylesheet
+ * Strict M3 specification with tonal color roles, elevation, shapes, and motion.
  */
 
 /* ==========================================================================
-   1. DESIGN TOKENS & COLOR PALETTES
+   1. M3 DESIGN TOKENS & DYNAMIC COLOR ROLES
    ========================================================================== */
 
 :root {
-  --bg: #FBF7EE;
-  --surface: #FFFFFF;
-  --surface-2: #F3EDDF;
-  --ink: #1C1B1A;
-  --muted: #726B5F;
-  --accent: #E0A526;
-  --accent-ink: #1C1B1A;
-  --fresh: #4C7A52;
-  --fresh-bg: #E7F0E4;
-  --low: #B8791E;
-  --low-bg: #FBEBD3;
-  --alert: #C1442D;
-  --alert-bg: #F7E1DA;
-  --steel: #5B6B73;
-  --border: rgba(28, 27, 26, 0.12);
-  --shadow: 0 1px 2px rgba(28, 27, 26, 0.06), 0 8px 24px -12px rgba(28, 27, 26, 0.18);
-  --radius: 14px;
+  /* Primary & Containers */
+  --md-sys-color-primary: #006874;
+  --md-sys-color-on-primary: #ffffff;
+  --md-sys-color-primary-container: #9eeffd;
+  --md-sys-color-on-primary-container: #001f24;
+
+  /* Secondary & Containers */
+  --md-sys-color-secondary: #4a6267;
+  --md-sys-color-on-secondary: #ffffff;
+  --md-sys-color-secondary-container: #cce8ea;
+  --md-sys-color-on-secondary-container: #051f23;
+
+  /* Tertiary & Containers */
+  --md-sys-color-tertiary: #535e7d;
+  --md-sys-color-on-tertiary: #ffffff;
+  --md-sys-color-tertiary-container: #dae2ff;
+  --md-sys-color-on-tertiary-container: #0f1b36;
+
+  /* Error & Containers */
+  --md-sys-color-error: #ba1a1a;
+  --md-sys-color-on-error: #ffffff;
+  --md-sys-color-error-container: #ffdad6;
+  --md-sys-color-on-error-container: #410002;
+
+  /* Surface & Tonal Containers */
+  --md-sys-color-surface: #fbfdfd;
+  --md-sys-color-on-surface: #191c1d;
+  --md-sys-color-on-surface-variant: #3f484a;
+  --md-sys-color-surface-container-lowest: #ffffff;
+  --md-sys-color-surface-container-low: #f0f5f5;
+  --md-sys-color-surface-container: #eaf0f0;
+  --md-sys-color-surface-container-high: #e4e9ea;
+  --md-sys-color-surface-container-highest: #dee4e4;
+
+  /* Outline & Borders */
+  --md-sys-color-outline: #6f797a;
+  --md-sys-color-outline-variant: #bfc8ca;
+
+  /* Semantic Food Inventory Status Tokens */
+  --md-sys-color-avail: #1e6c38;
+  --md-sys-color-avail-container: #d1f8d4;
+  --md-sys-color-on-avail-container: #00210a;
+
+  --md-sys-color-low: #855300;
+  --md-sys-color-low-container: #ffddb7;
+  --md-sys-color-on-low-container: #2a1700;
+
+  --md-sys-color-out: #ba1a1a;
+  --md-sys-color-out-container: #ffdad6;
+  --md-sys-color-on-out-container: #410002;
+
+  /* Typography */
+  --md-sys-typescale-body-font: 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif;
+  --md-sys-typescale-brand-font: 'Roboto Flex', 'Google Sans', 'Roboto', sans-serif;
+  --md-sys-typescale-mono-font: 'Roboto Mono', 'IBM Plex Mono', monospace;
+
+  /* Shapes (M3 Shape Hierarchy) */
+  --md-sys-shape-corner-extra-small: 4px;
+  --md-sys-shape-corner-small: 8px;
+  --md-sys-shape-corner-medium: 12px;
+  --md-sys-shape-corner-large: 16px;
+  --md-sys-shape-corner-extra-large: 28px;
+  --md-sys-shape-corner-full: 9999px;
+
+  /* Motion & Easing */
+  --md-sys-motion-easing-standard: cubic-bezier(0.2, 0.0, 0, 1.0);
+  --md-sys-motion-duration-short: 150ms;
+  --md-sys-motion-duration-medium: 200ms;
+  --md-sys-motion-duration-long: 300ms;
+
+  /* Elevation (Tonal + Subtle Key Shadow) */
+  --md-sys-elevation-0: none;
+  --md-sys-elevation-1: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.04);
+  --md-sys-elevation-2: 0 3px 6px rgba(0, 0, 0, 0.10), 0 2px 4px rgba(0, 0, 0, 0.06);
+  --md-sys-elevation-3: 0 6px 16px rgba(0, 0, 0, 0.12), 0 3px 6px rgba(0, 0, 0, 0.08);
+
+  /* Legacy variable mappings for seamless compatibility */
+  --bg: var(--md-sys-color-surface);
+  --surface: var(--md-sys-color-surface-container-lowest);
+  --surface-2: var(--md-sys-color-surface-container-low);
+  --ink: var(--md-sys-color-on-surface);
+  --muted: var(--md-sys-color-on-surface-variant);
+  --accent: var(--md-sys-color-primary);
+  --accent-ink: var(--md-sys-color-on-primary);
+  --fresh: var(--md-sys-color-avail);
+  --fresh-bg: var(--md-sys-color-avail-container);
+  --low: var(--md-sys-color-low);
+  --low-bg: var(--md-sys-color-low-container);
+  --alert: var(--md-sys-color-error);
+  --alert-bg: var(--md-sys-color-error-container);
+  --border: var(--md-sys-color-outline-variant);
+  --shadow: var(--md-sys-elevation-1);
+  --radius: var(--md-sys-shape-corner-large);
 }
 
-[data-theme="kitchen"] {
-  --bg: #181A1A;
-  --surface: #222524;
-  --surface-2: #2B2E2C;
-  --ink: #F3EFE6;
-  --muted: #A39C90;
-  --accent: #E7B23A;
-  --accent-ink: #181A1A;
-  --fresh: #7BB183;
-  --fresh-bg: #25332A;
-  --low: #D79A4A;
-  --low-bg: #3A2E1D;
-  --alert: #E2735A;
-  --alert-bg: #3A2521;
-  --steel: #8FA3AC;
-  --border: rgba(243, 239, 230, 0.12);
-  --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px -12px rgba(0, 0, 0, 0.5);
+/* Back of House / Dark Theme (M3 Dark Scheme) */
+[data-theme="kitchen"],
+[data-theme="dark"] {
+  --md-sys-color-primary: #82d3e0;
+  --md-sys-color-on-primary: #00363d;
+  --md-sys-color-primary-container: #004f58;
+  --md-sys-color-on-primary-container: #9eeffd;
+
+  --md-sys-color-secondary: #b1cbcf;
+  --md-sys-color-on-secondary: #1c3438;
+  --md-sys-color-secondary-container: #334a4e;
+  --md-sys-color-on-secondary-container: #cce8ea;
+
+  --md-sys-color-tertiary: #bcc6ea;
+  --md-sys-color-on-tertiary: #25304d;
+  --md-sys-color-tertiary-container: #3c4664;
+  --md-sys-color-on-tertiary-container: #dae2ff;
+
+  --md-sys-color-error: #ffb4ab;
+  --md-sys-color-on-error: #690005;
+  --md-sys-color-error-container: #93000a;
+  --md-sys-color-on-error-container: #ffdad6;
+
+  --md-sys-color-surface: #0e1415;
+  --md-sys-color-on-surface: #deebec;
+  --md-sys-color-on-surface-variant: #bfc8ca;
+  --md-sys-color-surface-container-lowest: #090f10;
+  --md-sys-color-surface-container-low: #171d1e;
+  --md-sys-color-surface-container: #1b2122;
+  --md-sys-color-surface-container-high: #252b2c;
+  --md-sys-color-surface-container-highest: #303637;
+
+  --md-sys-color-outline: #899294;
+  --md-sys-color-outline-variant: #3f484a;
+
+  --md-sys-color-avail: #81d892;
+  --md-sys-color-avail-container: #00531f;
+  --md-sys-color-on-avail-container: #9df5ad;
+
+  --md-sys-color-low: #ffb959;
+  --md-sys-color-low-container: #643d00;
+  --md-sys-color-on-low-container: #ffddb7;
+
+  --md-sys-color-out: #ffb4ab;
+  --md-sys-color-out-container: #93000a;
+  --md-sys-color-on-out-container: #ffdad6;
+
+  --bg: var(--md-sys-color-surface);
+  --surface: var(--md-sys-color-surface-container-low);
+  --surface-2: var(--md-sys-color-surface-container);
+  --ink: var(--md-sys-color-on-surface);
+  --muted: var(--md-sys-color-on-surface-variant);
+  --accent: var(--md-sys-color-primary);
+  --accent-ink: var(--md-sys-color-on-primary);
+  --border: var(--md-sys-color-outline-variant);
 }
 
 /* ==========================================================================
-   2. BASE & TYPOGRAPHY
+   2. BASE, TYPOGRAPHY & MATERIAL SYMBOLS
    ========================================================================== */
 
 * {
@@ -58,67 +172,89 @@ html,
 body {
   margin: 0;
   padding: 0;
-}
-
-body {
-  background: var(--bg);
-  color: var(--ink);
-  font-family: 'Inter', sans-serif;
-  transition: background 0.35s ease, color 0.35s ease;
+  background-color: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface);
+  font-family: var(--md-sys-typescale-body-font);
+  font-size: 14px;
+  line-height: 1.5;
+  transition: background-color var(--md-sys-motion-duration-medium) var(--md-sys-motion-easing-standard),
+              color var(--md-sys-motion-duration-medium) var(--md-sys-motion-easing-standard);
   min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
 }
 
-.display {
-  font-family: 'Space Grotesk', sans-serif;
+.display,
+h1, h2, h3, .brand-name, .page-title {
+  font-family: var(--md-sys-typescale-brand-font);
+  letter-spacing: -0.01em;
 }
 
 .mono {
-  font-family: 'IBM Plex Mono', monospace;
+  font-family: var(--md-sys-typescale-mono-font);
   letter-spacing: 0.02em;
 }
 
+/* Google Material Symbols Outlined */
+.material-symbols-outlined {
+  font-family: 'Material Symbols Outlined' !important;
+  font-weight: normal;
+  font-style: normal;
+  font-size: 20px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-smoothing: antialiased;
+  vertical-align: middle;
+  flex-shrink: 0;
+}
+
 button {
-  font-family: inherit;
+  font-family: var(--md-sys-typescale-body-font);
+  cursor: pointer;
 }
 
-/* Custom Scrollbar */
+/* Scrollbar */
 ::-webkit-scrollbar {
-  height: 6px;
   width: 6px;
+  height: 6px;
 }
-
 ::-webkit-scrollbar-thumb {
-  background: var(--border);
-  border-radius: 3px;
+  background: var(--md-sys-color-outline-variant);
+  border-radius: var(--md-sys-shape-corner-full);
 }
 
 /* ==========================================================================
-   3. APP SHELL & SIDEBAR NAVIGATION
+   3. M3 NAVIGATION DRAWER / RAIL SHELL
    ========================================================================== */
 
 .shell {
   display: grid;
-  grid-template-columns: 236px 1fr;
+  grid-template-columns: 260px 1fr;
   min-height: 100vh;
 }
 
-@media (max-width: 860px) {
+@media (max-width: 900px) {
   .shell {
-    grid-template-columns: 64px 1fr;
+    grid-template-columns: 76px 1fr;
   }
   .sidebar .brand-name,
   .sidebar .brand-sub,
-  .nav-item span,
+  .nav-item span:not(.material-symbols-outlined),
   .nav-label,
   .who-name,
   .who-role {
     display: none;
   }
   .sidebar {
-    padding: 22px 10px;
+    padding: 16px 8px;
   }
   .nav-item {
     justify-content: center;
+    padding: 12px 0;
   }
   .who {
     justify-content: center;
@@ -126,12 +262,12 @@ button {
 }
 
 .sidebar {
-  background: var(--surface);
-  border-right: 1px solid var(--border);
-  padding: 22px 16px;
+  background-color: var(--md-sys-color-surface-container-low);
+  border-right: 1px solid var(--md-sys-color-outline-variant);
+  padding: 20px 14px;
   display: flex;
   flex-direction: column;
-  gap: 26px;
+  gap: 20px;
   position: sticky;
   top: 0;
   height: 100vh;
@@ -141,99 +277,94 @@ button {
 .brand {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 0 6px;
+  gap: 12px;
+  padding: 6px 10px;
 }
 
 .brand-mark {
-  width: 32px;
-  height: 32px;
-  border-radius: 8px;
-  background: var(--accent);
-  color: var(--accent-ink);
+  width: 38px;
+  height: 38px;
+  border-radius: var(--md-sys-shape-corner-medium);
+  background-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: 'IBM Plex Mono', monospace;
-  font-weight: 600;
-  font-size: 14px;
+  font-family: var(--md-sys-typescale-brand-font);
+  font-weight: 700;
+  font-size: 15px;
   flex: none;
 }
 
 .brand-name {
-  font-family: 'Space Grotesk', sans-serif;
   font-weight: 700;
-  font-size: 17px;
-  letter-spacing: -0.01em;
+  font-size: 18px;
+  color: var(--md-sys-color-on-surface);
 }
 
 .brand-sub {
-  font-size: 10.5px;
-  color: var(--muted);
+  font-size: 11px;
+  color: var(--md-sys-color-on-surface-variant);
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  margin-top: 1px;
+  font-weight: 500;
 }
 
 nav.nav {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 4px;
 }
 
 .nav-label {
-  font-size: 10.5px;
+  font-size: 11px;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--muted);
-  padding: 14px 10px 6px;
+  letter-spacing: 0.08em;
+  color: var(--md-sys-color-on-surface-variant);
+  font-weight: 600;
+  padding: 14px 12px 6px;
 }
 
+/* M3 Navigation Item with State Layers */
 .nav-item {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 9px 10px;
-  border-radius: 9px;
+  gap: 12px;
+  padding: 10px 16px;
+  border-radius: var(--md-sys-shape-corner-full);
   font-size: 13.5px;
   font-weight: 500;
-  color: var(--muted);
+  color: var(--md-sys-color-on-surface-variant);
   cursor: pointer;
-  user-select: none;
-  transition: background 0.15s, color 0.15s;
   border: none;
   background: transparent;
   width: 100%;
   text-align: left;
   position: relative;
-}
-
-.nav-item svg {
-  flex: none;
-  opacity: 0.85;
+  transition: background-color var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-standard),
+              color var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-standard);
 }
 
 .nav-item:hover {
-  background: var(--surface-2);
-  color: var(--ink);
+  background-color: rgba(0, 104, 116, 0.08);
+  color: var(--md-sys-color-on-surface);
 }
 
 .nav-item.active {
-  background: var(--surface-2);
-  color: var(--ink);
+  background-color: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
   font-weight: 600;
 }
 
 .nav-badge {
   margin-left: auto;
-  background: var(--accent);
-  color: var(--accent-ink);
-  font-family: 'IBM Plex Mono', monospace;
+  background-color: var(--md-sys-color-error);
+  color: var(--md-sys-color-on-error);
   font-size: 10px;
   font-weight: 700;
-  border-radius: 999px;
-  padding: 1px 6px;
-  min-width: 16px;
+  border-radius: var(--md-sys-shape-corner-full);
+  padding: 1px 7px;
+  min-width: 18px;
   text-align: center;
 }
 
@@ -243,43 +374,48 @@ nav.nav {
 
 .sidebar-foot {
   margin-top: auto;
-  padding: 12px 10px;
-  border-top: 1px solid var(--border);
+  padding-top: 14px;
+  border-top: 1px solid var(--md-sys-color-outline-variant);
 }
 
 .who {
   display: flex;
-  gap: 10px;
+  gap: 12px;
   align-items: center;
 }
 
 .avatar {
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  background: var(--steel);
-  color: #fff;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--md-sys-shape-corner-full);
+  background-color: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 12.5px;
-  font-weight: 600;
+  font-weight: 700;
   flex: none;
 }
 
 .who-name {
   font-size: 13px;
   font-weight: 600;
+  color: var(--md-sys-color-on-surface);
 }
 
 .who-role {
   font-size: 11px;
-  color: var(--muted);
+  color: var(--md-sys-color-on-surface-variant);
 }
 
+/* ==========================================================================
+   4. M3 TOPBAR & CONTROLS
+   ========================================================================== */
+
 main {
-  padding: 22px 28px 60px;
-  max-width: 1200px;
+  padding: 24px 32px 80px;
+  max-width: 1240px;
 }
 
 @media (max-width: 640px) {
@@ -288,52 +424,54 @@ main {
   }
 }
 
-/* ==========================================================================
-   4. TOPBAR, SEARCH & HEADER CONTROLS
-   ========================================================================== */
-
 .topbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  margin-bottom: 22px;
+  margin-bottom: 24px;
   flex-wrap: wrap;
 }
 
 .page-title {
-  font-family: 'Space Grotesk', sans-serif;
+  font-size: 20px;
   font-weight: 700;
-  font-size: 19px;
   display: none;
 }
 
+/* M3 Search Bar */
 .search {
   flex: 1;
-  max-width: 360px;
+  max-width: 380px;
   display: flex;
   align-items: center;
-  gap: 8px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 9px 12px;
-  color: var(--muted);
-  font-size: 13px;
+  gap: 10px;
+  background-color: var(--md-sys-color-surface-container-high);
+  border: 1px solid transparent;
+  border-radius: var(--md-sys-shape-corner-full);
+  padding: 9px 16px;
+  color: var(--md-sys-color-on-surface-variant);
+  transition: all var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-standard);
+}
+
+.search:focus-within {
+  background-color: var(--md-sys-color-surface-container-lowest);
+  border-color: var(--md-sys-color-primary);
+  box-shadow: var(--md-sys-elevation-1);
 }
 
 .search input {
   border: none;
   background: transparent;
   outline: none;
-  color: var(--ink);
+  color: var(--md-sys-color-on-surface);
   font-family: inherit;
-  font-size: 13px;
+  font-size: 13.5px;
   width: 100%;
 }
 
 .search input::placeholder {
-  color: var(--muted);
+  color: var(--md-sys-color-on-surface-variant);
 }
 
 .topbar-actions {
@@ -343,39 +481,73 @@ main {
   position: relative;
 }
 
-/* Theme Toggle Slider */
+/* M3 Segmented Button / Role Switcher */
+.role-switcher {
+  display: flex;
+  align-items: center;
+  background-color: var(--md-sys-color-surface-container);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: var(--md-sys-shape-corner-full);
+  padding: 3px;
+  gap: 2px;
+}
+
+.role-btn {
+  border: none;
+  background: transparent;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 6px 14px;
+  border-radius: var(--md-sys-shape-corner-full);
+  color: var(--md-sys-color-on-surface-variant);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-standard);
+}
+
+.role-btn:hover {
+  background-color: rgba(0, 104, 116, 0.08);
+  color: var(--md-sys-color-on-surface);
+}
+
+.role-btn.active {
+  background-color: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
+  font-weight: 600;
+}
+
+/* Theme Toggle Slider in M3 */
 .theme-toggle {
   display: flex;
   align-items: center;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 999px;
+  background-color: var(--md-sys-color-surface-container);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: var(--md-sys-shape-corner-full);
   padding: 3px;
-  gap: 2px;
-  cursor: pointer;
   position: relative;
+  cursor: pointer;
 }
 
 .theme-toggle button {
   border: none;
   background: transparent;
-  cursor: pointer;
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 11px;
-  font-weight: 600;
+  font-size: 11.5px;
+  font-weight: 500;
   padding: 6px 12px;
-  border-radius: 999px;
-  color: var(--muted);
+  border-radius: var(--md-sys-shape-corner-full);
+  color: var(--md-sys-color-on-surface-variant);
   display: flex;
   align-items: center;
   gap: 6px;
-  transition: color 0.2s;
   position: relative;
   z-index: 1;
+  transition: color var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-standard);
 }
 
 .theme-toggle button.on {
-  color: var(--accent-ink);
+  color: var(--md-sys-color-on-primary-container);
+  font-weight: 600;
 }
 
 .theme-toggle .slider {
@@ -384,58 +556,63 @@ main {
   bottom: 3px;
   left: 3px;
   width: calc(50% - 3px);
-  background: var(--accent);
-  border-radius: 999px;
-  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  background-color: var(--md-sys-color-primary-container);
+  border-radius: var(--md-sys-shape-corner-full);
+  transition: transform var(--md-sys-motion-duration-medium) var(--md-sys-motion-easing-standard);
   z-index: 0;
 }
 
-[data-theme="kitchen"] .theme-toggle .slider {
+[data-theme="kitchen"] .theme-toggle .slider,
+[data-theme="dark"] .theme-toggle .slider {
   transform: translateX(100%);
 }
 
-/* Notification Bell */
+/* M3 Icon Button for Notifications */
 .bell {
-  width: 36px;
-  height: 36px;
-  border-radius: 10px;
-  background: var(--surface);
-  border: 1px solid var(--border);
+  width: 40px;
+  height: 40px;
+  border-radius: var(--md-sys-shape-corner-full);
+  background-color: var(--md-sys-color-surface-container);
+  border: 1px solid var(--md-sys-color-outline-variant);
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  color: var(--muted);
+  color: var(--md-sys-color-on-surface-variant);
   position: relative;
+  transition: background-color var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-standard);
+}
+
+.bell:hover {
+  background-color: var(--md-sys-color-surface-container-high);
 }
 
 .bell .dot {
   position: absolute;
-  top: 8px;
-  right: 8px;
-  width: 6px;
-  height: 6px;
+  top: 9px;
+  right: 9px;
+  width: 7px;
+  height: 7px;
   border-radius: 50%;
-  background: var(--alert);
-  transition: opacity 0.2s;
+  background-color: var(--md-sys-color-error);
 }
 
 .bell .dot.hide {
-  opacity: 0;
+  display: none;
 }
 
 .notif-panel {
   position: absolute;
-  top: 44px;
+  top: 48px;
   right: 0;
-  width: 260px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  box-shadow: var(--shadow);
+  width: 280px;
+  background-color: var(--md-sys-color-surface-container-high);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: var(--md-sys-shape-corner-large);
+  box-shadow: var(--md-sys-elevation-2);
   padding: 10px;
   display: none;
-  z-index: 20;
+  z-index: 40;
 }
 
 .notif-panel.open {
@@ -443,63 +620,110 @@ main {
 }
 
 .notif-item {
-  padding: 9px 10px;
-  border-radius: 8px;
+  padding: 10px 12px;
+  border-radius: var(--md-sys-shape-corner-medium);
   font-size: 12.5px;
 }
 
 .notif-item:hover {
-  background: var(--surface-2);
+  background-color: var(--md-sys-color-surface-container-highest);
 }
 
 .notif-item .n-t {
   font-weight: 600;
-  margin-bottom: 1px;
+  color: var(--md-sys-color-on-surface);
 }
 
 .notif-item .n-s {
-  color: var(--muted);
+  color: var(--md-sys-color-on-surface-variant);
   font-size: 11px;
 }
 
 /* ==========================================================================
-   5. PAGES & TRANSITIONS
+   5. M3 DEV / FIXTURE BAR
    ========================================================================== */
 
-.page {
-  display: none;
+.dev-fixture-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--md-sys-color-surface-container-low);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: var(--md-sys-shape-corner-large);
+  padding: 10px 16px;
+  margin-bottom: 24px;
+  font-size: 12.5px;
+  flex-wrap: wrap;
+  gap: 10px;
 }
 
-.page.active {
-  display: block;
-  animation: fadeIn 0.25s ease;
+.dev-fixture-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--md-sys-color-on-surface-variant);
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(4px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
+.dev-fixture-badge {
+  font-family: var(--md-sys-typescale-mono-font);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: var(--md-sys-shape-corner-small);
+  background-color: var(--md-sys-color-surface-container-highest);
+  color: var(--md-sys-color-on-surface);
+}
+
+.dev-fixture-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* M3 Buttons */
+.dev-btn {
+  border: 1px solid var(--md-sys-color-outline);
+  background-color: transparent;
+  color: var(--md-sys-color-primary);
+  font-size: 12px;
+  font-weight: 500;
+  padding: 6px 14px;
+  border-radius: var(--md-sys-shape-corner-full);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-standard);
+}
+
+.dev-btn:hover {
+  background-color: rgba(0, 104, 116, 0.08);
+}
+
+.dev-btn.primary {
+  background-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+  border: none;
+}
+
+.dev-btn.primary:hover {
+  box-shadow: var(--md-sys-elevation-1);
+  filter: brightness(1.06);
 }
 
 /* ==========================================================================
-   6. DIGITAL TOKEN TICKET & PROGRESS STEPPER
+   6. M3 DIGITAL TICKET & STEPPER COMPONENT
    ========================================================================== */
 
 .ticket {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
+  background-color: var(--md-sys-color-surface-container);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: var(--md-sys-shape-corner-extra-large);
+  box-shadow: var(--md-sys-elevation-1);
   display: grid;
   grid-template-columns: 1fr 240px;
-  position: relative;
   overflow: hidden;
-  margin-bottom: 20px;
+  margin-bottom: 24px;
 }
 
 @media (max-width: 760px) {
@@ -509,37 +733,39 @@ main {
 }
 
 .ticket-main {
-  padding: 26px 28px;
+  padding: 28px 32px;
 }
 
 .ticket-eyebrow {
-  font-family: 'IBM Plex Mono', monospace;
   font-size: 11px;
-  color: var(--muted);
+  color: var(--md-sys-color-primary);
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  margin-bottom: 10px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .ticket-title {
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 26px;
+  font-size: 24px;
   font-weight: 700;
-  letter-spacing: -0.01em;
-  margin: 0 0 4px;
+  margin: 0 0 6px;
+  color: var(--md-sys-color-on-surface);
 }
 
 .ticket-desc {
-  color: var(--muted);
+  color: var(--md-sys-color-on-surface-variant);
   font-size: 13.5px;
-  margin-bottom: 20px;
+  margin-bottom: 24px;
 }
 
+/* M3 Stepper */
 .stepper {
   display: flex;
   align-items: center;
-  gap: 0;
-  margin-top: 6px;
+  margin-top: 10px;
 }
 
 .step {
@@ -552,40 +778,39 @@ main {
 }
 
 .step-dot {
-  width: 11px;
-  height: 11px;
+  width: 14px;
+  height: 14px;
   border-radius: 50%;
-  background: var(--border);
-  border: 2px solid var(--border);
+  background-color: var(--md-sys-color-surface-container-highest);
+  border: 2px solid var(--md-sys-color-outline);
   position: relative;
   z-index: 1;
-  transition: background 0.2s, border-color 0.2s;
+  transition: all var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-standard);
 }
 
 .step.done .step-dot {
-  background: var(--fresh);
-  border-color: var(--fresh);
+  background-color: var(--md-sys-color-avail);
+  border-color: var(--md-sys-color-avail);
 }
 
 .step.now .step-dot {
-  background: var(--accent);
-  border-color: var(--accent);
-  box-shadow: 0 0 0 4px var(--low-bg);
+  background-color: var(--md-sys-color-primary);
+  border-color: var(--md-sys-color-primary);
+  box-shadow: 0 0 0 4px var(--md-sys-color-primary-container);
 }
 
 .step-line {
   position: absolute;
-  top: 5px;
+  top: 6px;
   left: 50%;
   width: 100%;
   height: 2px;
-  background: var(--border);
+  background-color: var(--md-sys-color-outline-variant);
   z-index: 0;
-  transition: background 0.2s;
 }
 
 .step.done .step-line {
-  background: var(--fresh);
+  background-color: var(--md-sys-color-avail);
 }
 
 .step:last-child .step-line {
@@ -595,268 +820,386 @@ main {
 .step-label {
   font-size: 11.5px;
   font-weight: 600;
-  color: var(--muted);
-  transition: color 0.2s;
+  color: var(--md-sys-color-on-surface-variant);
 }
 
-.step.done .step-label,
-.step.now .step-label {
-  color: var(--ink);
-}
-
+/* Ticket Stub */
 .ticket-stub {
-  background: var(--surface-2);
-  border-left: 2px dashed var(--border);
-  padding: 22px 24px;
+  background-color: var(--md-sys-color-surface-container-high);
+  border-left: 1px dashed var(--md-sys-color-outline-variant);
+  padding: 24px 20px;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 12px;
+  align-items: center;
+  text-align: center;
   position: relative;
 }
 
 .stub-row {
   display: flex;
   justify-content: space-between;
-  align-items: baseline;
-}
-
-.stub-label {
-  font-size: 10.5px;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--muted);
-}
-
-.stub-value {
-  font-family: 'IBM Plex Mono', monospace;
-  font-weight: 600;
-  font-size: 13px;
+  width: 100%;
+  font-size: 11.5px;
+  margin-bottom: 4px;
+  color: var(--md-sys-color-on-surface-variant);
 }
 
 .queue-no {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 34px;
-  font-weight: 600;
-  letter-spacing: 0.02em;
-  line-height: 1;
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--md-sys-color-primary);
+  margin: 6px 0;
 }
 
 .eta-pill {
-  align-self: flex-start;
-  background: var(--low-bg);
-  color: var(--low);
-  font-family: 'IBM Plex Mono', monospace;
+  background-color: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
   font-size: 11.5px;
   font-weight: 600;
-  padding: 5px 10px;
-  border-radius: 999px;
-  margin-top: 2px;
-}
-
-.punch {
-  position: absolute;
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  background: var(--bg);
-  left: -9px;
-}
-
-.punch.top {
-  top: -8px;
-}
-
-.punch.bottom {
-  bottom: -8px;
+  border-radius: var(--md-sys-shape-corner-full);
+  padding: 4px 12px;
+  margin-bottom: 14px;
 }
 
 .advance-btn {
-  margin-top: 4px;
-  align-self: flex-start;
-  background: var(--ink);
-  color: var(--bg);
+  width: 100%;
+  background-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
   border: none;
-  border-radius: 8px;
-  padding: 8px 12px;
-  font-size: 11.5px;
+  border-radius: var(--md-sys-shape-corner-full);
+  padding: 10px;
+  font-size: 12px;
   font-weight: 600;
   cursor: pointer;
-  font-family: 'Inter', sans-serif;
+  transition: all var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-standard);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.advance-btn:hover:not(:disabled) {
+  box-shadow: var(--md-sys-elevation-1);
+  filter: brightness(1.08);
 }
 
 .advance-btn:disabled {
-  opacity: 0.4;
-  cursor: default;
+  background-color: var(--md-sys-color-surface-container-highest);
+  color: var(--md-sys-color-outline);
+  cursor: not-allowed;
 }
 
 /* ==========================================================================
-   7. QUICK GRID & SHORTCUT CARDS
+   7. M3 QUICK SHORTCUT CARDS
    ========================================================================== */
 
 .quick-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 12px;
-  margin-bottom: 22px;
+  gap: 14px;
+  margin-bottom: 24px;
 }
 
-@media (max-width: 760px) {
+@media (max-width: 860px) {
   .quick-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
 .quick-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 12px;
+  background-color: var(--md-sys-color-surface-container-low);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: var(--md-sys-shape-corner-large);
   padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
   cursor: pointer;
-  transition: transform 0.15s ease, border-color 0.15s ease;
   text-align: left;
+  transition: all var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-standard);
 }
 
 .quick-card:hover {
+  background-color: var(--md-sys-color-surface-container);
   transform: translateY(-2px);
-  border-color: var(--accent);
+  box-shadow: var(--md-sys-elevation-1);
 }
 
 .quick-icon {
-  width: 34px;
-  height: 34px;
-  border-radius: 9px;
-  background: var(--surface-2);
+  width: 36px;
+  height: 36px;
+  border-radius: var(--md-sys-shape-corner-medium);
+  background-color: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 12px;
-  color: var(--accent);
+  margin-bottom: 4px;
 }
 
 .quick-title {
-  font-weight: 600;
   font-size: 13.5px;
-  margin-bottom: 2px;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface);
 }
 
 .quick-sub {
-  font-size: 11.5px;
-  color: var(--muted);
+  font-size: 11px;
+  color: var(--md-sys-color-on-surface-variant);
 }
 
 /* ==========================================================================
-   8. SECTION HEADERS & COUNTER STRIP
+   8. M3 SECTION HEADERS & FILTER CHIPS
    ========================================================================== */
 
 .section-head {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   justify-content: space-between;
-  margin: 32px 0 12px;
-}
-
-.section-head:first-child {
-  margin-top: 0;
+  margin: 24px 0 14px;
 }
 
 .section-title {
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 15.5px;
+  font-family: var(--md-sys-typescale-brand-font);
+  font-size: 16px;
   font-weight: 700;
+  color: var(--md-sys-color-on-surface);
 }
 
 .section-link {
-  font-size: 12px;
-  color: var(--muted);
-  cursor: pointer;
-  font-weight: 500;
-  background: none;
+  background: transparent;
   border: none;
+  color: var(--md-sys-color-primary);
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
 }
 
 .section-link:hover {
-  color: var(--accent);
+  text-decoration: underline;
 }
 
-.counter-strip {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
+/* M3 Filter Chips Row */
+.filter-row {
   display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
   overflow-x: auto;
-  box-shadow: var(--shadow);
+  padding-bottom: 4px;
+}
+
+.filter-chip {
+  border: 1px solid var(--md-sys-color-outline);
+  background: transparent;
+  color: var(--md-sys-color-on-surface-variant);
+  font-size: 12.5px;
+  font-weight: 500;
+  border-radius: var(--md-sys-shape-corner-small);
+  padding: 6px 14px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  transition: all var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-standard);
+}
+
+.filter-chip:hover {
+  background-color: rgba(0, 104, 116, 0.08);
+}
+
+.filter-chip.active {
+  background-color: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
+  border-color: transparent;
+  font-weight: 600;
+}
+
+/* ==========================================================================
+   9. M3 MENU CARDS & REAL-TIME INVENTORY GAUGES
+   ========================================================================== */
+
+.counter-strip {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 12px;
+  margin-bottom: 24px;
 }
 
 .counter-item {
-  flex: 0 0 auto;
-  min-width: 172px;
-  padding: 16px 18px;
-  border-right: 1px solid var(--border);
+  background-color: var(--md-sys-color-surface-container-low);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: var(--md-sys-shape-corner-medium);
+  padding: 12px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
-}
-
-.counter-item:last-child {
-  border-right: none;
-}
-
-.counter-name {
-  font-weight: 600;
-  font-size: 13.5px;
+  gap: 6px;
 }
 
 .counter-meta {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 8px;
+}
+
+.counter-name {
+  font-size: 12.5px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .stock-count {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 12px;
-  color: var(--muted);
+  font-size: 11px;
+  color: var(--md-sys-color-on-surface-variant);
 }
 
-.status-badge {
-  font-size: 10.5px;
-  font-weight: 600;
-  padding: 3px 8px;
-  border-radius: 999px;
-  font-family: 'IBM Plex Mono', monospace;
-}
-
-.status-badge.available {
-  background: var(--fresh-bg);
-  color: var(--fresh);
-}
-
-.status-badge.low {
-  background: var(--low-bg);
-  color: var(--low);
-}
-
-.status-badge.out {
-  background: var(--alert-bg);
-  color: var(--alert);
-}
-
+/* Stock Gauge Bar */
 .gauge {
-  height: 4px;
-  border-radius: 2px;
-  background: var(--surface-2);
+  height: 6px;
+  background-color: var(--md-sys-color-surface-container-highest);
+  border-radius: var(--md-sys-shape-corner-full);
   overflow: hidden;
 }
 
 .gauge > span {
   display: block;
   height: 100%;
-  border-radius: 2px;
+  border-radius: var(--md-sys-shape-corner-full);
+  transition: width var(--md-sys-motion-duration-medium) var(--md-sys-motion-easing-standard);
+}
+
+/* M3 Status Pills / Assist Chips */
+.status-badge {
+  font-size: 10px;
+  font-weight: 700;
+  border-radius: var(--md-sys-shape-corner-full);
+  padding: 2px 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.status-badge.available {
+  background-color: var(--md-sys-color-avail-container);
+  color: var(--md-sys-color-on-avail-container);
+}
+
+.status-badge.low {
+  background-color: var(--md-sys-color-low-container);
+  color: var(--md-sys-color-on-low-container);
+}
+
+.status-badge.out {
+  background-color: var(--md-sys-color-out-container);
+  color: var(--md-sys-color-on-out-container);
+}
+
+/* Menu Grid */
+.menu-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
+}
+
+.menu-card {
+  background-color: var(--md-sys-color-surface-container-low);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: var(--md-sys-shape-corner-large);
+  padding: 16px;
+  display: flex;
+  gap: 14px;
+  box-shadow: var(--md-sys-elevation-1);
+  transition: all var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-standard);
+}
+
+.menu-card:hover {
+  background-color: var(--md-sys-color-surface-container);
+  transform: translateY(-2px);
+  box-shadow: var(--md-sys-elevation-2);
+}
+
+.menu-emoji {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--md-sys-shape-corner-medium);
+  background-color: var(--md-sys-color-surface-container-high);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  flex: none;
+}
+
+.menu-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.mn {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface);
+}
+
+.mc {
+  font-size: 11px;
+  color: var(--md-sys-color-on-surface-variant);
+  margin-top: 2px;
+}
+
+.mrow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: auto;
+  padding-top: 10px;
+}
+
+.rec-price {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--md-sys-color-on-surface);
+}
+
+/* M3 Floating Action / Mini Add Button */
+.add-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--md-sys-shape-corner-full);
+  border: none;
+  background-color: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+  font-size: 16px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-standard);
+}
+
+.add-btn:hover:not(:disabled) {
+  background-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+}
+
+.add-btn:disabled {
+  background-color: var(--md-sys-color-surface-container-highest);
+  color: var(--md-sys-color-outline);
+  cursor: not-allowed;
 }
 
 /* ==========================================================================
-   9. RECOMMENDATION & MENU GRIDS
+   10. M3 RECOMMENDATION CARDS
    ========================================================================== */
 
 .rec-grid {
@@ -872,41 +1215,42 @@ main {
 }
 
 .rec-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 12px;
+  background-color: var(--md-sys-color-surface-container-low);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: var(--md-sys-shape-corner-large);
   overflow: hidden;
-  box-shadow: var(--shadow);
+  box-shadow: var(--md-sys-elevation-1);
   display: flex;
   flex-direction: column;
 }
 
 .rec-img {
-  height: 88px;
+  height: 90px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 30px;
-  background: var(--surface-2);
+  font-size: 32px;
+  background-color: var(--md-sys-color-surface-container);
 }
 
 .rec-body {
-  padding: 12px 14px 14px;
+  padding: 14px;
   flex: 1;
   display: flex;
   flex-direction: column;
 }
 
 .rec-name {
-  font-weight: 600;
   font-size: 13.5px;
-  margin-bottom: 2px;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface);
 }
 
 .rec-tag {
   font-size: 11px;
-  color: var(--muted);
-  margin-bottom: 10px;
+  color: var(--md-sys-color-on-surface-variant);
+  margin-top: 2px;
+  margin-bottom: 12px;
 }
 
 .rec-row {
@@ -916,133 +1260,8 @@ main {
   margin-top: auto;
 }
 
-.rec-price {
-  font-family: 'IBM Plex Mono', monospace;
-  font-weight: 600;
-  font-size: 13px;
-}
-
-.add-btn {
-  width: 26px;
-  height: 26px;
-  border-radius: 50%;
-  border: 1px solid var(--border);
-  background: transparent;
-  color: var(--ink);
-  cursor: pointer;
-  font-size: 15px;
-  line-height: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background 0.15s, color 0.15s, border-color 0.15s;
-}
-
-.add-btn:hover {
-  background: var(--accent);
-  border-color: var(--accent);
-  color: var(--accent-ink);
-}
-
-.add-btn:disabled {
-  opacity: 0.35;
-  cursor: not-allowed;
-}
-
-.add-btn.added {
-  background: var(--fresh);
-  border-color: var(--fresh);
-  color: #fff;
-}
-
-.filter-row {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 18px;
-  flex-wrap: wrap;
-}
-
-.filter-chip {
-  border: 1px solid var(--border);
-  background: var(--surface);
-  color: var(--muted);
-  border-radius: 999px;
-  padding: 7px 14px;
-  font-size: 12px;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-.filter-chip.active {
-  background: var(--ink);
-  color: var(--bg);
-  border-color: var(--ink);
-}
-
-.menu-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 14px;
-}
-
-@media (max-width: 860px) {
-  .menu-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (max-width: 560px) {
-  .menu-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-.menu-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 14px;
-  display: flex;
-  gap: 12px;
-  box-shadow: var(--shadow);
-}
-
-.menu-emoji {
-  width: 46px;
-  height: 46px;
-  border-radius: 10px;
-  background: var(--surface-2);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 22px;
-  flex: none;
-}
-
-.menu-info {
-  flex: 1;
-  min-width: 0;
-}
-
-.menu-info .mn {
-  font-weight: 600;
-  font-size: 13.5px;
-}
-
-.menu-info .mc {
-  font-size: 11px;
-  color: var(--muted);
-  margin-bottom: 6px;
-}
-
-.menu-info .mrow {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
 /* ==========================================================================
-   10. PANELS, SPENDING BAR CHART & ORDER LISTS
+   11. M3 PANELS & SPENDING BARS
    ========================================================================== */
 
 .two-col {
@@ -1058,30 +1277,30 @@ main {
 }
 
 .panel {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 20px;
-  box-shadow: var(--shadow);
+  background-color: var(--md-sys-color-surface-container-low);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: var(--md-sys-shape-corner-large);
+  padding: 22px;
+  box-shadow: var(--md-sys-elevation-1);
 }
 
 .panel-title {
-  font-family: 'Space Grotesk', sans-serif;
+  font-size: 15px;
   font-weight: 700;
-  font-size: 14px;
-  margin-bottom: 2px;
+  color: var(--md-sys-color-on-surface);
 }
 
 .panel-sub {
-  font-size: 11.5px;
-  color: var(--muted);
-  margin-bottom: 18px;
+  font-size: 12px;
+  color: var(--md-sys-color-on-surface-variant);
+  margin-top: 2px;
+  margin-bottom: 20px;
 }
 
 .bars {
   display: flex;
   align-items: flex-end;
-  gap: 10px;
+  gap: 12px;
   height: 120px;
   padding: 0 4px;
 }
@@ -1098,10 +1317,11 @@ main {
 
 .bar {
   width: 100%;
-  max-width: 26px;
-  border-radius: 5px 5px 2px 2px;
-  background: var(--surface-2);
+  max-width: 24px;
+  border-radius: var(--md-sys-shape-corner-small) var(--md-sys-shape-corner-small) 2px 2px;
+  background-color: var(--md-sys-color-surface-container-highest);
   position: relative;
+  height: 100%;
 }
 
 .bar > span {
@@ -1109,39 +1329,44 @@ main {
   bottom: 0;
   left: 0;
   right: 0;
-  border-radius: 5px 5px 2px 2px;
-  background: var(--accent);
+  border-radius: var(--md-sys-shape-corner-small) var(--md-sys-shape-corner-small) 2px 2px;
+  background-color: var(--md-sys-color-primary);
+  transition: height var(--md-sys-motion-duration-medium) var(--md-sys-motion-easing-standard);
 }
 
 .bar-col.peak > .bar > span {
-  background: var(--fresh);
+  background-color: var(--md-sys-color-avail);
 }
 
 .bar-label {
   font-size: 10px;
-  color: var(--muted);
-  font-family: 'IBM Plex Mono', monospace;
+  color: var(--md-sys-color-on-surface-variant);
+  font-family: var(--md-sys-typescale-mono-font);
 }
 
 .spend-total {
   display: flex;
   align-items: baseline;
   gap: 8px;
-  margin-top: 16px;
+  margin-top: 18px;
   padding-top: 14px;
-  border-top: 1px solid var(--border);
+  border-top: 1px solid var(--md-sys-color-outline-variant);
 }
 
 .spend-total .amt {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 20px;
-  font-weight: 600;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--md-sys-color-on-surface);
 }
 
 .spend-total .lbl {
-  font-size: 11.5px;
-  color: var(--muted);
+  font-size: 12px;
+  color: var(--md-sys-color-on-surface-variant);
 }
+
+/* ==========================================================================
+   12. M3 LISTS & STUB ROWS
+   ========================================================================== */
 
 .stub-list {
   display: flex;
@@ -1151,9 +1376,9 @@ main {
 .stub-list-item {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 11px 0;
-  border-bottom: 1px dashed var(--border);
+  gap: 14px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
 }
 
 .stub-list-item:last-child {
@@ -1161,14 +1386,15 @@ main {
 }
 
 .stub-icon {
-  width: 32px;
-  height: 32px;
-  border-radius: 8px;
-  background: var(--surface-2);
+  width: 38px;
+  height: 38px;
+  border-radius: var(--md-sys-shape-corner-medium);
+  background-color: var(--md-sys-color-surface-container-high);
+  color: var(--md-sys-color-primary);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 15px;
+  font-size: 18px;
   flex: none;
 }
 
@@ -1178,65 +1404,96 @@ main {
 }
 
 .stub-info .t {
-  font-size: 13px;
+  font-size: 13.5px;
   font-weight: 600;
+  color: var(--md-sys-color-on-surface);
 }
 
 .stub-info .s {
-  font-size: 11px;
-  color: var(--muted);
+  font-size: 11.5px;
+  color: var(--md-sys-color-on-surface-variant);
+  margin-top: 2px;
 }
 
 .stub-amt {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 12.5px;
-  font-weight: 600;
+  font-size: 14px;
+  font-weight: 700;
   text-align: right;
+  color: var(--md-sys-color-on-surface);
 }
 
 .stub-status {
   font-size: 10px;
-  text-align: right;
-  font-weight: 600;
+  font-weight: 700;
+  border-radius: var(--md-sys-shape-corner-full);
+  padding: 2px 7px;
+  text-align: center;
+  margin-top: 2px;
 }
 
 .stub-status.done {
-  color: var(--fresh);
+  background-color: var(--md-sys-color-avail-container);
+  color: var(--md-sys-color-on-avail-container);
 }
 
 .stub-status.progress {
-  color: var(--low);
-}
-
-.stub-actions {
-  display: flex;
-  gap: 6px;
+  background-color: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
 }
 
 .mini-btn {
-  border: 1px solid var(--border);
-  background: var(--surface);
-  border-radius: 7px;
-  padding: 5px 9px;
-  font-size: 11px;
+  background-color: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
+  border: none;
+  font-size: 11.5px;
   font-weight: 600;
+  padding: 5px 12px;
+  border-radius: var(--md-sys-shape-corner-full);
   cursor: pointer;
-  color: var(--ink);
 }
 
-.mini-btn:hover {
-  border-color: var(--accent);
+.feedback-strip {
+  background-color: var(--md-sys-color-surface-container);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: var(--md-sys-shape-corner-large);
+  padding: 20px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 24px;
+}
+
+.ft {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--md-sys-color-on-surface);
+}
+
+.fs {
+  font-size: 12px;
+  color: var(--md-sys-color-on-surface-variant);
+  margin-top: 2px;
+}
+
+.fb-btn {
+  background-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+  border: none;
+  border-radius: var(--md-sys-shape-corner-full);
+  padding: 9px 20px;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
 }
 
 /* ==========================================================================
-   11. CART PAGE & CHECKOUT
+   13. M3 CART & CHECKOUT LAYOUT
    ========================================================================== */
 
 .cart-layout {
   display: grid;
-  grid-template-columns: 1fr 300px;
-  gap: 16px;
-  align-items: start;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 18px;
 }
 
 @media (max-width: 860px) {
@@ -1249,200 +1506,688 @@ main {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 13px 0;
-  border-bottom: 1px dashed var(--border);
-}
-
-.cart-line:last-child {
-  border-bottom: none;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
 }
 
 .qty-ctrl {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 8px;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 3px;
+  background-color: var(--md-sys-color-surface-container-high);
+  border-radius: var(--md-sys-shape-corner-full);
+  padding: 2px 8px;
 }
 
 .qty-ctrl button {
-  width: 22px;
-  height: 22px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
   border: none;
-  background: var(--surface-2);
-  border-radius: 5px;
+  background: transparent;
+  color: var(--md-sys-color-on-surface);
+  font-weight: 700;
   cursor: pointer;
-  font-size: 13px;
-  color: var(--ink);
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 .qty-ctrl span {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 12.5px;
-  min-width: 16px;
+  font-weight: 600;
+  min-width: 18px;
   text-align: center;
 }
 
 .remove-x {
   border: none;
-  background: none;
-  color: var(--muted);
+  background: transparent;
+  color: var(--md-sys-color-error);
   cursor: pointer;
-  font-size: 16px;
   padding: 4px;
-}
-
-.remove-x:hover {
-  color: var(--alert);
-}
-
-.empty-state {
-  text-align: center;
-  padding: 40px 20px;
-  color: var(--muted);
-}
-
-.empty-state .em {
-  font-size: 34px;
-  margin-bottom: 10px;
-}
-
-.checkout-btn {
-  width: 100%;
-  background: var(--accent);
-  color: var(--accent-ink);
-  border: none;
-  border-radius: 9px;
-  padding: 12px;
-  font-weight: 700;
-  font-size: 13px;
-  cursor: pointer;
-  margin-top: 14px;
-}
-
-.checkout-btn:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
+  font-size: 14px;
 }
 
 .summary-row {
   display: flex;
   justify-content: space-between;
-  font-size: 12.5px;
-  padding: 5px 0;
-  color: var(--muted);
+  font-size: 13.5px;
+  color: var(--md-sys-color-on-surface-variant);
+  margin-bottom: 10px;
 }
 
 .summary-row.total {
-  color: var(--ink);
+  font-size: 16px;
   font-weight: 700;
-  font-size: 14px;
-  border-top: 1px solid var(--border);
-  margin-top: 8px;
+  color: var(--md-sys-color-on-surface);
+  border-top: 1px solid var(--md-sys-color-outline-variant);
   padding-top: 12px;
+  margin-top: 12px;
+}
+
+.checkout-btn {
+  width: 100%;
+  background-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+  border: none;
+  border-radius: var(--md-sys-shape-corner-full);
+  padding: 13px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 16px;
+  transition: all var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-standard);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.checkout-btn:hover:not(:disabled) {
+  box-shadow: var(--md-sys-elevation-2);
+  filter: brightness(1.06);
+}
+
+.checkout-btn:disabled {
+  background-color: var(--md-sys-color-surface-container-highest);
+  color: var(--md-sys-color-outline);
+  cursor: not-allowed;
 }
 
 /* ==========================================================================
-   12. FEEDBACK & RATINGS
+   14. M3 KITCHEN KANBAN BOARD
    ========================================================================== */
 
-.feedback-strip {
-  margin-top: 20px;
-  border-radius: var(--radius);
-  padding: 20px 24px;
-  background: var(--surface-2);
+.kanban-board {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-top: 16px;
+}
+
+@media (max-width: 960px) {
+  .kanban-board {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 560px) {
+  .kanban-board {
+    grid-template-columns: 1fr;
+  }
+}
+
+.kanban-col {
+  background-color: var(--md-sys-color-surface-container-low);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: var(--md-sys-shape-corner-large);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-height: 480px;
+}
+
+.kanban-col-head {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
-  border: 1px solid var(--border);
-  flex-wrap: wrap;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
 }
 
-.feedback-strip .ft {
+.kanban-col-title {
+  font-family: var(--md-sys-typescale-brand-font);
+  font-size: 14px;
   font-weight: 700;
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 14.5px;
-  margin-bottom: 3px;
-}
-
-.feedback-strip .fs {
-  font-size: 12px;
-  color: var(--muted);
-}
-
-.fb-btn {
-  background: var(--accent);
-  color: var(--accent-ink);
-  border: none;
-  border-radius: 9px;
-  padding: 10px 16px;
-  font-weight: 600;
-  font-size: 12.5px;
-  cursor: pointer;
-  font-family: 'Inter', sans-serif;
-  white-space: nowrap;
-}
-
-.fb-btn:hover {
-  filter: brightness(1.05);
-}
-
-.stars {
   display: flex;
-  gap: 8px;
-  margin: 14px 0 18px;
+  align-items: center;
+  gap: 6px;
 }
 
-.star {
-  font-size: 26px;
-  cursor: pointer;
-  color: var(--border);
-  transition: color 0.15s, transform 0.1s;
-  background: none;
-  border: none;
+.kanban-count {
+  font-family: var(--md-sys-typescale-mono-font);
+  font-size: 11px;
+  font-weight: 700;
+  background-color: var(--md-sys-color-surface-container-highest);
+  padding: 2px 8px;
+  border-radius: var(--md-sys-shape-corner-full);
+  color: var(--md-sys-color-on-surface);
 }
 
-.star.on {
-  color: var(--accent);
+.kanban-card-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex: 1;
 }
 
-.star:hover {
-  transform: scale(1.1);
+.kanban-card {
+  background-color: var(--md-sys-color-surface-container-lowest);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: var(--md-sys-shape-corner-medium);
+  padding: 14px;
+  box-shadow: var(--md-sys-elevation-1);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: all var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-standard);
 }
 
-textarea {
-  width: 100%;
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 12px;
-  font-family: 'Inter', sans-serif;
+.kanban-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--md-sys-elevation-2);
+}
+
+.kanban-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.kanban-token {
+  font-family: var(--md-sys-typescale-mono-font);
   font-size: 13px;
-  background: var(--bg);
-  color: var(--ink);
-  resize: vertical;
-  min-height: 90px;
+  font-weight: 700;
+  color: var(--md-sys-color-on-primary-container);
+  background-color: var(--md-sys-color-primary-container);
+  padding: 2px 8px;
+  border-radius: var(--md-sys-shape-corner-small);
 }
 
-textarea:focus {
-  outline: 2px solid var(--accent);
-  outline-offset: 1px;
+.kanban-time {
+  font-size: 11px;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.kanban-cust {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface);
+}
+
+.kanban-items {
+  font-size: 12.5px;
+  color: var(--md-sys-color-on-surface);
+  line-height: 1.4;
+  padding: 8px 0;
+  border-top: 1px solid var(--md-sys-color-outline-variant);
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+}
+
+.kanban-item-line {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.kanban-item-line:last-child {
+  margin-bottom: 0;
+}
+
+.kanban-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.kanban-total {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--md-sys-color-on-surface);
+}
+
+.kanban-advance-btn {
+  border: none;
+  background-color: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
+  font-size: 11.5px;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: var(--md-sys-shape-corner-full);
+  cursor: pointer;
+  transition: all var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-standard);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.kanban-advance-btn:hover:not(:disabled) {
+  background-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+}
+
+.kanban-advance-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
 }
 
 /* ==========================================================================
-   13. SETTINGS & ACCOUNT PREFERENCES
+   15. M3 DATA TABLES & STOCK MANAGEMENT
    ========================================================================== */
 
+.table-wrap {
+  width: 100%;
+  overflow-x: auto;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: var(--md-sys-shape-corner-large);
+  background-color: var(--md-sys-color-surface-container-low);
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 13px;
+}
+
+.data-table th {
+  background-color: var(--md-sys-color-surface-container);
+  padding: 14px 16px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--md-sys-color-on-surface-variant);
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+}
+
+.data-table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  color: var(--md-sys-color-on-surface);
+  vertical-align: middle;
+}
+
+.data-table tr:last-child td {
+  border-bottom: none;
+}
+
+.data-table tr:hover td {
+  background-color: rgba(0, 104, 116, 0.04);
+}
+
+.inline-stock-ctrl {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background-color: var(--md-sys-color-surface-container-high);
+  border-radius: var(--md-sys-shape-corner-full);
+  padding: 2px 6px;
+}
+
+.inline-stock-ctrl button {
+  width: 24px;
+  height: 24px;
+  border: none;
+  background: transparent;
+  color: var(--md-sys-color-on-surface);
+  cursor: pointer;
+  border-radius: 50%;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.inline-stock-ctrl button:hover {
+  background-color: var(--md-sys-color-surface-container-highest);
+}
+
+.inline-stock-ctrl span {
+  font-family: var(--md-sys-typescale-mono-font);
+  font-weight: 700;
+  min-width: 24px;
+  text-align: center;
+}
+
+.table-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* ==========================================================================
+   16. M3 COUNTER POS / RAPID BILLING
+   ========================================================================== */
+
+.pos-layout {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 18px;
+}
+
+@media (max-width: 900px) {
+  .pos-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+.pos-menu-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 12px;
+  max-height: 540px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.pos-item-btn {
+  background-color: var(--md-sys-color-surface-container-low);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: var(--md-sys-shape-corner-medium);
+  padding: 14px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: all var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-standard);
+}
+
+.pos-item-btn:hover {
+  background-color: var(--md-sys-color-surface-container);
+  border-color: var(--md-sys-color-primary);
+  transform: translateY(-2px);
+  box-shadow: var(--md-sys-elevation-1);
+}
+
+.pos-item-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.pos-item-emoji {
+  font-size: 28px;
+}
+
+.pos-item-name {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface);
+}
+
+.pos-item-price {
+  font-size: 11px;
+  color: var(--md-sys-color-on-surface-variant);
+  font-weight: 500;
+}
+
+.pos-register {
+  background-color: var(--md-sys-color-surface-container-low);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: var(--md-sys-shape-corner-large);
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* ==========================================================================
+   17. M3 ADMIN METRICS & VELOCITY
+   ========================================================================== */
+
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+@media (max-width: 900px) {
+  .metrics-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 500px) {
+  .metrics-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.metric-card {
+  background-color: var(--md-sys-color-surface-container-low);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: var(--md-sys-shape-corner-large);
+  padding: 20px;
+  box-shadow: var(--md-sys-elevation-1);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.metric-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--md-sys-color-on-surface-variant);
+  font-size: 11.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.metric-val {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--md-sys-color-primary);
+}
+
+.metric-sub {
+  font-size: 12px;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.velocity-bar-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+}
+
+.velocity-bar-row:last-child {
+  border-bottom: none;
+}
+
+.velocity-label {
+  font-size: 13px;
+  font-weight: 600;
+  width: 140px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--md-sys-color-on-surface);
+}
+
+.velocity-track {
+  flex: 1;
+  height: 8px;
+  background-color: var(--md-sys-color-surface-container-highest);
+  border-radius: var(--md-sys-shape-corner-full);
+  overflow: hidden;
+}
+
+.velocity-fill {
+  height: 100%;
+  background-color: var(--md-sys-color-primary);
+  border-radius: var(--md-sys-shape-corner-full);
+}
+
+.velocity-stat {
+  font-size: 11.5px;
+  color: var(--md-sys-color-on-surface-variant);
+  width: 60px;
+  text-align: right;
+}
+
+/* ==========================================================================
+   18. M3 INPUTS, TEXTFIELDS & AUTH FORMS
+   ========================================================================== */
+
+.field {
+  margin-bottom: 16px;
+}
+
+.field label {
+  display: block;
+  font-size: 11.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--md-sys-color-on-surface-variant);
+  margin-bottom: 6px;
+}
+
+/* M3 Outlined Inputs */
+.field input,
+.field select,
+textarea {
+  width: 100%;
+  border: 1px solid var(--md-sys-color-outline);
+  border-radius: var(--md-sys-shape-corner-small);
+  padding: 11px 14px;
+  font-family: var(--md-sys-typescale-body-font);
+  font-size: 13.5px;
+  background-color: transparent;
+  color: var(--md-sys-color-on-surface);
+  transition: all var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-standard);
+}
+
+.field input:focus,
+.field select:focus,
+textarea:focus {
+  border: 2px solid var(--md-sys-color-primary);
+  outline: none;
+}
+
+.field-row {
+  display: flex;
+  gap: 12px;
+}
+
+.field-row .field {
+  flex: 1;
+}
+
+textarea {
+  min-height: 84px;
+  resize: vertical;
+}
+
+/* M3 Filled Button for Forms */
+.auth-submit {
+  width: 100%;
+  background-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+  border: none;
+  border-radius: var(--md-sys-shape-corner-full);
+  padding: 12px;
+  font-weight: 600;
+  font-size: 13.5px;
+  cursor: pointer;
+  margin-top: 6px;
+  transition: all var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-standard);
+}
+
+.auth-submit:hover {
+  box-shadow: var(--md-sys-elevation-1);
+  filter: brightness(1.06);
+}
+
+.auth-error {
+  font-size: 12px;
+  color: var(--md-sys-color-error);
+  margin: -6px 0 12px;
+  display: none;
+}
+
+.auth-error.show {
+  display: block;
+}
+
+/* M3 Segmented Auth Tabs */
+.auth-tabs {
+  display: flex;
+  gap: 4px;
+  background-color: var(--md-sys-color-surface-container);
+  border-radius: var(--md-sys-shape-corner-full);
+  padding: 4px;
+  margin: 0 0 18px;
+}
+
+.auth-tab {
+  flex: 1;
+  border: none;
+  background: transparent;
+  padding: 8px;
+  border-radius: var(--md-sys-shape-corner-full);
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--md-sys-color-on-surface-variant);
+  cursor: pointer;
+  transition: all var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-standard);
+}
+
+.auth-tab.active {
+  background-color: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
+  font-weight: 600;
+}
+
+.auth-sub {
+  font-size: 12px;
+  color: var(--md-sys-color-on-surface-variant);
+  margin: 0 0 16px;
+}
+
+/* Profile Grid */
+.account-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.account-field {
+  background-color: var(--md-sys-color-surface-container);
+  border-radius: var(--md-sys-shape-corner-medium);
+  padding: 10px 14px;
+}
+
+.account-field .al {
+  font-size: 10.5px;
+  text-transform: uppercase;
+  color: var(--md-sys-color-on-surface-variant);
+  font-weight: 600;
+}
+
+.account-field .av {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface);
+  margin-top: 2px;
+}
+
+.logout-btn {
+  background-color: var(--md-sys-color-error-container);
+  color: var(--md-sys-color-on-error-container);
+  border: none;
+  border-radius: var(--md-sys-shape-corner-full);
+  padding: 10px 20px;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* M3 Switch Component */
 .setting-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 14px 0;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
 }
 
 .setting-row:last-child {
@@ -1452,209 +2197,219 @@ textarea:focus {
 .setting-name {
   font-size: 13.5px;
   font-weight: 600;
+  color: var(--md-sys-color-on-surface);
 }
 
 .setting-sub {
   font-size: 11.5px;
-  color: var(--muted);
+  color: var(--md-sys-color-on-surface-variant);
+  margin-top: 2px;
 }
 
 .switch {
-  width: 40px;
-  height: 22px;
-  border-radius: 999px;
-  background: var(--surface-2);
-  border: 1px solid var(--border);
+  width: 52px;
+  height: 32px;
+  border-radius: var(--md-sys-shape-corner-full);
+  background-color: var(--md-sys-color-surface-container-highest);
+  border: 2px solid var(--md-sys-color-outline);
   position: relative;
   cursor: pointer;
-  flex: none;
+  transition: all var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-standard);
 }
 
 .switch .knob {
-  position: absolute;
-  top: 2px;
-  left: 2px;
   width: 16px;
   height: 16px;
   border-radius: 50%;
-  background: var(--muted);
-  transition: transform 0.2s, background 0.2s;
+  background-color: var(--md-sys-color-outline);
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  transition: all var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-standard);
 }
 
 .switch.on {
-  background: var(--accent-ink);
-  border-color: var(--accent);
+  background-color: var(--md-sys-color-primary);
+  border-color: var(--md-sys-color-primary);
 }
 
 .switch.on .knob {
-  transform: translateX(18px);
-  background: var(--accent);
-}
-
-.account-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 14px;
-  margin-bottom: 6px;
-}
-
-@media (max-width: 480px) {
-  .account-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-.account-field {
-  background: var(--surface-2);
-  border-radius: 10px;
-  padding: 10px 12px;
-}
-
-.account-field .al {
-  font-size: 10px;
-  text-transform: uppercase;
-  letter-spacing: 0.07em;
-  color: var(--muted);
-  margin-bottom: 3px;
-}
-
-.account-field .av {
-  font-size: 13.5px;
-  font-weight: 600;
-  font-family: 'IBM Plex Mono', monospace;
-}
-
-.logout-btn {
-  width: 100%;
-  background: transparent;
-  color: var(--alert);
-  border: 1px solid var(--alert-bg);
-  border-radius: 9px;
-  padding: 11px;
-  font-weight: 700;
-  font-size: 12.5px;
-  cursor: pointer;
-  margin-top: 18px;
-}
-
-.logout-btn:hover {
-  background: var(--alert-bg);
+  background-color: var(--md-sys-color-on-primary);
+  transform: translateX(20px);
+  width: 20px;
+  height: 20px;
+  top: 4px;
 }
 
 /* ==========================================================================
-   14. AUTHENTICATION (LOGIN & SIGNUP FORMS)
+   19. M3 CHECKOUT PAYMENT CHIPS
    ========================================================================== */
 
-.auth-tabs {
-  display: flex;
-  gap: 2px;
-  background: var(--surface-2);
-  border-radius: 10px;
-  padding: 3px;
-  margin: 0 0 18px;
-}
-
-.auth-tab {
-  flex: 1;
-  border: none;
-  background: transparent;
-  padding: 9px;
-  border-radius: 8px;
-  font-size: 12.5px;
-  font-weight: 600;
-  color: var(--muted);
-  cursor: pointer;
-}
-
-.auth-tab.active {
-  background: var(--surface);
-  color: var(--ink);
-  box-shadow: var(--shadow);
-}
-
-.auth-sub {
-  font-size: 12px;
-  color: var(--muted);
-  margin: 0 0 18px;
-}
-
-.field {
-  margin-bottom: 14px;
-}
-
-.field label {
-  display: block;
-  font-size: 11px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: var(--muted);
-  margin-bottom: 6px;
-}
-
-.field input,
-.field select {
-  width: 100%;
-  border: 1px solid var(--border);
-  border-radius: 9px;
-  padding: 10px 12px;
-  font-family: 'Inter', sans-serif;
-  font-size: 13.5px;
-  background: var(--bg);
-  color: var(--ink);
-}
-
-.field input:focus,
-.field select:focus {
-  outline: 2px solid var(--accent);
-  outline-offset: 1px;
-}
-
-.field-row {
-  display: flex;
+.checkout-payment-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
   gap: 10px;
+  margin-top: 10px;
+  margin-bottom: 16px;
 }
 
-.field-row .field {
-  flex: 1;
-}
-
-.auth-submit {
-  width: 100%;
-  background: var(--accent);
-  color: var(--accent-ink);
-  border: none;
-  border-radius: 9px;
+.payment-chip {
+  background-color: var(--md-sys-color-surface-container);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: var(--md-sys-shape-corner-medium);
   padding: 12px;
-  font-weight: 700;
-  font-size: 13px;
   cursor: pointer;
-  margin-top: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  transition: all var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-standard);
 }
 
-.auth-submit:hover {
-  filter: brightness(1.05);
+.payment-chip:hover {
+  background-color: var(--md-sys-color-surface-container-high);
 }
 
-.auth-error {
-  font-size: 11.5px;
-  color: var(--alert);
-  margin: -6px 0 12px;
+.payment-chip.selected {
+  background-color: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
+  border-color: var(--md-sys-color-primary);
+  box-shadow: 0 0 0 1px var(--md-sys-color-primary);
+}
+
+.payment-chip-name {
+  font-size: 13px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.payment-chip-sub {
+  font-size: 11px;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+/* ==========================================================================
+   20. M3 DIALOGS, MODALS & TOASTS
+   ========================================================================== */
+
+.receipt-modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+  padding: 20px;
+  backdrop-filter: blur(4px);
+}
+
+.receipt-modal-backdrop.hide {
   display: none;
 }
 
-.auth-error.show {
-  display: block;
+/* M3 Extra Large Rounded Dialog */
+.digital-receipt {
+  background-color: var(--md-sys-color-surface-container-high);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: var(--md-sys-shape-corner-extra-large);
+  max-width: 400px;
+  width: 100%;
+  padding: 32px 28px;
+  box-shadow: var(--md-sys-elevation-3);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  position: relative;
 }
 
-/* ==========================================================================
-   15. NOTIFICATIONS & TOASTS
-   ========================================================================== */
+.receipt-center {
+  text-align: center;
+}
 
+.receipt-brand {
+  font-family: var(--md-sys-typescale-brand-font);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--md-sys-color-on-surface);
+}
+
+.receipt-sub {
+  font-size: 11px;
+  color: var(--md-sys-color-on-surface-variant);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 500;
+}
+
+.receipt-token-box {
+  background-color: var(--md-sys-color-surface-container-lowest);
+  border: 1.5px dashed var(--md-sys-color-outline);
+  border-radius: var(--md-sys-shape-corner-large);
+  padding: 16px;
+  text-align: center;
+}
+
+.receipt-token-num {
+  font-family: var(--md-sys-typescale-mono-font);
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--md-sys-color-primary);
+}
+
+.receipt-lines {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border-top: 1px solid var(--md-sys-color-outline-variant);
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  padding: 12px 0;
+  font-size: 13px;
+}
+
+.receipt-row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.receipt-total-row {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--md-sys-color-on-surface);
+}
+
+/* Star Rating in M3 */
+.stars {
+  display: flex;
+  gap: 8px;
+  margin: 8px 0;
+}
+
+.star {
+  font-size: 26px;
+  background: transparent;
+  border: none;
+  color: var(--md-sys-color-outline-variant);
+  cursor: pointer;
+  transition: color var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-standard);
+  padding: 0;
+}
+
+.star.on {
+  color: var(--md-sys-color-primary);
+}
+
+/* M3 Snackbar / Toast Component */
 .toast-wrap {
   position: fixed;
-  bottom: 20px;
-  right: 20px;
+  bottom: 24px;
+  right: 24px;
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -1662,21 +2417,25 @@ textarea:focus {
 }
 
 .toast {
-  background: var(--ink);
-  color: var(--bg);
-  padding: 11px 16px;
-  border-radius: 9px;
-  font-size: 12.5px;
-  font-weight: 600;
-  box-shadow: var(--shadow);
-  animation: toastIn 0.25s ease, toastOut 0.25s ease 2.2s forwards;
-  max-width: 280px;
+  background-color: var(--md-sys-color-on-surface);
+  color: var(--md-sys-color-surface);
+  padding: 12px 18px;
+  border-radius: var(--md-sys-shape-corner-small);
+  font-size: 13px;
+  font-weight: 500;
+  box-shadow: var(--md-sys-elevation-2);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  animation: toastIn 0.25s var(--md-sys-motion-easing-standard),
+             toastOut 0.25s var(--md-sys-motion-easing-standard) 2.2s forwards;
+  max-width: 320px;
 }
 
 @keyframes toastIn {
   from {
     opacity: 0;
-    transform: translateY(8px);
+    transform: translateY(12px);
   }
   to {
     opacity: 1;
@@ -1687,6 +2446,52 @@ textarea:focus {
 @keyframes toastOut {
   to {
     opacity: 0;
-    transform: translateY(-4px);
+    transform: translateY(-8px);
   }
+}
+
+/* ==========================================================================
+   21. EMPTY STATES & PAGES
+   ========================================================================== */
+
+.page {
+  display: none;
+}
+
+.page.active {
+  display: block;
+  animation: fadeIn 0.2s var(--md-sys-motion-easing-standard);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.empty-state {
+  text-align: center;
+  padding: 40px 16px;
+  color: var(--md-sys-color-on-surface-variant);
+  background-color: var(--md-sys-color-surface-container-low);
+  border: 1px dashed var(--md-sys-color-outline-variant);
+  border-radius: var(--md-sys-shape-corner-large);
+}
+
+.empty-state .em {
+  font-size: 36px;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.empty-state strong {
+  color: var(--md-sys-color-on-surface);
+  font-size: 14.5px;
 }
