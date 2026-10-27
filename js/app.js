@@ -1,6 +1,6 @@
 /**
  * InvenTrack — Campus Food & Cafe Inventory Platform
- * Core Application Architecture & Schema-Driven State Engine
+ * Material Design 3 (Material You / M3) Architecture
  * 
  * Supports 4 Unified Roles:
  * 1. Student (Live ordering, token tracking, spending analytics, feedback)
@@ -27,20 +27,20 @@ const DATA_INJECTION_SLOT = {
 
 /**
  * Toggleable Demo Fixture for Campus Dining.
- * Can be loaded with 1-click via the Dev Fixture Bar or empty-state buttons.
+ * Material Symbols and food catalog.
  */
 const CAMPUS_DEMO_FIXTURE = {
   menuItems: [
-    { id: 'item-1', name: 'Chicken Dum Biryani', emoji: '🍲', price: 185, cat: 'Mains', counter: 'Counter 1 (Hot Meals)', stock: 25, lowThreshold: 8, restockTime: '15 min' },
-    { id: 'item-2', name: 'Hyderabadi Veg Biryani', emoji: '🍚', price: 150, cat: 'Mains', counter: 'Counter 1 (Hot Meals)', stock: 18, lowThreshold: 5, restockTime: '20 min' },
-    { id: 'item-3', name: 'Ghee Podi Masala Dosa', emoji: '🧇', price: 90, cat: 'Mains', counter: 'Counter 1 (Hot Meals)', stock: 4, lowThreshold: 6, restockTime: '10 min' },
-    { id: 'item-4', name: 'Crispy Veg Patty Burger', emoji: '🍔', price: 70, cat: 'Snacks', counter: 'Counter 2 (Quick Bites)', stock: 22, lowThreshold: 5, restockTime: '12 min' },
-    { id: 'item-5', name: 'Grilled Cheese Sandwich', emoji: '🥪', price: 60, cat: 'Snacks', counter: 'Counter 2 (Quick Bites)', stock: 3, lowThreshold: 5, restockTime: '8 min' },
-    { id: 'item-6', name: 'Wood-Fired Pizza Slice', emoji: '🍕', price: 120, cat: 'Snacks', counter: 'Counter 2 (Quick Bites)', stock: 0, lowThreshold: 4, restockTime: '25 min' },
-    { id: 'item-7', name: 'Peri-Peri Salted Fries', emoji: '🍟', price: 55, cat: 'Snacks', counter: 'Counter 2 (Quick Bites)', stock: 30, lowThreshold: 8, restockTime: '5 min' },
-    { id: 'item-8', name: 'Artisan Cold Coffee', emoji: '🥤', price: 45, cat: 'Beverages', counter: 'Counter 3 (Cafe & Drinks)', stock: 35, lowThreshold: 10, restockTime: '5 min' },
-    { id: 'item-9', name: 'Spiced Masala Buttermilk', emoji: '🥛', price: 25, cat: 'Beverages', counter: 'Counter 3 (Cafe & Drinks)', stock: 40, lowThreshold: 10, restockTime: '5 min' },
-    { id: 'item-10', name: 'Warm Gulab Jamun (2 pcs)', emoji: '🍮', price: 30, cat: 'Desserts', counter: 'Counter 3 (Cafe & Drinks)', stock: 14, lowThreshold: 5, restockTime: '15 min' }
+    { id: 'item-1', name: 'Chicken Dum Biryani', emoji: 'restaurant', price: 185, cat: 'Mains', counter: 'Counter 1 (Hot Meals)', stock: 25, lowThreshold: 8, restockTime: '15 min' },
+    { id: 'item-2', name: 'Hyderabadi Veg Biryani', emoji: 'rice_bowl', price: 150, cat: 'Mains', counter: 'Counter 1 (Hot Meals)', stock: 18, lowThreshold: 5, restockTime: '20 min' },
+    { id: 'item-3', name: 'Ghee Podi Masala Dosa', emoji: 'breakfast_dining', price: 90, cat: 'Mains', counter: 'Counter 1 (Hot Meals)', stock: 4, lowThreshold: 6, restockTime: '10 min' },
+    { id: 'item-4', name: 'Crispy Veg Patty Burger', emoji: 'lunch_dining', price: 70, cat: 'Snacks', counter: 'Counter 2 (Quick Bites)', stock: 22, lowThreshold: 5, restockTime: '12 min' },
+    { id: 'item-5', name: 'Grilled Cheese Sandwich', emoji: 'bakery_dining', price: 60, cat: 'Snacks', counter: 'Counter 2 (Quick Bites)', stock: 3, lowThreshold: 5, restockTime: '8 min' },
+    { id: 'item-6', name: 'Wood-Fired Pizza Slice', emoji: 'local_pizza', price: 120, cat: 'Snacks', counter: 'Counter 2 (Quick Bites)', stock: 0, lowThreshold: 4, restockTime: '25 min' },
+    { id: 'item-7', name: 'Peri-Peri Salted Fries', emoji: 'fastfood', price: 55, cat: 'Snacks', counter: 'Counter 2 (Quick Bites)', stock: 30, lowThreshold: 8, restockTime: '5 min' },
+    { id: 'item-8', name: 'Artisan Cold Coffee', emoji: 'local_cafe', price: 45, cat: 'Beverages', counter: 'Counter 3 (Cafe & Drinks)', stock: 35, lowThreshold: 10, restockTime: '5 min' },
+    { id: 'item-9', name: 'Spiced Masala Buttermilk', emoji: 'emoji_food_beverage', price: 25, cat: 'Beverages', counter: 'Counter 3 (Cafe & Drinks)', stock: 40, lowThreshold: 10, restockTime: '5 min' },
+    { id: 'item-10', name: 'Warm Gulab Jamun (2 pcs)', emoji: 'icecream', price: 30, cat: 'Desserts', counter: 'Counter 3 (Cafe & Drinks)', stock: 14, lowThreshold: 5, restockTime: '15 min' }
   ],
   orders: [
     {
@@ -132,7 +132,7 @@ const CAMPUS_DEMO_FIXTURE = {
 // 2. REACTIVE STATE ENGINE & LOCAL STORAGE ADAPTER
 // =========================================================================
 
-const STORAGE_KEY = 'inventrack_state_v2';
+const STORAGE_KEY = 'inventrack_m3_state';
 const stages = ['Placed', 'Preparing', 'Ready', 'Picked up'];
 
 class InvenTrackStore {
@@ -142,7 +142,6 @@ class InvenTrackStore {
   }
 
   loadInitialState() {
-    // 1. Try local storage
     const saved = localStorage.getItem(STORAGE_KEY);
     if (saved) {
       try {
@@ -164,11 +163,10 @@ class InvenTrackStore {
           counterFilter: 'All'
         };
       } catch (e) {
-        console.warn('Failed to parse localStorage, resetting to injection slot', e);
+        console.warn('Failed to parse localStorage', e);
       }
     }
 
-    // 2. Fallback to DATA_INJECTION_SLOT
     return {
       menuItems: [...DATA_INJECTION_SLOT.menuItems],
       orders: [...DATA_INJECTION_SLOT.orders],
@@ -269,18 +267,18 @@ class InvenTrackStore {
     this.save();
   }
 
-  // Stock Adjustment (Directly reactive across all roles)
+  // Stock Adjustment
   adjustStock(itemId, delta) {
     const item = this.state.menuItems.find((m) => m.id === itemId);
     if (!item) return;
     const oldStock = item.stock;
     item.stock = Math.max(0, item.stock + delta);
     if (item.stock === 0 && oldStock > 0) {
-      toast(`⚠️ "${item.name}" is now OUT OF STOCK`);
+      toast(`⚠️ "${item.name}" is now OUT OF STOCK`, 'warning');
     } else if (item.stock > 0 && oldStock === 0) {
-      toast(`🟢 "${item.name}" is RESTOCKED (${item.stock} available)`);
+      toast(`🟢 "${item.name}" is RESTOCKED (${item.stock} available)`, 'check_circle');
     } else {
-      toast(`Stock updated: ${item.name} (${item.stock})`);
+      toast(`Stock updated: ${item.name} (${item.stock})`, 'inventory');
     }
     this.save();
   }
@@ -289,7 +287,7 @@ class InvenTrackStore {
     const item = this.state.menuItems.find((m) => m.id === itemId);
     if (!item) return;
     item.stock = 0;
-    toast(`🔴 Marked "${item.name}" as Out of Stock`);
+    toast(`🔴 Marked "${item.name}" as Out of Stock`, 'cancel');
     this.save();
   }
 
@@ -297,16 +295,16 @@ class InvenTrackStore {
   addToCart(itemId) {
     const item = this.state.menuItems.find((m) => m.id === itemId);
     if (!item || item.stock <= 0) {
-      toast('Item is currently out of stock');
+      toast('Item is currently out of stock', 'cancel');
       return;
     }
     const currentQty = this.state.cart[itemId] || 0;
     if (currentQty >= item.stock) {
-      toast(`Only ${item.stock} servings available in kitchen`);
+      toast(`Only ${item.stock} servings available in kitchen`, 'schedule');
       return;
     }
     this.state.cart[itemId] = currentQty + 1;
-    toast(`Added ${item.name} to cart`);
+    toast(`Added ${item.name} to cart`, 'shopping_cart');
     this.save();
   }
 
@@ -318,7 +316,7 @@ class InvenTrackStore {
     if (next <= 0) {
       delete this.state.cart[itemId];
     } else if (next > item.stock) {
-      toast(`Only ${item.stock} available in stock`);
+      toast(`Only ${item.stock} available in stock`, 'schedule');
       return;
     } else {
       this.state.cart[itemId] = next;
@@ -335,11 +333,11 @@ class InvenTrackStore {
   addToShopperCart(itemId) {
     const item = this.state.menuItems.find((m) => m.id === itemId);
     if (!item || item.stock <= 0) {
-      toast('Item is out of stock');
+      toast('Item is out of stock', 'cancel');
       return;
     }
     this.state.shopperCart[itemId] = (this.state.shopperCart[itemId] || 0) + 1;
-    toast(`Added ${item.name} to Express Cart`);
+    toast(`Added ${item.name} to Express Cart`, 'shopping_bag');
     this.save();
   }
 
@@ -354,11 +352,11 @@ class InvenTrackStore {
     this.save();
   }
 
-  // POS operations (Cashier)
+  // POS operations
   addToPosCart(itemId) {
     const item = this.state.menuItems.find((m) => m.id === itemId);
     if (!item || item.stock <= 0) {
-      toast('Item out of stock in kitchen');
+      toast('Item out of stock in kitchen', 'cancel');
       return;
     }
     this.state.posCart[itemId] = (this.state.posCart[itemId] || 0) + 1;
@@ -386,16 +384,14 @@ class InvenTrackStore {
     const itemEntries = Object.entries(itemsMap);
     if (!itemEntries.length) return null;
 
-    // Verify and decrement stock
     for (const [id, qty] of itemEntries) {
       const item = this.state.menuItems.find((m) => m.id === id);
       if (!item || item.stock < qty) {
-        toast(`Insufficient stock for ${item ? item.name : 'item'}`);
+        toast(`Insufficient stock for ${item ? item.name : 'item'}`, 'cancel');
         return null;
       }
     }
 
-    // Decrement stock
     for (const [id, qty] of itemEntries) {
       const item = this.state.menuItems.find((m) => m.id === id);
       if (item) item.stock = Math.max(0, item.stock - qty);
@@ -446,7 +442,7 @@ class InvenTrackStore {
     if (order.stageIndex < stages.length - 1) {
       order.stageIndex++;
       order.status = stages[order.stageIndex];
-      toast(`Order ${order.token} advanced to "${order.status}"`);
+      toast(`Order ${order.token} advanced to "${order.status}"`, 'check_circle');
       this.save();
     }
   }
@@ -463,7 +459,7 @@ class InvenTrackStore {
       date: 'Just now'
     };
     this.state.feedbacks.unshift(newFb);
-    toast('Thanks — feedback recorded!');
+    toast('Thanks — feedback recorded!', 'thumb_up');
     this.save();
   }
 
@@ -473,7 +469,7 @@ class InvenTrackStore {
     const newItem = {
       id,
       name: itemData.name || 'New Item',
-      emoji: itemData.emoji || '🍽️',
+      emoji: itemData.emoji || 'restaurant',
       price: Number(itemData.price) || 50,
       cat: itemData.cat || 'Snacks',
       counter: itemData.counter || 'Counter 2 (Quick Bites)',
@@ -482,7 +478,7 @@ class InvenTrackStore {
       restockTime: itemData.restockTime || '15 min'
     };
     this.state.menuItems.push(newItem);
-    toast(`Injected "${newItem.name}" into menu catalog`);
+    toast(`Injected "${newItem.name}" into menu catalog`, 'add_circle');
     this.save();
   }
 }
@@ -497,12 +493,12 @@ const store = new InvenTrackStore();
 const $ = (sel, el = document) => el.querySelector(sel);
 const $$ = (sel, el = document) => Array.from(el.querySelectorAll(sel));
 
-function toast(msg) {
+function toast(msg, icon = 'info') {
   const wrap = $('#toastWrap');
   if (!wrap) return;
   const t = document.createElement('div');
   t.className = 'toast';
-  t.textContent = msg;
+  t.innerHTML = `<span class="material-symbols-outlined" style="font-size:18px;">${icon}</span><span>${msg}</span>`;
   wrap.appendChild(t);
   setTimeout(() => t.remove(), 2500);
 }
@@ -513,18 +509,34 @@ function getItemStatus(item) {
   return 'available';
 }
 
+/**
+ * M3 Assist Chip with Material Symbol
+ */
 function sbHTML(status) {
-  const labels = { available: 'AVAIL', low: 'LOW', out: 'OUT' };
-  return `<span class="status-badge ${status}">${labels[status] || status}</span>`;
+  const meta = {
+    available: { label: 'AVAIL', icon: 'check_circle' },
+    low: { label: 'LOW', icon: 'schedule' },
+    out: { label: 'OUT', icon: 'cancel' }
+  };
+  const config = meta[status] || { label: status, icon: 'info' };
+  return `<span class="status-badge ${status}"><span class="material-symbols-outlined" style="font-size:13px;">${config.icon}</span><span>${config.label}</span></span>`;
 }
 
 function getGaugeColor(status) {
-  return status === 'available' ? 'var(--fresh)' : status === 'low' ? 'var(--low)' : 'var(--alert)';
+  return status === 'available' ? 'var(--md-sys-color-avail)' : status === 'low' ? 'var(--md-sys-color-low)' : 'var(--md-sys-color-out)';
 }
 
 function getGaugeWidth(item) {
   const maxRef = Math.max(40, (item.lowThreshold || 5) * 4);
-  return Math.max(3, Math.min(100, Math.round((item.stock / maxRef) * 100)));
+  return Math.max(4, Math.min(100, Math.round((item.stock / maxRef) * 100)));
+}
+
+function renderItemIcon(emoji) {
+  const isSymbol = /^[a-z_]+$/.test(emoji);
+  if (isSymbol) {
+    return `<span class="material-symbols-outlined" style="font-size:26px;">${emoji}</span>`;
+  }
+  return `<span style="font-size:24px;">${emoji}</span>`;
 }
 
 function initials(name) {
@@ -554,7 +566,7 @@ const roleLabels = {
 function renderShell(state) {
   const { activeRole, activePage } = state;
 
-  // 1. Role Switcher Buttons
+  // 1. Role Switcher Segmented Buttons
   $$('#roleSwitcher .role-btn').forEach((btn) => {
     btn.classList.toggle('active', btn.dataset.role === activeRole);
   });
@@ -591,8 +603,8 @@ function renderShell(state) {
   if (badge && stats) {
     const isDemoLoaded = state.menuItems.length > 0;
     badge.textContent = isDemoLoaded ? 'Active Live State' : 'Empty Schema []';
-    badge.style.background = isDemoLoaded ? 'var(--fresh-bg)' : 'var(--surface)';
-    badge.style.color = isDemoLoaded ? 'var(--fresh)' : 'var(--ink)';
+    badge.style.backgroundColor = isDemoLoaded ? 'var(--md-sys-color-primary-container)' : 'var(--md-sys-color-surface-container-highest)';
+    badge.style.color = isDemoLoaded ? 'var(--md-sys-color-on-primary-container)' : 'var(--md-sys-color-on-surface)';
     const activeCount = state.orders.filter((o) => o.status !== 'Picked up').length;
     stats.textContent = `(${state.menuItems.length} items, ${activeCount} active orders)`;
   }
@@ -660,7 +672,7 @@ function renderStudentTicket(state) {
     if (ticketPaid) ticketPaid.textContent = '₹0';
     if (advanceBtn) {
       advanceBtn.disabled = true;
-      advanceBtn.textContent = 'No active order';
+      advanceBtn.innerHTML = '<span>No active order</span>';
     }
     $$('#stepper .step').forEach((el) => el.classList.remove('done', 'now'));
     return;
@@ -680,7 +692,6 @@ function renderStudentTicket(state) {
   ];
   if (etaPill) etaPill.textContent = etaMap[activeOrder.stageIndex] || 'In progress';
 
-  // Stepper dots
   $$('#stepper .step').forEach((el, i) => {
     el.classList.remove('done', 'now');
     if (i < activeOrder.stageIndex) el.classList.add('done');
@@ -690,22 +701,24 @@ function renderStudentTicket(state) {
   if (advanceBtn) {
     const isDone = activeOrder.stageIndex >= stages.length - 1;
     advanceBtn.disabled = isDone;
-    advanceBtn.textContent = isDone ? 'Picked up ✓' : `Simulate "${stages[activeOrder.stageIndex + 1]}" →`;
+    advanceBtn.innerHTML = isDone 
+      ? '<span class="material-symbols-outlined">check_circle</span><span>Picked up ✓</span>' 
+      : `<span class="material-symbols-outlined">arrow_forward</span><span>Advance "${stages[activeOrder.stageIndex + 1]}"</span>`;
     advanceBtn.dataset.orderId = activeOrder.id;
   }
 }
 
-// Live Counter Strip (Shared Real-time Inventory Component)
+// Live Counter Strip
 function renderCounterStrip(state) {
   const container = $('#counterStrip');
   if (!container) return;
 
   if (!state.menuItems.length) {
     container.innerHTML = `
-      <div class="empty-state" style="padding:24px; width:100%; grid-column:1 / -1; border:1px dashed var(--border); border-radius:10px;">
-        <div class="em">📦</div>
+      <div class="empty-state" style="padding:24px; width:100%; grid-column:1 / -1;">
+        <div class="em"><span class="material-symbols-outlined" style="font-size:36px;">inventory_2</span></div>
         <strong>No counter items available</strong>
-        <div style="font-size:12px; color:var(--muted); margin-top:4px;">
+        <div style="font-size:12px; color:var(--md-sys-color-on-surface-variant); margin-top:4px;">
           Inject records into <code>DATA_INJECTION_SLOT</code> or click 
           <button class="dev-btn primary" style="margin-left:6px;" onclick="store.loadDemoFixture()">Load Sample Data</button>
         </div>
@@ -724,7 +737,7 @@ function renderCounterStrip(state) {
             <span class="counter-name">${it.name}</span>
             ${sbHTML(status)}
           </div>
-          <div class="stock-count">${it.stock} servings left &middot; <span style="color:var(--muted); font-size:10.5px;">${it.restockTime || '15 min'}</span></div>
+          <div class="stock-count">${it.stock} servings left &middot; <span style="color:var(--md-sys-color-on-surface-variant); font-size:11px;">${it.restockTime || '15 min'}</span></div>
           <div class="gauge">
             <span style="width:${getGaugeWidth(it)}%; background:${getGaugeColor(status)}"></span>
           </div>
@@ -734,19 +747,24 @@ function renderCounterStrip(state) {
     .join('');
 }
 
-// Student Menu Grid & Filtering
+// M3 Student Menu Grid with M3 Filter Chips
 function renderStudentMenu(state, searchQuery = '') {
   const grid = $('#menuGrid');
   const filterRow = $('#filterRow');
   if (!grid) return;
 
-  // Categories
   const cats = ['All', ...new Set(state.menuItems.map((m) => m.cat))];
   if (filterRow) {
     filterRow.innerHTML = cats
-      .map(
-        (c) => `<button class="filter-chip ${c === state.activeCat ? 'active' : ''}" data-cat="${c}">${c}</button>`
-      )
+      .map((c) => {
+        const isActive = c === state.activeCat;
+        return `
+          <button class="filter-chip ${isActive ? 'active' : ''}" data-cat="${c}">
+            ${isActive ? '<span class="material-symbols-outlined" style="font-size:16px;">done</span>' : ''}
+            <span>${c}</span>
+          </button>
+        `;
+      })
       .join('');
   }
 
@@ -760,13 +778,12 @@ function renderStudentMenu(state, searchQuery = '') {
     return matchCat && matchCounter && matchQuery;
   });
 
-  // Empty state handling
   if (!items.length) {
     grid.innerHTML = `
       <div class="empty-state" style="padding:48px 20px; grid-column:1 / -1; width:100%;">
-        <div class="em">🔍</div>
+        <div class="em"><span class="material-symbols-outlined" style="font-size:40px;">search</span></div>
         <strong>No menu items found</strong>
-        <div style="font-size:12.5px; color:var(--muted); margin-top:6px; max-width:420px; margin-left:auto; margin-right:auto;">
+        <div style="font-size:12.5px; color:var(--md-sys-color-on-surface-variant); margin-top:6px; max-width:420px; margin-left:auto; margin-right:auto;">
           ${
             state.menuItems.length === 0
               ? 'Catalog is empty. Inject custom items into <code>DATA_INJECTION_SLOT</code> or load the live demo fixture.'
@@ -775,7 +792,7 @@ function renderStudentMenu(state, searchQuery = '') {
         </div>
         ${
           state.menuItems.length === 0
-            ? '<button class="dev-btn primary" style="margin-top:14px;" onclick="store.loadDemoFixture()">⚡ Load Campus Demo Fixture</button>'
+            ? '<button class="dev-btn primary" style="margin-top:14px;" onclick="store.loadDemoFixture()"><span class="material-symbols-outlined" style="font-size:16px;">bolt</span><span>Load Campus Demo Fixture</span></button>'
             : ''
         }
       </div>
@@ -791,11 +808,11 @@ function renderStudentMenu(state, searchQuery = '') {
 
       return `
         <div class="menu-card">
-          <div class="menu-emoji">${it.emoji}</div>
+          <div class="menu-emoji">${renderItemIcon(it.emoji)}</div>
           <div class="menu-info">
             <div class="mn">${it.name}</div>
-            <div class="mc">${it.cat} &middot; <span style="color:var(--muted);">${it.counter || 'Counter 1'}</span></div>
-            <div style="font-size:11px; color:var(--muted); margin-top:2px;">
+            <div class="mc">${it.cat} &middot; <span>${it.counter || 'Counter 1'}</span></div>
+            <div style="font-size:11px; color:var(--md-sys-color-on-surface-variant); margin-top:4px;">
               Stock: <strong>${it.stock}</strong> &middot; Gauge: 
               <span style="color:${getGaugeColor(status)}; font-weight:700;">${status.toUpperCase()}</span>
             </div>
@@ -829,7 +846,7 @@ function renderRecommendations(state) {
     const status = getItemStatus(it);
     return `
       <div class="rec-card">
-        <div class="rec-img">${it.emoji}</div>
+        <div class="rec-img">${renderItemIcon(it.emoji)}</div>
         <div class="rec-body">
           <div class="rec-name">${it.name}</div>
           <div class="rec-tag">${status === 'low' ? 'Only few remaining' : 'Pairs with your usual'}</div>
@@ -845,13 +862,13 @@ function renderRecommendations(state) {
   if (homeRec) {
     homeRec.innerHTML = recItems.length
       ? recItems.map(makeCardHTML).join('')
-      : '<div class="empty-state" style="grid-column:1 / -1;"><div class="em">✨</div>No recommendation fixtures available.</div>';
+      : '<div class="empty-state" style="grid-column:1 / -1;"><div class="em"><span class="material-symbols-outlined">auto_awesome</span></div>No recommendations available.</div>';
   }
 
   if (foryouRec) {
     foryouRec.innerHTML = state.menuItems.length
       ? state.menuItems.slice(0, 8).map(makeCardHTML).join('')
-      : '<div class="empty-state" style="grid-column:1 / -1;"><div class="em">✨</div>Load items to view graph-inspired recommendations.</div>';
+      : '<div class="empty-state" style="grid-column:1 / -1;"><div class="em"><span class="material-symbols-outlined">auto_awesome</span></div>Load items to view graph-inspired recommendations.</div>';
   }
 }
 
@@ -874,9 +891,9 @@ function renderStudentCart(state) {
   if (!itemEntries.length) {
     cartList.innerHTML = `
       <div class="empty-state" style="padding:40px 10px;">
-        <div class="em">🛒</div>
+        <div class="em"><span class="material-symbols-outlined" style="font-size:36px;">shopping_cart</span></div>
         <strong>Your cart is empty</strong>
-        <div style="font-size:12px; color:var(--muted); margin-top:4px;">Add fresh meals and snacks from the live counter.</div>
+        <div style="font-size:12px; color:var(--md-sys-color-on-surface-variant); margin-top:4px;">Add fresh meals and snacks from the live counter.</div>
         <button class="mini-btn" style="margin-top:14px;" data-goto="menu">Browse Live Menu</button>
       </div>
     `;
@@ -897,7 +914,7 @@ function renderStudentCart(state) {
 
       return `
         <div class="cart-line">
-          <div class="menu-emoji">${it.emoji}</div>
+          <div class="menu-emoji" style="width:38px; height:38px; font-size:18px;">${renderItemIcon(it.emoji)}</div>
           <div class="stub-info">
             <div class="t">${it.name}</div>
             <div class="s mono">₹${it.price} each &middot; ₹${lineTotal}</div>
@@ -907,7 +924,9 @@ function renderStudentCart(state) {
             <span>${qty}</span>
             <button data-inc="${id}">+</button>
           </div>
-          <button class="remove-x" data-remove="${id}" title="Remove">✕</button>
+          <button class="remove-x" data-remove="${id}" title="Remove">
+            <span class="material-symbols-outlined" style="font-size:18px;">close</span>
+          </button>
         </div>
       `;
     })
@@ -922,19 +941,20 @@ function renderStudentCart(state) {
   if (checkoutBtn) checkoutBtn.disabled = false;
 }
 
-// Student Orders Page & History
+// Student Orders Page
 function renderOrdersList(state) {
   const homeList = $('#homeOrderList');
   const fullList = $('#ordersFullList');
 
   const makeRowHTML = (o, isFull = false) => {
     const isDone = o.status === 'Picked up';
-    const firstEmoji = o.items && o.items[0] ? '🍽️' : '🧾';
     const summary = o.items ? o.items.map((i) => `${i.qty}× ${i.name}`).join(', ') : 'Campus Meal';
 
     return `
       <div class="stub-list-item">
-        <div class="stub-icon">${firstEmoji}</div>
+        <div class="stub-icon">
+          <span class="material-symbols-outlined">${isDone ? 'check_circle' : 'receipt_long'}</span>
+        </div>
         <div class="stub-info">
           <div class="t">${summary}</div>
           <div class="s">${o.token} &middot; ${o.counter || 'Counter'} &middot; ${new Date(o.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
@@ -955,24 +975,24 @@ function renderOrdersList(state) {
   if (homeList) {
     homeList.innerHTML = state.orders.length
       ? state.orders.slice(0, 4).map((o) => makeRowHTML(o, false)).join('')
-      : '<div class="empty-state" style="padding:24px 0;"><div class="em">📋</div>No past orders yet.</div>';
+      : '<div class="empty-state" style="padding:24px 0;"><div class="em"><span class="material-symbols-outlined">receipt</span></div>No past orders yet.</div>';
   }
 
   if (fullList) {
     fullList.innerHTML = state.orders.length
       ? state.orders.map((o) => makeRowHTML(o, true)).join('')
-      : '<div class="empty-state" style="padding:48px 0;"><div class="em">📋</div>No orders placed yet.<br><button class="mini-btn" style="margin-top:12px;" data-goto="menu">Browse menu</button></div>';
+      : '<div class="empty-state" style="padding:48px 0;"><div class="em"><span class="material-symbols-outlined">receipt</span></div>No orders placed yet.<br><button class="mini-btn" style="margin-top:12px;" data-goto="menu">Browse menu</button></div>';
   }
 }
 
-// Dynamic Spending Bars (Mon-Sun breakdown calculated from placed orders)
+// Spending Bars
 function renderSpendingBars(state) {
   const days = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'];
   const dayTotals = { MON: 0, TUE: 0, WED: 0, THU: 0, FRI: 0, SAT: 0, SUN: 0 };
 
   state.orders.forEach((o) => {
     const d = new Date(o.createdAt);
-    const dayIndex = (d.getDay() + 6) % 7; // Convert Sunday=0 to Monday=0
+    const dayIndex = (d.getDay() + 6) % 7;
     const dayName = days[dayIndex];
     if (dayTotals[dayName] !== undefined) {
       dayTotals[dayName] += o.total || 0;
@@ -1031,9 +1051,15 @@ function renderShopperStore(state) {
   const cats = ['All', ...new Set(state.menuItems.map((m) => m.cat))];
   if (filterRow) {
     filterRow.innerHTML = cats
-      .map(
-        (c) => `<button class="filter-chip ${c === state.activeCat ? 'active' : ''}" data-shopper-cat="${c}">${c}</button>`
-      )
+      .map((c) => {
+        const isActive = c === state.activeCat;
+        return `
+          <button class="filter-chip ${isActive ? 'active' : ''}" data-shopper-cat="${c}">
+            ${isActive ? '<span class="material-symbols-outlined" style="font-size:16px;">done</span>' : ''}
+            <span>${c}</span>
+          </button>
+        `;
+      })
       .join('');
   }
 
@@ -1044,9 +1070,9 @@ function renderShopperStore(state) {
   if (!items.length) {
     grid.innerHTML = `
       <div class="empty-state" style="padding:40px; grid-column:1 / -1;">
-        <div class="em">🛒</div>
+        <div class="em"><span class="material-symbols-outlined" style="font-size:36px;">storefront</span></div>
         <strong>No fast-track items available</strong>
-        <div style="font-size:12px; color:var(--muted); margin-top:4px;">Load campus demo data or add items to catalog.</div>
+        <div style="font-size:12px; color:var(--md-sys-color-on-surface-variant); margin-top:4px;">Load campus demo data or add items to catalog.</div>
         <button class="dev-btn primary" style="margin-top:12px;" onclick="store.loadDemoFixture()">Load Sample Data</button>
       </div>
     `;
@@ -1059,7 +1085,7 @@ function renderShopperStore(state) {
       const isOut = status === 'out';
       return `
         <div class="menu-card">
-          <div class="menu-emoji">${it.emoji}</div>
+          <div class="menu-emoji">${renderItemIcon(it.emoji)}</div>
           <div class="menu-info">
             <div class="mn">${it.name}</div>
             <div class="mc">${it.cat} &middot; ${it.counter}</div>
@@ -1096,9 +1122,9 @@ function renderShopperCart(state) {
   if (!entries.length) {
     list.innerHTML = `
       <div class="empty-state" style="padding:30px;">
-        <div class="em">⚡</div>
+        <div class="em"><span class="material-symbols-outlined" style="font-size:36px;">shopping_bag</span></div>
         <strong>Express Cart is Empty</strong>
-        <div style="font-size:12px; color:var(--muted); margin-top:4px;">Tap "+ Fast Add" on any item in the store.</div>
+        <div style="font-size:12px; color:var(--md-sys-color-on-surface-variant); margin-top:4px;">Tap "+ Fast Add" on any item in the store.</div>
       </div>
     `;
     if (sumSub) sumSub.textContent = '₹0';
@@ -1117,7 +1143,7 @@ function renderShopperCart(state) {
       subtotal += lineTotal;
       return `
         <div class="cart-line">
-          <div class="menu-emoji">${it.emoji}</div>
+          <div class="menu-emoji" style="width:36px; height:36px;">${renderItemIcon(it.emoji)}</div>
           <div class="stub-info">
             <div class="t">${it.name}</div>
             <div class="s mono">₹${it.price} each</div>
@@ -1148,9 +1174,9 @@ function renderShopperReceipts(state) {
   if (!shopperOrders.length) {
     list.innerHTML = `
       <div class="empty-state" style="padding:40px;">
-        <div class="em">🧾</div>
+        <div class="em"><span class="material-symbols-outlined" style="font-size:36px;">confirmation_number</span></div>
         <strong>No express receipts found</strong>
-        <div style="font-size:12px; color:var(--muted); margin-top:4px;">Completed fast-track orders will display here.</div>
+        <div style="font-size:12px; color:var(--md-sys-color-on-surface-variant); margin-top:4px;">Completed fast-track orders will display here.</div>
       </div>
     `;
     return;
@@ -1159,7 +1185,9 @@ function renderShopperReceipts(state) {
   list.innerHTML = shopperOrders
     .map((o) => `
       <div class="stub-list-item">
-        <div class="stub-icon">🎟️</div>
+        <div class="stub-icon">
+          <span class="material-symbols-outlined">confirmation_number</span>
+        </div>
         <div class="stub-info">
           <div class="t">${o.token} &middot; ${o.customerName}</div>
           <div class="s">${o.items.map((i) => `${i.qty}× ${i.name}`).join(', ')}</div>
@@ -1180,7 +1208,6 @@ function renderShopperReceipts(state) {
 // 7. KITCHEN & STAFF MODULE RENDERING
 // =========================================================================
 
-// Live Kanban Ticket Board
 function renderKitchenKanban(state) {
   const lists = {
     0: $('#kanbanListPlaced'),
@@ -1218,7 +1245,7 @@ function renderKitchenKanban(state) {
 
     if (!items.length) {
       listEl.innerHTML = `
-        <div style="padding:30px 10px; text-align:center; color:var(--muted); font-size:11.5px;">
+        <div style="padding:32px 10px; text-align:center; color:var(--md-sys-color-on-surface-variant); font-size:12px;">
           No tickets in this stage
         </div>
       `;
@@ -1248,12 +1275,13 @@ function renderKitchenKanban(state) {
               <span class="kanban-token">${o.token}</span>
               <span class="kanban-time">${timeStr}</span>
             </div>
-            <div class="kanban-cust">👤 ${o.customerName} &middot; <span style="font-weight:400; color:var(--muted);">${o.counter}</span></div>
+            <div class="kanban-cust">👤 ${o.customerName} &middot; <span style="font-weight:400; color:var(--md-sys-color-on-surface-variant);">${o.counter}</span></div>
             <div class="kanban-items">${itemsList}</div>
             <div class="kanban-card-footer">
               <span class="kanban-total">₹${o.total}</span>
               <button class="kanban-advance-btn" data-kitchen-advance="${o.id}" ${isCompleted ? 'disabled' : ''}>
-                ${isCompleted ? 'Picked up ✓' : `Mark "${nextStageName}" →`}
+                <span class="material-symbols-outlined" style="font-size:15px;">${isCompleted ? 'check' : 'arrow_forward'}</span>
+                <span>${isCompleted ? 'Picked up ✓' : `Mark "${nextStageName}"`}</span>
               </button>
             </div>
           </div>
@@ -1263,7 +1291,6 @@ function renderKitchenKanban(state) {
   });
 }
 
-// Kitchen Real-Time Stock Adjuster Table
 function renderKitchenStock(state) {
   const tbody = $('#kitchenStockTbody');
   if (!tbody) return;
@@ -1271,7 +1298,7 @@ function renderKitchenStock(state) {
   if (!state.menuItems.length) {
     tbody.innerHTML = `
       <tr>
-        <td colspan="7" style="text-align:center; padding:32px; color:var(--muted);">
+        <td colspan="7" style="text-align:center; padding:32px; color:var(--md-sys-color-on-surface-variant);">
           No items registered in catalog. Click 
           <button class="dev-btn primary" style="margin-left:6px;" onclick="store.loadDemoFixture()">Load Sample Data</button>
         </td>
@@ -1286,11 +1313,13 @@ function renderKitchenStock(state) {
       return `
         <tr>
           <td>
-            <div style="display:flex; align-items:center; gap:8px;">
-              <span style="font-size:20px;">${it.emoji}</span>
+            <div style="display:flex; align-items:center; gap:10px;">
+              <div style="width:32px; height:32px; display:flex; align-items:center; justify-content:center; background:var(--md-sys-color-surface-container-high); border-radius:8px;">
+                ${renderItemIcon(it.emoji)}
+              </div>
               <div>
                 <strong>${it.name}</strong>
-                <div style="font-size:11px; color:var(--muted);">${it.cat} &middot; ₹${it.price}</div>
+                <div style="font-size:11px; color:var(--md-sys-color-on-surface-variant);">${it.cat} &middot; ₹${it.price}</div>
               </div>
             </div>
           </td>
@@ -1321,7 +1350,6 @@ function renderKitchenStock(state) {
     .join('');
 }
 
-// Counter POS / Rapid Billing Register
 function renderKitchenPos(state) {
   const grid = $('#posMenuGrid');
   const lines = $('#posCartLines');
@@ -1342,20 +1370,20 @@ function renderKitchenPos(state) {
             const isOut = it.stock <= 0;
             return `
               <button class="pos-item-btn" data-pos-add="${it.id}" ${isOut ? 'disabled' : ''}>
-                <span class="pos-item-emoji">${it.emoji}</span>
+                <span class="pos-item-emoji">${renderItemIcon(it.emoji)}</span>
                 <span class="pos-item-name">${it.name}</span>
                 <span class="pos-item-price">₹${it.price} (${it.stock} left)</span>
               </button>
             `;
           })
           .join('')
-      : '<div style="grid-column:1 / -1; padding:20px; color:var(--muted); text-align:center;">No items match POS search.</div>';
+      : '<div style="grid-column:1 / -1; padding:20px; color:var(--md-sys-color-on-surface-variant); text-align:center;">No items match POS search.</div>';
   }
 
   if (lines) {
     const entries = Object.entries(state.posCart);
     if (!entries.length) {
-      lines.innerHTML = '<div style="padding:16px 0; text-align:center; color:var(--muted); font-size:12px;">Register bill empty. Tap items to add.</div>';
+      lines.innerHTML = '<div style="padding:16px 0; text-align:center; color:var(--md-sys-color-on-surface-variant); font-size:12px;">Register bill empty. Tap items to add.</div>';
       if (subEl) subEl.textContent = '₹0';
       if (packEl) packEl.textContent = '₹0';
       if (totEl) totEl.textContent = '₹0';
@@ -1371,12 +1399,12 @@ function renderKitchenPos(state) {
         const lineTotal = it.price * qty;
         subtotal += lineTotal;
         return `
-          <div style="display:flex; justify-content:space-between; align-items:center; padding:4px 0; font-size:12.5px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; padding:6px 0; font-size:12.5px;">
             <div>
               <strong>${it.name}</strong>
-              <div style="font-size:10.5px; color:var(--muted);">₹${it.price} × ${qty}</div>
+              <div style="font-size:11px; color:var(--md-sys-color-on-surface-variant);">₹${it.price} × ${qty}</div>
             </div>
-            <div style="display:flex; align-items:center; gap:6px;">
+            <div style="display:flex; align-items:center; gap:8px;">
               <span class="mono" style="font-weight:700;">₹${lineTotal}</span>
               <div class="inline-stock-ctrl">
                 <button data-pos-dec="${id}">−</button>
@@ -1398,7 +1426,6 @@ function renderKitchenPos(state) {
   }
 }
 
-// Kitchen Incoming Complaint Feed
 function renderKitchenFeedback(state) {
   const feed = $('#kitchenFeedbackList');
   if (!feed) return;
@@ -1406,9 +1433,9 @@ function renderKitchenFeedback(state) {
   if (!state.feedbacks.length) {
     feed.innerHTML = `
       <div class="empty-state" style="padding:40px;">
-        <div class="em">💬</div>
+        <div class="em"><span class="material-symbols-outlined" style="font-size:36px;">feedback</span></div>
         <strong>No complaints or feedback logged</strong>
-        <div style="font-size:12px; color:var(--muted); margin-top:4px;">Incoming student ratings will stream here in real time.</div>
+        <div style="font-size:12px; color:var(--md-sys-color-on-surface-variant); margin-top:4px;">Incoming student ratings will stream here in real time.</div>
       </div>
     `;
     return;
@@ -1417,16 +1444,18 @@ function renderKitchenFeedback(state) {
   feed.innerHTML = state.feedbacks
     .map((fb) => `
       <div class="stub-list-item">
-        <div class="stub-icon">⭐</div>
+        <div class="stub-icon">
+          <span class="material-symbols-outlined" style="color:var(--md-sys-color-primary);">star</span>
+        </div>
         <div class="stub-info">
           <div class="t">
             <strong>${fb.studentName}</strong> &middot; 
-            <span style="color:var(--accent); font-weight:700;">${'★'.repeat(fb.rating)}</span> 
+            <span style="color:var(--md-sys-color-primary); font-weight:700;">${'★'.repeat(fb.rating)}</span> 
             <span class="dev-fixture-badge" style="margin-left:6px;">${fb.category}</span>
           </div>
-          <div class="s" style="margin-top:3px; font-size:12px; color:var(--ink);">${fb.comment}</div>
+          <div class="s" style="margin-top:4px; font-size:12.5px; color:var(--md-sys-color-on-surface);">${fb.comment}</div>
         </div>
-        <div class="mono" style="font-size:11px; color:var(--muted); white-space:nowrap;">${fb.date}</div>
+        <div class="mono" style="font-size:11px; color:var(--md-sys-color-on-surface-variant); white-space:nowrap;">${fb.date}</div>
       </div>
     `)
     .join('');
@@ -1437,34 +1466,29 @@ function renderKitchenFeedback(state) {
 // =========================================================================
 
 function renderAdminOverview(state) {
-  // Metric 1: Total Revenue
   const rev = state.orders.reduce((sum, o) => sum + (o.total || 0), 0);
   const revEl = $('#metricTotalRevenue');
   const revSub = $('#metricTotalRevenueSub');
   if (revEl) revEl.textContent = `₹${rev}`;
   if (revSub) revSub.textContent = `Across ${state.orders.length} total orders`;
 
-  // Metric 2: Total Order Volume
   const volEl = $('#metricOrderVolume');
   const volSub = $('#metricOrderVolumeSub');
   if (volEl) volEl.textContent = state.orders.length;
   if (volSub) volSub.textContent = `${state.orders.filter((o) => o.status === 'Picked up').length} completed`;
 
-  // Metric 3: Critical Low Stock Count
   const lowCount = state.menuItems.filter((m) => m.stock <= (m.lowThreshold || 5)).length;
   const lowEl = $('#metricLowStockCount');
   const lowSub = $('#metricLowStockSub');
   if (lowEl) lowEl.textContent = lowCount;
   if (lowSub) lowSub.textContent = `${state.menuItems.filter((m) => m.stock === 0).length} out of stock`;
 
-  // Metric 4: Active In-Flight Orders
   const inFlight = state.orders.filter((o) => o.status === 'Placed' || o.status === 'Preparing').length;
   const infEl = $('#metricActiveOrders');
   const infSub = $('#metricActiveOrdersSub');
   if (infEl) infEl.textContent = inFlight;
   if (infSub) infSub.textContent = 'Active in kitchen queue';
 
-  // Demand Matrix: Peak Order Hours Distribution
   const hours = [
     { label: '8-10', name: 'Breakfast', count: 0 },
     { label: '10-12', name: 'Brunch', count: 0 },
@@ -1474,7 +1498,6 @@ function renderAdminOverview(state) {
     { label: '18-21', name: 'Dinner', count: 0 }
   ];
 
-  // Map orders to time slot
   state.orders.forEach((o) => {
     const hr = new Date(o.createdAt).getHours();
     if (hr >= 8 && hr < 10) hours[0].count++;
@@ -1483,7 +1506,7 @@ function renderAdminOverview(state) {
     else if (hr >= 14 && hr < 16) hours[3].count++;
     else if (hr >= 16 && hr < 18) hours[4].count++;
     else if (hr >= 18 && hr <= 21) hours[5].count++;
-    else hours[2].count++; // Default to lunch rush for demo items
+    else hours[2].count++;
   });
 
   const maxHour = Math.max(...hours.map((h) => h.count), 1);
@@ -1503,7 +1526,6 @@ function renderAdminOverview(state) {
       .join('');
   }
 
-  // Top Re-Order Velocity Ranking
   const velocityEl = $('#adminVelocityList');
   if (velocityEl) {
     const salesMap = {};
@@ -1518,7 +1540,7 @@ function renderAdminOverview(state) {
       .slice(0, 5);
 
     if (!sortedVelocity.length) {
-      velocityEl.innerHTML = '<div style="padding:20px; color:var(--muted); text-align:center; font-size:12px;">No order velocity recorded yet.</div>';
+      velocityEl.innerHTML = '<div style="padding:20px; color:var(--md-sys-color-on-surface-variant); text-align:center; font-size:12px;">No order velocity recorded yet.</div>';
     } else {
       const topQty = sortedVelocity[0][1];
       velocityEl.innerHTML = sortedVelocity
@@ -1539,7 +1561,6 @@ function renderAdminOverview(state) {
   }
 }
 
-// Admin Audit Table & CSV Export
 function renderAdminAudit(state) {
   const tbody = $('#adminAuditTbody');
   if (!tbody) return;
@@ -1547,7 +1568,7 @@ function renderAdminAudit(state) {
   if (!state.menuItems.length) {
     tbody.innerHTML = `
       <tr>
-        <td colspan="8" style="text-align:center; padding:32px; color:var(--muted);">
+        <td colspan="8" style="text-align:center; padding:32px; color:var(--md-sys-color-on-surface-variant);">
           Catalog is empty. 
           <button class="dev-btn primary" style="margin-left:6px;" onclick="store.loadDemoFixture()">Load Sample Data</button>
         </td>
@@ -1564,7 +1585,7 @@ function renderAdminAudit(state) {
         <tr>
           <td>
             <strong>${it.name}</strong>
-            <div class="mono" style="font-size:10.5px; color:var(--muted);">${it.id}</div>
+            <div class="mono" style="font-size:11px; color:var(--md-sys-color-on-surface-variant);">${it.id}</div>
           </td>
           <td>${it.cat}</td>
           <td>${it.counter}</td>
@@ -1572,7 +1593,7 @@ function renderAdminAudit(state) {
           <td class="mono">${it.lowThreshold || 5}</td>
           <td>${sbHTML(status)}</td>
           <td>
-            <span style="color:${isCritical ? 'var(--alert)' : 'var(--fresh)'}; font-weight:600; font-size:12px;">
+            <span style="color:${isCritical ? 'var(--md-sys-color-low)' : 'var(--md-sys-color-avail)'}; font-weight:600; font-size:12px;">
               ${isCritical ? '⚠️ Urgent Restock' : '✓ Normal'}
             </span>
           </td>
@@ -1587,7 +1608,7 @@ function renderAdminAudit(state) {
 
 function exportAuditCsv(state) {
   if (!state.menuItems.length) {
-    toast('No inventory items to export.');
+    toast('No inventory items to export.', 'warning');
     return;
   }
 
@@ -1612,7 +1633,7 @@ function exportAuditCsv(state) {
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
-  toast('Audit CSV exported successfully!');
+  toast('Audit CSV exported successfully!', 'download');
 }
 
 // =========================================================================
@@ -1641,7 +1662,7 @@ function showReceiptModal(order) {
       )
       .join('') +
       `
-        <div class="receipt-row" style="color:var(--muted); font-size:11.5px;">
+        <div class="receipt-row" style="color:var(--md-sys-color-on-surface-variant); font-size:12px;">
           <span>Packaging Fee</span>
           <span class="mono">₹${order.packing || 10}</span>
         </div>
@@ -1669,11 +1690,11 @@ function setupEventHandlers() {
       if (!btn) return;
       const newRole = btn.dataset.role;
       store.setRole(newRole);
-      toast(`Switched to ${roleLabels[newRole]}`);
+      toast(`Switched to ${roleLabels[newRole]}`, 'sync');
     });
   }
 
-  // 2. Navigation item click
+  // 2. Navigation items
   document.addEventListener('click', (e) => {
     const navBtn = e.target.closest('.nav-item[data-page]');
     if (navBtn) {
@@ -1692,7 +1713,7 @@ function setupEventHandlers() {
     }
   });
 
-  // 3. Theme toggle (Front of House vs Back of House)
+  // 3. Theme toggle
   const themeToggle = $('#themeToggle');
   if (themeToggle) {
     themeToggle.addEventListener('click', (e) => {
@@ -1769,28 +1790,24 @@ function setupEventHandlers() {
 
   // 7. Student Cart & Add Buttons
   document.addEventListener('click', (e) => {
-    // Add to cart
     const addBtn = e.target.closest('[data-add]');
     if (addBtn) {
       store.addToCart(addBtn.dataset.add);
       return;
     }
 
-    // Increment
     const incBtn = e.target.closest('[data-inc]');
     if (incBtn) {
       store.changeCartQty(incBtn.dataset.inc, 1);
       return;
     }
 
-    // Decrement
     const decBtn = e.target.closest('[data-dec]');
     if (decBtn) {
       store.changeCartQty(decBtn.dataset.dec, -1);
       return;
     }
 
-    // Remove
     const removeBtn = e.target.closest('[data-remove]');
     if (removeBtn) {
       store.removeCartItem(removeBtn.dataset.remove);
@@ -1827,7 +1844,7 @@ function setupEventHandlers() {
       if (order) {
         store.state.cart = {};
         store.save();
-        toast(`Order ${order.token} placed successfully!`);
+        toast(`Order ${order.token} placed successfully!`, 'check_circle');
         showReceiptModal(order);
         store.setPage('home');
       }
@@ -1879,7 +1896,7 @@ function setupEventHandlers() {
       if (order) {
         store.state.shopperCart = {};
         store.save();
-        toast(`Express Token ${order.token} issued!`);
+        toast(`Express Token ${order.token} issued!`, 'flash_on');
         showReceiptModal(order);
         store.setPage('shopper-receipts');
       }
@@ -1973,7 +1990,7 @@ function setupEventHandlers() {
 
       if (order) {
         store.clearPosCart();
-        toast(`POS Token ${order.token} printed!`);
+        toast(`POS Token ${order.token} printed!`, 'print');
         showReceiptModal(order);
       }
     });
@@ -2006,7 +2023,7 @@ function setupEventHandlers() {
   if (loadFixtureBtn) {
     loadFixtureBtn.addEventListener('click', () => {
       store.loadDemoFixture();
-      toast('⚡ Campus demo fixture loaded successfully!');
+      toast('⚡ Campus demo fixture loaded successfully!', 'bolt');
     });
   }
 
@@ -2014,7 +2031,7 @@ function setupEventHandlers() {
   if (resetDataBtn) {
     resetDataBtn.addEventListener('click', () => {
       store.resetToEmptyState();
-      toast('🗑️ State reset to empty schema []');
+      toast('🗑️ State reset to empty schema []', 'restart_alt');
     });
   }
 
@@ -2046,7 +2063,7 @@ function setupEventHandlers() {
   if (itemFormSubmit) {
     itemFormSubmit.addEventListener('click', () => {
       const name = $('#itemFormName').value.trim();
-      const emoji = $('#itemFormEmoji').value.trim() || '🍽️';
+      const emoji = $('#itemFormEmoji').value.trim() || 'restaurant';
       const cat = $('#itemFormCat').value;
       const counter = $('#itemFormCounter').value;
       const price = $('#itemFormPrice').value;
@@ -2055,7 +2072,7 @@ function setupEventHandlers() {
       const restockTime = $('#itemFormRestock').value.trim() || '15 min';
 
       if (!name || !price) {
-        toast('Please enter item name and price');
+        toast('Please enter item name and price', 'warning');
         return;
       }
 
@@ -2103,7 +2120,7 @@ function setupEventHandlers() {
   if (submitFb) {
     submitFb.addEventListener('click', () => {
       if (!selectedStars) {
-        toast('Please pick a star rating first');
+        toast('Please pick a star rating first', 'star');
         return;
       }
       const comment = $('#feedbackText') ? $('#feedbackText').value.trim() : '';
@@ -2144,7 +2161,7 @@ function setupEventHandlers() {
       };
       store.state.loggedIn = true;
       store.save();
-      toast(`Welcome back, ${store.state.currentUser.name}!`);
+      toast(`Welcome back, ${store.state.currentUser.name}!`, 'waving_hand');
       store.setPage('home');
     });
   }
@@ -2165,7 +2182,7 @@ function setupEventHandlers() {
       store.state.currentUser = { name, year, rollNo: roll, studentId, phone, balance: 450 };
       store.state.loggedIn = true;
       store.save();
-      toast(`Account created! Welcome, ${name.split(' ')[0]}.`);
+      toast(`Account created! Welcome, ${name.split(' ')[0]}.`, 'check_circle');
       store.setPage('home');
     });
   }
@@ -2176,7 +2193,7 @@ function setupEventHandlers() {
       store.state.loggedIn = false;
       store.state.currentUser = null;
       store.save();
-      toast('Logged out');
+      toast('Logged out', 'logout');
       store.setPage('settings');
     });
   }
@@ -2187,7 +2204,7 @@ function setupEventHandlers() {
       store.state.loggedIn = false;
       store.state.currentUser = null;
       store.save();
-      toast('Logged out');
+      toast('Logged out', 'logout');
       store.setPage('settings');
     });
   }
@@ -2200,7 +2217,6 @@ function setupEventHandlers() {
 function renderApp(state) {
   renderShell(state);
 
-  // Render role-specific and shared components
   renderStudentTicket(state);
   renderCounterStrip(state);
   renderStudentMenu(state);
