@@ -2,33 +2,36 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>InvenTrack &mdash; Student Dashboard</title>
+  <title>InvenTrack &mdash; Campus Food &amp; Cafe Inventory Platform</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="InvenTrack is a smart student canteen dashboard for college campuses. Browse the live menu, place orders with real-time token tracking, monitor your spending, and get personalised food recommendations.">
+  <meta name="description" content="InvenTrack is a comprehensive, production-ready campus food & cafe inventory tracking and ordering platform supporting Students, Shoppers, Kitchen Staff, and Campus Administrators.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
   <div class="shell">
-    <!-- ================= SIDEBAR ================= -->
+    <!-- ================= SIDEBAR NAVIGATION ================= -->
     <aside class="sidebar">
       <div class="brand">
         <div class="brand-mark">IT</div>
         <div>
           <div class="brand-name">InvenTrack</div>
-          <div class="brand-sub">Student</div>
+          <div class="brand-sub" id="brandSubRole">Student Portal</div>
         </div>
       </div>
 
-      <nav class="nav" id="navList">
+      <!-- Role-Adaptive Navigation Groups -->
+      <!-- 1. STUDENT NAVIGATION -->
+      <nav class="nav role-nav" id="navGroupStudent">
+        <div class="nav-label">Student Menu</div>
         <button class="nav-item active" data-page="home">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/></svg>
           <span>Home</span>
         </button>
         <button class="nav-item" data-page="menu">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h10"/></svg>
-          <span>Menu</span>
+          <span>Live Menu</span>
         </button>
         <button class="nav-item" data-page="cart">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="20" r="1"/><circle cx="18" cy="20" r="1"/><path d="M2 3h2l2.6 12.4a2 2 0 0 0 2 1.6h8.8a2 2 0 0 0 2-1.6L21 6H6"/></svg>
@@ -37,7 +40,7 @@
         </button>
         <button class="nav-item" data-page="orders">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
-          <span>Orders</span>
+          <span>Orders &amp; Tickets</span>
         </button>
         <button class="nav-item" data-page="spending">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M7 15l4-6 4 4 5-8"/></svg>
@@ -51,17 +54,73 @@
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
           <span>Feedback</span>
         </button>
-
         <div class="nav-label">System</div>
-
         <button class="nav-item" data-page="settings">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 0 1-4 0v-.1a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.5-1H3a2 2 0 0 1 0-4h.1a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.9.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 0 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.9V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 0 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>
-          <span>Settings</span>
+          <span>Account &amp; Auth</span>
         </button>
       </nav>
 
+      <!-- 2. SHOPPER NAVIGATION -->
+      <nav class="nav role-nav" id="navGroupShopper" style="display:none;">
+        <div class="nav-label">Express Shopper</div>
+        <button class="nav-item active" data-page="shopper-store">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          <span>Fast-Track Store</span>
+        </button>
+        <button class="nav-item" data-page="shopper-cart">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="20" r="1"/><circle cx="18" cy="20" r="1"/><path d="M2 3h2l2.6 12.4a2 2 0 0 0 2 1.6h8.8a2 2 0 0 0 2-1.6L21 6H6"/></svg>
+          <span>Quick Checkout</span>
+          <span class="nav-badge hide" id="shopperCartBadge">0</span>
+        </button>
+        <button class="nav-item" data-page="shopper-receipts">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+          <span>Token Receipts</span>
+        </button>
+      </nav>
+
+      <!-- 3. KITCHEN NAVIGATION -->
+      <nav class="nav role-nav" id="navGroupKitchen" style="display:none;">
+        <div class="nav-label">Back of House</div>
+        <button class="nav-item active" data-page="kitchen-kanban">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/></svg>
+          <span>Kanban Queue</span>
+          <span class="nav-badge hide" id="kitchenQueueBadge">0</span>
+        </button>
+        <button class="nav-item" data-page="kitchen-stock">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg>
+          <span>Stock Adjuster</span>
+        </button>
+        <button class="nav-item" data-page="kitchen-pos">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M7 15h0M2 9.5h20"/></svg>
+          <span>Counter Billing (POS)</span>
+        </button>
+        <button class="nav-item" data-page="kitchen-feedback">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          <span>Complaint Feed</span>
+        </button>
+      </nav>
+
+      <!-- 4. ADMIN NAVIGATION -->
+      <nav class="nav role-nav" id="navGroupAdmin" style="display:none;">
+        <div class="nav-label">Management</div>
+        <button class="nav-item active" data-page="admin-overview">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          <span>Executive Overview</span>
+        </button>
+        <button class="nav-item" data-page="admin-audit">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+          <span>Inventory Audit &amp; CSV</span>
+        </button>
+        <button class="nav-item" data-page="admin-items">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+          <span>Item Manager</span>
+        </button>
+      </nav>
+
+      <!-- Sidebar Foot Profile & Session -->
       <div class="sidebar-foot">
-        <button class="nav-item" data-page="settings" style="margin-bottom:10px; padding:0;">
+        <button class="nav-item" id="sidebarProfileBtn" data-page="settings" style="margin-bottom:10px; padding:0;">
           <div class="who" style="padding:6px 4px;">
             <div class="avatar" id="sideAvatar">GU</div>
             <div>
@@ -82,37 +141,66 @@
       <!-- Topbar Controls -->
       <div class="topbar">
         <div class="page-title" id="pageTitle">Home</div>
+
+        <!-- Role Switcher Control -->
+        <div class="role-switcher" id="roleSwitcher" title="Switch active persona">
+          <button class="role-btn active" data-role="student">👨‍🎓 Student</button>
+          <button class="role-btn" data-role="shopper">🛒 Shopper</button>
+          <button class="role-btn" data-role="kitchen">👨‍🍳 Kitchen</button>
+          <button class="role-btn" data-role="admin">👨‍💻 Admin</button>
+        </div>
+
         <div class="search">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
-          <input id="searchInput" placeholder="Search menu, orders, items&hellip;">
+          <input id="searchInput" placeholder="Search menu, inventory, tickets&hellip;">
         </div>
+
         <div class="topbar-actions">
-          <div class="theme-toggle" id="themeToggle">
+          <div class="theme-toggle" id="themeToggle" title="Toggle theme">
             <div class="slider"></div>
             <button class="on" data-mode="counter">&#9728; Front of House</button>
             <button data-mode="kitchen">&#9790; Back of House</button>
           </div>
-          <div class="bell" id="bellBtn">
+          <div class="bell" id="bellBtn" title="Notifications">
             <span class="dot hide" id="bellDot"></span>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>
             <div class="notif-panel" id="notifPanel">
               <div class="notif-item">
-                <div class="n-t">Welcome to InvenTrack!</div>
-                <div class="n-s">Canteen is open &middot; Browse live menu</div>
+                <div class="n-t">InvenTrack Platform Active</div>
+                <div class="n-s">Real-time reactive event bus online</div>
               </div>
+              <div id="notifDynamicList"></div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- PAGE 1: HOME -->
+      <!-- Dev & Data Injection Fixture Bar -->
+      <div class="dev-fixture-bar" id="devFixtureBar">
+        <div class="dev-fixture-info">
+          <span>State Engine:</span>
+          <span class="dev-fixture-badge" id="dataModeBadge">Empty Schema []</span>
+          <span id="dataStatsText">(0 items, 0 active orders)</span>
+        </div>
+        <div class="dev-fixture-actions">
+          <button class="dev-btn primary" id="loadFixtureBtn">⚡ Load Campus Demo Fixture</button>
+          <button class="dev-btn" id="resetDataBtn">🗑️ Reset to Empty State</button>
+          <button class="dev-btn" id="openAddItemModalBtn">+ Add Item</button>
+        </div>
+      </div>
+
+      <!-- ======================================================== -->
+      <!-- SECTION 1: STUDENT PAGES                                 -->
+      <!-- ======================================================== -->
+
+      <!-- PAGE: STUDENT HOME -->
       <section class="page active" id="page-home">
-        <!-- Live Order Ticket -->
+        <!-- Live Order Ticket Tracker -->
         <section class="ticket">
           <div class="ticket-main">
-            <div class="ticket-eyebrow">Today&#39;s Ticket &middot; Main Canteen</div>
+            <div class="ticket-eyebrow">Live Digital Token &middot; Main Campus Canteen</div>
             <h1 class="ticket-title display" id="ticketTitle">No active order</h1>
-            <div class="ticket-desc" id="ticketDesc">Browse the menu to place an order and get a live token</div>
+            <div class="ticket-desc" id="ticketDesc">Browse the menu to place an order and track your live token.</div>
             <div class="stepper" id="stepper">
               <div class="step" data-i="0">
                 <div class="step-line"></div>
@@ -137,7 +225,7 @@
           </div>
           <div class="ticket-stub">
             <span class="punch top"></span>
-            <div class="stub-row"><span class="stub-label">Token</span></div>
+            <div class="stub-row"><span class="stub-label">Queue Token</span></div>
             <div class="queue-no mono" id="queueNo">#---</div>
             <div class="eta-pill" id="etaPill">No active order</div>
             <div class="stub-row">
@@ -156,7 +244,7 @@
               <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h10"/></svg>
             </div>
             <div class="quick-title">Browse menu</div>
-            <div class="quick-sub">11 items live now</div>
+            <div class="quick-sub" id="quickMenuSub">0 items available</div>
           </button>
           <button class="quick-card" data-goto="cart">
             <div class="quick-icon">
@@ -169,79 +257,84 @@
             <div class="quick-icon">
               <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
             </div>
-            <div class="quick-title">Track order</div>
-            <div class="quick-sub">No live order</div>
+            <div class="quick-title">Track tickets</div>
+            <div class="quick-sub" id="quickTrackSub">No live order</div>
           </button>
           <button class="quick-card" data-goto="feedback">
             <div class="quick-icon">
               <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
             </div>
             <div class="quick-title">Send feedback</div>
-            <div class="quick-sub">Share your thoughts</div>
+            <div class="quick-sub">Rate dining experience</div>
           </button>
         </div>
 
-        <!-- Live Stock Strip -->
+        <!-- Shared Real-Time Dynamic Inventory Display (Strip) -->
         <div class="section-head">
           <div class="section-title">Live at the counter</div>
           <button class="section-link" data-goto="menu">Full menu &rarr;</button>
         </div>
         <div class="counter-strip" id="counterStrip"></div>
 
-        <!-- Recommendations -->
+        <!-- Recommendations Section -->
         <div class="section-head">
-          <div class="section-title">You may also like</div>
+          <div class="section-title">You may also like &middot; Frequent pairings</div>
           <button class="section-link" data-goto="foryou">See more &rarr;</button>
         </div>
         <div class="rec-grid" id="homeRecGrid"></div>
 
         <!-- Spending Summary & History -->
         <div class="section-head">
-          <div class="section-title">This week</div>
-          <button class="section-link" data-goto="spending">View all &rarr;</button>
+          <div class="section-title">This week's spending</div>
+          <button class="section-link" data-goto="spending">View details &rarr;</button>
         </div>
         <div class="two-col">
           <div class="panel">
             <div class="panel-title">Spending, by day</div>
-            <div class="panel-sub">Mon &ndash; Sun &middot; Main Canteen</div>
-            <div class="bars">
-              <div class="bar-col"><div class="bar" style="height:0%"><span style="height:0%"></span></div><div class="bar-label">MON</div></div>
-              <div class="bar-col"><div class="bar" style="height:0%"><span style="height:0%"></span></div><div class="bar-label">TUE</div></div>
-              <div class="bar-col"><div class="bar" style="height:0%"><span style="height:0%"></span></div><div class="bar-label">WED</div></div>
-              <div class="bar-col"><div class="bar" style="height:0%"><span style="height:0%"></span></div><div class="bar-label">THU</div></div>
-              <div class="bar-col"><div class="bar" style="height:0%"><span style="height:0%"></span></div><div class="bar-label">FRI</div></div>
-              <div class="bar-col"><div class="bar" style="height:0%"><span style="height:0%"></span></div><div class="bar-label">SAT</div></div>
-              <div class="bar-col"><div class="bar" style="height:0%"><span style="height:0%"></span></div><div class="bar-label">SUN</div></div>
+            <div class="panel-sub">Mon &ndash; Sun &middot; Campus Dining</div>
+            <div class="bars" id="homeSpendingBars">
+              <!-- Dynamically populated from orders -->
             </div>
             <div class="spend-total">
-              <span class="amt mono">&#8377;0</span>
-              <span class="lbl">spent this week &middot; No orders placed yet</span>
+              <span class="amt mono" id="homeSpendTotalAmt">&#8377;0</span>
+              <span class="lbl" id="homeSpendTotalLbl">spent this week &middot; No orders placed yet</span>
             </div>
           </div>
           <div class="panel">
-            <div class="panel-title">Order history</div>
-            <div class="panel-sub">Most recent first</div>
+            <div class="panel-title">Recent orders</div>
+            <div class="panel-sub">Newest first</div>
             <div class="stub-list" id="homeOrderList"></div>
           </div>
         </div>
 
-        <!-- Feedback Callout -->
+        <!-- Feedback Callout Strip -->
         <div class="feedback-strip">
           <div>
             <div class="ft display">Have feedback on canteen meals?</div>
-            <div class="fs">Your feedback helps staff restock your favourites.</div>
+            <div class="fs">Your ratings directly inform staff restock velocity and quality.</div>
           </div>
           <button class="fb-btn" data-goto="feedback">Rate order</button>
         </div>
       </section>
 
-      <!-- PAGE 2: MENU -->
+      <!-- PAGE: STUDENT LIVE MENU & INVENTORY -->
       <section class="page" id="page-menu">
-        <div class="filter-row" id="filterRow"></div>
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:16px;">
+          <div class="filter-row" id="filterRow" style="margin-bottom:0;"></div>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <label style="font-size:11px; font-weight:600; text-transform:uppercase; color:var(--muted);">Counter:</label>
+            <select id="counterFilterSelect" style="padding:6px 10px; border-radius:8px; border:1px solid var(--border); background:var(--surface); color:var(--ink); font-size:12.5px;">
+              <option value="All">All Counters</option>
+              <option value="Counter 1 (Hot Meals)">Counter 1 (Hot Meals)</option>
+              <option value="Counter 2 (Quick Bites)">Counter 2 (Quick Bites)</option>
+              <option value="Counter 3 (Cafe & Drinks)">Counter 3 (Cafe &amp; Drinks)</option>
+            </select>
+          </div>
+        </div>
         <div class="menu-grid" id="menuGrid"></div>
       </section>
 
-      <!-- PAGE 3: CART -->
+      <!-- PAGE: STUDENT CART & CHECKOUT -->
       <section class="page" id="page-cart">
         <div class="cart-layout">
           <div class="panel">
@@ -250,77 +343,120 @@
             <div id="cartList"></div>
           </div>
           <div class="panel">
-            <div class="panel-title">Order summary</div>
-            <div class="panel-sub">Main Canteen &middot; Counter 2</div>
+            <div class="panel-title">Interactive Checkout</div>
+            <div class="panel-sub">Select pickup counter &amp; payment method</div>
+
+            <div class="field" style="margin-top:12px;">
+              <label>Pickup Counter</label>
+              <select id="checkoutCounterSelect">
+                <option value="Counter 1 (Hot Meals)">Counter 1 (Hot Meals)</option>
+                <option value="Counter 2 (Quick Bites)" selected>Counter 2 (Quick Bites)</option>
+                <option value="Counter 3 (Cafe & Drinks)">Counter 3 (Cafe &amp; Drinks)</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label>Payment Method</label>
+              <div class="checkout-payment-grid" id="paymentOptions">
+                <div class="payment-chip selected" data-method="Campus UPI">
+                  <div class="payment-chip-name">📱 Campus UPI</div>
+                  <div class="payment-chip-sub">GPay / PhonePe QR</div>
+                </div>
+                <div class="payment-chip" data-method="Meal Pass">
+                  <div class="payment-chip-name">💳 Meal Pass</div>
+                  <div class="payment-chip-sub" id="mealPassBalanceText">Bal: &#8377;450</div>
+                </div>
+                <div class="payment-chip" data-method="Card">
+                  <div class="payment-chip-name">💳 Debit / Credit</div>
+                  <div class="payment-chip-sub">Instant swipe</div>
+                </div>
+                <div class="payment-chip" data-method="Cash">
+                  <div class="payment-chip-name">💵 Cash</div>
+                  <div class="payment-chip-sub">Pay at counter</div>
+                </div>
+              </div>
+            </div>
+
             <div class="summary-row"><span>Subtotal</span><span id="sumSubtotal">&#8377;0</span></div>
-            <div class="summary-row"><span>Packing</span><span id="sumPacking">&#8377;0</span></div>
-            <div class="summary-row total"><span>Total</span><span id="sumTotal">&#8377;0</span></div>
-            <button class="checkout-btn" id="checkoutBtn" disabled>Place order</button>
+            <div class="summary-row"><span>Campus Packing Fee</span><span id="sumPacking">&#8377;0</span></div>
+            <div class="summary-row total"><span>Total Payable</span><span id="sumTotal">&#8377;0</span></div>
+            <button class="checkout-btn" id="checkoutBtn" disabled>Place order &amp; Generate Token</button>
           </div>
         </div>
       </section>
 
-      <!-- PAGE 4: ORDERS -->
+      <!-- PAGE: STUDENT ORDERS & TICKETS -->
       <section class="page" id="page-orders">
         <div class="panel">
-          <div class="panel-title">All orders</div>
-          <div class="panel-sub">Newest first</div>
+          <div class="panel-title">All orders &amp; Active tickets</div>
+          <div class="panel-sub">Complete order history with real-time token tracking</div>
           <div class="stub-list" id="ordersFullList"></div>
         </div>
       </section>
 
-      <!-- PAGE 5: SPENDING -->
+      <!-- PAGE: STUDENT SPENDING -->
       <section class="page" id="page-spending">
         <div class="panel">
-          <div class="panel-title">Spending, by day</div>
-          <div class="panel-sub">Mon &ndash; Sun &middot; Main Canteen</div>
-          <div class="bars">
-            <div class="bar-col"><div class="bar" style="height:0%"><span style="height:0%"></span></div><div class="bar-label">MON</div></div>
-            <div class="bar-col"><div class="bar" style="height:0%"><span style="height:0%"></span></div><div class="bar-label">TUE</div></div>
-            <div class="bar-col"><div class="bar" style="height:0%"><span style="height:0%"></span></div><div class="bar-label">WED</div></div>
-            <div class="bar-col"><div class="bar" style="height:0%"><span style="height:0%"></span></div><div class="bar-label">THU</div></div>
-            <div class="bar-col"><div class="bar" style="height:0%"><span style="height:0%"></span></div><div class="bar-label">FRI</div></div>
-            <div class="bar-col"><div class="bar" style="height:0%"><span style="height:0%"></span></div><div class="bar-label">SAT</div></div>
-            <div class="bar-col"><div class="bar" style="height:0%"><span style="height:0%"></span></div><div class="bar-label">SUN</div></div>
-          </div>
+          <div class="panel-title">Spending analytics, by day</div>
+          <div class="panel-sub">Mon &ndash; Sun &middot; Dynamic breakdown from your placed orders</div>
+          <div class="bars" id="spendingPageBars"></div>
           <div class="spend-total">
-            <span class="amt mono">&#8377;0</span>
-            <span class="lbl">spent this week &middot; No orders placed yet</span>
+            <span class="amt mono" id="spendingPageTotalAmt">&#8377;0</span>
+            <span class="lbl" id="spendingPageTotalLbl">total recorded spend &middot; No orders placed yet</span>
           </div>
         </div>
       </section>
 
-      <!-- PAGE 6: FOR YOU -->
+      <!-- PAGE: FOR YOU (RECOMMENDATIONS) -->
       <section class="page" id="page-foryou">
         <div class="section-head" style="margin-top:0">
-          <div class="section-title">Recommended for you</div>
+          <div class="section-title">Frequently Bought With &middot; Personalised recommendations</div>
         </div>
         <div class="rec-grid" id="foryouGrid"></div>
       </section>
 
-      <!-- PAGE 7: FEEDBACK -->
+      <!-- PAGE: FEEDBACK & COMPLAINTS -->
       <section class="page" id="page-feedback">
-        <div class="panel" style="max-width:480px;">
-          <div class="panel-title">Rate your last order</div>
-          <div class="panel-sub">Share your dining experience or suggest a menu item</div>
-          <div class="stars" id="starRow">
-            <button class="star" data-v="1">&#9733;</button>
-            <button class="star" data-v="2">&#9733;</button>
-            <button class="star" data-v="3">&#9733;</button>
-            <button class="star" data-v="4">&#9733;</button>
-            <button class="star" data-v="5">&#9733;</button>
+        <div class="panel" style="max-width:540px;">
+          <div class="panel-title">Rate your dining experience</div>
+          <div class="panel-sub">Your feedback is dispatched live to the kitchen dashboard</div>
+          
+          <div class="field">
+            <label>Rating</label>
+            <div class="stars" id="starRow">
+              <button class="star" data-v="1">&#9733;</button>
+              <button class="star" data-v="2">&#9733;</button>
+              <button class="star" data-v="3">&#9733;</button>
+              <button class="star" data-v="4">&#9733;</button>
+              <button class="star" data-v="5">&#9733;</button>
+            </div>
           </div>
-          <textarea id="feedbackText" placeholder="What could be better? (optional)"></textarea>
+
+          <div class="field">
+            <label>Category</label>
+            <div class="filter-row" id="feedbackCategoryRow" style="margin-bottom:0;">
+              <button class="filter-chip active" data-cat="Food Quality">Food Quality</button>
+              <button class="filter-chip" data-cat="Packaging">Packaging</button>
+              <button class="filter-chip" data-cat="Wait Time">Wait Time</button>
+              <button class="filter-chip" data-cat="Hygiene">Hygiene</button>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>Comments / Suggestions</label>
+            <textarea id="feedbackText" placeholder="What could be better or what did you enjoy?"></textarea>
+          </div>
+
           <button class="fb-btn" style="margin-top:14px;" id="submitFeedback">Submit feedback</button>
         </div>
       </section>
 
-      <!-- PAGE 8: SETTINGS & ACCOUNT -->
+      <!-- PAGE: STUDENT SETTINGS & AUTH -->
       <section class="page" id="page-settings">
-        <!-- Logged In Profile Details (Hidden by default when logged out) -->
-        <div class="panel" style="max-width:480px; margin-bottom:16px; display:none;" id="accountPanel">
-          <div class="panel-title">Account details</div>
-          <div class="panel-sub">Linked to your Student ID login</div>
+        <!-- Logged In Profile Details -->
+        <div class="panel" style="max-width:520px; margin-bottom:16px; display:none;" id="accountPanel">
+          <div class="panel-title">Student Profile</div>
+          <div class="panel-sub">Linked to campus roll number &amp; student wallet</div>
           <div class="account-grid">
             <div class="account-field">
               <div class="al">Name</div>
@@ -346,23 +482,23 @@
           <button class="logout-btn" id="logoutSettingsBtn">Log out</button>
         </div>
 
-        <!-- Authentication Panel (Visible by default) -->
-        <div class="panel" style="max-width:480px; margin-bottom:16px;" id="authPanel">
-          <div class="panel-title">Log in or Sign up</div>
-          <div class="panel-sub">Log in or create your student account to place orders, track tickets, and earn rewards.</div>
+        <!-- Authentication Panel -->
+        <div class="panel" style="max-width:520px; margin-bottom:16px;" id="authPanel">
+          <div class="panel-title">Student Authentication</div>
+          <div class="panel-sub">Log in or create your student account to place orders, track tickets, and unlock meal pass benefits.</div>
           <div class="auth-tabs">
             <button class="auth-tab active" data-tab="login">Log in</button>
             <button class="auth-tab" data-tab="signup">Sign up</button>
           </div>
           <div id="loginForm">
-            <div class="auth-sub">Use your Student ID and registered phone number.</div>
+            <div class="auth-sub">Enter Student ID and registered phone number.</div>
             <div class="field">
               <label>Student ID</label>
               <input id="loginStudentId" placeholder="e.g. 2503A52924">
             </div>
             <div class="field">
               <label>Phone number</label>
-              <input id="loginPhone" type="tel" placeholder="e.g. 98765 43210">
+              <input id="loginPhone" type="tel" placeholder="e.g. 9876543210">
             </div>
             <div class="auth-error" id="loginError">Enter both your Student ID and phone number.</div>
             <button class="auth-submit" id="loginSubmit">Log in</button>
@@ -371,7 +507,7 @@
             <div class="auth-sub">Create your account with your campus details.</div>
             <div class="field">
               <label>Full name</label>
-              <input id="suName" placeholder="e.g. Nivedita">
+              <input id="suName" placeholder="e.g. Rohan Sharma">
             </div>
             <div class="field-row">
               <div class="field">
@@ -394,47 +530,413 @@
             </div>
             <div class="field">
               <label>Phone number</label>
-              <input id="suPhone" type="tel" placeholder="e.g. 98765 43210">
+              <input id="suPhone" type="tel" placeholder="e.g. 9876543210">
             </div>
             <div class="auth-error" id="signupError">Please fill in all fields.</div>
             <button class="auth-submit" id="signupSubmit">Create account</button>
           </div>
         </div>
 
-        <!-- Notification & App Preferences -->
-        <div class="panel" style="max-width:480px;">
+        <!-- Notification Preferences -->
+        <div class="panel" style="max-width:520px;">
           <div class="panel-title">Preferences</div>
-          <div class="panel-sub">Manage how InvenTrack talks to you</div>
+          <div class="panel-sub">Manage alerts and notifications</div>
           <div class="setting-row">
             <div>
               <div class="setting-name">Order status alerts</div>
-              <div class="setting-sub">Notify when your token updates</div>
+              <div class="setting-sub">Notify when kitchen updates token</div>
             </div>
             <div class="switch on" data-setting="s1"><div class="knob"></div></div>
           </div>
           <div class="setting-row">
             <div>
               <div class="setting-name">Low stock alerts</div>
-              <div class="setting-sub">Ping when a saved item runs low</div>
+              <div class="setting-sub">Alert when favorite menu item is low</div>
             </div>
             <div class="switch on" data-setting="s2"><div class="knob"></div></div>
           </div>
           <div class="setting-row">
             <div>
-              <div class="setting-name">Recommendation emails</div>
-              <div class="setting-sub">Weekly digest of new picks</div>
+              <div class="setting-name">Digital Token Sound</div>
+              <div class="setting-sub">Chime when order is ready for pickup</div>
             </div>
-            <div class="switch" data-setting="s3"><div class="knob"></div></div>
+            <div class="switch on" data-setting="s3"><div class="knob"></div></div>
           </div>
+        </div>
+      </section>
+
+      <!-- ======================================================== -->
+      <!-- SECTION 2: SHOPPER PAGES                                 -->
+      <!-- ======================================================== -->
+
+      <!-- PAGE: SHOPPER FAST-TRACK STORE -->
+      <section class="page" id="page-shopper-store">
+        <div class="section-head" style="margin-top:0;">
+          <div>
+            <div class="section-title">Fast-Track Quick Order</div>
+            <div style="font-size:12px; color:var(--muted); margin-top:2px;">Instant one-click discovery and fast token issuance</div>
+          </div>
+          <button class="section-link" data-goto="shopper-cart">View Express Cart &rarr;</button>
+        </div>
+        <div class="filter-row" id="shopperFilterRow"></div>
+        <div class="menu-grid" id="shopperGrid"></div>
+      </section>
+
+      <!-- PAGE: SHOPPER EXPRESS CART -->
+      <section class="page" id="page-shopper-cart">
+        <div class="cart-layout">
+          <div class="panel">
+            <div class="panel-title">Express Cart</div>
+            <div class="panel-sub" id="shopperCartSub">0 items</div>
+            <div id="shopperCartList"></div>
+          </div>
+          <div class="panel">
+            <div class="panel-title">Quick Payment &amp; Token</div>
+            <div class="panel-sub">Immediate token generation</div>
+            <div class="field" style="margin-top:12px;">
+              <label>Customer Name / Ref</label>
+              <input id="shopperCustName" placeholder="Guest / Faculty / Name">
+            </div>
+            <div class="summary-row"><span>Subtotal</span><span id="shopperSumSub">&#8377;0</span></div>
+            <div class="summary-row"><span>Packaging</span><span id="shopperSumPack">&#8377;0</span></div>
+            <div class="summary-row total"><span>Total</span><span id="shopperSumTot">&#8377;0</span></div>
+            <button class="checkout-btn" id="shopperCheckoutBtn" disabled>Generate Express Token &amp; Pay</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- PAGE: SHOPPER RECEIPTS -->
+      <section class="page" id="page-shopper-receipts">
+        <div class="panel">
+          <div class="panel-title">Transaction Receipts &amp; Tokens</div>
+          <div class="panel-sub">Instant digital receipts with printable tokens</div>
+          <div class="stub-list" id="shopperReceiptsList"></div>
+        </div>
+      </section>
+
+      <!-- ======================================================== -->
+      <!-- SECTION 3: KITCHEN & STAFF PAGES                         -->
+      <!-- ======================================================== -->
+
+      <!-- PAGE: KITCHEN LIVE KANBAN QUEUE -->
+      <section class="page" id="page-kitchen-kanban">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:12px;">
+          <div>
+            <div class="section-title">Live Kitchen Ticket Board</div>
+            <div style="font-size:12px; color:var(--muted); margin-top:2px;">Real-time order progression: Placed &rarr; Preparing &rarr; Ready &rarr; Picked up</div>
+          </div>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <label style="font-size:11px; font-weight:600; text-transform:uppercase; color:var(--muted);">Filter Counter:</label>
+            <select id="kitchenCounterSelect" style="padding:6px 10px; border-radius:8px; border:1px solid var(--border); background:var(--surface); color:var(--ink); font-size:12px;">
+              <option value="All">All Counters</option>
+              <option value="Counter 1 (Hot Meals)">Counter 1 (Hot Meals)</option>
+              <option value="Counter 2 (Quick Bites)">Counter 2 (Quick Bites)</option>
+              <option value="Counter 3 (Cafe & Drinks)">Counter 3 (Cafe &amp; Drinks)</option>
+            </select>
+          </div>
+        </div>
+        <div class="kanban-board" id="kanbanBoard">
+          <!-- Column 0: Placed -->
+          <div class="kanban-col" data-col="0">
+            <div class="kanban-col-head">
+              <span class="kanban-col-title">📥 Placed</span>
+              <span class="kanban-count" id="countPlaced">0</span>
+            </div>
+            <div class="kanban-card-list" id="kanbanListPlaced"></div>
+          </div>
+          <!-- Column 1: Preparing -->
+          <div class="kanban-col" data-col="1">
+            <div class="kanban-col-head">
+              <span class="kanban-col-title">🍳 Preparing</span>
+              <span class="kanban-count" id="countPreparing">0</span>
+            </div>
+            <div class="kanban-card-list" id="kanbanListPreparing"></div>
+          </div>
+          <!-- Column 2: Ready -->
+          <div class="kanban-col" data-col="2">
+            <div class="kanban-col-head">
+              <span class="kanban-col-title">🔔 Ready for Pickup</span>
+              <span class="kanban-count" id="countReady">0</span>
+            </div>
+            <div class="kanban-card-list" id="kanbanListReady"></div>
+          </div>
+          <!-- Column 3: Picked up -->
+          <div class="kanban-col" data-col="3">
+            <div class="kanban-col-head">
+              <span class="kanban-col-title">✅ Picked up</span>
+              <span class="kanban-count" id="countPicked">0</span>
+            </div>
+            <div class="kanban-card-list" id="kanbanListPicked"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PAGE: KITCHEN STOCK ADJUSTER -->
+      <section class="page" id="page-kitchen-stock">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:16px;">
+          <div>
+            <div class="section-title">Real-Time Stock Adjuster</div>
+            <div style="font-size:12px; color:var(--muted); margin-top:2px;">Direct stock increment/decrement &amp; instant out-of-stock toggles</div>
+          </div>
+          <button class="dev-btn primary" id="openAddItemModalBtnStock">+ Add New Item</button>
+        </div>
+        <div class="table-wrap">
+          <table class="data-table" id="kitchenStockTable">
+            <thead>
+              <tr>
+                <th>Item &amp; Category</th>
+                <th>Counter</th>
+                <th>Status</th>
+                <th>Stock Gauge</th>
+                <th>Stock Count</th>
+                <th>Inline Adjust</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="kitchenStockTbody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- PAGE: KITCHEN RAPID POS BILLING -->
+      <section class="page" id="page-kitchen-pos">
+        <div class="section-head" style="margin-top:0;">
+          <div class="section-title">Counter POS &amp; Rapid Billing</div>
+          <div style="font-size:12px; color:var(--muted);">Cashier terminal for walk-in students and staff counter sales</div>
+        </div>
+        <div class="pos-layout">
+          <div>
+            <div class="panel" style="margin-bottom:12px; padding:12px;">
+              <input id="posSearchInput" placeholder="Quick search item name or category..." style="width:100%; border:1px solid var(--border); border-radius:8px; padding:8px 12px; font-size:13px; background:var(--bg); color:var(--ink);">
+            </div>
+            <div class="pos-menu-grid" id="posMenuGrid"></div>
+          </div>
+          <div class="pos-register">
+            <div class="panel-title">Counter Register</div>
+            <div class="field">
+              <label>Customer Name / Token Tag</label>
+              <input id="posCustName" placeholder="Walk-in Student">
+            </div>
+            <div class="field">
+              <label>Counter</label>
+              <select id="posCounterSelect">
+                <option value="Counter 1 (Hot Meals)">Counter 1 (Hot Meals)</option>
+                <option value="Counter 2 (Quick Bites)" selected>Counter 2 (Quick Bites)</option>
+                <option value="Counter 3 (Cafe & Drinks)">Counter 3 (Cafe &amp; Drinks)</option>
+              </select>
+            </div>
+            <div id="posCartLines" style="max-height:200px; overflow-y:auto; border-top:1px dashed var(--border); border-bottom:1px dashed var(--border); padding:8px 0;"></div>
+            <div class="summary-row"><span>Subtotal</span><span id="posSubtotal">&#8377;0</span></div>
+            <div class="summary-row"><span>Packing Fee</span><span id="posPacking">&#8377;0</span></div>
+            <div class="summary-row total"><span>Total Payable</span><span id="posTotal">&#8377;0</span></div>
+            <div class="field">
+              <label>Payment Tender</label>
+              <select id="posPaymentSelect">
+                <option value="Cash">Cash at Counter</option>
+                <option value="Campus UPI">Campus UPI QR</option>
+                <option value="Meal Pass">Meal Pass Tap</option>
+                <option value="Card">Card Swipe</option>
+              </select>
+            </div>
+            <button class="checkout-btn" id="posSubmitBtn" disabled>Print &amp; Issue Token Receipt</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- PAGE: KITCHEN INCOMING FEEDBACK -->
+      <section class="page" id="page-kitchen-feedback">
+        <div class="panel">
+          <div class="panel-title">Incoming Student Complaint &amp; Feedback Feed</div>
+          <div class="panel-sub">Real-time alerts regarding meal quality, preparation delay, and packaging</div>
+          <div class="stub-list" id="kitchenFeedbackList"></div>
+        </div>
+      </section>
+
+      <!-- ======================================================== -->
+      <!-- SECTION 4: ADMIN / MANAGEMENT PAGES                      -->
+      <!-- ======================================================== -->
+
+      <!-- PAGE: ADMIN OVERVIEW & ANALYTICS -->
+      <section class="page" id="page-admin-overview">
+        <!-- Summary Metric Cards -->
+        <div class="metrics-grid">
+          <div class="metric-card">
+            <div class="metric-header">
+              <span>Total Revenue</span>
+              <span>💰</span>
+            </div>
+            <div class="metric-val mono" id="metricTotalRevenue">&#8377;0</div>
+            <div class="metric-sub" id="metricTotalRevenueSub">Gross campus transactions</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-header">
+              <span>Total Order Volume</span>
+              <span>🧾</span>
+            </div>
+            <div class="metric-val mono" id="metricOrderVolume">0</div>
+            <div class="metric-sub" id="metricOrderVolumeSub">Orders placed across counters</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-header">
+              <span>Critical Low Stock</span>
+              <span>⚠️</span>
+            </div>
+            <div class="metric-val mono" id="metricLowStockCount">0</div>
+            <div class="metric-sub" id="metricLowStockSub">Items at or below threshold</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-header">
+              <span>In-Flight Orders</span>
+              <span>⏱️</span>
+            </div>
+            <div class="metric-val mono" id="metricActiveOrders">0</div>
+            <div class="metric-sub" id="metricActiveOrdersSub">Currently in kitchen prep</div>
+          </div>
+        </div>
+
+        <!-- Demand Matrix & Re-order Velocity -->
+        <div class="two-col">
+          <div class="panel">
+            <div class="panel-title">Demand Matrix &middot; Peak Order Hours</div>
+            <div class="panel-sub">Hourly distribution of campus meal orders</div>
+            <div class="bars" id="adminPeakBars"></div>
+            <div class="spend-total">
+              <span class="amt mono" id="adminPeakTotalText">12:00 - 14:00</span>
+              <span class="lbl">Primary lunch rush window</span>
+            </div>
+          </div>
+          <div class="panel">
+            <div class="panel-title">Top Re-Order Velocity</div>
+            <div class="panel-sub">Fastest moving items by units sold</div>
+            <div id="adminVelocityList"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PAGE: ADMIN AUDIT LOGS & INVENTORY CONTROL -->
+      <section class="page" id="page-admin-audit">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:16px;">
+          <div>
+            <div class="section-title">Procurement &amp; Inventory Audit Logs</div>
+            <div style="font-size:12px; color:var(--muted); margin-top:2px;">Track stock levels, low-threshold alarms, and restock actions</div>
+          </div>
+          <div style="display:flex; gap:8px;">
+            <button class="dev-btn primary" id="exportCsvBtn">📥 Export Audit CSV</button>
+            <button class="dev-btn" id="openAddItemModalBtnAdmin">+ Add New Item</button>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table class="data-table" id="adminAuditTable">
+            <thead>
+              <tr>
+                <th>Item &amp; ID</th>
+                <th>Category</th>
+                <th>Counter</th>
+                <th>Stock</th>
+                <th>Threshold</th>
+                <th>Status</th>
+                <th>Restock Urgency</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="adminAuditTbody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- PAGE: ADMIN ITEM MANAGER -->
+      <section class="page" id="page-admin-items">
+        <div class="panel" style="max-width:540px;">
+          <div class="panel-title">Add New Food Item to Catalog</div>
+          <div class="panel-sub">Injects item directly into active schema and inventory store</div>
+          
+          <div class="field">
+            <label>Item Name</label>
+            <input id="itemFormName" placeholder="e.g. Masala Chai">
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label>Emoji Icon</label>
+              <input id="itemFormEmoji" placeholder="☕" style="text-align:center;">
+            </div>
+            <div class="field">
+              <label>Category</label>
+              <select id="itemFormCat">
+                <option value="Mains">Mains</option>
+                <option value="Snacks">Snacks</option>
+                <option value="Beverages">Beverages</option>
+                <option value="Desserts">Desserts</option>
+              </select>
+            </div>
+          </div>
+          <div class="field">
+            <label>Service Counter</label>
+            <select id="itemFormCounter">
+              <option value="Counter 1 (Hot Meals)">Counter 1 (Hot Meals)</option>
+              <option value="Counter 2 (Quick Bites)">Counter 2 (Quick Bites)</option>
+              <option value="Counter 3 (Cafe & Drinks)">Counter 3 (Cafe &amp; Drinks)</option>
+            </select>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label>Price (&#8377;)</label>
+              <input id="itemFormPrice" type="number" min="1" placeholder="25">
+            </div>
+            <div class="field">
+              <label>Initial Stock</label>
+              <input id="itemFormStock" type="number" min="0" placeholder="30">
+            </div>
+            <div class="field">
+              <label>Low Threshold</label>
+              <input id="itemFormThreshold" type="number" min="1" placeholder="8">
+            </div>
+          </div>
+          <div class="field">
+            <label>Estimated Restock Time</label>
+            <input id="itemFormRestock" placeholder="e.g. 10 min">
+          </div>
+          <button class="auth-submit" id="itemFormSubmit">Inject Item into Catalog</button>
         </div>
       </section>
     </main>
   </div>
 
+  <!-- ======================================================== -->
+  <!-- MODAL: DIGITAL TOKEN & TRANSACTION RECEIPT               -->
+  <!-- ======================================================== -->
+  <div class="receipt-modal-backdrop hide" id="receiptModal">
+    <div class="digital-receipt">
+      <span class="receipt-punch-top"></span>
+      <div class="receipt-center">
+        <div class="receipt-brand">InvenTrack</div>
+        <div class="receipt-sub">Campus Food &amp; Cafe Token</div>
+      </div>
+      <div class="receipt-token-box">
+        <div style="font-size:11px; text-transform:uppercase; color:var(--muted); letter-spacing:0.08em; margin-bottom:4px;">Token Number</div>
+        <div class="receipt-token-num" id="modalTokenNum">#A-042</div>
+        <div style="font-size:11.5px; color:var(--muted); margin-top:4px;" id="modalCounterName">Counter 2 (Quick Bites)</div>
+      </div>
+      <div class="receipt-lines" id="modalReceiptLines"></div>
+      <div class="receipt-total-row">
+        <span>Total Paid</span>
+        <span class="mono" id="modalTotalPaid">&#8377;0</span>
+      </div>
+      <div style="font-size:11px; color:var(--muted); text-align:center;">
+        Status: <span id="modalReceiptStatus" style="font-weight:700; color:var(--fresh);">Active in Queue</span><br>
+        Show this digital token at the counter when called.
+      </div>
+      <div style="display:flex; gap:10px; margin-top:8px;">
+        <button class="dev-btn primary" style="flex:1; padding:10px;" id="modalPrintBtn">🖨️ Print Receipt</button>
+        <button class="dev-btn" style="flex:1; padding:10px;" id="modalCloseBtn">Close</button>
+      </div>
+      <span class="receipt-punch-bottom"></span>
+    </div>
+  </div>
+
   <!-- Global Toast Notifications Wrap -->
   <div class="toast-wrap" id="toastWrap"></div>
 
-  <!-- Client Application Script -->
+  <!-- Core Schema & Application Script -->
   <script src="js/app.js"></script>
 </body>
 </html>
