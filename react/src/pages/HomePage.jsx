@@ -119,16 +119,23 @@ const HomePage = () => {
       </div>
 
       <div className="counter-strip">
-        {menuItems.slice(0, 6).map((it) => (
-          <div key={it.id} className="counter-item">
-            <div className="counter-meta">
-              <span className="counter-name">{it.name}</span>
-              <StatusBadge status={it.status} />
-            </div>
-            <div className="stock-count">{it.stock} servings left</div>
-            <StockGauge stock={it.stock} status={it.status} />
+        {menuItems.length === 0 ? (
+          <div className="empty-state" style={{ width: '100%', padding: '24px', textAlign: 'center', gridColumn: '1 / -1' }}>
+            <div className="em">🍽️</div>
+            No live inventory loaded yet. Click <strong>"Enter Example Data"</strong> at the top to load sample menu items.
           </div>
-        ))}
+        ) : (
+          menuItems.slice(0, 6).map((it) => (
+            <div key={it.id} className="counter-item">
+              <div className="counter-meta">
+                <span className="counter-name">{it.name}</span>
+                <StatusBadge status={it.status} />
+              </div>
+              <div className="stock-count">{it.stock} servings left</div>
+              <StockGauge stock={it.stock} status={it.status} />
+            </div>
+          ))
+        )}
       </div>
 
       {/* Recommended Meal Pairings */}
@@ -140,10 +147,17 @@ const HomePage = () => {
       </div>
 
       <div className="rec-grid">
-        {recommendedIds.map((id) => {
-          const item = menuItems.find((m) => m.id === id);
-          return item ? <RecCard key={item.id} item={item} /> : null;
-        })}
+        {menuItems.length === 0 ? (
+          <div className="empty-state" style={{ width: '100%', padding: '24px', textAlign: 'center', gridColumn: '1 / -1' }}>
+            <div className="em">✨</div>
+            No recommended pairings yet. Load example data to explore combos.
+          </div>
+        ) : (
+          recommendedIds.map((id) => {
+            const item = menuItems.find((m) => m.id === id);
+            return item ? <RecCard key={item.id} item={item} /> : null;
+          })
+        )}
       </div>
 
       {/* Spending Preview & Recent Orders */}
@@ -164,8 +178,8 @@ const HomePage = () => {
           </div>
 
           <div className="spend-total">
-            <span className="amt">₹845</span>
-            <span className="lbl">spent this week across 7 orders</span>
+            <span className="amt">₹{orders.reduce((sum, o) => sum + (o.amt || 0), 0)}</span>
+            <span className="lbl">spent across {orders.length} orders</span>
           </div>
         </div>
 
@@ -174,21 +188,28 @@ const HomePage = () => {
           <div className="panel-sub">Live status sync from Counter 2</div>
 
           <div className="stub-list">
-            {orders.slice(0, 4).map((o) => (
-              <div key={o.id} className="stub-list-item">
-                <div className="stub-icon">{o.icon}</div>
-                <div className="stub-info">
-                  <div className="t">{o.title}</div>
-                  <div className="s">{o.when}</div>
-                </div>
-                <div>
-                  <div className="stub-amt mono">₹{o.amt}</div>
-                  <div className={`stub-status ${o.status === 'Delivered' ? 'done' : 'progress'}`}>
-                    {o.status}
+            {orders.length === 0 ? (
+              <div className="empty-state" style={{ padding: '24px', textAlign: 'center' }}>
+                <div className="em">🎫</div>
+                No recent tickets found.
+              </div>
+            ) : (
+              orders.slice(0, 4).map((o) => (
+                <div key={o.id} className="stub-list-item">
+                  <div className="stub-icon">{o.icon}</div>
+                  <div className="stub-info">
+                    <div className="t">{o.title}</div>
+                    <div className="s">{o.when}</div>
+                  </div>
+                  <div>
+                    <div className="stub-amt mono">₹{o.amt}</div>
+                    <div className={`stub-status ${o.status === 'Delivered' ? 'done' : 'progress'}`}>
+                      {o.status}
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))
+            )}
           </div>
         </div>
       </div>

@@ -1,12 +1,20 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { initialMenuItems, initialOrders, initialUser, stages, recommendedIds } from '../data/initialData';
+import {
+  initialMenuItems,
+  initialOrders,
+  initialUser,
+  stages,
+  recommendedIds as defaultRecommendedIds,
+  generateRandomExampleData
+} from '../data/initialData';
 
 const AppContext = createContext();
 
 export const AppProvider = ({ children }) => {
-  const [menuItems] = useState(initialMenuItems);
+  const [menuItems, setMenuItems] = useState(initialMenuItems);
   const [cart, setCart] = useState({});
   const [orders, setOrders] = useState(initialOrders);
+  const [recommendedIds, setRecommendedIds] = useState(defaultRecommendedIds);
   const [currentUser, setCurrentUser] = useState(null);
   const [loggedIn, setLoggedIn] = useState(false);
   const [stageIndex, setStageIndex] = useState(-1);
@@ -48,6 +56,30 @@ export const AppProvider = ({ children }) => {
         .slice(0, 2)
         .toUpperCase() || 'ST'
     );
+  };
+
+  // Enter Example Data (Randomized generator)
+  const enterExampleData = () => {
+    const data = generateRandomExampleData();
+    setMenuItems(data.menuItems);
+    setRecommendedIds(data.recommendedIds);
+    setOrders(data.orders);
+    if (data.orders.length > 0 && data.orders[0].live) {
+      setStageIndex(data.orders[0].stageIndex);
+      setQueueNo(data.orders[0].token);
+    }
+    addToast('🎲 Random example campus data injected!');
+  };
+
+  // Clear data back to empty state
+  const clearData = () => {
+    setMenuItems([]);
+    setRecommendedIds([]);
+    setOrders([]);
+    setCart({});
+    setStageIndex(-1);
+    setQueueNo('#---');
+    addToast('🗑️ Cleared all data. Catalog is now empty.');
   };
 
   // Cart operations
@@ -183,6 +215,9 @@ export const AppProvider = ({ children }) => {
     recommendedIds,
     cartCount,
     cartTotal,
+    enterExampleData,
+    clearData,
+    setMenuItems,
     setTheme,
     setSearchQuery,
     setActiveCat,

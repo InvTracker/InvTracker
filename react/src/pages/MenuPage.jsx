@@ -65,10 +65,20 @@ const MenuPage = () => {
             );
           })
         ) : (
-          <div className="empty-state" style={{ gridColumn: '1 / -1' }}>
-            <div className="em">🔍</div>
-            No items match your search.
-          </div>
+          menuItems.length === 0 ? (
+            <div className="empty-state" style={{ gridColumn: '1 / -1', padding: '48px 16px', textAlign: 'center' }}>
+              <div className="em">🍽️</div>
+              <div style={{ fontSize: '16px', fontWeight: 600, marginTop: '8px' }}>No menu items available</div>
+              <p style={{ marginTop: '6px', color: 'var(--md-sys-color-on-surface-variant)', fontSize: '13px' }}>
+                The catalog is currently empty. Click "Enter Example Data" at the top to populate random campus food items.
+              </p>
+            </div>
+          ) : (
+            <div className="empty-state" style={{ gridColumn: '1 / -1', padding: '36px 16px', textAlign: 'center' }}>
+              <div className="em">🔍</div>
+              No items match your search or filter.
+            </div>
+          )
         )}
       </div>
     </div>

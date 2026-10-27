@@ -2667,6 +2667,18 @@ textarea {
           </button>
         </div>
 
+        <!-- Top Action: Enter Example Data Button -->
+        <div style="display:flex; align-items:center; gap:8px;">
+          <button class="dev-btn primary" id="enterExampleDataBtnTop" title="Inject a random set of campus items, stocks, and tickets">
+            <span class="material-symbols-outlined" style="font-size:18px;">casino</span>
+            <span>Enter Example Data</span>
+          </button>
+          <button class="dev-btn" id="clearDataBtnTop" title="Reset all data to empty state []" style="display:none;">
+            <span class="material-symbols-outlined" style="font-size:16px;">delete_sweep</span>
+            <span>Clear Data</span>
+          </button>
+        </div>
+
         <!-- M3 Search Bar -->
         <div class="search">
           <span class="material-symbols-outlined">search</span>
@@ -2712,12 +2724,12 @@ textarea {
         </div>
         <div class="dev-fixture-actions">
           <button class="dev-btn primary" id="loadFixtureBtn">
-            <span class="material-symbols-outlined" style="font-size:16px;">bolt</span>
-            <span>Load Campus Demo Fixture</span>
+            <span class="material-symbols-outlined" style="font-size:16px;">casino</span>
+            <span>Enter Example Data</span>
           </button>
           <button class="dev-btn" id="resetDataBtn">
             <span class="material-symbols-outlined" style="font-size:16px;">restart_alt</span>
-            <span>Reset to Empty State</span>
+            <span>Clear / Empty []</span>
           </button>
           <button class="dev-btn" id="openAddItemModalBtn">
             <span class="material-symbols-outlined" style="font-size:16px;">add</span>
@@ -3694,6 +3706,12 @@ class InvenTrackStore {
   }
 
   loadInitialState() {
+    const MIGRATION_KEY = 'inventrack_empty_default_v1';
+    if (!localStorage.getItem(MIGRATION_KEY)) {
+      localStorage.removeItem(STORAGE_KEY);
+      localStorage.setItem(MIGRATION_KEY, 'true');
+    }
+
     const saved = localStorage.getItem(STORAGE_KEY);
     if (saved) {
       try {
@@ -3779,9 +3797,43 @@ class InvenTrackStore {
 
   // --- ACTIONS ---
 
-  loadDemoFixture() {
-    this.state.menuItems = JSON.parse(JSON.stringify(CAMPUS_DEMO_FIXTURE.menuItems));
-    this.state.orders = JSON.parse(JSON.stringify(CAMPUS_DEMO_FIXTURE.orders));
+  generateRandomExampleData() {
+    const shuffled = [...CAMPUS_DEMO_FIXTURE.menuItems].sort(() => 0.5 - Math.random());
+    const count = Math.floor(7 + Math.random() * 4); // 7 to 10 items
+    const selected = shuffled.slice(0, count).map((item, idx) => {
+      const stockRand = Math.random();
+      let stock = Math.floor(12 + Math.random() * 26);
+      let restockTime = '10 min';
+      if (stockRand < 0.12) {
+        stock = 0;
+        restockTime = '25 min';
+      } else if (stockRand < 0.28) {
+        stock = Math.floor(2 + Math.random() * 4);
+        restockTime = '15 min';
+      }
+      const priceOffset = (Math.floor(Math.random() * 5) - 2) * 5;
+      const price = Math.max(20, item.price + priceOffset);
+      return {
+        ...item,
+        id: `item-${Date.now()}-${idx + 1}`,
+        stock,
+        price,
+        restockTime
+      };
+    });
+
+    this.state.menuItems = selected;
+    this.state.orders = JSON.parse(JSON.stringify(CAMPUS_DEMO_FIXTURE.orders)).map((o, i) => {
+      const tokenNum = Math.floor(100 + Math.random() * 900);
+      const stageIdx = Math.floor(Math.random() * 3);
+      return {
+        ...o,
+        id: `ord-${Date.now()}-${i + 1}`,
+        token: `#A-${tokenNum}`,
+        status: stages[stageIdx],
+        stageIndex: stageIdx
+      };
+    });
     this.state.users = JSON.parse(JSON.stringify(CAMPUS_DEMO_FIXTURE.users));
     this.state.feedbacks = JSON.parse(JSON.stringify(CAMPUS_DEMO_FIXTURE.feedbacks));
     this.state.currentUser = this.state.users[0] || null;
@@ -3790,6 +3842,10 @@ class InvenTrackStore {
     this.state.shopperCart = {};
     this.state.posCart = {};
     this.save();
+  }
+
+  loadDemoFixture() {
+    this.generateRandomExampleData();
   }
 
   resetToEmptyState() {
@@ -4159,6 +4215,11 @@ function renderShell(state) {
     badge.style.color = isDemoLoaded ? 'var(--md-sys-color-on-primary-container)' : 'var(--md-sys-color-on-surface)';
     const activeCount = state.orders.filter((o) => o.status !== 'Picked up').length;
     stats.textContent = `(${state.menuItems.length} items, ${activeCount} active orders)`;
+  }
+
+  const clearTopBtn = $('#clearDataBtnTop');
+  if (clearTopBtn) {
+    clearTopBtn.style.display = state.menuItems.length > 0 ? 'inline-flex' : 'none';
   }
 
   // 7. Badges
@@ -5570,12 +5631,28 @@ function setupEventHandlers() {
     });
   }
 
-  // 16. Dev Fixture Controls
+  // 16. Enter Example Data & Dev Fixture Controls
+  const enterTopBtn = $('#enterExampleDataBtnTop');
+  if (enterTopBtn) {
+    enterTopBtn.addEventListener('click', () => {
+      store.generateRandomExampleData();
+      toast('🎲 Random example campus data injected!', 'casino');
+    });
+  }
+
+  const clearTopBtnEl = $('#clearDataBtnTop');
+  if (clearTopBtnEl) {
+    clearTopBtnEl.addEventListener('click', () => {
+      store.resetToEmptyState();
+      toast('🗑️ All data cleared. Website is now empty [].', 'delete_sweep');
+    });
+  }
+
   const loadFixtureBtn = $('#loadFixtureBtn');
   if (loadFixtureBtn) {
     loadFixtureBtn.addEventListener('click', () => {
-      store.loadDemoFixture();
-      toast('⚡ Campus demo fixture loaded successfully!', 'bolt');
+      store.generateRandomExampleData();
+      toast('🎲 Random example campus data injected!', 'casino');
     });
   }
 
