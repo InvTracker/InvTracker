@@ -200,20 +200,63 @@ const ROLE_PERMISSIONS = {
     canViewAdmin: true,
     canEditMenu: true,    // Admin can add/edit menu details
     canAdjustStock: true, // Admin can adjust stock
-    allowedPages: ['admin-overview', 'admin-audit', 'admin-items', 'kitchen-kanban', 'kitchen-stock', 'home', 'menu', 'shopper-store', 'settings']
+    allowedPages: [
+      'admin-overview', 'admin-audit', 'admin-items',
+      'kitchen-kanban', 'kitchen-stock', 'kitchen-pos', 'kitchen-feedback',
+      'home', 'menu', 'cart', 'orders', 'spending', 'foryou', 'feedback',
+      'shopper-store', 'shopper-cart', 'shopper-receipts', 'settings'
+    ]
   }
 };
 
-const DEFAULT_USER = {
-  id: 'usr-2503',
-  name: 'Rohan Sharma',
-  studentId: '2503A52924',
-  rollNo: '2503A52924',
-  year: '2nd year',
-  phone: '9876543210',
-  balance: 450,
-  role: 'user'
+const DEMO_ACCOUNTS = {
+  admin: {
+    id: 'usr-admin-1',
+    name: 'Dr. Vikram Malhotra',
+    email: 'admin@campus.edu',
+    role: 'admin',
+    title: 'Campus Administrator',
+    year: 'Faculty / Admin',
+    rollNo: 'ADM-2026',
+    studentId: 'ADM-2026',
+    phone: '9876543219',
+    balance: 5000
+  },
+  kitchen: {
+    id: 'usr-kitchen-1',
+    name: 'Chef Rajesh Kumar',
+    email: 'kitchen@campus.edu',
+    role: 'kitchen',
+    title: 'Executive Kitchen Chef',
+    year: 'Kitchen Staff',
+    rollNo: 'KIT-104',
+    studentId: 'KIT-104',
+    phone: '9876543218',
+    balance: 2000
+  },
+  user: {
+    id: 'usr-2503',
+    name: 'Rohan Sharma',
+    email: 'rohan@student.campus.edu',
+    role: 'user',
+    title: 'Campus Student',
+    year: '2nd year',
+    rollNo: '2503A52924',
+    studentId: '2503A52924',
+    phone: '9876543210',
+    balance: 450
+  }
 };
+
+function detectRoleFromEmail(input) {
+  if (!input) return 'user';
+  const str = input.toLowerCase().trim();
+  if (str.includes('admin') || str === 'adm') return 'admin';
+  if (str.includes('kitchen') || str.includes('chef') || str.includes('cook') || str === 'kit') return 'kitchen';
+  return 'user';
+}
+
+const DEFAULT_USER = DEMO_ACCOUNTS.user;
 
 class InvenTrackStore {
   constructor() {
@@ -222,7 +265,7 @@ class InvenTrackStore {
   }
 
   loadInitialState() {
-    const MIGRATION_KEY = 'inventrack_combined_user_v1';
+    const MIGRATION_KEY = 'inventrack_role_auth_v3';
     if (!localStorage.getItem(MIGRATION_KEY)) {
       localStorage.removeItem(STORAGE_KEY);
       localStorage.setItem(MIGRATION_KEY, 'true');
@@ -232,7 +275,14 @@ class InvenTrackStore {
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
-        const role = (parsed.activeRole === 'student' || parsed.activeRole === 'shopper') ? 'user' : (parsed.activeRole || 'user');
+        const currentUser = parsed.currentUser || DEFAULT_USER;
+        const role = currentUser.role || 'user';
+        const activeRole = role === 'admin' ? (parsed.activeRole || 'admin') : role;
+        const defaultPage = role === 'admin' ? 'admin-overview' : role === 'kitchen' ? 'kitchen-kanban' : 'home';
+        const activePage = parsed.activePage && ROLE_PERMISSIONS[role] && ROLE_PERMISSIONS[role].allowedPages.includes(parsed.activePage)
+          ? parsed.activePage
+          : defaultPage;
+
         return {
           menuItems: parsed.menuItems || [],
           orders: parsed.orders || [],
@@ -241,11 +291,10 @@ class InvenTrackStore {
           cart: parsed.cart || {},
           shopperCart: parsed.shopperCart || {},
           posCart: parsed.posCart || {},
-          currentUser: parsed.currentUser || DEFAULT_USER,
-          loggedIn: true, // Details ready at start as requested (no signin page forced)
-          activeRole: role, // Default to combined 'user' role
-          activePage: parsed.activePage && ROLE_PERMISSIONS.user.allowedPages.includes(parsed.activePage) ? parsed.activePage : 'home',
-          staffUnlocked: !!parsed.staffUnlocked,
+          currentUser,
+          loggedIn: parsed.loggedIn !== false,
+          activeRole,
+          activePage,
           selectedPaymentMethod: 'Campus UPI',
           activeCat: 'All',
           counterFilter: 'All'
@@ -264,10 +313,9 @@ class InvenTrackStore {
       shopperCart: {},
       posCart: {},
       currentUser: DEFAULT_USER,
-      loggedIn: true, // Details loaded at start without login page
-      activeRole: 'user', // Defaults to combined 'user' role
+      loggedIn: true,
+      activeRole: 'user',
       activePage: 'home',
-      staffUnlocked: false,
       selectedPaymentMethod: 'Campus UPI',
       activeCat: 'All',
       counterFilter: 'All'
@@ -288,8 +336,7 @@ class InvenTrackStore {
           currentUser: this.state.currentUser,
           loggedIn: this.state.loggedIn,
           activeRole: this.state.activeRole,
-          activePage: this.state.activePage,
-          staffUnlocked: this.state.staffUnlocked
+          activePage: this.state.activePage
         })
       );
     } catch (e) {
@@ -356,8 +403,6 @@ class InvenTrackStore {
     });
     this.state.users = JSON.parse(JSON.stringify(CAMPUS_DEMO_FIXTURE.users));
     this.state.feedbacks = JSON.parse(JSON.stringify(CAMPUS_DEMO_FIXTURE.feedbacks));
-    this.state.currentUser = this.state.users[0] || null;
-    this.state.loggedIn = !!this.state.currentUser;
     this.state.cart = {};
     this.state.shopperCart = {};
     this.state.posCart = {};
@@ -376,40 +421,26 @@ class InvenTrackStore {
     this.state.cart = {};
     this.state.shopperCart = {};
     this.state.posCart = {};
-    this.state.currentUser = null;
-    this.state.loggedIn = false;
     this.save();
   }
 
   hasPermission(permName) {
-    const role = this.state.activeRole || 'user';
-    const config = ROLE_PERMISSIONS[role] || ROLE_PERMISSIONS.user;
+    const userRole = (this.state.currentUser && this.state.currentUser.role) || 'user';
+    if (userRole === 'admin') return true; // Admin has full access to User, Kitchen, and Admin features
+    const config = ROLE_PERMISSIONS[userRole] || ROLE_PERMISSIONS.user;
     return !!config[permName];
   }
 
-  toggleStaffUnlock() {
-    this.state.staffUnlocked = !this.state.staffUnlocked;
-    if (!this.state.staffUnlocked) {
-      if (this.state.activeRole === 'kitchen' || this.state.activeRole === 'admin') {
-        this.state.activeRole = 'user';
-        this.state.activePage = 'home';
-      }
-      toast('🔒 Switched to User View. Kitchen & Admin access restricted.', 'lock');
-    } else {
-      toast('🔓 Staff Mode unlocked for testing. Kitchen & Admin portals now accessible.', 'admin_panel_settings');
-    }
-    this.save();
-  }
-
   setRole(role) {
-    if (role === 'student' || role === 'shopper') role = 'user';
-
-    // Restrict access to kitchen and admin for general users unless unlocked
-    if ((role === 'kitchen' || role === 'admin') && !this.state.staffUnlocked) {
-      toast('🔒 Access Restricted: Kitchen and Admin portals are restricted to authorized staff. Users can only view the dining & store pages.', 'error');
+    const userRole = (this.state.currentUser && this.state.currentUser.role) || 'user';
+    
+    // Top bar switcher is for Admin only
+    if (userRole !== 'admin') {
+      toast('🔒 Role switching is only permitted for Administrators.', 'error');
       return;
     }
 
+    if (role === 'student' || role === 'shopper') role = 'user';
     this.state.activeRole = role;
     if (role === 'user') this.state.activePage = 'home';
     else if (role === 'kitchen') this.state.activePage = 'kitchen-kanban';
@@ -418,21 +449,57 @@ class InvenTrackStore {
   }
 
   setPage(page) {
-    const role = this.state.activeRole || 'user';
-    const config = ROLE_PERMISSIONS[role] || ROLE_PERMISSIONS.user;
+    const userRole = (this.state.currentUser && this.state.currentUser.role) || 'user';
+    const config = ROLE_PERMISSIONS[userRole] || ROLE_PERMISSIONS.user;
 
-    // Validate page permission
-    if (config.allowedPages && !config.allowedPages.includes(page)) {
-      if (page.startsWith('kitchen-') || page.startsWith('admin-')) {
-        toast('🔒 Access Restricted: Users only have access to the dining store, not Kitchen or Admin pages.', 'error');
+    // Admin can navigate to any permitted page; Kitchen and User are strictly bounded
+    if (userRole !== 'admin' && config.allowedPages && !config.allowedPages.includes(page)) {
+      if (userRole === 'kitchen') {
+        toast('🔒 Access Restricted: Kitchen accounts can only access kitchen features.', 'error');
+        this.state.activePage = 'kitchen-kanban';
+      } else {
+        toast('🔒 Access Restricted: Users can only access dining & store features.', 'error');
         this.state.activePage = 'home';
-        this.save();
-        return;
       }
+      this.save();
+      return;
     }
 
     this.state.activePage = page;
     this.save();
+  }
+
+  login(email, name = null) {
+    const role = detectRoleFromEmail(email);
+    let userObj;
+    if (role === 'admin') {
+      userObj = { ...DEMO_ACCOUNTS.admin, email: email || DEMO_ACCOUNTS.admin.email };
+      if (name) userObj.name = name;
+    } else if (role === 'kitchen') {
+      userObj = { ...DEMO_ACCOUNTS.kitchen, email: email || DEMO_ACCOUNTS.kitchen.email };
+      if (name) userObj.name = name;
+    } else {
+      userObj = { ...DEMO_ACCOUNTS.user, email: email || DEMO_ACCOUNTS.user.email };
+      if (name) userObj.name = name;
+    }
+
+    this.state.currentUser = userObj;
+    this.state.loggedIn = true;
+    this.state.activeRole = role;
+    if (role === 'admin') this.state.activePage = 'admin-overview';
+    else if (role === 'kitchen') this.state.activePage = 'kitchen-kanban';
+    else this.state.activePage = 'home';
+    this.save();
+    toast(`Signed in as ${userObj.name} (${role.toUpperCase()})`, 'verified_user');
+  }
+
+  logout() {
+    this.state.loggedIn = false;
+    this.state.currentUser = null;
+    this.state.activeRole = 'user';
+    this.state.activePage = 'settings';
+    this.save();
+    toast('Logged out. Please sign in to access features.', 'logout');
   }
 
   // Stock Adjustment - Protected by canAdjustStock permission
@@ -749,54 +816,62 @@ const roleLabels = {
 };
 
 function renderShell(state) {
-  const { activeRole, activePage } = state;
+  const { activeRole, activePage, currentUser } = state;
+  const userRole = (currentUser && currentUser.role) || 'user';
+  const isAdmin = userRole === 'admin';
 
-  // 1. Role Switcher Segmented Buttons with permission locking
-  $$('#roleSwitcher .role-btn').forEach((btn) => {
-    const role = btn.dataset.role;
-    const isActive = role === activeRole || ((activeRole === 'user' || activeRole === 'student' || activeRole === 'shopper') && role === 'user');
-    btn.classList.toggle('active', isActive);
-
-    const isStaffRole = role === 'kitchen' || role === 'admin';
-    const isRestricted = isStaffRole && !state.staffUnlocked;
-    btn.classList.toggle('restricted', isRestricted);
-
-    // Dynamic lock indicator for restricted roles
-    let lockIcon = btn.querySelector('.perm-lock');
-    if (isRestricted) {
-      if (!lockIcon) {
-        const span = document.createElement('span');
-        span.className = 'material-symbols-outlined perm-lock';
-        span.textContent = 'lock';
-        btn.appendChild(span);
-      }
-      btn.title = `${roleLabels[role] || role} (Restricted: Staff Only)`;
+  // 1. Role Switcher in Top Bar: Kept ONLY for Admin logins!
+  const roleSwitcher = $('#roleSwitcher');
+  if (roleSwitcher) {
+    if (isAdmin) {
+      roleSwitcher.style.display = 'inline-flex';
+      $$('#roleSwitcher .role-btn').forEach((btn) => {
+        const role = btn.dataset.role;
+        btn.classList.toggle('active', role === activeRole);
+        btn.classList.remove('restricted');
+        const lockIcon = btn.querySelector('.perm-lock');
+        if (lockIcon) lockIcon.remove();
+        btn.title = `Switch to ${roleLabels[role] || role}`;
+      });
     } else {
-      if (lockIcon) lockIcon.remove();
-      btn.title = `Switch to ${roleLabels[role] || role}`;
+      roleSwitcher.style.display = 'none';
     }
-  });
+  }
 
   // 2. Sidebar Brand Subtitle
   const brandSub = $('#brandSubRole');
   if (brandSub) {
-    brandSub.textContent = (state.activeRole === 'user' || state.activeRole === 'student' || state.activeRole === 'shopper') ? 'User Portal' : (roleLabels[activeRole] || 'Portal');
+    if (isAdmin) {
+      const viewName = activeRole === 'user' ? 'User Store View' : activeRole === 'kitchen' ? 'Kitchen Staff View' : 'Executive Overview';
+      brandSub.textContent = `Admin Portal (${viewName})`;
+    } else if (userRole === 'kitchen') {
+      brandSub.textContent = 'Kitchen Staff Portal';
+    } else {
+      brandSub.textContent = 'User Portal';
+    }
   }
 
-  // 3. Toggle Sidebar Nav Groups with strict permission filtering
+  // 3. Toggle Sidebar Nav Groups with strict role-based dashboard permissions
   const navUser = $('#navGroupUser');
-  const navStudent = $('#navGroupStudent');
-  const navShopper = $('#navGroupShopper');
   const navKitchen = $('#navGroupKitchen');
   const navAdmin = $('#navGroupAdmin');
 
-  const isUserRole = activeRole === 'user' || activeRole === 'student' || activeRole === 'shopper';
-
-  if (navUser) navUser.style.display = isUserRole ? 'flex' : 'none';
-  if (navStudent) navStudent.style.display = (!navUser && activeRole === 'student') ? 'flex' : 'none';
-  if (navShopper) navShopper.style.display = (!navUser && activeRole === 'shopper') ? 'flex' : 'none';
-  if (navKitchen) navKitchen.style.display = (!isUserRole && activeRole === 'kitchen' && store.hasPermission('canViewKitchen')) ? 'flex' : 'none';
-  if (navAdmin) navAdmin.style.display = (!isUserRole && activeRole === 'admin' && store.hasPermission('canViewAdmin')) ? 'flex' : 'none';
+  if (isAdmin) {
+    // Admin can access all features; navigation reflects their active view
+    if (navUser) navUser.style.display = activeRole === 'user' ? 'flex' : 'none';
+    if (navKitchen) navKitchen.style.display = activeRole === 'kitchen' ? 'flex' : 'none';
+    if (navAdmin) navAdmin.style.display = activeRole === 'admin' ? 'flex' : 'none';
+  } else if (userRole === 'kitchen') {
+    // Kitchen accounts ONLY see kitchen features
+    if (navUser) navUser.style.display = 'none';
+    if (navKitchen) navKitchen.style.display = 'flex';
+    if (navAdmin) navAdmin.style.display = 'none';
+  } else {
+    // User accounts ONLY see user features
+    if (navUser) navUser.style.display = 'flex';
+    if (navKitchen) navKitchen.style.display = 'none';
+    if (navAdmin) navAdmin.style.display = 'none';
+  }
 
   // 4. Update Nav Active Item
   $$('.nav-item[data-page]').forEach((item) => {
@@ -860,55 +935,68 @@ function renderShell(state) {
   if (state.currentUser) {
     if (sideAvatar) sideAvatar.textContent = initials(state.currentUser.name);
     if (sideName) sideName.textContent = state.currentUser.name;
-    if (sideRole) sideRole.textContent = `${state.currentUser.year || '2nd year'} · Dining & Store`;
-
-    // Populate Settings Account Panel
-    const accPanel = $('#accountPanel');
-    const authPanel = $('#authPanel');
-    if (accPanel) accPanel.style.display = 'block';
-    if (authPanel) authPanel.style.display = 'none';
-
-    if ($('#accName')) $('#accName').textContent = state.currentUser.name;
-    if ($('#accYear')) $('#accYear').textContent = state.currentUser.year;
-    if ($('#accRoll')) $('#accRoll').textContent = state.currentUser.rollNo;
-    if ($('#accStudentId')) $('#accStudentId').textContent = state.currentUser.studentId;
-    if ($('#accPhone')) $('#accPhone').textContent = state.currentUser.phone;
-
-    // Update permission indicator badges in settings
-    const permMenuEl = $('#permMenuDetails');
-    if (permMenuEl) {
-      const canEdit = store.hasPermission('canEditMenu');
-      permMenuEl.className = `perm-pill ${canEdit ? 'granted' : 'restricted'}`;
-      permMenuEl.innerHTML = `<span class="material-symbols-outlined" style="font-size:12px;">${canEdit ? 'check' : 'lock'}</span><span>${canEdit ? 'Full Edit Access' : 'Read Only (Users Cannot Edit Menu)'}</span>`;
+    if (sideRole) {
+      if (isAdmin) sideRole.textContent = 'Administrator · Full Access';
+      else if (userRole === 'kitchen') sideRole.textContent = 'Kitchen Staff · Back of House';
+      else sideRole.textContent = `${state.currentUser.year || 'Student'} · Dining & Store`;
     }
 
-    const permStockEl = $('#permStockAdjust');
-    if (permStockEl) {
-      const canAdj = store.hasPermission('canAdjustStock');
-      permStockEl.className = `perm-pill ${canAdj ? 'granted' : 'restricted'}`;
-      permStockEl.innerHTML = `<span class="material-symbols-outlined" style="font-size:12px;">${canAdj ? 'check' : 'lock'}</span><span>${canAdj ? 'Full Adjust Access' : 'Read Only (Users Cannot Alter Stock)'}</span>`;
+    // Populate Settings Account Panel
+    if ($('#accName')) $('#accName').textContent = state.currentUser.name;
+    if ($('#accEmail')) $('#accEmail').textContent = state.currentUser.email || 'rohan@student.campus.edu';
+    if ($('#accRoleType')) {
+      $('#accRoleType').textContent = isAdmin
+        ? 'Campus Administrator (Full Access + Top Bar Switcher)'
+        : userRole === 'kitchen'
+        ? 'Kitchen Crew (Kitchen Back of House Features Only)'
+        : 'Campus User (Dining Store & Express Features Only)';
+    }
+    if ($('#accStudentId')) $('#accStudentId').textContent = state.currentUser.studentId || state.currentUser.rollNo || 'USR-2503';
+
+    const roleBadge = $('#activeRoleBadge');
+    if (roleBadge) {
+      roleBadge.textContent = userRole.toUpperCase();
+      roleBadge.className = `status-badge ${isAdmin ? 'available' : userRole === 'kitchen' ? 'low' : 'available'}`;
+    }
+
+    // Update permission indicator badges in settings
+    const permStoreEl = $('#permStoreView');
+    if (permStoreEl) {
+      const canStore = store.hasPermission('canViewStore');
+      permStoreEl.className = `perm-pill ${canStore ? 'granted' : 'restricted'}`;
+      permStoreEl.innerHTML = `<span class="material-symbols-outlined" style="font-size:12px;">${canStore ? 'check' : 'lock'}</span><span>${canStore ? 'Permitted' : 'Restricted (Kitchen Cannot Access Store)'}</span>`;
     }
 
     const permBackHouseEl = $('#permBackHouse');
     if (permBackHouseEl) {
       const canBack = store.hasPermission('canViewKitchen');
       permBackHouseEl.className = `perm-pill ${canBack ? 'granted' : 'restricted'}`;
-      permBackHouseEl.innerHTML = `<span class="material-symbols-outlined" style="font-size:12px;">${canBack ? 'check' : 'lock'}</span><span>${canBack ? 'Accessible' : 'Restricted to Kitchen Staff'}</span>`;
+      permBackHouseEl.innerHTML = `<span class="material-symbols-outlined" style="font-size:12px;">${canBack ? 'check' : 'lock'}</span><span>${canBack ? 'Permitted' : 'Restricted to Staff'}</span>`;
     }
 
-    // Toggle Staff Mode button in settings
-    const toggleStaffBtn = $('#toggleStaffUnlockBtn');
-    if (toggleStaffBtn) {
-      toggleStaffBtn.textContent = state.staffUnlocked
-        ? '🔒 Lock Back of House (Return to User View)'
-        : '🔓 Unlock Staff Mode for Testing (Kitchen & Admin Access)';
+    const permStockEl = $('#permStockAdjust');
+    if (permStockEl) {
+      const canAdj = store.hasPermission('canAdjustStock');
+      permStockEl.className = `perm-pill ${canAdj ? 'granted' : 'restricted'}`;
+      permStockEl.innerHTML = `<span class="material-symbols-outlined" style="font-size:12px;">${canAdj ? 'check' : 'lock'}</span><span>${canAdj ? 'Permitted' : 'Restricted (Users Cannot Alter Stock)'}</span>`;
+    }
+
+    const permMenuEl = $('#permMenuDetails');
+    if (permMenuEl) {
+      const canEdit = store.hasPermission('canEditMenu');
+      permMenuEl.className = `perm-pill ${canEdit ? 'granted' : 'restricted'}`;
+      permMenuEl.innerHTML = `<span class="material-symbols-outlined" style="font-size:12px;">${canEdit ? 'check' : 'lock'}</span><span>${canEdit ? 'Permitted' : 'Admin Only'}</span>`;
+    }
+
+    const permRoleSwitcherEl = $('#permRoleSwitcher');
+    if (permRoleSwitcherEl) {
+      permRoleSwitcherEl.className = `perm-pill ${isAdmin ? 'granted' : 'restricted'}`;
+      permRoleSwitcherEl.innerHTML = `<span class="material-symbols-outlined" style="font-size:12px;">${isAdmin ? 'check' : 'lock'}</span><span>${isAdmin ? 'Visible & Active' : 'Hidden (Admin Only)'}</span>`;
     }
   } else {
     if (sideAvatar) sideAvatar.textContent = 'GU';
     if (sideName) sideName.textContent = 'Guest User';
-    if (sideRole) sideRole.textContent = 'Dining & Store Access';
-    if ($('#accountPanel')) $('#accountPanel').style.display = 'block';
-    if ($('#authPanel')) $('#authPanel').style.display = 'none';
+    if (sideRole) sideRole.textContent = 'Sign In to Access';
   }
 }
 
@@ -1944,19 +2032,20 @@ function hideReceiptModal() {
 // =========================================================================
 
 function setupEventHandlers() {
-  // 1. Role Switcher
+  // 1. Role Switcher (Admin Only)
   const roleSwitcher = $('#roleSwitcher');
   if (roleSwitcher) {
     roleSwitcher.addEventListener('click', (e) => {
       const btn = e.target.closest('.role-btn[data-role]');
       if (!btn) return;
-      const newRole = btn.dataset.role;
-      if ((newRole === 'kitchen' || newRole === 'admin') && !store.state.staffUnlocked) {
-        toast('🔒 Access Restricted: Kitchen & Admin portals require staff authorization. Users can only view dining & store pages.', 'error');
+      const userRole = (store.state.currentUser && store.state.currentUser.role) || 'user';
+      if (userRole !== 'admin') {
+        toast('🔒 Access Restricted: The top bar role switcher is exclusively available for Administrators.', 'error');
         return;
       }
+      const newRole = btn.dataset.role;
       store.setRole(newRole);
-      toast(`Switched to ${roleLabels[newRole] || newRole}`, 'sync');
+      toast(`Switched perspective to ${roleLabels[newRole] || newRole}`, 'sync');
     });
   }
 
@@ -2433,81 +2522,54 @@ function setupEventHandlers() {
     });
   }
 
-  // 20. Student Authentication
-  $$('.auth-tab').forEach((tab) => {
-    tab.addEventListener('click', () => {
-      $$('.auth-tab').forEach((t) => t.classList.toggle('active', t === tab));
-      const isLogin = tab.dataset.tab === 'login';
-      $('#loginForm').style.display = isLogin ? 'block' : 'none';
-      $('#signupForm').style.display = isLogin ? 'none' : 'block';
-    });
-  });
-
-  const loginSubmit = $('#loginSubmit');
-  if (loginSubmit) {
-    loginSubmit.addEventListener('click', () => {
-      const studentId = $('#loginStudentId').value.trim();
-      const phone = $('#loginPhone').value.trim();
-      if (!studentId || !phone) {
-        $('#loginError').classList.add('show');
-        return;
-      }
-      $('#loginError').classList.remove('show');
-      store.state.currentUser = {
-        name: 'Student Diner',
-        year: '2nd year',
-        rollNo: studentId,
-        studentId: studentId,
-        phone: phone,
-        balance: 450
-      };
-      store.state.loggedIn = true;
-      store.save();
-      toast(`Welcome back, ${store.state.currentUser.name}!`, 'waving_hand');
-      store.setPage('home');
+  // 20. Campus Role-Based Authentication
+  const qUser = $('#quickLoginUser');
+  if (qUser) {
+    qUser.addEventListener('click', () => {
+      store.login('user@student.campus.edu', 'Rohan Sharma');
     });
   }
 
-  const signupSubmit = $('#signupSubmit');
-  if (signupSubmit) {
-    signupSubmit.addEventListener('click', () => {
-      const name = $('#suName').value.trim();
-      const roll = $('#suRoll').value.trim();
-      const year = $('#suYear').value;
-      const studentId = $('#suStudentId').value.trim();
-      const phone = $('#suPhone').value.trim();
-      if (!name || !roll || !studentId || !phone) {
-        $('#signupError').classList.add('show');
-        return;
-      }
-      $('#signupError').classList.remove('show');
-      store.state.currentUser = { name, year, rollNo: roll, studentId, phone, balance: 450 };
-      store.state.loggedIn = true;
-      store.save();
-      toast(`Account created! Welcome, ${name.split(' ')[0]}.`, 'check_circle');
-      store.setPage('home');
+  const qKitchen = $('#quickLoginKitchen');
+  if (qKitchen) {
+    qKitchen.addEventListener('click', () => {
+      store.login('kitchen@campus.edu', 'Chef Rajesh Kumar');
     });
   }
 
-  const logoutNavBtn = $('#logoutNavBtn');
-  if (logoutNavBtn) {
-    logoutNavBtn.addEventListener('click', () => {
-      store.state.loggedIn = false;
-      store.state.currentUser = null;
-      store.save();
-      toast('Logged out', 'logout');
-      store.setPage('settings');
+  const qAdmin = $('#quickLoginAdmin');
+  if (qAdmin) {
+    qAdmin.addEventListener('click', () => {
+      store.login('admin@campus.edu', 'Dr. Vikram Malhotra');
+    });
+  }
+
+  const customLoginBtn = $('#customLoginBtn');
+  if (customLoginBtn) {
+    customLoginBtn.addEventListener('click', () => {
+      const email = $('#customEmailInput') ? $('#customEmailInput').value.trim() : '';
+      const name = $('#customNameInput') ? $('#customNameInput').value.trim() : null;
+      if (!email) {
+        toast('Please enter a campus email address to sign in', 'warning');
+        return;
+      }
+      store.login(email, name);
+      if ($('#customEmailInput')) $('#customEmailInput').value = '';
+      if ($('#customNameInput')) $('#customNameInput').value = '';
     });
   }
 
   const logoutSettingsBtn = $('#logoutSettingsBtn');
   if (logoutSettingsBtn) {
     logoutSettingsBtn.addEventListener('click', () => {
-      store.state.loggedIn = false;
-      store.state.currentUser = null;
-      store.save();
-      toast('Logged out', 'logout');
-      store.setPage('settings');
+      store.logout();
+    });
+  }
+
+  const logoutNavBtn = $('#logoutNavBtn');
+  if (logoutNavBtn) {
+    logoutNavBtn.addEventListener('click', () => {
+      store.logout();
     });
   }
 }

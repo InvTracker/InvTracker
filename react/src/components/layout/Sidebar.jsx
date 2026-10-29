@@ -68,7 +68,15 @@ const Sidebar = () => {
           <div className="avatar">{loggedIn && currentUser ? initials(currentUser.name) : 'GU'}</div>
           <div>
             <div className="who-name">{loggedIn && currentUser ? currentUser.name : 'Guest User'}</div>
-            <div className="who-role">{loggedIn && currentUser ? `${currentUser.year} · Dining & Store` : 'Log in / Sign up'}</div>
+            <div className="who-role">
+              {loggedIn && currentUser
+                ? currentUser.role === 'admin'
+                  ? 'Administrator · Full Access'
+                  : currentUser.role === 'kitchen'
+                  ? 'Kitchen Staff · Back of House'
+                  : `${currentUser.year || '2nd year'} · Dining & Store`
+                : 'Log in / Sign up'}
+            </div>
           </div>
           {loggedIn && (
             <button

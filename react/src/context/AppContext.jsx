@@ -15,8 +15,8 @@ export const AppProvider = ({ children }) => {
   const [cart, setCart] = useState({});
   const [orders, setOrders] = useState(initialOrders);
   const [recommendedIds, setRecommendedIds] = useState(defaultRecommendedIds);
-  const [currentUser, setCurrentUser] = useState(null);
-  const [loggedIn, setLoggedIn] = useState(false);
+  const [currentUser, setCurrentUser] = useState(initialUser);
+  const [loggedIn, setLoggedIn] = useState(true);
   const [stageIndex, setStageIndex] = useState(-1);
   const [activePage, setActivePage] = useState('home');
   const [theme, setTheme] = useState('default'); // 'default' or 'kitchen'
@@ -184,14 +184,29 @@ export const AppProvider = ({ children }) => {
   };
 
   // Login / Logout
-  const login = (user) => {
-    setCurrentUser(user);
+  const login = (userData) => {
+    let email = userData.email || '';
+    let role = userData.role;
+    if (!role) {
+      const lower = (email + ' ' + (userData.name || '')).toLowerCase();
+      if (lower.includes('admin')) role = 'admin';
+      else if (lower.includes('kitchen') || lower.includes('chef')) role = 'kitchen';
+      else role = 'user';
+    }
+    const fullUser = {
+      ...userData,
+      role
+    };
+    setCurrentUser(fullUser);
     setLoggedIn(true);
-    switchPage('home');
-    addToast(`Welcome back, ${user.name.split(' ')[0]}!`);
+    if (role === 'admin') switchPage('home');
+    else if (role === 'kitchen') switchPage('menu');
+    else switchPage('home');
+    addToast(`Signed in as ${fullUser.name} (${role.toUpperCase()})`);
   };
 
   const logout = () => {
+    setCurrentUser(null);
     setLoggedIn(false);
     switchPage('settings');
     addToast('Logged out');

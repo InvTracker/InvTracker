@@ -7,7 +7,15 @@ export const initialMenuItems = [];
 export const recommendedIds = [];
 export const stages = ['Placed', 'Preparing', 'Ready', 'Picked up'];
 export const initialOrders = [];
-export const initialUser = null;
+export const initialUser = {
+  name: 'Rohan Sharma',
+  email: 'rohan@student.campus.edu',
+  year: '2nd year',
+  rollNo: '2503A52924',
+  studentId: '2503A52924',
+  phone: '9876543210',
+  role: 'user'
+};
 
 export const spendingData = [
   { day: 'MON', val: 0, peak: false },
