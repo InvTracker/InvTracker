@@ -24,7 +24,7 @@ const Sidebar = () => {
         <div className="brand-mark">IT</div>
         <div>
           <div className="brand-name">InvenTrack</div>
-          <div className="brand-sub">Student</div>
+          <div className="brand-sub">User Portal</div>
         </div>
       </div>
 
@@ -67,8 +67,8 @@ const Sidebar = () => {
         <div className="who">
           <div className="avatar">{loggedIn && currentUser ? initials(currentUser.name) : 'GU'}</div>
           <div>
-            <div className="who-name">{loggedIn && currentUser ? currentUser.name : 'Guest Student'}</div>
-            <div className="who-role">{loggedIn && currentUser ? `${currentUser.year} · CSE` : 'Log in / Sign up'}</div>
+            <div className="who-name">{loggedIn && currentUser ? currentUser.name : 'Guest User'}</div>
+            <div className="who-role">{loggedIn && currentUser ? `${currentUser.year} · Dining & Store` : 'Log in / Sign up'}</div>
           </div>
           {loggedIn && (
             <button

@@ -23,14 +23,14 @@
         </div>
         <div>
           <div class="brand-name">InvenTrack</div>
-          <div class="brand-sub" id="brandSubRole">Student Portal</div>
+          <div class="brand-sub" id="brandSubRole">User Portal</div>
         </div>
       </div>
 
       <!-- Role-Adaptive M3 Navigation Groups -->
-      <!-- 1. STUDENT NAVIGATION -->
-      <nav class="nav role-nav" id="navGroupStudent">
-        <div class="nav-label">Student Menu</div>
+      <!-- 1. UNIFIED USER NAVIGATION (Campus Dining & Express Store) -->
+      <nav class="nav role-nav" id="navGroupUser">
+        <div class="nav-label">Campus Dining</div>
         <button class="nav-item active" data-page="home">
           <span class="material-symbols-outlined">home</span>
           <span>Home</span>
@@ -56,21 +56,9 @@
           <span class="material-symbols-outlined">auto_awesome</span>
           <span>For you</span>
         </button>
-        <button class="nav-item" data-page="feedback">
-          <span class="material-symbols-outlined">rate_review</span>
-          <span>Feedback</span>
-        </button>
-        <div class="nav-label">System</div>
-        <button class="nav-item" data-page="settings">
-          <span class="material-symbols-outlined">settings</span>
-          <span>Account &amp; Auth</span>
-        </button>
-      </nav>
 
-      <!-- 2. SHOPPER NAVIGATION -->
-      <nav class="nav role-nav" id="navGroupShopper" style="display:none;">
-        <div class="nav-label">Express Shopper</div>
-        <button class="nav-item active" data-page="shopper-store">
+        <div class="nav-label">Express Store</div>
+        <button class="nav-item" data-page="shopper-store">
           <span class="material-symbols-outlined">storefront</span>
           <span>Fast-Track Store</span>
         </button>
@@ -83,9 +71,19 @@
           <span class="material-symbols-outlined">confirmation_number</span>
           <span>Token Receipts</span>
         </button>
+
+        <div class="nav-label">Preferences</div>
+        <button class="nav-item" data-page="feedback">
+          <span class="material-symbols-outlined">rate_review</span>
+          <span>Feedback</span>
+        </button>
+        <button class="nav-item" data-page="settings">
+          <span class="material-symbols-outlined">settings</span>
+          <span>Account &amp; Access</span>
+        </button>
       </nav>
 
-      <!-- 3. KITCHEN NAVIGATION -->
+      <!-- 2. KITCHEN NAVIGATION -->
       <nav class="nav role-nav" id="navGroupKitchen" style="display:none;">
         <div class="nav-label">Back of House</div>
         <button class="nav-item active" data-page="kitchen-kanban">
@@ -107,7 +105,7 @@
         </button>
       </nav>
 
-      <!-- 4. ADMIN NAVIGATION -->
+      <!-- 3. ADMIN NAVIGATION -->
       <nav class="nav role-nav" id="navGroupAdmin" style="display:none;">
         <div class="nav-label">Management</div>
         <button class="nav-item active" data-page="admin-overview">
@@ -128,10 +126,10 @@
       <div class="sidebar-foot">
         <button class="nav-item" id="sidebarProfileBtn" data-page="settings" style="margin-bottom:10px; padding:6px 12px;">
           <div class="who">
-            <div class="avatar" id="sideAvatar">GU</div>
+            <div class="avatar" id="sideAvatar">RS</div>
             <div>
-              <div class="who-name" id="sideName">Guest Student</div>
-              <div class="who-role" id="sideRole">Log in / Sign up</div>
+              <div class="who-name" id="sideName">Rohan Sharma</div>
+              <div class="who-role" id="sideRole">Campus User &middot; Dining &amp; Store</div>
             </div>
           </div>
         </button>
@@ -150,13 +148,9 @@
 
         <!-- M3 Role Switcher Segmented Buttons -->
         <div class="role-switcher" id="roleSwitcher" title="Switch active persona">
-          <button class="role-btn active" data-role="student">
-            <span class="material-symbols-outlined" style="font-size:16px;">school</span>
-            <span>Student</span>
-          </button>
-          <button class="role-btn" data-role="shopper">
-            <span class="material-symbols-outlined" style="font-size:16px;">shopping_basket</span>
-            <span>Shopper</span>
+          <button class="role-btn active" data-role="user">
+            <span class="material-symbols-outlined" style="font-size:16px;">person</span>
+            <span>User</span>
           </button>
           <button class="role-btn" data-role="kitchen">
             <span class="material-symbols-outlined" style="font-size:16px;">skillet</span>
