@@ -135,6 +135,65 @@ const CAMPUS_DEMO_FIXTURE = {
 const STORAGE_KEY = 'inventrack_m3_state';
 const stages = ['Placed', 'Preparing', 'Ready', 'Picked up'];
 
+// Comprehensive Role-Based Access Control (RBAC) & Permissions Matrix
+const ROLE_PERMISSIONS = {
+  student: {
+    label: 'Student Portal',
+    badgeText: 'Student (Store Access Only)',
+    canViewStore: true,
+    canOrder: true,
+    canViewKitchen: false,
+    canViewAdmin: false,
+    canEditMenu: false,
+    canAdjustStock: false,
+    allowedPages: ['home', 'menu', 'cart', 'orders', 'spending', 'foryou', 'feedback', 'settings']
+  },
+  shopper: {
+    label: 'Express Shopper',
+    badgeText: 'Shopper (Fast-Track Store)',
+    canViewStore: true,
+    canOrder: true,
+    canViewKitchen: false,
+    canViewAdmin: false,
+    canEditMenu: false,
+    canAdjustStock: false,
+    allowedPages: ['shopper-store', 'shopper-cart', 'shopper-receipts', 'settings']
+  },
+  kitchen: {
+    label: 'Kitchen & Staff',
+    badgeText: 'Kitchen Staff (Back of House)',
+    canViewStore: false,
+    canOrder: false,
+    canViewKitchen: true,
+    canViewAdmin: false,
+    canEditMenu: false,
+    canAdjustStock: true, // Kitchen can adjust live stock ("what item is how much left")
+    allowedPages: ['kitchen-kanban', 'kitchen-stock', 'kitchen-pos', 'kitchen-feedback', 'settings']
+  },
+  admin: {
+    label: 'Admin Portal',
+    badgeText: 'Campus Administrator',
+    canViewStore: true,
+    canOrder: true,
+    canViewKitchen: true,
+    canViewAdmin: true,
+    canEditMenu: true,    // Admin can add/edit menu details
+    canAdjustStock: true, // Admin can adjust stock
+    allowedPages: ['admin-overview', 'admin-audit', 'admin-items', 'kitchen-kanban', 'kitchen-stock', 'home', 'menu', 'settings']
+  }
+};
+
+const DEFAULT_STUDENT_USER = {
+  id: 'std-2503',
+  name: 'Rohan Sharma',
+  studentId: '2503A52924',
+  rollNo: '2503A52924',
+  year: '2nd year',
+  phone: '9876543210',
+  balance: 450,
+  role: 'student'
+};
+
 class InvenTrackStore {
   constructor() {
     this.listeners = [];
@@ -142,7 +201,7 @@ class InvenTrackStore {
   }
 
   loadInitialState() {
-    const MIGRATION_KEY = 'inventrack_empty_default_v1';
+    const MIGRATION_KEY = 'inventrack_student_permissions_v1';
     if (!localStorage.getItem(MIGRATION_KEY)) {
       localStorage.removeItem(STORAGE_KEY);
       localStorage.setItem(MIGRATION_KEY, 'true');
@@ -160,10 +219,11 @@ class InvenTrackStore {
           cart: parsed.cart || {},
           shopperCart: parsed.shopperCart || {},
           posCart: parsed.posCart || {},
-          currentUser: parsed.currentUser || null,
-          loggedIn: parsed.loggedIn || false,
-          activeRole: parsed.activeRole || 'student',
-          activePage: parsed.activePage || 'home',
+          currentUser: parsed.currentUser || DEFAULT_STUDENT_USER,
+          loggedIn: true, // Details ready at start as requested (no signin page forced)
+          activeRole: 'student', // When student opens website, defaults to student store
+          activePage: parsed.activePage && ROLE_PERMISSIONS.student.allowedPages.includes(parsed.activePage) ? parsed.activePage : 'home',
+          staffUnlocked: !!parsed.staffUnlocked,
           selectedPaymentMethod: 'Campus UPI',
           activeCat: 'All',
           counterFilter: 'All'
@@ -181,10 +241,11 @@ class InvenTrackStore {
       cart: {},
       shopperCart: {},
       posCart: {},
-      currentUser: null,
-      loggedIn: false,
+      currentUser: DEFAULT_STUDENT_USER,
+      loggedIn: true, // Details loaded at start without login page
       activeRole: 'student',
       activePage: 'home',
+      staffUnlocked: false,
       selectedPaymentMethod: 'Campus UPI',
       activeCat: 'All',
       counterFilter: 'All'
@@ -205,7 +266,8 @@ class InvenTrackStore {
           currentUser: this.state.currentUser,
           loggedIn: this.state.loggedIn,
           activeRole: this.state.activeRole,
-          activePage: this.state.activePage
+          activePage: this.state.activePage,
+          staffUnlocked: this.state.staffUnlocked
         })
       );
     } catch (e) {
@@ -297,7 +359,33 @@ class InvenTrackStore {
     this.save();
   }
 
+  hasPermission(permName) {
+    const role = this.state.activeRole || 'student';
+    const config = ROLE_PERMISSIONS[role] || ROLE_PERMISSIONS.student;
+    return !!config[permName];
+  }
+
+  toggleStaffUnlock() {
+    this.state.staffUnlocked = !this.state.staffUnlocked;
+    if (!this.state.staffUnlocked) {
+      if (this.state.activeRole === 'kitchen' || this.state.activeRole === 'admin') {
+        this.state.activeRole = 'student';
+        this.state.activePage = 'home';
+      }
+      toast('🔒 Switched to Student View. Kitchen & Admin access restricted.', 'lock');
+    } else {
+      toast('🔓 Staff Mode unlocked for testing. Kitchen & Admin portals now accessible.', 'admin_panel_settings');
+    }
+    this.save();
+  }
+
   setRole(role) {
+    // Restrict access to kitchen and admin for students unless unlocked
+    if ((role === 'kitchen' || role === 'admin') && !this.state.staffUnlocked) {
+      toast('🔒 Access Restricted: Kitchen and Admin portals are restricted to authorized staff. Students can only view the store.', 'error');
+      return;
+    }
+
     this.state.activeRole = role;
     if (role === 'student') this.state.activePage = 'home';
     else if (role === 'shopper') this.state.activePage = 'shopper-store';
@@ -307,12 +395,30 @@ class InvenTrackStore {
   }
 
   setPage(page) {
+    const role = this.state.activeRole || 'student';
+    const config = ROLE_PERMISSIONS[role] || ROLE_PERMISSIONS.student;
+
+    // Validate page permission
+    if (config.allowedPages && !config.allowedPages.includes(page)) {
+      if (page.startsWith('kitchen-') || page.startsWith('admin-')) {
+        toast('🔒 Access Restricted: Students only have access to the store, not Kitchen or Admin pages.', 'error');
+        this.state.activePage = 'home';
+        this.save();
+        return;
+      }
+    }
+
     this.state.activePage = page;
     this.save();
   }
 
-  // Stock Adjustment
+  // Stock Adjustment - Protected by canAdjustStock permission
   adjustStock(itemId, delta) {
+    if (!this.hasPermission('canAdjustStock')) {
+      toast('🔒 Permission Denied: Students cannot alter item stock levels or remaining quantities.', 'error');
+      return;
+    }
+
     const item = this.state.menuItems.find((m) => m.id === itemId);
     if (!item) return;
     const oldStock = item.stock;
@@ -328,11 +434,41 @@ class InvenTrackStore {
   }
 
   setStockZero(itemId) {
+    if (!this.hasPermission('canAdjustStock')) {
+      toast('🔒 Permission Denied: Only kitchen staff and admin can alter item availability.', 'error');
+      return;
+    }
+
     const item = this.state.menuItems.find((m) => m.id === itemId);
     if (!item) return;
     item.stock = 0;
     toast(`🔴 Marked "${item.name}" as Out of Stock`, 'cancel');
     this.save();
+  }
+
+  // Menu Catalog Modification - Protected by canEditMenu permission
+  addMenuItem(itemData) {
+    if (!this.hasPermission('canEditMenu')) {
+      toast('🔒 Permission Denied: Students cannot add or modify menu catalog items.', 'error');
+      return false;
+    }
+
+    const newItem = {
+      id: `item-${Date.now()}`,
+      name: itemData.name,
+      emoji: itemData.emoji || 'restaurant',
+      cat: itemData.cat || 'Mains',
+      counter: itemData.counter || 'Counter 1 (Hot Meals)',
+      price: parseFloat(itemData.price) || 50,
+      stock: parseInt(itemData.stock, 10) || 0,
+      lowThreshold: parseInt(itemData.lowThreshold, 10) || 5,
+      restockTime: itemData.restockTime || '15 min'
+    };
+
+    this.state.menuItems.push(newItem);
+    this.save();
+    toast(`Added "${newItem.name}" to menu catalog`, 'check_circle');
+    return true;
   }
 
   // Cart operations (Student)
@@ -506,25 +642,6 @@ class InvenTrackStore {
     toast('Thanks — feedback recorded!', 'thumb_up');
     this.save();
   }
-
-  // Add Item to Catalog
-  addMenuItem(itemData) {
-    const id = `item-${Date.now()}`;
-    const newItem = {
-      id,
-      name: itemData.name || 'New Item',
-      emoji: itemData.emoji || 'restaurant',
-      price: Number(itemData.price) || 50,
-      cat: itemData.cat || 'Snacks',
-      counter: itemData.counter || 'Counter 2 (Quick Bites)',
-      stock: Number(itemData.stock) || 20,
-      lowThreshold: Number(itemData.lowThreshold) || 5,
-      restockTime: itemData.restockTime || '15 min'
-    };
-    this.state.menuItems.push(newItem);
-    toast(`Injected "${newItem.name}" into menu catalog`, 'add_circle');
-    this.save();
-  }
 }
 
 // Global Store Instance
@@ -610,16 +727,38 @@ const roleLabels = {
 function renderShell(state) {
   const { activeRole, activePage } = state;
 
-  // 1. Role Switcher Segmented Buttons
+  // 1. Role Switcher Segmented Buttons with permission locking
   $$('#roleSwitcher .role-btn').forEach((btn) => {
-    btn.classList.toggle('active', btn.dataset.role === activeRole);
+    const role = btn.dataset.role;
+    btn.classList.toggle('active', role === activeRole);
+
+    const isStaffRole = role === 'kitchen' || role === 'admin';
+    const isRestricted = isStaffRole && !state.staffUnlocked;
+    btn.classList.toggle('restricted', isRestricted);
+
+    // Dynamic lock indicator for restricted roles
+    let lockIcon = btn.querySelector('.perm-lock');
+    if (isRestricted) {
+      if (!lockIcon) {
+        const span = document.createElement('span');
+        span.className = 'material-symbols-outlined perm-lock';
+        span.textContent = 'lock';
+        btn.appendChild(span);
+      }
+      btn.title = `${roleLabels[role]} (Restricted: Staff Only)`;
+    } else {
+      if (lockIcon) lockIcon.remove();
+      btn.title = `Switch to ${roleLabels[role]}`;
+    }
   });
 
   // 2. Sidebar Brand Subtitle
   const brandSub = $('#brandSubRole');
-  if (brandSub) brandSub.textContent = roleLabels[activeRole] || 'Portal';
+  if (brandSub) {
+    brandSub.textContent = state.activeRole === 'student' ? 'Student Portal (Store)' : (roleLabels[activeRole] || 'Portal');
+  }
 
-  // 3. Toggle Sidebar Nav Groups
+  // 3. Toggle Sidebar Nav Groups with strict permission filtering
   const navGroups = {
     student: $('#navGroupStudent'),
     shopper: $('#navGroupShopper'),
@@ -628,7 +767,15 @@ function renderShell(state) {
   };
 
   Object.entries(navGroups).forEach(([role, navEl]) => {
-    if (navEl) navEl.style.display = role === activeRole ? 'flex' : 'none';
+    if (navEl) {
+      if (role === 'kitchen' && !store.hasPermission('canViewKitchen')) {
+        navEl.style.display = 'none';
+      } else if (role === 'admin' && !store.hasPermission('canViewAdmin')) {
+        navEl.style.display = 'none';
+      } else {
+        navEl.style.display = role === activeRole ? 'flex' : 'none';
+      }
+    }
   });
 
   // 4. Update Nav Active Item
@@ -641,7 +788,7 @@ function renderShell(state) {
   const targetPage = $(`#page-${activePage}`);
   if (targetPage) targetPage.classList.add('active');
 
-  // 6. Update Dev Fixture Bar Status
+  // 6. Update Dev Fixture Bar Status & Controls
   const badge = $('#dataModeBadge');
   const stats = $('#dataStatsText');
   if (badge && stats) {
@@ -656,6 +803,12 @@ function renderShell(state) {
   const clearTopBtn = $('#clearDataBtnTop');
   if (clearTopBtn) {
     clearTopBtn.style.display = state.menuItems.length > 0 ? 'inline-flex' : 'none';
+  }
+
+  // Gated Add Item Button - Only visible if user has permission to edit menu details
+  const openItemBtn = $('#openAddItemModalBtn');
+  if (openItemBtn) {
+    openItemBtn.style.display = store.hasPermission('canEditMenu') ? 'inline-flex' : 'none';
   }
 
   // 7. Badges
@@ -680,22 +833,62 @@ function renderShell(state) {
     kitchenBadge.classList.toggle('hide', inPrepCount === 0);
   }
 
-  // 8. User Profile in Sidebar
+  // 8. User Profile in Sidebar & Account Details
   const sideAvatar = $('#sideAvatar');
   const sideName = $('#sideName');
   const sideRole = $('#sideRole');
-  if (state.loggedIn && state.currentUser) {
+  if (state.currentUser) {
     if (sideAvatar) sideAvatar.textContent = initials(state.currentUser.name);
     if (sideName) sideName.textContent = state.currentUser.name;
-    if (sideRole) sideRole.textContent = `${state.currentUser.year || 'Student'} · Dining`;
-    if ($('#accountPanel')) $('#accountPanel').style.display = 'block';
-    if ($('#authPanel')) $('#authPanel').style.display = 'none';
+    if (sideRole) sideRole.textContent = `${state.currentUser.year || 'Student'} · Store Access`;
+
+    // Populate Settings Account Panel
+    const accPanel = $('#accountPanel');
+    const authPanel = $('#authPanel');
+    if (accPanel) accPanel.style.display = 'block';
+    if (authPanel) authPanel.style.display = 'none';
+
+    if ($('#accName')) $('#accName').textContent = state.currentUser.name;
+    if ($('#accYear')) $('#accYear').textContent = state.currentUser.year;
+    if ($('#accRoll')) $('#accRoll').textContent = state.currentUser.rollNo;
+    if ($('#accStudentId')) $('#accStudentId').textContent = state.currentUser.studentId;
+    if ($('#accPhone')) $('#accPhone').textContent = state.currentUser.phone;
+
+    // Update permission indicator badges in settings
+    const permMenuEl = $('#permMenuDetails');
+    if (permMenuEl) {
+      const canEdit = store.hasPermission('canEditMenu');
+      permMenuEl.className = `perm-pill ${canEdit ? 'granted' : 'restricted'}`;
+      permMenuEl.innerHTML = `<span class="material-symbols-outlined" style="font-size:12px;">${canEdit ? 'check' : 'lock'}</span><span>${canEdit ? 'Full Edit Access' : 'Read Only (Students Cannot Edit)'}</span>`;
+    }
+
+    const permStockEl = $('#permStockAdjust');
+    if (permStockEl) {
+      const canAdj = store.hasPermission('canAdjustStock');
+      permStockEl.className = `perm-pill ${canAdj ? 'granted' : 'restricted'}`;
+      permStockEl.innerHTML = `<span class="material-symbols-outlined" style="font-size:12px;">${canAdj ? 'check' : 'lock'}</span><span>${canAdj ? 'Full Adjust Access' : 'Read Only (Students Cannot Alter Stock)'}</span>`;
+    }
+
+    const permBackHouseEl = $('#permBackHouse');
+    if (permBackHouseEl) {
+      const canBack = store.hasPermission('canViewKitchen');
+      permBackHouseEl.className = `perm-pill ${canBack ? 'granted' : 'restricted'}`;
+      permBackHouseEl.innerHTML = `<span class="material-symbols-outlined" style="font-size:12px;">${canBack ? 'check' : 'lock'}</span><span>${canBack ? 'Accessible' : 'Restricted to Kitchen Staff'}</span>`;
+    }
+
+    // Toggle Staff Mode button in settings
+    const toggleStaffBtn = $('#toggleStaffUnlockBtn');
+    if (toggleStaffBtn) {
+      toggleStaffBtn.textContent = state.staffUnlocked
+        ? '🔒 Lock Back of House (Return to Student Store View)'
+        : '🔓 Unlock Staff Mode for Testing (Kitchen & Admin Access)';
+    }
   } else {
     if (sideAvatar) sideAvatar.textContent = 'GU';
     if (sideName) sideName.textContent = 'Guest Student';
-    if (sideRole) sideRole.textContent = 'Log in / Sign up';
-    if ($('#accountPanel')) $('#accountPanel').style.display = 'none';
-    if ($('#authPanel')) $('#authPanel').style.display = 'block';
+    if (sideRole) sideRole.textContent = 'Store Access';
+    if ($('#accountPanel')) $('#accountPanel').style.display = 'block';
+    if ($('#authPanel')) $('#authPanel').style.display = 'none';
   }
 }
 
@@ -1738,6 +1931,10 @@ function setupEventHandlers() {
       const btn = e.target.closest('.role-btn[data-role]');
       if (!btn) return;
       const newRole = btn.dataset.role;
+      if ((newRole === 'kitchen' || newRole === 'admin') && !store.state.staffUnlocked) {
+        toast('🔒 Access Restricted: Kitchen & Admin portals require staff authorization. Students can only view the store.', 'error');
+        return;
+      }
       store.setRole(newRole);
       toast(`Switched to ${roleLabels[newRole]}`, 'sync');
     });
@@ -2100,10 +2297,14 @@ function setupEventHandlers() {
     });
   }
 
-  // 17. Add Item Modal / Page Form
+  // 17. Add Item Modal / Page Form - Protected by canEditMenu permission
   const openItemBtn = $('#openAddItemModalBtn');
   if (openItemBtn) {
     openItemBtn.addEventListener('click', () => {
+      if (!store.hasPermission('canEditMenu')) {
+        toast('🔒 Permission Denied: Students cannot alter menu details or add items.', 'error');
+        return;
+      }
       store.setRole('admin');
       store.setPage('admin-items');
     });
@@ -2112,6 +2313,10 @@ function setupEventHandlers() {
   const openItemBtnStock = $('#openAddItemModalBtnStock');
   if (openItemBtnStock) {
     openItemBtnStock.addEventListener('click', () => {
+      if (!store.hasPermission('canEditMenu')) {
+        toast('🔒 Permission Denied: Students cannot alter menu details or add items.', 'error');
+        return;
+      }
       store.setRole('admin');
       store.setPage('admin-items');
     });
@@ -2120,7 +2325,19 @@ function setupEventHandlers() {
   const openItemBtnAdmin = $('#openAddItemModalBtnAdmin');
   if (openItemBtnAdmin) {
     openItemBtnAdmin.addEventListener('click', () => {
+      if (!store.hasPermission('canEditMenu')) {
+        toast('🔒 Permission Denied: Students cannot alter menu details or add items.', 'error');
+        return;
+      }
       store.setPage('admin-items');
+    });
+  }
+
+  // Staff Mode Testing Toggle
+  const toggleStaffBtn = $('#toggleStaffUnlockBtn');
+  if (toggleStaffBtn) {
+    toggleStaffBtn.addEventListener('click', () => {
+      store.toggleStaffUnlock();
     });
   }
 

@@ -517,6 +517,47 @@ main {
   font-weight: 600;
 }
 
+.role-btn.restricted {
+  opacity: 0.6;
+  cursor: not-allowed;
+  position: relative;
+}
+
+.role-btn.restricted:hover {
+  background-color: rgba(186, 26, 26, 0.08);
+  color: var(--md-sys-color-error);
+}
+
+.role-btn .perm-lock {
+  font-size: 13px;
+  color: var(--md-sys-color-outline);
+  margin-left: 2px;
+}
+
+.role-btn.restricted:hover .perm-lock {
+  color: var(--md-sys-color-error);
+}
+
+.perm-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  border-radius: var(--md-sys-shape-corner-full);
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.perm-pill.granted {
+  background-color: rgba(30, 108, 56, 0.12);
+  color: #1e6c38;
+}
+
+.perm-pill.restricted {
+  background-color: rgba(186, 26, 26, 0.12);
+  color: #ba1a1a;
+}
+
 /* Theme Toggle Slider in M3 */
 .theme-toggle {
   display: flex;
