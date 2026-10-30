@@ -29,3 +29,4 @@ const catalog = await inventoryApi.getItems();
 // 3. Advance an order on the Kitchen Kanban board
 await ordersApi.updateStatus('ord-101', 'Ready');
 ```
+

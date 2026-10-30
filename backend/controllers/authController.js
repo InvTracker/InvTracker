@@ -54,3 +54,4 @@ export const getProfile = (req, res) => {
   const user = DEMO_ACCOUNTS[role] || DEMO_ACCOUNTS.user;
   return res.status(200).json({ success: true, user });
 };
+

@@ -17,3 +17,4 @@ export const ordersApi = {
     return apiClient.patch(`/orders/${orderId}/status`, { status: newStatus });
   }
 };
+

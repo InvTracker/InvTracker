@@ -13,3 +13,4 @@ export const authApi = {
     return apiClient.get(`/auth/profile?role=${role}`);
   }
 };
+

@@ -33,3 +33,4 @@ npm install
 npm start
 ```
 Server runs on `http://localhost:5000` with live health check at `/api/health`.
+

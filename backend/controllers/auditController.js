@@ -34,3 +34,4 @@ export const exportCSV = (req, res) => {
   res.setHeader('Content-Disposition', 'attachment; filename="inventrack_audit_report.csv"');
   return res.status(200).send(csv);
 };
+

@@ -40,3 +40,4 @@ source/
     ├── SettingsPage.jsx     # Account credentials & permission audit
     └── FeedbackPage.jsx     # Student dining ratings & feedback feed
 ```
+

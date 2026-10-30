@@ -17,3 +17,4 @@ export const inventoryApi = {
     return apiClient.post('/inventory/items', itemData);
   }
 };
+

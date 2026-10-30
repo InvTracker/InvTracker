@@ -24,3 +24,4 @@ frontend/
   * **Kitchen Staff (Back of House)**: 4-stage KDS Kanban queue board, 1-tap stock capacity adjuster, counter billing POS.
   * **Campus Admin**: Executive revenue metrics, demand velocity curves, procurement audit & CSV exports.
 * **Zero Dependencies**: Pure HTML5, modern CSS3, and ES6 JavaScript — runs in any modern browser without a build step.
+
