@@ -291,7 +291,7 @@ class InvenTrackStore {
     if (!isLoggedIn) {
       // Unauthenticated: Redirect directly to Landing Page
       try {
-        window.location.replace('landing.html');
+        window.location.replace(window.location.protocol === 'file:' ? 'landing.html' : '/landing');
       } catch (e) {}
 
       return {
@@ -548,7 +548,7 @@ class InvenTrackStore {
     this.save();
     toast('Logged out successfully. Redirecting to landing page...', 'logout');
     setTimeout(() => {
-      window.location.replace('landing.html');
+      window.location.replace(window.location.protocol === 'file:' ? 'landing.html' : '/landing');
     }, 600);
   }
 
@@ -2691,7 +2691,7 @@ try {
 window.addEventListener('storage', (e) => {
   if (e.key === 'invenTrack_user') {
     if (!e.newValue) {
-      window.location.replace('landing.html');
+      window.location.replace(window.location.protocol === 'file:' ? 'landing.html' : '/landing');
     } else {
       try {
         const user = JSON.parse(e.newValue);

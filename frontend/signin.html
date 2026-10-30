@@ -1520,7 +1520,7 @@
         let redirectedOpener = false;
         try {
           if (window.opener && !window.opener.closed) {
-            window.opener.location.href = 'index.html';
+            window.opener.location.href = window.location.protocol === 'file:' ? 'index.html' : '/';
             try { window.opener.focus(); } catch(err){}
             redirectedOpener = true;
           }
@@ -1535,9 +1535,9 @@
           } catch(e){}
         }
 
-        // Safety navigation: Navigate current tab to index.html
+        // Safety navigation: Navigate current tab to dashboard
         setTimeout(() => {
-          window.location.href = 'index.html';
+          window.location.href = window.location.protocol === 'file:' ? 'index.html' : '/';
         }, 800);
       }, 500);
     }
