@@ -1,4 +1,4 @@
-﻿import { dataStore } from '../models/dataStore.js';
+import { dataStore } from '../models/dataStore.js';
 
 export const getOrders = (req, res) => {
   const { status, counter } = req.query;

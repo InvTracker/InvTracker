@@ -1,4 +1,4 @@
-﻿export { apiClient } from './apiClient.js';
+export { apiClient } from './apiClient.js';
 export { authApi } from './authApi.js';
 export { inventoryApi } from './inventoryApi.js';
 export { ordersApi } from './ordersApi.js';

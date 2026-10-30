@@ -1,4 +1,4 @@
-﻿
+
 const API_BASE_URL = typeof window !== 'undefined' && window.INVENTRACK_API_URL 
   ? window.INVENTRACK_API_URL 
   : 'http://localhost:5000/api';

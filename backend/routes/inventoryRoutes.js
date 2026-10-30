@@ -1,4 +1,4 @@
-﻿import { Router } from 'express';
+import { Router } from 'express';
 import { getItems, adjustStock, createItem } from '../controllers/inventoryController.js';
 
 const router = Router();

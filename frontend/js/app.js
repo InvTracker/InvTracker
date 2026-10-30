@@ -1,4 +1,4 @@
-﻿
+
 const DATA_INJECTION_SLOT = {
   menuItems: [],
   orders: [],
@@ -518,7 +518,7 @@ class InvenTrackStore {
     const oldStock = item.stock;
     item.stock = Math.max(0, item.stock + delta);
     if (item.stock === 0 && oldStock > 0) {
-      toast(`âš ï¸ "${item.name}" is now OUT OF STOCK`, 'warning');
+      toast(`âš ï¸⚠️ "${item.name}" is now OUT OF STOCK`, 'warning');
     } else if (item.stock > 0 && oldStock === 0) {
       toast(`ðŸŸ¢ "${item.name}" is RESTOCKED (${item.stock} available)`, 'check_circle');
     } else {
@@ -1888,7 +1888,7 @@ function renderAdminAudit(state) {
           <td>${sbHTML(status)}</td>
           <td>
             <span style="color:${isCritical ? 'var(--md-sys-color-low)' : 'var(--md-sys-color-avail)'}; font-weight:600; font-size:12px;">
-              ${isCritical ? 'âš ï¸ Urgent Restock' : 'âœ“ Normal'}
+              ${isCritical ? 'âš ï¸⚠️ Urgent Restock' : 'âœ“ Normal'}
             </span>
           </td>
           <td>
@@ -2333,7 +2333,7 @@ function setupEventHandlers() {
   if (clearTopBtnEl) {
     clearTopBtnEl.addEventListener('click', () => {
       store.resetToEmptyState();
-      toast('ðŸ—‘ï¸ All data cleared. Website is now empty [].', 'delete_sweep');
+      toast('ðŸ—‘ï¸ All data cleared. Website is now empty [].', 'delete_sweep');
     });
   }
 
@@ -2349,7 +2349,7 @@ function setupEventHandlers() {
   if (resetDataBtn) {
     resetDataBtn.addEventListener('click', () => {
       store.resetToEmptyState();
-      toast('ðŸ—‘ï¸ State reset to empty schema []', 'restart_alt');
+      toast('ðŸ—‘ï¸ State reset to empty schema []', 'restart_alt');
     });
   }
   const openItemBtn = $('#openAddItemModalBtn');

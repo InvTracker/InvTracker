@@ -1,4 +1,4 @@
-﻿
+
 export const DEMO_ACCOUNTS = {
   admin: {
     id: 'usr-admin-1',

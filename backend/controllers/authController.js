@@ -1,4 +1,4 @@
-﻿import { dataStore, DEMO_ACCOUNTS } from '../models/dataStore.js';
+import { dataStore, DEMO_ACCOUNTS } from '../models/dataStore.js';
 
 export const login = (req, res) => {
   const { loginId, role } = req.body;

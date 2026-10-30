@@ -1,4 +1,4 @@
-﻿import { dataStore } from '../models/dataStore.js';
+import { dataStore } from '../models/dataStore.js';
 
 export const getOverview = (req, res) => {
   const items = dataStore.getAllItems();
