@@ -1,0 +1,3680 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍽️</text></svg>">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>InvenTrack &mdash; Material 3 Campus Dining, Queue Tokens &amp; Inventory Platform</title>
+  <meta name="description" content="Next-generation Google Material Design 3 campus food ordering, cafe POS, live queue tokens and real-time inventory management platform.">
+
+  <!-- Google Material 3 Fonts & Material Symbols Outlined -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Roboto+Flex:wght@400;500;600;700;800&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..24,400,0,0&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/src/index.css">
+
+  <style>
+    /* ================= DESIGN TOKENS & EXPERT CSS SYSTEM ================= */
+    :root {
+      /* M3 Light Palette Tokens */
+      --md-sys-color-primary: #006874;
+      --md-sys-color-on-primary: #ffffff;
+      --md-sys-color-primary-container: #9eeffd;
+      --md-sys-color-on-primary-container: #001f24;
+
+      --md-sys-color-secondary: #4a6267;
+      --md-sys-color-on-secondary: #ffffff;
+      --md-sys-color-secondary-container: #cce8ea;
+      --md-sys-color-on-secondary-container: #051f23;
+
+      --md-sys-color-tertiary: #535e7d;
+      --md-sys-color-on-tertiary: #ffffff;
+      --md-sys-color-tertiary-container: #dae2ff;
+      --md-sys-color-on-tertiary-container: #0f1b36;
+
+      --md-sys-color-surface: #fbfdfd;
+      --md-sys-color-on-surface: #191c1d;
+      --md-sys-color-on-surface-variant: #3f484a;
+      --md-sys-color-surface-container-lowest: #ffffff;
+      --md-sys-color-surface-container-low: #f0f5f5;
+      --md-sys-color-surface-container: #eaf0f0;
+      --md-sys-color-surface-container-high: #e4e9ea;
+      --md-sys-color-surface-container-highest: #dee4e4;
+
+      --md-sys-color-outline: #6f797a;
+      --md-sys-color-outline-variant: #bfc8ca;
+
+      --md-sys-color-avail: #1e6c38;
+      --md-sys-color-avail-container: #d1f8d4;
+      --md-sys-color-on-avail-container: #00210a;
+
+      --md-sys-color-low: #855300;
+      --md-sys-color-low-container: #ffddb7;
+      --md-sys-color-on-low-container: #2a1700;
+
+      --md-sys-color-out: #ba1a1a;
+      --md-sys-color-out-container: #ffdad6;
+      --md-sys-color-on-out-container: #410002;
+      --md-sys-color-error: #ba1a1a;
+      --md-sys-color-error-container: #ffdad6;
+
+      --md-sys-typescale-body-font: 'Roboto', system-ui, -apple-system, sans-serif;
+      --md-sys-typescale-brand-font: 'Roboto Flex', system-ui, sans-serif;
+      --md-sys-shape-corner-small: 8px;
+      --md-sys-shape-corner-medium: 12px;
+      --md-sys-shape-corner-large: 20px;
+      --md-sys-shape-corner-full: 9999px;
+
+      --hero-gradient: radial-gradient(circle at 50% 8%, rgba(158, 239, 253, 0.45) 0%, rgba(251, 253, 253, 0) 72%);
+      --card-glass: rgba(255, 255, 255, 0.9);
+      --card-border: var(--md-sys-color-outline-variant, rgba(0, 0, 0, 0.08));
+      --brand-glow: 0 4px 20px rgba(0, 104, 116, 0.22);
+    }
+
+    /* ================= KITCHEN DARK THEME (M3 BACK OF HOUSE) ================= */
+    [data-theme="kitchen"],
+    [data-theme="dark"],
+    html[data-theme="kitchen"],
+    html[data-theme="dark"],
+    body[data-theme="kitchen"],
+    body[data-theme="dark"] {
+      --md-sys-color-primary: #82d3e0;
+      --md-sys-color-on-primary: #00363d;
+      --md-sys-color-primary-container: #004f58;
+      --md-sys-color-on-primary-container: #9eeffd;
+
+      --md-sys-color-secondary: #b1cbcf;
+      --md-sys-color-on-secondary: #1c3438;
+      --md-sys-color-secondary-container: #334a4e;
+      --md-sys-color-on-secondary-container: #cce8ea;
+
+      --md-sys-color-tertiary: #bcc6ea;
+      --md-sys-color-on-tertiary: #25304d;
+      --md-sys-color-tertiary-container: #3c4664;
+      --md-sys-color-on-tertiary-container: #dae2ff;
+
+      --md-sys-color-surface: #0e1415;
+      --md-sys-color-on-surface: #deebec;
+      --md-sys-color-on-surface-variant: #bfc8ca;
+      --md-sys-color-surface-container-lowest: #090f10;
+      --md-sys-color-surface-container-low: #171d1e;
+      --md-sys-color-surface-container: #1b2122;
+      --md-sys-color-surface-container-high: #252b2c;
+      --md-sys-color-surface-container-highest: #303637;
+
+      --md-sys-color-outline: #899294;
+      --md-sys-color-outline-variant: #3f484a;
+
+      --md-sys-color-avail: #81d892;
+      --md-sys-color-avail-container: #00531f;
+      --md-sys-color-on-avail-container: #9df5ad;
+
+      --md-sys-color-low: #ffb959;
+      --md-sys-color-low-container: #643d00;
+      --md-sys-color-on-low-container: #ffddb7;
+
+      --md-sys-color-out: #ffb4ab;
+      --md-sys-color-out-container: #93000a;
+      --md-sys-color-on-out-container: #ffdad6;
+      --md-sys-color-error: #ffb4ab;
+      --md-sys-color-error-container: #93000a;
+
+      --hero-gradient: radial-gradient(circle at 50% 8%, rgba(0, 104, 116, 0.35) 0%, rgba(14, 20, 21, 0) 72%);
+      --card-glass: rgba(23, 29, 30, 0.92);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --brand-glow: 0 4px 20px rgba(130, 211, 224, 0.25);
+    }
+
+    html {
+      background-color: var(--md-sys-color-surface, #fbfdfd);
+      color: var(--md-sys-color-on-surface, #191c1d);
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    html[data-theme="kitchen"],
+    html[data-theme="dark"] {
+      background-color: #0e1415 !important;
+      color: #deebec !important;
+    }
+
+    body {
+      background-color: var(--md-sys-color-surface, #fbfdfd);
+      color: var(--md-sys-color-on-surface, #191c1d);
+      font-family: var(--md-sys-typescale-body-font, 'Roboto', system-ui, sans-serif);
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+      line-height: 1.55;
+      transition: background-color 0.3s ease, color 0.3s ease;
+      scroll-behavior: smooth;
+    }
+
+    body[data-theme="kitchen"],
+    body[data-theme="dark"] {
+      background-color: #0e1415 !important;
+      color: #deebec !important;
+    }
+
+    /* Consistent Headline Gradient Design across all sections */
+    .highlight {
+      background: linear-gradient(135deg, var(--md-sys-color-primary, #006874) 0%, #0097a7 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: inline-block;
+    }
+
+    [data-theme="kitchen"] .highlight,
+    [data-theme="dark"] .highlight {
+      background: linear-gradient(135deg, #4dd0e1 0%, #80deea 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* Typewriter Blinking Caret */
+    .typing-caret {
+      display: inline-block;
+      color: var(--md-sys-color-primary, #006874);
+      font-weight: 300;
+      margin-left: 2px;
+      animation: blinkCaret 0.8s infinite;
+      vertical-align: baseline;
+    }
+
+    [data-theme="kitchen"] .typing-caret,
+    [data-theme="dark"] .typing-caret {
+      color: #4dd0e1;
+    }
+
+    @keyframes blinkCaret {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    .typing-caret.caret-fade {
+      transition: opacity 0.6s ease;
+      opacity: 0;
+    }
+
+    /* ================= DIVERSE HEADING ANIMATION STYLES ================= */
+
+    /* 2. Apple / Linear Staggered Word Lift & Blur */
+    .anim-word-clip {
+      display: inline-block;
+      overflow: hidden;
+      vertical-align: top;
+      margin-right: 0.26em;
+      line-height: 1.25;
+    }
+
+    .anim-word-item {
+      display: inline-block;
+      opacity: 0;
+      transform: translateY(115%) scale(0.96);
+      filter: blur(8px);
+      transition: transform 0.75s cubic-bezier(0.16, 1, 0.3, 1),
+                  opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1),
+                  filter 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: transform, opacity, filter;
+    }
+
+    .anim-word-item.is-revealed {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      filter: blur(0);
+    }
+
+    /* 3. 3D Perspective Flip & Unfold */
+    .anim-3d-flip-wrap {
+      display: inline-block;
+      perspective: 900px;
+      margin-right: 0.26em;
+      vertical-align: top;
+      line-height: 1.25;
+    }
+
+    .anim-3d-flip-word {
+      display: inline-block;
+      opacity: 0;
+      transform: rotateX(-75deg) translateY(22px);
+      transform-origin: 50% 100%;
+      transition: transform 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+                  opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: transform, opacity;
+    }
+
+    .anim-3d-flip-word.is-revealed {
+      opacity: 1;
+      transform: rotateX(0deg) translateY(0);
+    }
+
+    /* 4. Cyber Scramble & Terminal Decrypt Sparks */
+    .cyber-scramble-char {
+      display: inline-block;
+      transition: color 0.15s ease, text-shadow 0.15s ease;
+    }
+
+    .cyber-scramble-char.scrambling {
+      color: var(--md-sys-color-primary, #006874);
+      opacity: 0.88;
+      font-family: monospace;
+    }
+
+    [data-theme="kitchen"] .cyber-scramble-char.scrambling,
+    [data-theme="dark"] .cyber-scramble-char.scrambling {
+      color: #82d3e0;
+      text-shadow: 0 0 8px rgba(130, 211, 224, 0.6);
+    }
+
+    .cyber-scramble-char.locked {
+      animation: charLockSpark 0.4s ease-out;
+    }
+
+    @keyframes charLockSpark {
+      0% {
+        transform: scale(1.15);
+        color: #00875a;
+        text-shadow: 0 0 10px rgba(0, 135, 90, 0.6);
+      }
+      100% {
+        transform: scale(1);
+      }
+    }
+
+    /* 5. Shimmer Wave Word Glide */
+    .anim-shimmer-word {
+      display: inline-block;
+      margin-right: 0.26em;
+      opacity: 0;
+      transform: translateY(22px) scale(0.92);
+      transition: transform 0.75s cubic-bezier(0.34, 1.4, 0.64, 1),
+                  opacity 0.6s ease;
+      will-change: transform, opacity;
+      vertical-align: top;
+      line-height: 1.25;
+    }
+
+    .anim-shimmer-word.is-revealed {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    /* 6. Luminous Aura Reveal */
+    .anim-aura-heading {
+      opacity: 0;
+      transform: scale(0.94);
+      filter: blur(6px);
+      transition: transform 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+                  opacity 0.8s ease,
+                  filter 0.8s ease;
+      will-change: transform, opacity, filter;
+    }
+
+    .anim-aura-heading.is-revealed {
+      opacity: 1;
+      transform: scale(1);
+      filter: blur(0);
+    }
+
+    /* Gradient Preservation for Nested Highlight Words */
+    .highlight-text {
+      background: linear-gradient(135deg, var(--md-sys-color-primary, #006874) 0%, #0097a7 100%) !important;
+      -webkit-background-clip: text !important;
+      -webkit-text-fill-color: transparent !important;
+      display: inline-block;
+    }
+
+    [data-theme="kitchen"] .highlight-text,
+    [data-theme="dark"] .highlight-text {
+      background: linear-gradient(135deg, #4dd0e1 0%, #80deea 100%) !important;
+      -webkit-background-clip: text !important;
+      -webkit-text-fill-color: transparent !important;
+    }
+
+    /* ================= SCROLL SLIDE TRANSITIONS ================= */
+    .scroll-slide {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: opacity, transform;
+    }
+
+    /* Active State: sharp, bright, fully visible */
+    .scroll-slide.is-in-view {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Section Typography */
+    .section-eyebrow {
+      text-align: center;
+      font-size: 11.5px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-weight: 700;
+      color: var(--md-sys-color-primary, #006874);
+      margin-bottom: 8px;
+    }
+
+    .section-heading {
+      text-align: center;
+      font-family: var(--md-sys-typescale-brand-font, 'Roboto Flex', sans-serif);
+      font-size: 38px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: var(--md-sys-color-on-surface, #191c1d);
+      margin: 0 auto 12px;
+      max-width: 840px;
+      line-height: 1.2;
+      min-height: 1.25em; /* prevents layout jitter during typewriter */
+    }
+
+    @media (max-width: 768px) {
+      .section-heading {
+        font-size: 28px;
+      }
+    }
+
+    .section-subhead {
+      text-align: center;
+      font-size: 16px;
+      color: var(--md-sys-color-on-surface-variant, #3f484a);
+      max-width: 640px;
+      margin: 0 auto 38px;
+      line-height: 1.6;
+    }
+
+    /* ================= TOP NAVIGATION HEADER ================= */
+    .landing-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      background-color: rgba(251, 253, 253, 0.88);
+      border-bottom: 1px solid var(--card-border);
+      transition: background-color 0.3s;
+    }
+
+    [data-theme="kitchen"] .landing-header {
+      background-color: rgba(17, 24, 39, 0.92);
+    }
+
+    .nav-container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 14px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .brand-icon-box {
+      width: 42px;
+      height: 42px;
+      border-radius: var(--md-sys-shape-corner-medium, 12px);
+      background: linear-gradient(135deg, var(--md-sys-color-primary, #006874), #004f58);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: var(--brand-glow);
+    }
+
+    .brand-title-wrap {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .brand-title {
+      font-family: var(--md-sys-typescale-brand-font, 'Roboto Flex', sans-serif);
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--md-sys-color-on-surface);
+      line-height: 1.1;
+    }
+
+    .brand-tag {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-weight: 600;
+      color: var(--md-sys-color-primary, #006874);
+      margin-top: 2px;
+    }
+
+    [data-theme="kitchen"] .brand-tag {
+      color: #4dd0e1;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    /* Single High-Impact Sign In Pill Button on Top Right */
+    .btn-signin-nav {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13.5px;
+      font-weight: 600;
+      padding: 9px 22px;
+      border-radius: var(--md-sys-shape-corner-full, 99px);
+      text-decoration: none;
+      background: linear-gradient(135deg, var(--md-sys-color-primary, #006874) 0%, #004f58 100%);
+      color: #ffffff !important;
+      box-shadow: 0 4px 14px rgba(0, 104, 116, 0.3);
+      transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
+      white-space: nowrap;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    .btn-signin-nav:hover {
+      transform: translateY(-1.5px);
+      box-shadow: 0 6px 20px rgba(0, 104, 116, 0.45);
+    }
+
+    .theme-toggle-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--md-sys-color-surface-container, rgba(0,0,0,0.04));
+      border: 1px solid var(--card-border);
+      color: var(--md-sys-color-on-surface);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .theme-toggle-btn:hover {
+      background: var(--md-sys-color-surface-container-high, rgba(0,0,0,0.08));
+      transform: scale(1.05);
+    }
+
+    /* ================= 1. HERO SECTION ================= */
+    .hero-section {
+      position: relative;
+      background: var(--hero-gradient);
+      padding: 68px 24px 84px;
+      overflow: hidden;
+    }
+
+    .hero-container {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 48px;
+      align-items: center;
+    }
+
+    @media (max-width: 1024px) {
+      .hero-container {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background-color: var(--md-sys-color-secondary-container, #cce8ed);
+      color: var(--md-sys-color-on-secondary-container, #051f23);
+      font-size: 12px;
+      font-weight: 600;
+      padding: 6px 14px;
+      border-radius: var(--md-sys-shape-corner-full, 99px);
+      margin-bottom: 22px;
+      letter-spacing: 0.02em;
+      animation: heroBadgePop 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes heroBadgePop {
+      0% { transform: translateY(-10px) scale(0.9); opacity: 0; }
+      100% { transform: translateY(0) scale(1); opacity: 1; }
+    }
+
+    .hero-badge .pulse-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background-color: var(--md-sys-color-primary, #006874);
+      animation: pulseAnim 1.8s infinite;
+    }
+
+    @keyframes pulseAnim {
+      0% { transform: scale(0.9); opacity: 0.7; }
+      50% { transform: scale(1.4); opacity: 1; }
+      100% { transform: scale(0.9); opacity: 0.7; }
+    }
+
+    .hero-headline {
+      font-family: var(--md-sys-typescale-brand-font, 'Roboto Flex', sans-serif);
+      font-size: 52px;
+      line-height: 1.15;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      margin: 0 0 20px;
+      color: var(--md-sys-color-on-surface);
+    }
+
+    @media (max-width: 768px) {
+      .hero-headline {
+        font-size: 38px;
+      }
+    }
+
+    .hero-subhead {
+      font-size: 17.5px;
+      line-height: 1.6;
+      color: var(--md-sys-color-on-surface-variant);
+      margin: 0 0 32px;
+      max-width: 580px;
+    }
+
+    .hero-cta-group {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 36px;
+    }
+
+    .btn-hero-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 15px;
+      font-weight: 600;
+      padding: 13px 28px;
+      border-radius: var(--md-sys-shape-corner-full, 99px);
+      text-decoration: none;
+      background: linear-gradient(135deg, var(--md-sys-color-primary, #006874) 0%, #004f58 100%);
+      color: #ffffff !important;
+      box-shadow: 0 6px 18px rgba(0, 104, 116, 0.35);
+      transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
+    }
+
+    .btn-hero-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0, 104, 116, 0.45);
+    }
+
+    .btn-hero-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14.5px;
+      font-weight: 600;
+      padding: 13px 22px;
+      border-radius: var(--md-sys-shape-corner-full, 99px);
+      text-decoration: none;
+      background: var(--md-sys-color-surface-container, rgba(0,0,0,0.04));
+      color: var(--md-sys-color-on-surface);
+      border: 1px solid var(--card-border);
+      transition: all 0.2s;
+    }
+
+    .btn-hero-secondary:hover {
+      background: var(--md-sys-color-surface-container-high, rgba(0,0,0,0.08));
+      color: var(--md-sys-color-primary);
+    }
+
+    .hero-trust {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      padding-top: 20px;
+      border-top: 1px solid var(--card-border);
+      font-size: 13px;
+      color: var(--md-sys-color-on-surface-variant);
+      flex-wrap: wrap;
+    }
+
+    .trust-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 500;
+    }
+
+    .trust-item span.icon {
+      color: var(--md-sys-color-avail, #00875a);
+      font-size: 17px;
+    }
+
+    /* Hero Live Interactive Stepper Card with Gentle Floating Levitation */
+    .hero-preview-wrapper {
+      position: relative;
+      animation: heroFloatCard 6s ease-in-out infinite alternate;
+    }
+
+    @keyframes heroFloatCard {
+      0% { transform: translateY(0px) rotate(0deg); }
+      100% { transform: translateY(-8px) rotate(0.4deg); }
+    }
+
+    .preview-card-outer {
+      background: var(--card-glass);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--card-border);
+      border-radius: var(--md-sys-shape-corner-large, 20px);
+      padding: 24px;
+      box-shadow: 0 20px 48px -12px rgba(0, 104, 116, 0.16);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .preview-header-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--card-border);
+      padding-bottom: 14px;
+      margin-bottom: 18px;
+    }
+
+    .preview-title {
+      font-size: 13.5px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .preview-chip-live {
+      font-size: 10px;
+      font-weight: 700;
+      background-color: var(--md-sys-color-avail-container, #d3f9d8);
+      color: var(--md-sys-color-avail, #00875a);
+      padding: 3px 9px;
+      border-radius: var(--md-sys-shape-corner-full, 99px);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .sim-ticket {
+      background: var(--md-sys-color-surface-container-low, rgba(0,0,0,0.02));
+      border: 1px solid var(--card-border);
+      border-radius: var(--md-sys-shape-corner-medium, 12px);
+      padding: 16px;
+      margin-bottom: 18px;
+    }
+
+    .sim-ticket-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 12px;
+    }
+
+    .sim-token-no {
+      font-family: monospace;
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--md-sys-color-primary, #006874);
+      letter-spacing: -0.02em;
+    }
+
+    [data-theme="kitchen"] .sim-token-no {
+      color: #4dd0e1;
+    }
+
+    .sim-stepper {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      margin-top: 14px;
+      position: relative;
+    }
+
+    .sim-step {
+      flex: 1;
+      text-align: center;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--md-sys-color-outline, #70797b);
+      position: relative;
+      transition: color 0.3s;
+    }
+
+    .sim-step-dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background-color: var(--md-sys-color-surface-container-highest, #dfe3e4);
+      margin: 0 auto 5px;
+      border: 2px solid var(--md-sys-color-surface);
+      transition: all 0.3s;
+    }
+
+    .sim-step.done {
+      color: var(--md-sys-color-primary, #006874);
+    }
+    .sim-step.done .sim-step-dot {
+      background-color: var(--md-sys-color-primary, #006874);
+    }
+    .sim-step.active {
+      color: var(--md-sys-color-primary, #006874);
+      font-weight: 700;
+    }
+    .sim-step.active .sim-step-dot {
+      background-color: var(--md-sys-color-primary-container, #9eeffd);
+      border-color: var(--md-sys-color-primary, #006874);
+      box-shadow: 0 0 0 3px rgba(0, 104, 116, 0.25);
+    }
+
+    .sim-gauge-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .sim-gauge-card {
+      background: var(--md-sys-color-surface-container, rgba(0,0,0,0.03));
+      padding: 10px 12px;
+      border-radius: var(--md-sys-shape-corner-small, 8px);
+      border: 1px solid var(--card-border);
+    }
+
+    .sim-gauge-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .sim-gauge-bar {
+      height: 5px;
+      background-color: var(--md-sys-color-surface-container-highest, #dfe3e4);
+      border-radius: 99px;
+      overflow: hidden;
+      margin-top: 6px;
+    }
+
+    .sim-gauge-fill {
+      height: 100%;
+      border-radius: 99px;
+      transition: width 0.5s;
+    }
+
+    .sim-action-row {
+      display: flex;
+      gap: 10px;
+    }
+
+    .sim-btn-advance {
+      flex: 1;
+      padding: 9px 14px;
+      background-color: var(--md-sys-color-primary, #006874);
+      color: #fff;
+      border: none;
+      border-radius: var(--md-sys-shape-corner-small, 8px);
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: background-color 0.2s;
+    }
+
+    .sim-btn-advance:hover {
+      background-color: #004f58;
+    }
+
+    .sim-btn-reset {
+      padding: 9px 12px;
+      border-radius: var(--md-sys-shape-corner-small, 8px);
+      border: 1px solid var(--card-border);
+      background: var(--md-sys-color-surface-container, rgba(0,0,0,0.03));
+      color: var(--md-sys-color-on-surface);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* ================= 2. DIRECT STATS & NUMBERS STRIP WITH NUMBER ROLL ANIMATION ================= */
+    .direct-stats-section {
+      max-width: 1200px;
+      margin: -24px auto 68px;
+      padding: 0 24px;
+      position: relative;
+      z-index: 10;
+    }
+
+    .direct-stats-strip {
+      background: var(--card-glass);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--card-border);
+      border-radius: var(--md-sys-shape-corner-large, 20px);
+      padding: 28px 24px;
+      box-shadow: 0 16px 36px -10px rgba(0, 0, 0, 0.05);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stats-direct-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .stat-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 6px 16px;
+      flex: 1;
+      min-width: 170px;
+      position: relative;
+    }
+
+    .stat-item:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      right: 0;
+      top: 15%;
+      height: 70%;
+      width: 1px;
+      background: var(--card-border);
+    }
+
+    @media (max-width: 768px) {
+      .stat-item:not(:last-child)::after {
+        display: none;
+      }
+    }
+
+    .stat-item .stat-num {
+      font-family: var(--md-sys-typescale-brand-font, 'Roboto Flex', sans-serif);
+      font-size: 42px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+
+    .stat-item .stat-label {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--md-sys-color-on-surface);
+    }
+
+    .stat-item .stat-desc {
+      font-size: 11.5px;
+      color: var(--md-sys-color-on-surface-variant);
+      margin-top: 2px;
+    }
+
+    /* ================= 3. 4 PERSONAS SECTION WITH 3D UNFOLD PERSPECTIVE ================= */
+    .landing-section {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 68px 24px;
+    }
+
+    .persona-tab-bar {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 32px;
+      flex-wrap: wrap;
+    }
+
+    .persona-tab-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      border-radius: var(--md-sys-shape-corner-full, 99px);
+      background-color: var(--md-sys-color-surface-container, rgba(0,0,0,0.04));
+      color: var(--md-sys-color-on-surface-variant);
+      border: 1px solid var(--card-border);
+      font-size: 13.5px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.25s cubic-bezier(0.2, 0, 0, 1);
+    }
+
+    .persona-tab-btn:hover {
+      background-color: var(--md-sys-color-surface-container-high, rgba(0,0,0,0.08));
+      color: var(--md-sys-color-on-surface);
+    }
+
+    .persona-tab-btn.active {
+      background-color: var(--md-sys-color-primary, #006874);
+      color: #ffffff;
+      border-color: var(--md-sys-color-primary, #006874);
+      box-shadow: 0 4px 14px rgba(0, 104, 116, 0.3);
+    }
+
+    /* 3D Perspective unfold effect for Persona container */
+    .persona-content-box {
+      background: var(--card-glass);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--card-border);
+      border-radius: var(--md-sys-shape-corner-large, 20px);
+      padding: 36px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: center;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+      transform: perspective(1000px) rotateX(6deg) translateY(20px);
+      opacity: 0.6;
+      transition: transform 0.85s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.85s ease;
+    }
+
+    #personas.is-in-view .persona-content-box {
+      transform: perspective(1000px) rotateX(0deg) translateY(0);
+      opacity: 1;
+    }
+
+    @media (max-width: 900px) {
+      .persona-content-box {
+        grid-template-columns: 1fr;
+        padding: 24px;
+      }
+    }
+
+    .persona-info-title {
+      font-size: 26px;
+      font-weight: 800;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-family: var(--md-sys-typescale-brand-font, 'Roboto Flex', sans-serif);
+      color: var(--md-sys-color-on-surface);
+    }
+
+    .persona-badge {
+      font-size: 10.5px;
+      padding: 3px 10px;
+      border-radius: var(--md-sys-shape-corner-full, 99px);
+      background-color: var(--md-sys-color-secondary-container, #cce8ed);
+      color: var(--md-sys-color-on-secondary-container, #051f23);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .persona-info-desc {
+      font-size: 15px;
+      line-height: 1.6;
+      color: var(--md-sys-color-on-surface-variant);
+      margin-bottom: 22px;
+    }
+
+    .persona-bullet-list {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 26px;
+      display: flex;
+      flex-direction: column;
+      gap: 11px;
+    }
+
+    .persona-bullet-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 13.5px;
+      color: var(--md-sys-color-on-surface);
+    }
+
+    .persona-bullet-item span.icon {
+      color: var(--md-sys-color-primary, #006874);
+      font-size: 18px;
+      flex: none;
+      margin-top: 1px;
+    }
+
+    .persona-interactive-preview {
+      background: var(--md-sys-color-surface-container-lowest, #ffffff);
+      border: 1px solid var(--card-border);
+      border-radius: var(--md-sys-shape-corner-medium, 14px);
+      padding: 24px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
+    }
+
+    [data-theme="kitchen"] .persona-interactive-preview {
+      background: var(--md-sys-color-surface-container-low, #19232d);
+    }
+
+    /* ================= 4. INNOVATIONS: STAGGERED WAVE DISSOLVE ================= */
+    .direct-features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 36px 28px;
+      margin-top: 36px;
+    }
+
+    @media (max-width: 960px) {
+      .direct-features-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    @media (max-width: 600px) {
+      .direct-features-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .direct-feature-item {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--card-border);
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* Cascading staggered entrance */
+    #features.is-in-view .direct-feature-item:nth-child(1) { transition-delay: 0.08s; opacity: 1; transform: translateY(0); }
+    #features.is-in-view .direct-feature-item:nth-child(2) { transition-delay: 0.16s; opacity: 1; transform: translateY(0); }
+    #features.is-in-view .direct-feature-item:nth-child(3) { transition-delay: 0.24s; opacity: 1; transform: translateY(0); }
+    #features.is-in-view .direct-feature-item:nth-child(4) { transition-delay: 0.32s; opacity: 1; transform: translateY(0); }
+    #features.is-in-view .direct-feature-item:nth-child(5) { transition-delay: 0.40s; opacity: 1; transform: translateY(0); }
+    #features.is-in-view .direct-feature-item:nth-child(6) { transition-delay: 0.48s; opacity: 1; transform: translateY(0); }
+
+    .direct-feature-item:hover {
+      transform: translateY(-2px);
+    }
+
+    .feature-icon-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .direct-feature-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: var(--md-sys-shape-corner-medium, 10px);
+      background: linear-gradient(135deg, rgba(0, 104, 116, 0.12), rgba(0, 151, 167, 0.08));
+      color: var(--md-sys-color-primary, #006874);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      flex: none;
+      transition: transform 0.3s ease;
+    }
+
+    .direct-feature-item:hover .direct-feature-icon {
+      transform: scale(1.1) rotate(4deg);
+    }
+
+    [data-theme="kitchen"] .direct-feature-icon {
+      background: rgba(77, 208, 225, 0.15);
+      color: #4dd0e1;
+    }
+
+    .direct-feature-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--md-sys-color-on-surface);
+      margin: 0;
+    }
+
+    .direct-feature-desc {
+      font-size: 13.5px;
+      line-height: 1.6;
+      color: var(--md-sys-color-on-surface-variant);
+      margin: 0;
+    }
+
+    /* ================= 5. PERMISSIONS: RADAR SWEEP & SECURITY SCAN ================= */
+    .permissions-container {
+      position: relative;
+      overflow: hidden;
+      border-radius: var(--md-sys-shape-corner-large, 20px);
+    }
+
+    .radar-scan-line {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, transparent 0%, var(--md-sys-color-primary, #006874) 50%, transparent 100%);
+      opacity: 0;
+      z-index: 5;
+      pointer-events: none;
+    }
+
+    #permissions.is-in-view .radar-scan-line {
+      animation: radarScanSweep 1.8s ease-out forwards;
+    }
+
+    @keyframes radarScanSweep {
+      0% { top: 0%; opacity: 1; }
+      80% { opacity: 0.9; }
+      100% { top: 100%; opacity: 0; }
+    }
+
+    .direct-permissions-list {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px 32px;
+      margin-top: 36px;
+      max-width: 1080px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    @media (max-width: 768px) {
+      .direct-permissions-list {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .direct-perm-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding-bottom: 18px;
+      border-bottom: 1px solid var(--card-border);
+      opacity: 0;
+      transform: translateX(-20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    #permissions.is-in-view .direct-perm-item:nth-child(1) { transition-delay: 0.1s; opacity: 1; transform: translateX(0); }
+    #permissions.is-in-view .direct-perm-item:nth-child(2) { transition-delay: 0.2s; opacity: 1; transform: translateX(0); }
+    #permissions.is-in-view .direct-perm-item:nth-child(3) { transition-delay: 0.3s; opacity: 1; transform: translateX(0); }
+    #permissions.is-in-view .direct-perm-item:nth-child(4) { transition-delay: 0.4s; opacity: 1; transform: translateX(0); }
+    #permissions.is-in-view .direct-perm-item:nth-child(5) { transition-delay: 0.5s; opacity: 1; transform: translateX(0); }
+    #permissions.is-in-view .direct-perm-item:nth-child(6) { transition-delay: 0.6s; opacity: 1; transform: translateX(0); }
+
+    .perm-status-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background-color: var(--md-sys-color-avail-container, #d3f9d8);
+      color: var(--md-sys-color-avail, #00875a);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      flex: none;
+      margin-top: 2px;
+      transition: transform 0.3s ease;
+    }
+
+    #permissions.is-in-view .perm-status-icon {
+      animation: pingCheckmark 0.6s ease-out;
+    }
+
+    @keyframes pingCheckmark {
+      0% { transform: scale(0.6); }
+      60% { transform: scale(1.25); }
+      100% { transform: scale(1); }
+    }
+
+    .perm-info-title {
+      font-size: 14.5px;
+      font-weight: 700;
+      color: var(--md-sys-color-on-surface);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .perm-status-tag {
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 99px;
+      background: var(--md-sys-color-avail-container, #d3f9d8);
+      color: var(--md-sys-color-avail, #00875a);
+      letter-spacing: 0.05em;
+    }
+
+    .perm-info-desc {
+      font-size: 12.5px;
+      line-height: 1.5;
+      color: var(--md-sys-color-on-surface-variant);
+      margin-top: 3px;
+    }
+
+    /* ================= 6. SLIDING CARDS SHOWCASE ================= */
+    .reel-control-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .filter-chips-wrap {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .filter-chip {
+      background: var(--md-sys-color-surface-container, rgba(0,0,0,0.04));
+      border: 1px solid var(--card-border);
+      border-radius: var(--md-sys-shape-corner-full, 99px);
+      padding: 7px 18px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--md-sys-color-on-surface-variant);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .filter-chip:hover {
+      background: var(--md-sys-color-surface-container-high, rgba(0,0,0,0.08));
+      color: var(--md-sys-color-on-surface);
+    }
+
+    .filter-chip.active {
+      background: var(--md-sys-color-primary, #006874);
+      color: #ffffff;
+      border-color: var(--md-sys-color-primary, #006874);
+      box-shadow: 0 4px 12px rgba(0, 104, 116, 0.25);
+    }
+
+    .reel-actions-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .reel-status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--md-sys-color-avail-container, #d3f9d8);
+      color: var(--md-sys-color-avail, #00875a);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 5px 12px;
+      border-radius: 99px;
+      letter-spacing: 0.05em;
+    }
+
+    .reel-pulse-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background-color: var(--md-sys-color-avail, #00875a);
+      animation: pulseAnim 1.4s infinite;
+    }
+
+    .reel-ctrl-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 14px;
+      border-radius: 99px;
+      background: var(--md-sys-color-surface-container, rgba(0,0,0,0.04));
+      border: 1px solid var(--card-border);
+      color: var(--md-sys-color-on-surface);
+      font-size: 12.5px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .reel-ctrl-btn:hover {
+      background: var(--md-sys-color-surface-container-high, rgba(0,0,0,0.08));
+      color: var(--md-sys-color-primary, #006874);
+    }
+
+    .reel-nav-arrows {
+      display: flex;
+      gap: 6px;
+    }
+
+    .reel-arrow-btn {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: var(--md-sys-color-surface-container, rgba(0,0,0,0.04));
+      border: 1px solid var(--card-border);
+      color: var(--md-sys-color-on-surface);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .reel-arrow-btn:hover {
+      background: var(--md-sys-color-primary, #006874);
+      color: #ffffff;
+      border-color: var(--md-sys-color-primary, #006874);
+    }
+
+    .view-switch-box {
+      display: inline-flex;
+      background: var(--md-sys-color-surface-container-high, rgba(0,0,0,0.06));
+      padding: 3px;
+      border-radius: 99px;
+      border: 1px solid var(--card-border);
+    }
+
+    .view-switch-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 5px 12px;
+      border-radius: 99px;
+      border: none;
+      background: transparent;
+      color: var(--md-sys-color-on-surface-variant);
+      font-size: 11.5px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .view-switch-btn.active {
+      background: var(--md-sys-color-surface, #ffffff);
+      color: var(--md-sys-color-on-surface);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    [data-theme="kitchen"] .view-switch-btn.active {
+      background: #19232d;
+      color: #ffffff;
+    }
+
+    /* Sliding Reel Viewport & Infinite Tracks */
+    .sliding-reel-container {
+      position: relative;
+      width: 100%;
+      overflow: hidden;
+      padding: 12px 0 20px;
+    }
+
+    .sliding-reel-viewport {
+      position: relative;
+      width: 100%;
+      overflow: hidden;
+      mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
+      -webkit-mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
+    }
+
+    .sliding-track {
+      display: flex;
+      gap: 22px;
+      width: max-content;
+      will-change: transform;
+    }
+
+    .sliding-track.play-forward {
+      animation: slideForward 38s linear infinite;
+      animation-play-state: paused;
+    }
+
+    .sliding-track.play-reverse {
+      animation: slideReverse 42s linear infinite;
+      animation-play-state: paused;
+    }
+
+    .sliding-track.is-running {
+      animation-play-state: running !important;
+    }
+
+    .sliding-track.is-paused {
+      animation-play-state: paused !important;
+    }
+
+    .sliding-reel-container:hover .sliding-track {
+      animation-play-state: paused;
+    }
+
+    @keyframes slideForward {
+      0% { transform: translate3d(0, 0, 0); }
+      100% { transform: translate3d(-50%, 0, 0); }
+    }
+
+    @keyframes slideReverse {
+      0% { transform: translate3d(-50%, 0, 0); }
+      100% { transform: translate3d(0, 0, 0); }
+    }
+
+    /* ================= REAL FOOD ITEM CARD STYLES ================= */
+    .food-card-reel {
+      width: 295px;
+      flex: 0 0 295px;
+      background: var(--card-glass);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--card-border);
+      border-radius: var(--md-sys-shape-corner-large, 18px);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.28s cubic-bezier(0.2, 0, 0, 1), box-shadow 0.28s cubic-bezier(0.2, 0, 0, 1), border-color 0.28s;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .food-card-reel:hover {
+      transform: translateY(-6px) scale(1.02);
+      border-color: var(--md-sys-color-primary, #006874);
+      box-shadow: 0 16px 36px rgba(0, 104, 116, 0.18);
+    }
+
+    .card-media-wrap {
+      position: relative;
+      height: 165px;
+      width: 100%;
+      overflow: hidden;
+      background: #111;
+    }
+
+    .card-food-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s cubic-bezier(0.2, 0, 0, 1);
+      display: block;
+    }
+
+    .food-card-reel:hover .card-food-img {
+      transform: scale(1.08);
+    }
+
+    .card-badges-top {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      right: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .card-status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 3px 9px;
+      border-radius: 99px;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      letter-spacing: 0.04em;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+    }
+
+    .card-status-badge.avail {
+      background: rgba(0, 135, 90, 0.92);
+      color: #ffffff;
+    }
+
+    .card-status-badge.low {
+      background: rgba(245, 127, 23, 0.95);
+      color: #ffffff;
+    }
+
+    .card-status-badge.out {
+      background: rgba(186, 26, 26, 0.95);
+      color: #ffffff;
+    }
+
+    .card-counter-tag {
+      font-size: 10px;
+      font-weight: 600;
+      padding: 3px 9px;
+      border-radius: 99px;
+      background: rgba(0, 0, 0, 0.65);
+      color: #ffffff;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+
+    .card-overlay-gradient {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(0,0,0,0.2) 0%, transparent 40%, rgba(0,0,0,0.65) 100%);
+      pointer-events: none;
+    }
+
+    .card-prep-tag {
+      position: absolute;
+      bottom: 8px;
+      right: 10px;
+      font-size: 10.5px;
+      font-weight: 600;
+      color: #fff;
+      background: rgba(0, 0, 0, 0.6);
+      padding: 2px 8px;
+      border-radius: 99px;
+      backdrop-filter: blur(6px);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .card-content {
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      flex: 1;
+    }
+
+    .card-cat-pill {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--md-sys-color-primary, #006874);
+      letter-spacing: 0.05em;
+    }
+
+    [data-theme="kitchen"] .card-cat-pill {
+      color: #4dd0e1;
+    }
+
+    .card-food-name {
+      font-size: 15.5px;
+      font-weight: 700;
+      font-family: var(--md-sys-typescale-brand-font, 'Roboto Flex', sans-serif);
+      color: var(--md-sys-color-on-surface);
+      line-height: 1.25;
+      margin: 0;
+    }
+
+    .card-stock-gauge {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .gauge-meta-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: var(--md-sys-color-on-surface-variant);
+    }
+
+    .gauge-track {
+      height: 5px;
+      background: var(--md-sys-color-surface-container-highest, #dfe3e4);
+      border-radius: 99px;
+      overflow: hidden;
+    }
+
+    .gauge-fill-bar {
+      height: 100%;
+      border-radius: 99px;
+      transition: width 0.6s ease;
+    }
+
+    .card-foot-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 10px;
+      margin-top: auto;
+      border-top: 1px solid var(--card-border);
+    }
+
+    .card-price {
+      font-size: 18px;
+      font-weight: 800;
+      font-family: monospace;
+      color: var(--md-sys-color-on-surface);
+    }
+
+    .btn-card-order {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 15px;
+      border-radius: 99px;
+      background: linear-gradient(135deg, var(--md-sys-color-primary, #006874), #004f58);
+      color: #ffffff !important;
+      font-size: 12px;
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
+      box-shadow: 0 2px 8px rgba(0, 104, 116, 0.25);
+    }
+
+    .btn-card-order:hover {
+      transform: translateY(-1.5px);
+      box-shadow: 0 4px 12px rgba(0, 104, 116, 0.4);
+    }
+
+    /* Fallback Static Grid Mode */
+    .catalog-demo-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+      margin-top: 14px;
+    }
+
+    /* ================= 7. CTA BANNER WITH LUMINOUS PULSE ================= */
+    .landing-cta-banner {
+      background: linear-gradient(135deg, #004f58 0%, #006874 50%, #00363d 100%);
+      color: #ffffff;
+      border-radius: var(--md-sys-shape-corner-large, 24px);
+      padding: 64px 32px;
+      text-align: center;
+      margin: 40px auto 70px;
+      max-width: 1280px;
+      box-shadow: 0 20px 48px rgba(0, 79, 88, 0.35);
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    .cta-banner-title {
+      font-family: var(--md-sys-typescale-brand-font, 'Roboto Flex', sans-serif);
+      font-size: 40px;
+      font-weight: 800;
+      margin: 0 0 16px;
+      letter-spacing: -0.02em;
+    }
+
+    .cta-banner-sub {
+      font-size: 17px;
+      opacity: 0.92;
+      max-width: 600px;
+      margin: 0 auto 32px;
+      line-height: 1.6;
+    }
+
+    .btn-cta-launch {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: #ffffff;
+      color: #004f58 !important;
+      font-size: 15px;
+      font-weight: 700;
+      padding: 13px 32px;
+      border-radius: var(--md-sys-shape-corner-full, 99px);
+      text-decoration: none;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+      transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
+    }
+
+    .btn-cta-launch:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.25);
+    }
+
+    /* ================= TOAST NOTIFICATION ================= */
+    .landing-toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      opacity: 0;
+      pointer-events: none;
+      background: rgba(17, 24, 39, 0.95);
+      color: #ffffff;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      padding: 12px 24px;
+      border-radius: 99px;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13.5px;
+      font-weight: 600;
+      z-index: 1000;
+      transition: all 0.3s cubic-bezier(0.2, 0, 0, 1);
+    }
+
+    .landing-toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    /* ================= FOOTER ================= */
+    .landing-footer {
+      background-color: var(--md-sys-color-surface-container-low, rgba(0,0,0,0.02));
+      border-top: 1px solid var(--card-border);
+      padding: 56px 24px 32px;
+    }
+
+    .footer-container {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 24px;
+      margin-bottom: 28px;
+    }
+
+    .footer-tagline {
+      font-size: 13.5px;
+      color: var(--md-sys-color-on-surface-variant);
+      max-width: 480px;
+      line-height: 1.6;
+    }
+
+    .footer-bottom {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding-top: 20px;
+      border-top: 1px solid var(--card-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      color: var(--md-sys-color-outline, #70797b);
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    /* ================= COMPLETE KITCHEN DARK THEME REFINEMENTS ================= */
+    [data-theme="kitchen"] .landing-header,
+    [data-theme="dark"] .landing-header {
+      background-color: rgba(14, 20, 21, 0.92);
+      border-bottom-color: rgba(255, 255, 255, 0.08);
+    }
+
+    [data-theme="kitchen"] .theme-toggle-btn,
+    [data-theme="dark"] .theme-toggle-btn {
+      background: rgba(48, 54, 55, 0.85);
+      color: #82d3e0;
+      border-color: rgba(130, 211, 224, 0.35);
+      box-shadow: 0 0 14px rgba(130, 211, 224, 0.2);
+    }
+    [data-theme="kitchen"] .theme-toggle-btn:hover,
+    [data-theme="dark"] .theme-toggle-btn:hover {
+      background: rgba(60, 68, 70, 0.95);
+      color: #9eeffd;
+      box-shadow: 0 0 18px rgba(130, 211, 224, 0.4);
+    }
+
+    [data-theme="kitchen"] .hero-badge,
+    [data-theme="dark"] .hero-badge {
+      background-color: rgba(51, 74, 78, 0.7);
+      color: #cce8ea;
+      border: 1px solid rgba(130, 211, 224, 0.2);
+    }
+    [data-theme="kitchen"] .hero-badge .pulse-dot,
+    [data-theme="dark"] .hero-badge .pulse-dot {
+      background-color: #82d3e0;
+    }
+
+    [data-theme="kitchen"] .btn-hero-primary,
+    [data-theme="dark"] .btn-hero-primary {
+      background: linear-gradient(135deg, #00838f 0%, #004f58 100%);
+      color: #ffffff !important;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4), 0 0 16px rgba(130, 211, 224, 0.25);
+    }
+    [data-theme="kitchen"] .btn-hero-primary:hover,
+    [data-theme="dark"] .btn-hero-primary:hover {
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5), 0 0 22px rgba(130, 211, 224, 0.35);
+    }
+
+    [data-theme="kitchen"] .btn-hero-secondary,
+    [data-theme="dark"] .btn-hero-secondary {
+      background: rgba(255, 255, 255, 0.06);
+      color: #deebec;
+      border-color: rgba(255, 255, 255, 0.12);
+    }
+    [data-theme="kitchen"] .btn-hero-secondary:hover,
+    [data-theme="dark"] .btn-hero-secondary:hover {
+      background: rgba(130, 211, 224, 0.12);
+      color: #82d3e0;
+      border-color: rgba(130, 211, 224, 0.3);
+    }
+
+    [data-theme="kitchen"] .preview-card-outer,
+    [data-theme="dark"] .preview-card-outer {
+      background: rgba(23, 29, 30, 0.92);
+      border-color: rgba(255, 255, 255, 0.08);
+      box-shadow: 0 20px 48px -12px rgba(0, 0, 0, 0.5), 0 0 24px rgba(130, 211, 224, 0.08);
+    }
+
+    [data-theme="kitchen"] .sim-ticket,
+    [data-theme="dark"] .sim-ticket {
+      background: rgba(14, 20, 21, 0.7);
+      border-color: rgba(255, 255, 255, 0.08);
+    }
+
+    [data-theme="kitchen"] .sim-token-no,
+    [data-theme="dark"] .sim-token-no {
+      color: #82d3e0;
+    }
+
+    [data-theme="kitchen"] .sim-step,
+    [data-theme="dark"] .sim-step {
+      color: #899294;
+    }
+    [data-theme="kitchen"] .sim-step.done,
+    [data-theme="dark"] .sim-step.done {
+      color: #82d3e0;
+    }
+    [data-theme="kitchen"] .sim-step.done .sim-step-dot,
+    [data-theme="dark"] .sim-step.done .sim-step-dot {
+      background-color: #82d3e0;
+    }
+    [data-theme="kitchen"] .sim-step.active,
+    [data-theme="dark"] .sim-step.active {
+      color: #82d3e0;
+    }
+    [data-theme="kitchen"] .sim-step.active .sim-step-dot,
+    [data-theme="dark"] .sim-step.active .sim-step-dot {
+      background-color: #004f58;
+      border-color: #82d3e0;
+      box-shadow: 0 0 0 3px rgba(130, 211, 224, 0.3);
+    }
+
+    [data-theme="kitchen"] .sim-gauge-card,
+    [data-theme="dark"] .sim-gauge-card {
+      background: rgba(37, 43, 44, 0.6);
+      border-color: rgba(255, 255, 255, 0.06);
+    }
+
+    [data-theme="kitchen"] .sim-btn-advance,
+    [data-theme="dark"] .sim-btn-advance {
+      background-color: var(--md-sys-color-primary, #82d3e0);
+      color: var(--md-sys-color-on-primary, #00363d) !important;
+    }
+    [data-theme="kitchen"] .sim-btn-advance:hover,
+    [data-theme="dark"] .sim-btn-advance:hover {
+      background-color: #9eeffd;
+    }
+
+    [data-theme="kitchen"] .sim-btn-reset,
+    [data-theme="dark"] .sim-btn-reset {
+      background: rgba(37, 43, 44, 0.7);
+      color: #deebec;
+      border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    [data-theme="kitchen"] .direct-stats-strip,
+    [data-theme="dark"] .direct-stats-strip {
+      background: rgba(23, 29, 30, 0.92);
+      border-color: rgba(255, 255, 255, 0.08);
+      box-shadow: 0 16px 36px -10px rgba(0, 0, 0, 0.4);
+    }
+
+    [data-theme="kitchen"] .persona-tab-btn,
+    [data-theme="dark"] .persona-tab-btn {
+      background-color: rgba(37, 43, 44, 0.7);
+      color: #bfc8ca;
+      border-color: rgba(255, 255, 255, 0.08);
+    }
+    [data-theme="kitchen"] .persona-tab-btn:hover,
+    [data-theme="dark"] .persona-tab-btn:hover {
+      background-color: rgba(48, 54, 55, 0.85);
+      color: #deebec;
+    }
+    [data-theme="kitchen"] .persona-tab-btn.active,
+    [data-theme="dark"] .persona-tab-btn.active {
+      background-color: var(--md-sys-color-primary, #82d3e0);
+      color: var(--md-sys-color-on-primary, #00363d) !important;
+      border-color: var(--md-sys-color-primary, #82d3e0);
+      box-shadow: 0 4px 16px rgba(130, 211, 224, 0.35);
+    }
+
+    [data-theme="kitchen"] .persona-content-box,
+    [data-theme="dark"] .persona-content-box {
+      background: rgba(23, 29, 30, 0.92);
+      border-color: rgba(255, 255, 255, 0.08);
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.4);
+    }
+
+    [data-theme="kitchen"] .persona-badge,
+    [data-theme="dark"] .persona-badge {
+      background-color: rgba(51, 74, 78, 0.7);
+      color: #cce8ea;
+      border: 1px solid rgba(130, 211, 224, 0.2);
+    }
+
+    [data-theme="kitchen"] .persona-bullet-item span.icon,
+    [data-theme="dark"] .persona-bullet-item span.icon {
+      color: #82d3e0;
+    }
+
+    [data-theme="kitchen"] .persona-interactive-preview,
+    [data-theme="dark"] .persona-interactive-preview {
+      background: #121819;
+      border-color: rgba(255, 255, 255, 0.08);
+      color: #deebec;
+    }
+
+    [data-theme="kitchen"] .direct-feature-icon,
+    [data-theme="dark"] .direct-feature-icon {
+      background: rgba(130, 211, 224, 0.15);
+      color: #82d3e0;
+    }
+
+    [data-theme="kitchen"] .perm-status-icon,
+    [data-theme="dark"] .perm-status-icon {
+      background-color: rgba(0, 83, 31, 0.5);
+      color: #81d892;
+    }
+    [data-theme="kitchen"] .perm-status-tag,
+    [data-theme="dark"] .perm-status-tag {
+      background-color: rgba(0, 83, 31, 0.6);
+      color: #81d892;
+    }
+
+    [data-theme="kitchen"] .filter-chip,
+    [data-theme="dark"] .filter-chip {
+      background: rgba(37, 43, 44, 0.7);
+      color: #bfc8ca;
+      border-color: rgba(255, 255, 255, 0.08);
+    }
+    [data-theme="kitchen"] .filter-chip:hover,
+    [data-theme="dark"] .filter-chip:hover {
+      background: rgba(48, 54, 55, 0.85);
+      color: #deebec;
+    }
+    [data-theme="kitchen"] .filter-chip.active,
+    [data-theme="dark"] .filter-chip.active {
+      background: var(--md-sys-color-primary, #82d3e0);
+      color: var(--md-sys-color-on-primary, #00363d) !important;
+      border-color: var(--md-sys-color-primary, #82d3e0);
+      box-shadow: 0 4px 14px rgba(130, 211, 224, 0.3);
+    }
+
+    [data-theme="kitchen"] .reel-ctrl-btn,
+    [data-theme="dark"] .reel-ctrl-btn {
+      background: rgba(37, 43, 44, 0.7);
+      color: #deebec;
+      border-color: rgba(255, 255, 255, 0.08);
+    }
+    [data-theme="kitchen"] .reel-ctrl-btn:hover,
+    [data-theme="dark"] .reel-ctrl-btn:hover {
+      background: rgba(48, 54, 55, 0.9);
+      color: #82d3e0;
+    }
+
+    [data-theme="kitchen"] .reel-arrow-btn,
+    [data-theme="dark"] .reel-arrow-btn {
+      background: rgba(37, 43, 44, 0.7);
+      color: #deebec;
+      border-color: rgba(255, 255, 255, 0.08);
+    }
+    [data-theme="kitchen"] .reel-arrow-btn:hover,
+    [data-theme="dark"] .reel-arrow-btn:hover {
+      background: #82d3e0;
+      color: #00363d;
+      border-color: #82d3e0;
+    }
+
+    [data-theme="kitchen"] .view-switch-box,
+    [data-theme="dark"] .view-switch-box {
+      background: rgba(23, 29, 30, 0.85);
+      border-color: rgba(255, 255, 255, 0.08);
+    }
+
+    [data-theme="kitchen"] .view-switch-btn.active,
+    [data-theme="dark"] .view-switch-btn.active {
+      background: #252b2c;
+      color: #deebec;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    [data-theme="kitchen"] .food-card-reel,
+    [data-theme="dark"] .food-card-reel {
+      background: rgba(23, 29, 30, 0.92);
+      border-color: rgba(255, 255, 255, 0.08);
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.35);
+    }
+    [data-theme="kitchen"] .food-card-reel:hover,
+    [data-theme="dark"] .food-card-reel:hover {
+      border-color: #82d3e0;
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.45), 0 0 20px rgba(130, 211, 224, 0.2);
+    }
+
+    [data-theme="kitchen"] .card-cat-pill,
+    [data-theme="dark"] .card-cat-pill {
+      color: #82d3e0;
+    }
+
+    [data-theme="kitchen"] .card-price,
+    [data-theme="dark"] .card-price {
+      color: #82d3e0;
+    }
+
+    [data-theme="kitchen"] .btn-card-order,
+    [data-theme="dark"] .btn-card-order {
+      background: linear-gradient(135deg, #006874 0%, #004f58 100%);
+      color: #ffffff !important;
+      border: 1px solid rgba(130, 211, 224, 0.3);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    }
+    [data-theme="kitchen"] .btn-card-order:hover,
+    [data-theme="dark"] .btn-card-order:hover {
+      background: linear-gradient(135deg, #00838f 0%, #006874 100%);
+      box-shadow: 0 4px 14px rgba(130, 211, 224, 0.3);
+    }
+
+    [data-theme="kitchen"] .landing-cta-banner,
+    [data-theme="dark"] .landing-cta-banner {
+      background: linear-gradient(135deg, #00363d 0%, #004f58 50%, #0e1415 100%);
+      border: 1px solid rgba(130, 211, 224, 0.25);
+      box-shadow: 0 20px 48px rgba(0, 0, 0, 0.5), 0 0 40px rgba(0, 104, 116, 0.25);
+    }
+
+    [data-theme="kitchen"] .landing-footer,
+    [data-theme="dark"] .landing-footer {
+      background-color: #090f10;
+      border-top-color: rgba(255, 255, 255, 0.08);
+    }
+
+    /* Explicit Hero & Typography Dark Overrides */
+    [data-theme="kitchen"] .hero-section,
+    [data-theme="dark"] .hero-section {
+      background: radial-gradient(circle at 50% 8%, rgba(0, 104, 116, 0.45) 0%, #0e1415 75%) !important;
+    }
+
+    [data-theme="kitchen"] .hero-headline,
+    [data-theme="dark"] .hero-headline {
+      color: #deebec !important;
+    }
+
+    [data-theme="kitchen"] .hero-subhead,
+    [data-theme="dark"] .hero-subhead {
+      color: #bfc8ca !important;
+    }
+
+    [data-theme="kitchen"] .section-heading,
+    [data-theme="dark"] .section-heading {
+      color: #deebec !important;
+    }
+
+    [data-theme="kitchen"] .section-subhead,
+    [data-theme="dark"] .section-subhead {
+      color: #bfc8ca !important;
+    }
+
+    [data-theme="kitchen"] .brand-title,
+    [data-theme="dark"] .brand-title {
+      color: #deebec !important;
+    }
+
+    [data-theme="kitchen"] .direct-feature-title,
+    [data-theme="dark"] .direct-feature-title,
+    [data-theme="kitchen"] .perm-info-title,
+    [data-theme="dark"] .perm-info-title,
+    [data-theme="kitchen"] .card-food-name,
+    [data-theme="dark"] .card-food-name,
+    [data-theme="kitchen"] .stat-label,
+    [data-theme="dark"] .stat-label {
+      color: #deebec !important;
+    }
+
+    [data-theme="kitchen"] .direct-feature-desc,
+    [data-theme="dark"] .direct-feature-desc,
+    [data-theme="kitchen"] .perm-info-desc,
+    [data-theme="dark"] .perm-info-desc,
+    [data-theme="kitchen"] .stat-desc,
+    [data-theme="dark"] .stat-desc,
+    [data-theme="kitchen"] .gauge-meta-row,
+    [data-theme="dark"] .gauge-meta-row,
+    [data-theme="kitchen"] .footer-tagline,
+    [data-theme="dark"] .footer-tagline {
+      color: #bfc8ca !important;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ================= LANDING NAVBAR (CLEAN BRAND + SINGLE SIGN IN) ================= -->
+  <header class="landing-header">
+    <div class="nav-container">
+      <a href="landing.html" class="brand-group">
+        <div class="brand-icon-box">
+          <span class="material-symbols-outlined" style="font-size: 22px;">inventory_2</span>
+        </div>
+        <div class="brand-title-wrap">
+          <span class="brand-title">InvenTrack</span>
+          <span class="brand-tag">Campus M3 Dining OS</span>
+        </div>
+      </a>
+
+      <!-- Right Navigation Actions: Theme Toggle + Only One Sign In Button -->
+      <div class="nav-actions">
+        <button id="themeToggleBtn" class="theme-toggle-btn" title="Toggle Kitchen Dark / Daylight Theme" aria-label="Toggle Theme">
+          <span class="material-symbols-outlined" style="font-size: 19px;" id="themeIcon">dark_mode</span>
+        </button>
+
+        <a href="signin.html" class="btn-signin-nav" id="topNavSignInBtn" target="_blank" rel="opener">
+          <span class="material-symbols-outlined" style="font-size: 18px;">login</span>
+          <span>Sign In</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= 1. HERO SLIDE ================= -->
+  <section class="hero-section scroll-slide" id="hero-slide">
+    <div class="hero-container">
+      <div class="hero-text-col">
+        
+
+        <h1 class="hero-headline" data-anim="typewriter">
+          Campus Dining, Queue Tokens &amp; <span class="highlight">Real-Time Inventory</span>
+        </h1>
+
+        <p class="hero-subhead">
+          End campus cafeteria chaos. Connect <strong>Users &amp; Diners</strong>, <strong>Kitchen Staff</strong>, and <strong>Administrators</strong> in a synchronized, zero-wait digital food court experience.
+        </p>
+
+        <div class="hero-cta-group">
+          <a href="/" class="btn-hero-primary">
+            <span class="material-symbols-outlined" style="font-size: 20px;">restaurant</span>
+            <span>Launch Live App</span>
+          </a>
+
+          <a href="#demo-menu" class="btn-hero-secondary">
+            <span>Explore Live Menu Cards &darr;</span>
+          </a>
+        </div>
+
+        <div class="hero-trust">
+          <div class="trust-item">
+            <span class="icon material-symbols-outlined">check_circle</span>
+            <span>Zero-Wait Token Stepping</span>
+          </div>
+          <div class="trust-item">
+            <span class="icon material-symbols-outlined">check_circle</span>
+            <span>Live Stock Gauges</span>
+          </div>
+          <div class="trust-item">
+            <span class="icon material-symbols-outlined">check_circle</span>
+            <span>Thermal Slip Ready</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hero Interactive Simulation Stepper Card with Floating Physics -->
+      <div class="hero-preview-wrapper">
+        <div class="preview-card-outer">
+          <div class="preview-header-bar">
+            <div class="preview-title">
+              <span class="material-symbols-outlined" style="color:var(--md-sys-color-primary, #006874);">confirmation_number</span>
+              <span>Active Digital Token Stepper</span>
+            </div>
+            <div class="preview-chip-live">
+              <span class="pulse-dot" style="width:5px; height:5px; background:var(--md-sys-color-avail, #00875a);"></span>
+              <span>LIVE QUEUE DEMO</span>
+            </div>
+          </div>
+
+          <div class="sim-ticket">
+            <div class="sim-ticket-top">
+              <div>
+                <div style="font-size:11px; text-transform:uppercase; letter-spacing:0.06em; color:var(--md-sys-color-on-surface-variant);">Assigned Pickup Counter</div>
+                <div style="font-weight:700; font-size:14px; margin-top:2px;">Counter 1 (Hot Meals)</div>
+                <div style="font-size:12px; color:var(--md-sys-color-on-surface-variant); margin-top:2px;">Chicken Dum Biryani + Artisan Cold Coffee</div>
+              </div>
+              <div style="text-align:right;">
+                <div style="font-size:11px; color:var(--md-sys-color-on-surface-variant);">Token No</div>
+                <div class="sim-token-no" id="heroTokenNo">#A-042</div>
+                <div style="font-size:12px; font-weight:700; color:var(--md-sys-color-primary, #006874);">&#8377;235 Paid</div>
+              </div>
+            </div>
+
+            <div class="sim-stepper">
+              <div class="sim-step done" id="step0">
+                <div class="sim-step-dot"></div>
+                <div>Placed</div>
+              </div>
+              <div class="sim-step active" id="step1">
+                <div class="sim-step-dot"></div>
+                <div>Preparing</div>
+              </div>
+              <div class="sim-step" id="step2">
+                <div class="sim-step-dot"></div>
+                <div>Ready</div>
+              </div>
+              <div class="sim-step" id="step3">
+                <div class="sim-step-dot"></div>
+                <div>Picked up</div>
+              </div>
+            </div>
+
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:14px; padding-top:10px; border-top:1px dashed var(--card-border);">
+              <span style="font-size:12px; color:var(--md-sys-color-on-surface-variant);" id="heroEtaText">&sim; 7 min to ready &bull; Hot station</span>
+              <span class="status-badge progress" id="heroStatusBadge" style="font-size:10.5px; padding:2px 8px; border-radius:99px; background:var(--md-sys-color-primary-container, #9eeffd); color:var(--md-sys-color-on-primary-container, #001f24); font-weight:700;">PREPARING</span>
+            </div>
+          </div>
+
+          <!-- Mini Live Gauge Strip -->
+          <div class="sim-gauge-grid">
+            <div class="sim-gauge-card">
+              <div class="sim-gauge-header">
+                <span>Chicken Biryani</span>
+                <span style="font-size:9.5px; padding:1px 6px; border-radius:99px; background:var(--md-sys-color-avail-container, #d3f9d8); color:var(--md-sys-color-avail, #00875a); font-weight:700;">AVAIL</span>
+              </div>
+              <div style="font-size:11px; color:var(--md-sys-color-on-surface-variant);">24 portions left</div>
+              <div class="sim-gauge-bar">
+                <div class="sim-gauge-fill" style="width:68%; background:var(--md-sys-color-avail, #00875a);"></div>
+              </div>
+            </div>
+
+            <div class="sim-gauge-card">
+              <div class="sim-gauge-header">
+                <span>Pizza Slice</span>
+                <span style="font-size:9.5px; padding:1px 6px; border-radius:99px; background:var(--md-sys-color-low-container, #ffe082); color:var(--md-sys-color-low, #f57f17); font-weight:700;">LOW</span>
+              </div>
+              <div style="font-size:11px; color:var(--md-sys-color-on-surface-variant);">4 portions left</div>
+              <div class="sim-gauge-bar">
+                <div class="sim-gauge-fill" style="width:20%; background:var(--md-sys-color-low, #f57f17);"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="sim-action-row">
+            <button class="sim-btn-advance" id="simAdvanceBtn">
+              <span class="material-symbols-outlined" style="font-size:16px;">fast_forward</span>
+              <span id="simBtnLabel">Advance Stage &rarr;</span>
+            </button>
+            <button class="sim-btn-reset" id="simResetBtn" title="Reset Stepper Simulation">
+              <span class="material-symbols-outlined" style="font-size:16px;">refresh</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 2. DIRECT STATS SLIDE WITH NUMBER COUNTER ================= -->
+  <section class="direct-stats-section scroll-slide" id="stats-slide">
+    <div class="direct-stats-strip">
+      <div class="stats-direct-row">
+        <div class="stat-item">
+          <div class="stat-num highlight" id="statNum1" data-count-target="78" data-suffix="%">78%</div>
+          <div class="stat-label">Wait Time Reduced</div>
+          <div class="stat-desc">Zero counter congregation</div>
+        </div>
+
+        <div class="stat-item">
+          <div class="stat-num highlight" id="statNum2" data-count-target="10000" data-format="comma" data-suffix="+">10,000+</div>
+          <div class="stat-label">Daily Campus Meals</div>
+          <div class="stat-desc">Tracked across food stations</div>
+        </div>
+
+        <div class="stat-item">
+          <div class="stat-num highlight" id="statNum3" data-count-target="3" data-suffix=" Roles">3 Roles</div>
+          <div class="stat-label">Single Unified Engine</div>
+          <div class="stat-desc">User, Kitchen, Admin</div>
+        </div>
+
+        <div class="stat-item">
+          <div class="stat-num highlight" id="statNum4">&lt; 1 sec</div>
+          <div class="stat-label">Real-Time Stock Sync</div>
+          <div class="stat-desc">Instant depleted meal lock</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 3. 3 ROLES SLIDE WITH 3D PERSPECTIVE ================= -->
+  <section class="landing-section scroll-slide" id="personas">
+    <div class="section-eyebrow">Unified Multi-Role Operations</div>
+    <h2 class="section-heading" data-anim="word-reveal">
+      Three Roles, <span class="highlight">One Unified Platform</span>
+    </h2>
+    <p class="section-subhead">
+      Tailored interfaces for every participant in campus dining &mdash; from students and campus guests to line chefs and executive directors.
+    </p>
+
+    <!-- Persona Switcher Tab Bar (3 Roles: User, Kitchen, Admin) -->
+    <div class="persona-tab-bar">
+      <button class="persona-tab-btn active" data-persona="user">
+        <span class="material-symbols-outlined" style="font-size: 18px;">person</span>
+        <span>User Dining Portal</span>
+      </button>
+      <button class="persona-tab-btn" data-persona="kitchen">
+        <span class="material-symbols-outlined" style="font-size: 18px;">skillet</span>
+        <span>Kitchen &amp; BOH POS</span>
+      </button>
+      <button class="persona-tab-btn" data-persona="admin">
+        <span class="material-symbols-outlined" style="font-size: 18px;">admin_panel_settings</span>
+        <span>Campus Admin Suite</span>
+      </button>
+    </div>
+
+    <!-- Tab Content Display Box -->
+    <div class="persona-content-box" id="personaContent">
+      <!-- Injected dynamically via JS below -->
+    </div>
+  </section>
+
+  <!-- ================= 4. KEY INNOVATIONS SLIDE WITH WAVE DISSOLVE ================= -->
+  <section class="landing-section scroll-slide" id="features">
+    <div class="section-eyebrow">Core Innovations</div>
+    <h2 class="section-heading" data-anim="flip-3d">
+      Engineered to Eliminate <span class="highlight">Campus Bottlenecks</span>
+    </h2>
+    <p class="section-subhead">
+      Purpose-built tools replacing paper receipts, restock guesswork, and chaotic counter queues.
+    </p>
+
+    <div class="direct-features-grid">
+      <div class="direct-feature-item">
+        <div class="feature-icon-row">
+          <div class="direct-feature-icon">
+            <span class="material-symbols-outlined">linear_scale</span>
+          </div>
+          <h3 class="direct-feature-title">Live 4-Stage Token Stepping</h3>
+        </div>
+        <p class="direct-feature-desc">
+          Automated stage progression from Placed to Preparing, Ready, and Picked Up with synchronized pickup counter callouts.
+        </p>
+      </div>
+
+      <div class="direct-feature-item">
+        <div class="feature-icon-row">
+          <div class="direct-feature-icon">
+            <span class="material-symbols-outlined">speed</span>
+          </div>
+          <h3 class="direct-feature-title">Real-Time Stock Gauges</h3>
+        </div>
+        <p class="direct-feature-desc">
+          Capacity meters and instant AVAIL, LOW, and OUT indicators preventing students from ordering depleted ingredients.
+        </p>
+      </div>
+
+      <div class="direct-feature-item">
+        <div class="feature-icon-row">
+          <div class="direct-feature-icon">
+            <span class="material-symbols-outlined">point_of_sale</span>
+          </div>
+          <h3 class="direct-feature-title">Multi-Tender Cashier POS</h3>
+        </div>
+        <p class="direct-feature-desc">
+          Rapid-scan counter register supporting UPI QR, Student Meal Passes with live balance deduction, Cards, and Cash.
+        </p>
+      </div>
+
+      <div class="direct-feature-item">
+        <div class="feature-icon-row">
+          <div class="direct-feature-icon">
+            <span class="material-symbols-outlined">print</span>
+          </div>
+          <h3 class="direct-feature-title">Thermal Printing Ready</h3>
+        </div>
+        <p class="direct-feature-desc">
+          Hardware-ready printable digital tokens formatted directly for standard 58mm/80mm thermal receipt printers.
+        </p>
+      </div>
+
+      <div class="direct-feature-item">
+        <div class="feature-icon-row">
+          <div class="direct-feature-icon">
+            <span class="material-symbols-outlined">contrast</span>
+          </div>
+          <h3 class="direct-feature-title">Dual Day &amp; Kitchen Dark KDS</h3>
+        </div>
+        <p class="direct-feature-desc">
+          Daylight M3 for student phones alongside a glare-free high-contrast dark theme optimized for hot, steamy kitchen displays.
+        </p>
+      </div>
+
+      <div class="direct-feature-item">
+        <div class="feature-icon-row">
+          <div class="direct-feature-icon">
+            <span class="material-symbols-outlined">file_download</span>
+          </div>
+          <h3 class="direct-feature-title">Procurement Deficit Audits</h3>
+        </div>
+        <p class="direct-feature-desc">
+          Automatic threshold deficit monitoring with one-click CSV export for dining hall supplier procurement.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 5. PERMISSIONS SLIDE WITH RADAR SCAN SWEEP ================= -->
+  <section class="landing-section scroll-slide" id="permissions">
+    <div class="permissions-container">
+      <div class="radar-scan-line"></div>
+      <div class="section-eyebrow">Enterprise Security</div>
+      <h2 class="section-heading" data-anim="cyber-scramble">
+        Platform Capabilities &amp; <span class="highlight">Verified Access</span>
+      </h2>
+      <p class="section-subhead">
+        High-trust device hardware acceleration and strict role-based access control (RBAC) pre-authorized across all dining sessions.
+      </p>
+
+      <div class="direct-permissions-list">
+        <div class="direct-perm-item">
+          <div class="perm-status-icon">
+            <span class="material-symbols-outlined">photo_camera</span>
+          </div>
+          <div>
+            <div class="perm-info-title">
+              <span>Camera &amp; Scanner Access</span>
+              <span class="perm-status-tag">ACTIVE</span>
+            </div>
+            <div class="perm-info-desc">Instant campus UPI QR scanning, token validation, and meal pass verification.</div>
+          </div>
+        </div>
+
+        <div class="direct-perm-item">
+          <div class="perm-status-icon">
+            <span class="material-symbols-outlined">volume_up</span>
+          </div>
+          <div>
+            <div class="perm-info-title">
+              <span>Audio Chime &amp; Order Bell</span>
+              <span class="perm-status-tag">ACTIVE</span>
+            </div>
+            <div class="perm-info-desc">Counter pickup notification tones and kitchen priority order chime bells.</div>
+          </div>
+        </div>
+
+        <div class="direct-perm-item">
+          <div class="perm-status-icon">
+            <span class="material-symbols-outlined">notifications_active</span>
+          </div>
+          <div>
+            <div class="perm-info-title">
+              <span>Push State Telemetry</span>
+              <span class="perm-status-tag">ACTIVE</span>
+            </div>
+            <div class="perm-info-desc">Instant stage progression alerts dispatched straight to student devices.</div>
+          </div>
+        </div>
+
+        <div class="direct-perm-item">
+          <div class="perm-status-icon">
+            <span class="material-symbols-outlined">print</span>
+          </div>
+          <div>
+            <div class="perm-info-title">
+              <span>Thermal Printer Driver</span>
+              <span class="perm-status-tag">ACTIVE</span>
+            </div>
+            <div class="perm-info-desc">Direct output formatting for 58mm &amp; 80mm ESC/POS counter ticket printers.</div>
+          </div>
+        </div>
+
+        <div class="direct-perm-item">
+          <div class="perm-status-icon">
+            <span class="material-symbols-outlined">account_balance_wallet</span>
+          </div>
+          <div>
+            <div class="perm-info-title">
+              <span>Student Meal Pass Ledger</span>
+              <span class="perm-status-tag">ACTIVE</span>
+            </div>
+            <div class="perm-info-desc">Verified balance authentication, semester meal allowances, and contactless debiting.</div>
+          </div>
+        </div>
+
+        <div class="direct-perm-item">
+          <div class="perm-status-icon">
+            <span class="material-symbols-outlined">sync</span>
+          </div>
+          <div>
+            <div class="perm-info-title">
+              <span>Offline Local Sync</span>
+              <span class="perm-status-tag">ACTIVE</span>
+            </div>
+            <div class="perm-info-desc">Continuous operation during campus Wi-Fi drops with automatic queue flushing.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 6. LIVE FOOD SHOWCASE SLIDE ================= -->
+  <section class="landing-section scroll-slide" id="demo-menu">
+    <div class="section-eyebrow">Real-Time Culinary Stations</div>
+    <h2 class="section-heading" data-anim="shimmer-wave">
+      Live Food Stations &amp; <span class="highlight">Interactive Food Showcase</span>
+    </h2>
+    <p class="section-subhead">
+      Real-time campus food stations with live capacity gauges, instant queue token stepping, and automated sold-out lockout.
+    </p>
+
+    <!-- Interactive Reel Control Bar -->
+    <div class="reel-control-bar">
+      <!-- Category Filter Chips -->
+      <div class="filter-chips-wrap" id="filterChips">
+        <button class="filter-chip active" data-cat="All">All Delicacies</button>
+        <button class="filter-chip" data-cat="Mains">Mains</button>
+        <button class="filter-chip" data-cat="Snacks">Snacks</button>
+        <button class="filter-chip" data-cat="Beverages">Beverages</button>
+        <button class="filter-chip" data-cat="Desserts">Desserts</button>
+      </div>
+
+      <!-- Animation Actions: Play/Pause, Speed, Prev, Next, View Switch -->
+      <div class="reel-actions-wrap">
+        <div class="reel-status-pill" id="reelStatusIndicator">
+          <span class="reel-pulse-dot"></span>
+          <span id="reelStatusText">LIVE SLIDING REEL</span>
+        </div>
+
+        <button id="reelPlayPauseBtn" class="reel-ctrl-btn" title="Pause / Play Auto-Slide Animation" aria-label="Toggle Auto-Slide">
+          <span class="material-symbols-outlined" id="reelPlayPauseIcon">pause</span>
+          <span id="reelPlayPauseLabel">Pause</span>
+        </button>
+
+        <button id="reelSpeedBtn" class="reel-ctrl-btn" title="Cycle Animation Speed">
+          <span class="material-symbols-outlined">speed</span>
+          <span id="reelSpeedLabel">1x</span>
+        </button>
+
+        <div class="reel-nav-arrows">
+          <button id="reelPrevBtn" class="reel-arrow-btn" title="Scroll Left" aria-label="Scroll left">
+            <span class="material-symbols-outlined">chevron_left</span>
+          </button>
+          <button id="reelNextBtn" class="reel-arrow-btn" title="Scroll Right" aria-label="Scroll right">
+            <span class="material-symbols-outlined">chevron_right</span>
+          </button>
+        </div>
+
+        <div class="view-switch-box">
+          <button class="view-switch-btn active" id="viewReelBtn" title="Continuous Sliding Animated Cards">
+            <span class="material-symbols-outlined" style="font-size:16px;">motion_photos_on</span>
+            <span>Sliding Reel</span>
+          </button>
+          <button class="view-switch-btn" id="viewGridBtn" title="Static Grid View">
+            <span class="material-symbols-outlined" style="font-size:16px;">grid_view</span>
+            <span>Grid</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sliding Cards Viewport (Starts sliding smoothly once scrolled into view) -->
+    <div class="sliding-reel-container" id="slidingReelContainer">
+      <!-- Upper Track: Glides Forward (Left) -->
+      <div class="sliding-reel-viewport" id="viewportRow1">
+        <div class="sliding-track play-forward is-running" id="trackRow1">
+          <!-- Filled dynamically via JS -->
+        </div>
+      </div>
+
+      <!-- Lower Track: Glides in Reverse (Right) for a rich, video-like showcase -->
+      <div class="sliding-reel-viewport" id="viewportRow2" style="margin-top: 18px;">
+        <div class="sliding-track play-reverse is-running" id="trackRow2">
+          <!-- Filled dynamically via JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Alternative Grid View (Hidden by default, accessible via view toggle) -->
+    <div class="catalog-grid-container" id="catalogGridContainer" style="display: none;">
+      <div class="catalog-demo-row" id="catalogGrid">
+        <!-- Filled dynamically via JS -->
+      </div>
+    </div>
+
+    <div style="text-align:center; margin-top:36px;">
+      <a href="/" class="btn-hero-primary" style="font-size:14.5px; padding:12px 28px;">
+        <span class="material-symbols-outlined">shopping_cart</span>
+        <span>Open Interactive Ordering Experience &rarr;</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- ================= 7. HIGH-IMPACT LAUNCH BANNER SLIDE ================= -->
+  <section style="padding: 0 24px;" class="scroll-slide" id="cta-slide">
+    <div class="landing-cta-banner">
+      <h2 class="cta-banner-title" data-anim="aura-reveal">
+        Elevate Campus Dining with <span style="background:linear-gradient(135deg, #80deea 0%, #ffffff 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent;">InvenTrack</span>
+      </h2>
+      <p class="cta-banner-sub">
+        Synchronized queue tokens, real-time stock gauges, and rapid cashier checkouts across university dining spaces.
+      </p>
+      <div>
+        <a href="/" class="btn-cta-launch">
+          <span class="material-symbols-outlined">rocket_launch</span>
+          <span>Launch InvenTrack Platform</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= CLEAN FOOTER ================= -->
+  <footer class="landing-footer scroll-slide" id="footer-slide">
+    <div class="footer-container">
+      <div class="brand-group">
+        <div class="brand-icon-box" style="width:36px; height:36px;">
+          <span class="material-symbols-outlined" style="font-size:18px;">inventory_2</span>
+        </div>
+        <div class="brand-title-wrap">
+          <span class="brand-title" style="font-size:18px;">InvenTrack</span>
+          <span class="brand-tag">Campus M3 Dining OS</span>
+        </div>
+      </div>
+
+      <div class="footer-tagline">
+        Google Material Design 3 campus food ordering, cafe POS, live queue tokens, and real-time inventory management.
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div>&copy; 2026 InvenTrack Platform &bull; Open Source MIT License</div>
+      <div>Designed with Google Material Design 3 (Material You)</div>
+    </div>
+  </footer>
+
+  <!-- Floating Toast Notification -->
+  <div id="landingToast" class="landing-toast">
+    <span class="material-symbols-outlined" style="color:var(--md-sys-color-avail, #00875a); font-size: 20px;">check_circle</span>
+    <span id="landingToastMsg">Item added to ordering cart</span>
+  </div>
+
+  <!-- ================= JAVASCRIPT LOGIC ================= -->
+  <script>
+    // 1. Theme Toggle (Light Daylight vs. Kitchen Dark KDS)
+    const themeToggleBtn = document.getElementById('themeToggleBtn');
+    const themeIcon = document.getElementById('themeIcon');
+
+    // Retrieve saved theme or detect current state
+    const savedTheme = localStorage.getItem('invenTrack_theme') || (document.body.getAttribute('data-theme') === 'kitchen' ? 'kitchen' : 'default');
+    let isDark = savedTheme === 'kitchen';
+
+    function applyTheme(dark) {
+      isDark = Boolean(dark);
+      if (isDark) {
+        document.documentElement.setAttribute('data-theme', 'kitchen');
+        document.body.setAttribute('data-theme', 'kitchen');
+        if (themeIcon) themeIcon.textContent = 'light_mode';
+        if (themeToggleBtn) themeToggleBtn.setAttribute('title', 'Switch to Daylight Light Mode');
+        try { localStorage.setItem('invenTrack_theme', 'kitchen'); } catch(e){}
+      } else {
+        document.documentElement.removeAttribute('data-theme');
+        document.body.removeAttribute('data-theme');
+        if (themeIcon) themeIcon.textContent = 'dark_mode';
+        if (themeToggleBtn) themeToggleBtn.setAttribute('title', 'Switch to Kitchen Dark Mode');
+        try { localStorage.setItem('invenTrack_theme', 'default'); } catch(e){}
+      }
+    }
+
+    // Initialize theme immediately on load
+    applyTheme(isDark);
+
+    if (themeToggleBtn) {
+      themeToggleBtn.addEventListener('click', () => {
+        applyTheme(!isDark);
+      });
+    }
+
+    // 2. Interactive Hero Token Stepper Simulation
+    const stages = ['Placed', 'Preparing', 'Ready', 'Picked up'];
+    const etaMsgs = [
+      '~12 min to ready • Counter 1',
+      '~7 min to ready • Hot station',
+      'Ready! Please head to Counter 1',
+      'Order picked up • Thank you!'
+    ];
+    let currentStage = 1;
+
+    const simAdvanceBtn = document.getElementById('simAdvanceBtn');
+    const simResetBtn = document.getElementById('simResetBtn');
+    const heroEtaText = document.getElementById('heroEtaText');
+    const heroStatusBadge = document.getElementById('heroStatusBadge');
+    const simBtnLabel = document.getElementById('simBtnLabel');
+
+    function updateHeroStepper() {
+      for (let i = 0; i < 4; i++) {
+        const stepEl = document.getElementById(`step${i}`);
+        stepEl.classList.remove('done', 'active');
+        if (i < currentStage) {
+          stepEl.classList.add('done');
+        } else if (i === currentStage) {
+          stepEl.classList.add('active');
+        }
+      }
+
+      heroEtaText.textContent = etaMsgs[currentStage];
+      heroStatusBadge.textContent = stages[currentStage].toUpperCase();
+
+      if (currentStage >= 3) {
+        heroStatusBadge.style.background = 'var(--md-sys-color-avail-container, #d3f9d8)';
+        heroStatusBadge.style.color = 'var(--md-sys-color-avail, #00875a)';
+        simBtnLabel.textContent = 'Order Complete ✓';
+        simAdvanceBtn.disabled = true;
+      } else {
+        heroStatusBadge.style.background = 'var(--md-sys-color-primary-container, #9eeffd)';
+        heroStatusBadge.style.color = 'var(--md-sys-color-on-primary-container, #001f24)';
+        simBtnLabel.textContent = `Advance to "${stages[currentStage + 1]}" →`;
+        simAdvanceBtn.disabled = false;
+      }
+    }
+
+    simAdvanceBtn.addEventListener('click', () => {
+      if (currentStage < 3) {
+        currentStage++;
+        updateHeroStepper();
+      }
+    });
+
+    simResetBtn.addEventListener('click', () => {
+      currentStage = 0;
+      updateHeroStepper();
+    });
+
+    updateHeroStepper();
+
+    // 3. 3-Role Persona Data & Interactive Tab Switching
+    const personaData = {
+      user: {
+        title: 'User Dining & Express Portal',
+        badge: 'Mobile & Counter Ready',
+        desc: 'Engineered for students, faculty, staff, and campus guests with live queue tokens, real-time stock gauges so you never order sold-out items, and rapid multi-tender checkout.',
+        bullets: [
+          'Live Digital Token Stepper with estimated pickup ETAs (#A-042)',
+          'Real-time stock gauges & semantic badges (AVAIL, LOW, OUT)',
+          'Multi-Tender checkout: Campus UPI QR, Meal Pass balance & Cards',
+          'Instant thermal slip printing & weekly budget spending analytics'
+        ],
+        preview: `
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+            <div style="font-weight:700; font-size:14px;">User Meal Pass & Digital Token</div>
+            <span style="font-size:10.5px; font-weight:700; background:var(--md-sys-color-avail-container, #d3f9d8); color:var(--md-sys-color-avail, #00875a); padding:2px 8px; border-radius:99px;">ACTIVE SESSION</span>
+          </div>
+          <div style="background:linear-gradient(135deg, var(--md-sys-color-primary, #006874), #004f58); color:#fff; border-radius:12px; padding:18px; margin-bottom:14px;">
+            <div style="font-size:11px; opacity:0.8; letter-spacing:0.05em; text-transform:uppercase;">Dining Pass Balance</div>
+            <div style="font-size:26px; font-weight:800; font-family:monospace; margin:4px 0;">&#8377;850.00</div>
+            <div style="display:flex; justify-content:space-between; font-size:12px; opacity:0.9;">
+              <span>Rohan Sharma (2301CS042)</span>
+              <span>Valid till Dec 2026</span>
+            </div>
+          </div>
+          <div style="display:flex; justify-content:space-between; align-items:center; font-size:12px; color:var(--md-sys-color-on-surface-variant);">
+            <span>Recent: Chicken Dum Biryani</span>
+            <span style="font-weight:700; color:var(--md-sys-color-primary, #006874);">&#8377;180.00 &bull; Ready at Counter 1</span>
+          </div>
+        `
+      },
+      kitchen: {
+        title: 'Kitchen & Back of House (BOH)',
+        badge: 'Live KDS Display',
+        desc: 'Engineered for kitchen line cooks, expeditors, and counter cashiers with a real-time Kanban order board, instant one-tap stock adjuster, and rapid cashier billing POS.',
+        bullets: [
+          'Interactive 4-Column Live Kanban Board: Placed &rarr; Preparing &rarr; Ready &rarr; Picked Up',
+          'Real-time stock adjuster: increment, decrement, or toggle OUT with one click',
+          'Counter POS billing terminal with customer lookup & instant printing',
+          'Live feed of incoming student ratings & wait-time alerts'
+        ],
+        preview: `
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+            <div style="font-size:13px; font-weight:700;">Live Kitchen Kanban Queue</div>
+            <span style="font-size:10px; font-weight:700; background:var(--md-sys-color-error-container, #ffdad6); color:var(--md-sys-color-error, #ba1a1a); padding:2px 8px; border-radius:99px;">12 In-Flight</span>
+          </div>
+          <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:8px;">
+            <div style="background:var(--md-sys-color-surface-container, rgba(0,0,0,0.03)); padding:10px; border-radius:8px; border-top:3px solid var(--md-sys-color-outline, #70797b);">
+              <div style="font-size:10px; font-weight:700; color:var(--md-sys-color-outline, #70797b);">PLACED (3)</div>
+              <div style="font-size:11px; font-weight:700; margin-top:4px;">#A-044</div>
+              <div style="font-size:10px; color:var(--md-sys-color-on-surface-variant);">2x Burger</div>
+            </div>
+            <div style="background:var(--md-sys-color-surface-container, rgba(0,0,0,0.03)); padding:10px; border-radius:8px; border-top:3px solid var(--md-sys-color-primary, #006874);">
+              <div style="font-size:10px; font-weight:700; color:var(--md-sys-color-primary, #006874);">PREPARING (5)</div>
+              <div style="font-size:11px; font-weight:700; margin-top:4px;">#A-042</div>
+              <div style="font-size:10px; color:var(--md-sys-color-on-surface-variant);">1x Biryani</div>
+            </div>
+            <div style="background:var(--md-sys-color-surface-container, rgba(0,0,0,0.03)); padding:10px; border-radius:8px; border-top:3px solid var(--md-sys-color-avail, #00875a);">
+              <div style="font-size:10px; font-weight:700; color:var(--md-sys-color-avail, #00875a);">READY (4)</div>
+              <div style="font-size:11px; font-weight:700; margin-top:4px;">#A-039</div>
+              <div style="font-size:10px; color:var(--md-sys-color-on-surface-variant);">Lassi</div>
+            </div>
+          </div>
+        `
+      },
+      admin: {
+        title: 'Campus Admin & Executive Suite',
+        badge: 'Procurement Oversight',
+        desc: 'Comprehensive oversight of gross revenue, demand velocity, rush-hour distribution curves, and inventory restock audits for dining directors.',
+        bullets: [
+          'Executive KPI dashboard: Gross Revenue, Total Volume, Deficit Alerts',
+          'Hourly rush-hour demand curves (peak lunch window 12:00 - 14:00)',
+          'Threshold procurement audit table with restock urgency badges',
+          'One-click "Export Audit CSV" for supplier restock orders'
+        ],
+        preview: `
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:12px;">
+            <div style="background:var(--md-sys-color-surface-container, rgba(0,0,0,0.03)); padding:10px; border-radius:8px;">
+              <div style="font-size:10px; color:var(--md-sys-color-on-surface-variant);">TODAY'S REVENUE</div>
+              <div style="font-size:18px; font-weight:800; font-family:monospace; color:var(--md-sys-color-primary, #006874);">&#8377;42,850</div>
+              <div style="font-size:10px; color:var(--md-sys-color-avail, #00875a);">+18.4% vs last week</div>
+            </div>
+            <div style="background:var(--md-sys-color-surface-container, rgba(0,0,0,0.03)); padding:10px; border-radius:8px;">
+              <div style="font-size:10px; color:var(--md-sys-color-on-surface-variant);">CRITICAL DEFICITS</div>
+              <div style="font-size:18px; font-weight:800; font-family:monospace; color:var(--md-sys-color-error, #ba1a1a);">3 Items</div>
+              <div style="font-size:10px; color:var(--md-sys-color-error, #ba1a1a);">Restock urgent</div>
+            </div>
+          </div>
+          <div style="display:flex; justify-content:space-between; align-items:center; font-size:11px; padding:6px 10px; background:var(--md-sys-color-surface-container-high, rgba(0,0,0,0.06)); border-radius:6px;">
+            <span>Audit Report Ready (CSV)</span>
+            <span style="font-weight:700; color:var(--md-sys-color-primary, #006874); cursor:pointer;">Export CSV &darr;</span>
+          </div>
+        `
+      }
+    };
+
+    function renderPersona(key) {
+      const p = personaData[key];
+      if (!p) return;
+      const container = document.getElementById('personaContent');
+      container.innerHTML = `
+        <div>
+          <div class="persona-info-title">
+            <span>${p.title}</span>
+            <span class="persona-badge">${p.badge}</span>
+          </div>
+          <p class="persona-info-desc">${p.desc}</p>
+          <ul class="persona-bullet-list">
+            ${p.bullets.map(b => `
+              <li class="persona-bullet-item">
+                <span class="icon material-symbols-outlined">check</span>
+                <span>${b}</span>
+              </li>
+            `).join('')}
+          </ul>
+          <div>
+            <a href="/" class="btn-hero-primary" style="font-size:13.5px; padding:10px 22px;">
+              <span>Explore Persona in App &rarr;</span>
+            </a>
+          </div>
+        </div>
+        <div class="persona-interactive-preview">
+          ${p.preview}
+        </div>
+      `;
+    }
+
+    document.querySelectorAll('.persona-tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.persona-tab-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        renderPersona(btn.getAttribute('data-persona'));
+      });
+    });
+
+    renderPersona('user');
+
+    // ================= 4. REAL FOOD IMAGES & SLIDING REEL SHOWCASE ENGINE =================
+    const catalogSampleItems = [
+      {
+        id: 'biryani-chk',
+        name: 'Chicken Dum Biryani',
+        image: 'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=600&auto=format&fit=crop&q=80',
+        price: 180,
+        cat: 'Mains',
+        counter: 'Counter 1 (Hot Station)',
+        stock: 24,
+        maxStock: 50,
+        status: 'available',
+        prepTime: '12 min',
+        rating: 4.9
+      },
+      {
+        id: 'biryani-veg',
+        name: 'Hyderabadi Veg Biryani',
+        image: 'https://images.unsplash.com/photo-1633945274405-b6c8069047b0?w=600&auto=format&fit=crop&q=80',
+        price: 150,
+        cat: 'Mains',
+        counter: 'Counter 1 (Hot Station)',
+        stock: 18,
+        maxStock: 40,
+        status: 'available',
+        prepTime: '10 min',
+        rating: 4.7
+      },
+      {
+        id: 'dosa-masala',
+        name: 'Ghee Podi Masala Dosa',
+        image: 'https://images.unsplash.com/photo-1668236543090-82eba5ee5976?w=600&auto=format&fit=crop&q=80',
+        price: 90,
+        cat: 'Mains',
+        counter: 'Counter 1 (Hot Station)',
+        stock: 15,
+        maxStock: 30,
+        status: 'available',
+        prepTime: '8 min',
+        rating: 4.8
+      },
+      {
+        id: 'burger-veg',
+        name: 'Crispy Veg Patty Burger',
+        image: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=600&auto=format&fit=crop&q=80',
+        price: 70,
+        cat: 'Snacks',
+        counter: 'Counter 2 (Quick Bites)',
+        stock: 12,
+        maxStock: 35,
+        status: 'available',
+        prepTime: '6 min',
+        rating: 4.6
+      },
+      {
+        id: 'sandwich-cheese',
+        name: 'Grilled Cheese Sandwich',
+        image: 'https://images.unsplash.com/photo-1528735602780-2552fd46c7af?w=600&auto=format&fit=crop&q=80',
+        price: 60,
+        cat: 'Snacks',
+        counter: 'Counter 2 (Quick Bites)',
+        stock: 8,
+        maxStock: 25,
+        status: 'available',
+        prepTime: '5 min',
+        rating: 4.5
+      },
+      {
+        id: 'pizza-slice',
+        name: 'Wood-Fired Pizza Slice',
+        image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=600&auto=format&fit=crop&q=80',
+        price: 120,
+        cat: 'Snacks',
+        counter: 'Counter 2 (Quick Bites)',
+        stock: 4,
+        maxStock: 30,
+        status: 'low',
+        prepTime: '7 min',
+        rating: 4.9
+      },
+      {
+        id: 'fries-periperi',
+        name: 'Peri-Peri Salted Fries',
+        image: 'https://images.unsplash.com/photo-1576107232684-1279f3908594?w=600&auto=format&fit=crop&q=80',
+        price: 55,
+        cat: 'Snacks',
+        counter: 'Counter 2 (Quick Bites)',
+        stock: 22,
+        maxStock: 45,
+        status: 'available',
+        prepTime: '4 min',
+        rating: 4.7
+      },
+      {
+        id: 'coffee-cold',
+        name: 'Artisan Cold Coffee',
+        image: 'https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?w=600&auto=format&fit=crop&q=80',
+        price: 45,
+        cat: 'Beverages',
+        counter: 'Counter 3 (Cafe & Bar)',
+        stock: 30,
+        maxStock: 50,
+        status: 'available',
+        prepTime: '3 min',
+        rating: 4.9
+      },
+      {
+        id: 'lassi-mango',
+        name: 'Chilled Mango Lassi',
+        image: 'https://images.unsplash.com/photo-1546173159-315724a31696?w=600&auto=format&fit=crop&q=80',
+        price: 50,
+        cat: 'Beverages',
+        counter: 'Counter 3 (Cafe & Bar)',
+        stock: 0,
+        maxStock: 30,
+        status: 'out',
+        prepTime: 'Sold Out',
+        rating: 4.8
+      },
+      {
+        id: 'gulab-jamun',
+        name: 'Warm Gulab Jamun (2 pcs)',
+        image: 'https://images.unsplash.com/photo-1601050690597-df0568f70950?w=600&auto=format&fit=crop&q=80',
+        price: 30,
+        cat: 'Desserts',
+        counter: 'Counter 3 (Cafe & Bar)',
+        stock: 16,
+        maxStock: 40,
+        status: 'available',
+        prepTime: '2 min',
+        rating: 4.8
+      },
+      {
+        id: 'brownie-choco',
+        name: 'Belgian Chocolate Brownie',
+        image: 'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=600&auto=format&fit=crop&q=80',
+        price: 65,
+        cat: 'Desserts',
+        counter: 'Counter 3 (Cafe & Bar)',
+        stock: 9,
+        maxStock: 25,
+        status: 'available',
+        prepTime: '3 min',
+        rating: 4.9
+      },
+      {
+        id: 'roll-paneer',
+        name: 'Paneer Tikka Roll',
+        image: 'https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?w=600&auto=format&fit=crop&q=80',
+        price: 95,
+        cat: 'Snacks',
+        counter: 'Counter 2 (Quick Bites)',
+        stock: 3,
+        maxStock: 25,
+        status: 'low',
+        prepTime: '6 min',
+        rating: 4.7
+      }
+    ];
+
+    let currentCat = 'All';
+    let isReelPlaying = true;
+    let reelSpeedFactor = 1;
+
+    function generateCardHTML(item) {
+      let badgeClass = 'avail';
+      let labelText = 'AVAIL';
+      let gaugeColor = 'var(--md-sys-color-avail, #00875a)';
+      let pct = Math.round((item.stock / item.maxStock) * 100);
+
+      if (item.status === 'low') {
+        badgeClass = 'low';
+        labelText = 'LOW STOCK';
+        gaugeColor = 'var(--md-sys-color-low, #f57f17)';
+      } else if (item.status === 'out') {
+        badgeClass = 'out';
+        labelText = 'SOLD OUT';
+        gaugeColor = 'var(--md-sys-color-out, #ba1a1a)';
+        pct = 0;
+      }
+
+      return `
+        <div class="food-card-reel" data-id="${item.id}" onclick="handleCardOrder('${item.name}')">
+          <div class="card-media-wrap">
+            <img class="card-food-img" src="${item.image}" alt="${item.name}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=600&auto=format&fit=crop&q=80'">
+            <div class="card-overlay-gradient"></div>
+            <div class="card-badges-top">
+              <span class="card-status-badge ${badgeClass}">
+                <span class="pulse-dot" style="width:5px; height:5px; background:#fff;"></span>
+                <span>${labelText}</span>
+              </span>
+              <span class="card-counter-tag">${item.counter.split('(')[0].trim()}</span>
+            </div>
+            <div class="card-prep-tag">
+              <span class="material-symbols-outlined" style="font-size:13px;">schedule</span>
+              <span>${item.prepTime}</span>
+            </div>
+          </div>
+
+          <div class="card-content">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <span class="card-cat-pill">${item.cat}</span>
+              <span style="font-size:11px; font-weight:700; color:var(--md-sys-color-on-surface-variant); display:flex; align-items:center; gap:3px;">
+                <span class="material-symbols-outlined" style="font-size:13px; color:#f59e0b;">star</span>
+                <span>${item.rating}</span>
+              </span>
+            </div>
+
+            <h3 class="card-food-name">${item.name}</h3>
+
+            <div class="card-stock-gauge">
+              <div class="gauge-meta-row">
+                <span>Stock: <strong>${item.stock}</strong> left</span>
+                <span>${pct}%</span>
+              </div>
+              <div class="gauge-track">
+                <div class="gauge-fill-bar" style="width:${pct}%; background:${gaugeColor};"></div>
+              </div>
+            </div>
+
+            <div class="card-foot-row">
+              <span class="card-price">&#8377;${item.price}</span>
+              <button class="btn-card-order" onclick="event.stopPropagation(); handleCardOrder('${item.name}')">
+                <span class="material-symbols-outlined" style="font-size:15px;">add_shopping_cart</span>
+                <span>${item.status === 'out' ? 'Notify' : 'Order'}</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderShowcase() {
+      const filtered = catalogSampleItems.filter(it => currentCat === 'All' || it.cat === currentCat);
+
+      let set1 = filtered;
+      let set2 = [...filtered].reverse();
+
+      if (filtered.length >= 6) {
+        const half = Math.ceil(filtered.length / 2);
+        set1 = filtered.slice(0, half);
+        set2 = filtered.slice(half);
+      }
+
+      const htmlSet1 = set1.map(generateCardHTML).join('');
+      const htmlSet2 = set2.map(generateCardHTML).join('');
+
+      const track1 = document.getElementById('trackRow1');
+      const track2 = document.getElementById('trackRow2');
+
+      track1.innerHTML = htmlSet1 + htmlSet1;
+      track2.innerHTML = htmlSet2 + htmlSet2;
+
+      const grid = document.getElementById('catalogGrid');
+      grid.innerHTML = filtered.map(generateCardHTML).join('');
+    }
+
+    const toastEl = document.getElementById('landingToast');
+    const toastMsgEl = document.getElementById('landingToastMsg');
+    let toastTimeout;
+
+    function handleCardOrder(foodName) {
+      clearTimeout(toastTimeout);
+      toastMsgEl.textContent = `✓ "${foodName}" added to order ticket`;
+      toastEl.classList.add('show');
+      toastTimeout = setTimeout(() => {
+        toastEl.classList.remove('show');
+      }, 2600);
+    }
+
+    // Reel play/pause control
+    const trackRow1 = document.getElementById('trackRow1');
+    const trackRow2 = document.getElementById('trackRow2');
+    const reelStatusIndicator = document.getElementById('reelStatusIndicator');
+    const reelStatusText = document.getElementById('reelStatusText');
+
+    function setReelRunning(run) {
+      isReelPlaying = run;
+      if (trackRow1) trackRow1.classList.toggle('is-running', run);
+      if (trackRow1) trackRow1.classList.toggle('is-paused', !run);
+      if (trackRow2) trackRow2.classList.toggle('is-running', run);
+      if (trackRow2) trackRow2.classList.toggle('is-paused', !run);
+
+      if (reelStatusIndicator) {
+        reelStatusIndicator.style.background = run
+          ? 'var(--md-sys-color-avail-container, #d3f9d8)'
+          : 'var(--md-sys-color-surface-container-high, rgba(0,0,0,0.08))';
+        reelStatusIndicator.style.color = run
+          ? 'var(--md-sys-color-avail, #00875a)'
+          : 'var(--md-sys-color-on-surface-variant)';
+      }
+      if (reelStatusText) {
+        reelStatusText.textContent = run ? 'LIVE SLIDING REEL' : 'PAUSED';
+      }
+      const playIcon = document.getElementById('reelPlayPauseIcon');
+      const playLabel = document.getElementById('reelPlayPauseLabel');
+      if (playIcon) playIcon.textContent = run ? 'pause' : 'play_arrow';
+      if (playLabel) playLabel.textContent = run ? 'Pause' : 'Resume';
+    }
+
+    document.getElementById('reelPlayPauseBtn').addEventListener('click', () => {
+      setReelRunning(!isReelPlaying);
+    });
+
+    const speedBtn = document.getElementById('reelSpeedBtn');
+    const speedLabel = document.getElementById('reelSpeedLabel');
+    speedBtn.addEventListener('click', () => {
+      if (reelSpeedFactor === 1) {
+        reelSpeedFactor = 1.5;
+        trackRow1.style.animationDuration = '24s';
+        trackRow2.style.animationDuration = '26s';
+        speedLabel.textContent = '1.5x';
+      } else if (reelSpeedFactor === 1.5) {
+        reelSpeedFactor = 2;
+        trackRow1.style.animationDuration = '16s';
+        trackRow2.style.animationDuration = '18s';
+        speedLabel.textContent = '2x';
+      } else {
+        reelSpeedFactor = 1;
+        trackRow1.style.animationDuration = '38s';
+        trackRow2.style.animationDuration = '42s';
+        speedLabel.textContent = '1x';
+      }
+    });
+
+    document.getElementById('reelPrevBtn').addEventListener('click', () => {
+      const v1 = document.getElementById('viewportRow1');
+      v1.scrollBy({ left: -320, behavior: 'smooth' });
+    });
+
+    document.getElementById('reelNextBtn').addEventListener('click', () => {
+      const v1 = document.getElementById('viewportRow1');
+      v1.scrollBy({ left: 320, behavior: 'smooth' });
+    });
+
+    const viewReelBtn = document.getElementById('viewReelBtn');
+    const viewGridBtn = document.getElementById('viewGridBtn');
+    const slidingReelContainer = document.getElementById('slidingReelContainer');
+    const catalogGridContainer = document.getElementById('catalogGridContainer');
+
+    viewReelBtn.addEventListener('click', () => {
+      viewReelBtn.classList.add('active');
+      viewGridBtn.classList.remove('active');
+      slidingReelContainer.style.display = 'block';
+      catalogGridContainer.style.display = 'none';
+      setReelRunning(true);
+    });
+
+    viewGridBtn.addEventListener('click', () => {
+      viewGridBtn.classList.add('active');
+      viewReelBtn.classList.remove('active');
+      slidingReelContainer.style.display = 'none';
+      catalogGridContainer.style.display = 'block';
+      setReelRunning(false);
+    });
+
+    document.querySelectorAll('#filterChips .filter-chip').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('#filterChips .filter-chip').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentCat = btn.getAttribute('data-cat');
+        renderShowcase();
+        setReelRunning(true);
+      });
+    });
+
+    // ================= 5. DIVERSE HEADING ANIMATION SUITE =================
+    // Helper to wrap text into words while keeping HTML structure like <span class="highlight">
+    function wrapWordsInElement(el, wrapClass, itemClass) {
+      const highlights = el.querySelectorAll('.highlight');
+      highlights.forEach(h => {
+        h.dataset.wasHighlight = 'true';
+        h.style.background = 'none';
+        h.style.webkitTextFillColor = 'initial';
+      });
+
+      function processNode(node, isHighlighted) {
+        if (node.nodeType === Node.TEXT_NODE) {
+          const text = node.nodeValue;
+          if (!text.trim()) return;
+          const parts = text.split(/(\s+)/);
+          const frag = document.createDocumentFragment();
+          parts.forEach(part => {
+            if (!part) return;
+            if (/^\s+$/.test(part)) {
+              frag.appendChild(document.createTextNode(part));
+            } else {
+              const wrapSpan = document.createElement('span');
+              wrapSpan.className = wrapClass;
+              const itemSpan = document.createElement('span');
+              itemSpan.className = itemClass + (isHighlighted ? ' highlight-text' : '');
+              itemSpan.textContent = part;
+              wrapSpan.appendChild(itemSpan);
+              frag.appendChild(wrapSpan);
+            }
+          });
+          node.parentNode.replaceChild(frag, node);
+        } else if (node.nodeType === Node.ELEMENT_NODE) {
+          if (node.classList.contains(wrapClass)) return;
+          const childHighlight = isHighlighted || node.classList.contains('highlight') || node.dataset.wasHighlight === 'true';
+          const children = Array.from(node.childNodes);
+          children.forEach(child => processNode(child, childHighlight));
+        }
+      }
+      processNode(el, false);
+    }
+
+    // 1. Slowed-Down Deliberate Typewriter Animation (Hero)
+    function runSlowTypewriter(el) {
+      if (el.dataset.animDone === 'true') return;
+      el.dataset.animDone = 'true';
+
+      const textNodes = [];
+      function collectText(node) {
+        if (node.nodeType === Node.TEXT_NODE) {
+          if (node.nodeValue.length > 0) {
+            textNodes.push({
+              node: node,
+              fullText: node.nodeValue
+            });
+          }
+        } else {
+          for (let child of node.childNodes) {
+            collectText(child);
+          }
+        }
+      }
+      collectText(el);
+
+      // Clear all text initially
+      textNodes.forEach(item => { item.node.nodeValue = ''; });
+
+      // Add blinking cursor
+      const caret = document.createElement('span');
+      caret.className = 'typing-caret';
+      caret.textContent = '|';
+      el.appendChild(caret);
+
+      let nodeIdx = 0;
+      let charIdx = 0;
+
+      function typeChar() {
+        if (nodeIdx >= textNodes.length) {
+          setTimeout(() => {
+            caret.classList.add('caret-fade');
+            setTimeout(() => caret.remove(), 700);
+          }, 1200);
+          return;
+        }
+
+        const current = textNodes[nodeIdx];
+        current.node.nodeValue += current.fullText[charIdx];
+        charIdx++;
+
+        if (current.node.parentNode) {
+          current.node.parentNode.insertBefore(caret, current.node.nextSibling);
+        }
+
+        if (charIdx >= current.fullText.length) {
+          nodeIdx++;
+          charIdx = 0;
+        }
+
+        // Paced typing speed: 65ms - 90ms with human pauses on punctuation
+        let delay = Math.random() * 25 + 65;
+        const typedChar = current.fullText[charIdx - 1];
+        if (typedChar === ',' || typedChar === '&' || typedChar === ';' || typedChar === '—') {
+          delay += 160;
+        } else if (typedChar === ' ') {
+          delay += 35;
+        }
+
+        setTimeout(typeChar, delay);
+      }
+
+      setTimeout(typeChar, 250);
+    }
+
+    // 2. Apple / Linear Staggered Word Lift & Blur (Personas)
+    function runWordReveal(el) {
+      if (el.dataset.animDone === 'true') return;
+      el.dataset.animDone = 'true';
+
+      wrapWordsInElement(el, 'anim-word-clip', 'anim-word-item');
+      const items = el.querySelectorAll('.anim-word-item');
+      items.forEach((item, idx) => {
+        setTimeout(() => {
+          item.classList.add('is-revealed');
+        }, idx * 90 + 60);
+      });
+    }
+
+    // 3. 3D Perspective Flip & Unfold (Core Innovations)
+    function run3DFlip(el) {
+      if (el.dataset.animDone === 'true') return;
+      el.dataset.animDone = 'true';
+
+      wrapWordsInElement(el, 'anim-3d-flip-wrap', 'anim-3d-flip-word');
+      const words = el.querySelectorAll('.anim-3d-flip-word');
+      words.forEach((word, idx) => {
+        setTimeout(() => {
+          word.classList.add('is-revealed');
+        }, idx * 110 + 60);
+      });
+    }
+
+    // 4. Cyber Scramble & Terminal Decrypt Sparks (Enterprise Permissions & Security)
+    function runCyberScramble(el) {
+      if (el.dataset.animDone === 'true') return;
+      el.dataset.animDone = 'true';
+
+      const highlights = el.querySelectorAll('.highlight');
+      highlights.forEach(h => {
+        h.dataset.wasHighlight = 'true';
+        h.style.background = 'none';
+        h.style.webkitTextFillColor = 'initial';
+      });
+
+      const glyphs = '01#$&*@?!<>/%0185';
+      const charObjects = [];
+
+      function collectChars(node, isHighlighted) {
+        if (node.nodeType === Node.TEXT_NODE) {
+          const text = node.nodeValue;
+          if (!text) return;
+          const frag = document.createDocumentFragment();
+          for (let i = 0; i < text.length; i++) {
+            const char = text[i];
+            if (/\s/.test(char)) {
+              frag.appendChild(document.createTextNode(char));
+            } else {
+              const span = document.createElement('span');
+              span.className = 'cyber-scramble-char scrambling' + (isHighlighted ? ' highlight-text' : '');
+              span.textContent = glyphs[Math.floor(Math.random() * glyphs.length)];
+              frag.appendChild(span);
+              charObjects.push({ span, targetChar: char });
+            }
+          }
+          node.parentNode.replaceChild(frag, node);
+        } else if (node.nodeType === Node.ELEMENT_NODE) {
+          const childHighlight = isHighlighted || node.classList.contains('highlight') || node.dataset.wasHighlight === 'true';
+          Array.from(node.childNodes).forEach(c => collectChars(c, childHighlight));
+        }
+      }
+
+      collectChars(el, false);
+
+      charObjects.forEach((obj, idx) => {
+        let cycles = 0;
+        const maxCycles = 5 + Math.floor(idx * 0.65);
+        const interval = setInterval(() => {
+          cycles++;
+          if (cycles < maxCycles) {
+            obj.span.textContent = glyphs[Math.floor(Math.random() * glyphs.length)];
+          } else {
+            clearInterval(interval);
+            obj.span.textContent = obj.targetChar;
+            obj.span.classList.remove('scrambling');
+            obj.span.classList.add('locked');
+          }
+        }, 40);
+      });
+    }
+
+    // 5. Shimmer Wave Word Glide (Live Food Showcase)
+    function runShimmerWave(el) {
+      if (el.dataset.animDone === 'true') return;
+      el.dataset.animDone = 'true';
+
+      wrapWordsInElement(el, 'anim-word-clip', 'anim-shimmer-word');
+      const words = el.querySelectorAll('.anim-shimmer-word');
+      words.forEach((word, idx) => {
+        setTimeout(() => {
+          word.classList.add('is-revealed');
+        }, idx * 95 + 60);
+      });
+    }
+
+    // 6. Luminous Aura Reveal (CTA Banner)
+    function runAuraReveal(el) {
+      if (el.dataset.animDone === 'true') return;
+      el.dataset.animDone = 'true';
+
+      el.classList.add('anim-aura-heading');
+      setTimeout(() => {
+        el.classList.add('is-revealed');
+      }, 100);
+    }
+
+    // Master Heading Animation Dispatcher
+    function animateHeading(el) {
+      if (!el || el.dataset.animDone === 'true') return;
+      const animType = el.getAttribute('data-anim') || (el.getAttribute('data-typewrite') === 'true' ? 'typewriter' : 'typewriter');
+
+      switch (animType) {
+        case 'typewriter':
+          runSlowTypewriter(el);
+          break;
+        case 'word-reveal':
+          runWordReveal(el);
+          break;
+        case 'flip-3d':
+          run3DFlip(el);
+          break;
+        case 'cyber-scramble':
+          runCyberScramble(el);
+          break;
+        case 'shimmer-wave':
+          runShimmerWave(el);
+          break;
+        case 'aura-reveal':
+          runAuraReveal(el);
+          break;
+        default:
+          runSlowTypewriter(el);
+          break;
+      }
+    }
+
+    // ================= 6. STATS NUMBER COUNTER ANIMATION =================
+    let statsAnimated = false;
+    function runStatsCounters() {
+      if (statsAnimated) return;
+      statsAnimated = true;
+
+      const items = [
+        { el: document.getElementById('statNum1'), target: 78, suffix: '%' },
+        { el: document.getElementById('statNum2'), target: 10000, suffix: '+', isComma: true },
+        { el: document.getElementById('statNum3'), target: 4, suffix: ' Roles' }
+      ];
+
+      items.forEach(item => {
+        if (!item.el) return;
+        const duration = 1600;
+        const start = 0;
+        const startTime = performance.now();
+
+        function updateCount(currentTime) {
+          const elapsed = currentTime - startTime;
+          const progress = Math.min(elapsed / duration, 1);
+          // Ease-out expo curve for buttery smooth stop
+          const easeOut = 1 - Math.pow(1 - progress, 3);
+          const currentVal = Math.round(start + (item.target - start) * easeOut);
+
+          const formatted = item.isComma ? currentVal.toLocaleString() : currentVal;
+          item.el.textContent = formatted + item.suffix;
+
+          if (progress < 1) {
+            requestAnimationFrame(updateCount);
+          }
+        }
+
+        requestAnimationFrame(updateCount);
+      });
+    }
+
+    // ================= 7. SCROLL-DRIVEN SLIDE TRANSITION OBSERVER =================
+    // Tracks each slide: hides future slides until scrolled to, reveals active slide, and fades out old slide slowly
+    const slides = document.querySelectorAll('.scroll-slide');
+
+    const slideObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        const el = entry.target;
+
+        if (entry.isIntersecting) {
+          // Entering view: reveal and keep permanently visible
+          el.classList.add('is-in-view');
+          el.classList.remove('is-past');
+
+          // Trigger heading animation if present in this slide
+          const heading = el.querySelector('[data-anim], [data-typewrite="true"]');
+          if (heading) {
+            animateHeading(heading);
+          }
+
+          // Section-specific triggers
+          if (el.id === 'stats-slide') {
+            runStatsCounters();
+          }
+          if (el.id === 'demo-menu') {
+            setReelRunning(true);
+          }
+        }
+      });
+    }, {
+      threshold: 0.1,
+      rootMargin: '0px 0px -20px 0px'
+    });
+
+    slides.forEach(s => slideObserver.observe(s));
+
+    // Initial render
+    renderShowcase();
+
+    // Trigger hero entrance immediately
+    const heroSlide = document.getElementById('hero-slide');
+    if (heroSlide) {
+      heroSlide.classList.add('is-in-view');
+      const heroH1 = heroSlide.querySelector('[data-anim], [data-typewrite="true"]');
+      if (heroH1) animateHeading(heroH1);
+    }
+
+    // ================= 8. CROSS-TAB AUTHENTICATION ORCHESTRATION =================
+    // When a user signs in via the new tab, this landing page tab automatically transitions to the main app dashboard
+    const topNavSignInBtn = document.getElementById('topNavSignInBtn');
+    let authWindowRef = null;
+
+    if (topNavSignInBtn) {
+      topNavSignInBtn.addEventListener('click', (e) => {
+        // Open sign-in in a fresh tab with opener reference
+        e.preventDefault();
+        authWindowRef = window.open('signin.html', 'invenTrackAuthTab');
+        if (authWindowRef) {
+          try { authWindowRef.focus(); } catch(err){}
+        } else {
+          window.location.href = 'signin.html';
+        }
+      });
+    }
+
+    // Cross-tab notification via BroadcastChannel
+    try {
+      if ('BroadcastChannel' in window) {
+        const authChannel = new BroadcastChannel('inventrack_auth');
+        authChannel.onmessage = (event) => {
+          if (event.data && event.data.type === 'AUTH_SUCCESS') {
+            window.location.href = '/';
+          }
+        };
+      }
+    } catch(err){}
+
+    // Fallback Cross-tab notification via Storage Event
+    window.addEventListener('storage', (e) => {
+      if (e.key === 'invenTrack_user' && e.newValue) {
+        window.location.href = '/';
+      }
+    });
+  </script>
+</body>
+</html>

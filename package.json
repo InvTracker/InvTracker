@@ -1,0 +1,21 @@
+{
+  "name": "inventrack-platform",
+  "version": "1.0.0",
+  "private": true,
+  "description": "InvenTrack — Material Design 3 Campus Food & Inventory Platform",
+  "scripts": {
+    "dev": "npm --prefix react run dev",
+    "build": "npm --prefix react run build",
+    "preview": "npm --prefix react run preview",
+    "start": "npm --prefix react run dev"
+  },
+  "keywords": [
+    "canteen",
+    "inventory",
+    "material-design-3",
+    "react",
+    "vite"
+  ],
+  "author": "",
+  "license": "MIT"
+}
