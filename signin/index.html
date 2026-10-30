@@ -1,0 +1,1695 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <base href="/">
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>ðŸ½ï¸</text></svg>">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login &mdash; InvenTrack Campus Dining &amp; Inventory Platform</title>
+  <meta name="description" content="InvenTrack Campus Dining Portal. Login or Sign In as User, Kitchen Staff, or Administrator with campus credentials.">
+
+  <!-- Google Material 3 Fonts & Material Symbols Outlined -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Roboto+Flex:wght@500;600;700;800&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..24,400,0,0&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+
+  <style>
+    :root {
+      --primary: #006874;
+      --primary-hover: #004f58;
+      --primary-glow: rgba(0, 104, 116, 0.35);
+      --accent-cyan: #00b4d8;
+      --accent-indigo: #6366f1;
+      
+      --bg-base: #f0f7f9;
+      --card-bg: rgba(255, 255, 255, 0.92);
+      --card-border: rgba(255, 255, 255, 0.95);
+      --card-shadow: 0 24px 64px -12px rgba(0, 80, 92, 0.16), 0 0 60px rgba(0, 180, 216, 0.22);
+      
+      --text-main: #131b1e;
+      --text-muted: #4e6166;
+      --input-bg: rgba(240, 246, 248, 0.85);
+      --input-border: rgba(0, 104, 116, 0.15);
+      --input-focus-border: #006874;
+      
+      --role-btn-bg: rgba(255, 255, 255, 0.75);
+      --role-btn-border: rgba(0, 104, 116, 0.12);
+      --role-btn-hover: rgba(0, 104, 116, 0.08);
+      
+      --font-body: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      --font-brand: 'Roboto Flex', 'Plus Jakarta Sans', sans-serif;
+    }
+
+    [data-theme="kitchen"] {
+      --primary: #00a0b2;
+      --primary-hover: #008796;
+      --primary-glow: rgba(0, 229, 255, 0.5);
+      --accent-cyan: #22d3ee;
+      --accent-indigo: #818cf8;
+      
+      --bg-base: #060b0e;
+      --card-bg: rgba(14, 22, 30, 0.92);
+      --card-border: rgba(255, 255, 255, 0.12);
+      --card-shadow: 0 24px 72px -12px rgba(0, 0, 0, 0.85), 0 0 70px rgba(0, 229, 255, 0.3);
+      
+      --text-main: #f0f6f8;
+      --text-muted: #94a7ab;
+      --input-bg: rgba(22, 34, 46, 0.8);
+      --input-border: rgba(255, 255, 255, 0.12);
+      --input-focus-border: #22d3ee;
+      
+      --role-btn-bg: rgba(255, 255, 255, 0.05);
+      --role-btn-border: rgba(255, 255, 255, 0.09);
+      --role-btn-hover: rgba(255, 255, 255, 0.12);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100vh;
+      margin: 0;
+      padding: 0;
+      background-color: var(--bg-base);
+      font-family: var(--font-body);
+      color: var(--text-main);
+      position: relative;
+      overflow-x: hidden;
+      transition: background-color 0.4s ease, color 0.4s ease;
+    }
+
+    @media (min-height: 700px) {
+      body {
+        overflow-y: hidden;
+      }
+    }
+
+    /* ================= RADIANT BACKGROUND LIGHT (LIGHT & DARK) ================= */
+    .ambient-canvas {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .ambient-orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(85px);
+      transition: all 0.5s ease;
+      will-change: transform, opacity;
+    }
+
+    .orb-center {
+      width: 820px;
+      height: 820px;
+      background: radial-gradient(circle, rgba(158, 239, 253, 0.85) 0%, rgba(224, 247, 250, 0.55) 45%, transparent 75%);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      opacity: 0.95;
+    }
+
+    .orb-1 {
+      width: 650px;
+      height: 650px;
+      background: radial-gradient(circle, rgba(0, 210, 255, 0.8) 0%, rgba(0, 168, 181, 0.4) 45%, transparent 75%);
+      top: -10%;
+      left: 10%;
+      opacity: 0.85;
+      animation: floatOrb1 18s infinite alternate ease-in-out;
+    }
+
+    .orb-2 {
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(129, 140, 248, 0.75) 0%, rgba(99, 102, 241, 0.35) 48%, transparent 75%);
+      bottom: -10%;
+      right: 10%;
+      opacity: 0.85;
+      animation: floatOrb2 22s infinite alternate ease-in-out;
+    }
+
+    .orb-3 {
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(45, 212, 191, 0.75) 0%, rgba(20, 184, 166, 0.3) 48%, transparent 75%);
+      top: 35%;
+      left: 60%;
+      opacity: 0.8;
+      animation: floatOrb3 16s infinite alternate ease-in-out;
+    }
+
+    /* Dark Mode Aurora Light Boost */
+    [data-theme="kitchen"] .orb-center {
+      background: radial-gradient(circle, rgba(0, 210, 255, 0.5) 0%, rgba(0, 104, 116, 0.28) 50%, transparent 75%);
+      opacity: 0.9;
+    }
+
+    [data-theme="kitchen"] .orb-1 {
+      background: radial-gradient(circle, rgba(0, 229, 255, 0.7) 0%, rgba(0, 128, 144, 0.38) 50%, transparent 75%);
+      opacity: 0.85;
+    }
+
+    [data-theme="kitchen"] .orb-2 {
+      background: radial-gradient(circle, rgba(129, 140, 248, 0.6) 0%, rgba(79, 70, 229, 0.3) 50%, transparent 75%);
+      opacity: 0.8;
+    }
+
+    [data-theme="kitchen"] .orb-3 {
+      background: radial-gradient(circle, rgba(45, 212, 191, 0.6) 0%, rgba(13, 148, 136, 0.3) 50%, transparent 75%);
+      opacity: 0.8;
+    }
+
+    @keyframes floatOrb1 {
+      0% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(70px, 45px) scale(1.08); }
+      100% { transform: translate(-40px, 85px) scale(0.95); }
+    }
+
+    @keyframes floatOrb2 {
+      0% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(-60px, -45px) scale(1.1); }
+      100% { transform: translate(45px, -75px) scale(0.92); }
+    }
+
+    @keyframes floatOrb3 {
+      0% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(-70px, 35px) scale(1.14); }
+      100% { transform: translate(35px, -45px) scale(0.9); }
+    }
+
+    .ambient-grid {
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(rgba(0, 104, 116, 0.15) 1.2px, transparent 1.2px);
+      background-size: 28px 28px;
+      opacity: 0.6;
+    }
+
+    [data-theme="kitchen"] .ambient-grid {
+      background-image: radial-gradient(rgba(255, 255, 255, 0.1) 1.2px, transparent 1.2px);
+      opacity: 0.45;
+    }
+
+    /* ================= FIXED FLOATING TOPBAR ================= */
+    .auth-topbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      width: 100%;
+      height: 56px;
+      z-index: 50;
+      padding: 0 36px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.65);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(0, 104, 116, 0.08);
+      transition: background 0.3s ease, border-color 0.3s ease;
+      box-sizing: border-box;
+    }
+
+    [data-theme="kitchen"] .auth-topbar {
+      background: rgba(8, 14, 19, 0.7);
+      border-bottom-color: rgba(255, 255, 255, 0.08);
+    }
+
+    .brand-link {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .brand-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #00838f, #004d40);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(0, 104, 116, 0.3);
+    }
+
+    .brand-title {
+      font-family: var(--font-brand);
+      font-size: 17px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+    }
+
+    .brand-tag {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--primary);
+    }
+
+    .topbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .theme-toggle-btn {
+      background: transparent;
+      border: 1px solid transparent;
+      border-radius: 50%;
+      width: 34px;
+      height: 34px;
+      cursor: pointer;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s, transform 0.2s;
+    }
+
+    .theme-toggle-btn:hover {
+      background: rgba(0, 104, 116, 0.1);
+      transform: rotate(15deg);
+    }
+
+    [data-theme="kitchen"] .theme-toggle-btn:hover {
+      background: rgba(255, 255, 255, 0.12);
+    }
+
+    .topbar-link {
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 5px 10px;
+      border-radius: 99px;
+      transition: all 0.2s;
+    }
+
+    .topbar-link:hover {
+      color: var(--primary);
+      background: rgba(0, 104, 116, 0.08);
+    }
+
+    .topbar-btn-app {
+      font-size: 12.5px;
+      font-weight: 600;
+      padding: 6px 14px;
+      border-radius: 99px;
+      background: var(--card-bg);
+      color: var(--text-main);
+      text-decoration: none;
+      border: 1px solid var(--card-border);
+      backdrop-filter: blur(8px);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.2s;
+    }
+
+    .topbar-btn-app:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+      transform: translateY(-1px);
+    }
+
+    /* ================= MAIN WRAP (ZERO SCROLLING, DEAD CENTER) ================= */
+    main.auth-page-wrap,
+    .auth-page-wrap {
+      position: relative !important;
+      z-index: 10 !important;
+      width: 100vw !important;
+      max-width: 100vw !important;
+      height: 100vh !important;
+      min-height: 100vh !important;
+      margin: 0 !important;
+      padding: 58px 24px 12px !important;
+      box-sizing: border-box !important;
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: center !important;
+      justify-content: center !important;
+    }
+
+    /* 620px Width Container */
+    .auth-card-wrap {
+      width: 100% !important;
+      max-width: 620px !important;
+      margin-left: auto !important;
+      margin-right: auto !important;
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: center !important;
+      animation: popIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      box-sizing: border-box;
+    }
+
+    @keyframes popIn {
+      0% {
+        opacity: 0;
+        transform: translateY(16px) scale(0.98);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    /* ================= COMPACT HIGH-AESTHETIC FROSTED CARD ================= */
+    .auth-card {
+      width: 100%;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 26px;
+      padding: 24px 34px 18px;
+      box-shadow: var(--card-shadow);
+      backdrop-filter: blur(28px);
+      -webkit-backdrop-filter: blur(28px);
+      transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+      box-sizing: border-box;
+    }
+
+    @media (max-width: 640px) {
+      .auth-card {
+        padding: 20px 18px 16px;
+        border-radius: 20px;
+      }
+      .auth-topbar {
+        padding: 0 16px;
+      }
+      main.auth-page-wrap,
+      .auth-page-wrap {
+        height: auto !important;
+        min-height: 100vh !important;
+        padding: 68px 14px 24px !important;
+        overflow-y: auto !important;
+      }
+      body {
+        overflow-y: auto !important;
+      }
+    }
+
+    .auth-card-header {
+      text-align: center;
+      margin-bottom: 12px;
+    }
+
+    .auth-card-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 3px 10px;
+      border-radius: 99px;
+      background: rgba(0, 104, 116, 0.1);
+      color: var(--primary);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      margin-bottom: 5px;
+    }
+
+    [data-theme="kitchen"] .auth-card-badge {
+      background: rgba(34, 211, 238, 0.15);
+      color: var(--accent-cyan);
+    }
+
+    .auth-card-title {
+      font-family: var(--font-brand);
+      font-size: 23px;
+      font-weight: 800;
+      letter-spacing: -0.025em;
+      color: var(--text-main);
+      margin-bottom: 2px;
+    }
+
+    .auth-card-sub {
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.35;
+    }
+
+    /* ================= ROLE SELECTOR BUTTONS (3 OPTIONS: USER, KITCHEN, ADMIN) ================= */
+    .role-buttons-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    @media (max-width: 480px) {
+      .role-buttons-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .role-btn {
+      background: var(--role-btn-bg);
+      border: 1px solid var(--role-btn-border);
+      border-radius: 13px;
+      padding: 9px 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 3px;
+      cursor: pointer;
+      color: var(--text-muted);
+      font-family: var(--font-body);
+      font-size: 12px;
+      font-weight: 600;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      user-select: none;
+    }
+
+    .role-btn .role-icon {
+      font-size: 21px;
+      transition: transform 0.2s, color 0.2s;
+    }
+
+    .role-btn:hover {
+      background: var(--role-btn-hover);
+      color: var(--text-main);
+      transform: translateY(-1px);
+      border-color: rgba(0, 104, 116, 0.25);
+    }
+
+    [data-theme="kitchen"] .role-btn:hover {
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .role-btn.active {
+      background: linear-gradient(135deg, rgba(0, 104, 116, 0.12), rgba(0, 180, 216, 0.15));
+      border-color: var(--primary);
+      color: var(--primary);
+      font-weight: 700;
+      box-shadow: 0 4px 12px var(--primary-glow);
+    }
+
+    .role-btn.active .role-icon {
+      color: var(--primary);
+      transform: scale(1.1);
+    }
+
+    [data-theme="kitchen"] .role-btn.active {
+      background: linear-gradient(135deg, rgba(34, 211, 238, 0.18), rgba(0, 160, 178, 0.22));
+      border-color: var(--accent-cyan);
+      color: var(--accent-cyan);
+      box-shadow: 0 4px 14px rgba(0, 229, 255, 0.28);
+    }
+
+    [data-theme="kitchen"] .role-btn.active .role-icon {
+      color: var(--accent-cyan);
+    }
+
+    /* ================= SMOOTH PILL SWITCH ================= */
+    .pill-tabs {
+      display: flex;
+      background: rgba(0, 104, 116, 0.07);
+      padding: 3px;
+      border-radius: 99px;
+      margin-bottom: 12px;
+      position: relative;
+    }
+
+    [data-theme="kitchen"] .pill-tabs {
+      background: rgba(255, 255, 255, 0.07);
+    }
+
+    .pill-tab-btn {
+      flex: 1;
+      border: none;
+      background: transparent;
+      padding: 7px 12px;
+      border-radius: 99px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      text-align: center;
+    }
+
+    .pill-tab-btn.active {
+      background: #ffffff;
+      color: var(--primary);
+      font-weight: 700;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+    }
+
+    [data-theme="kitchen"] .pill-tab-btn.active {
+      background: rgba(255, 255, 255, 0.16);
+      color: #ffffff;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.35);
+    }
+
+    /* ================= FORM INPUTS ================= */
+    .form-group {
+      margin-bottom: 11px;
+    }
+
+    .input-label {
+      display: block;
+      font-size: 11.5px;
+      font-weight: 600;
+      color: var(--text-main);
+      margin-bottom: 4px;
+      letter-spacing: 0.01em;
+    }
+
+    .input-container {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .input-icon-left {
+      position: absolute;
+      left: 13px;
+      color: var(--text-muted);
+      font-size: 19px;
+      pointer-events: none;
+      transition: color 0.2s;
+    }
+
+    .form-input {
+      width: 100%;
+      background: var(--input-bg);
+      border: 1px solid var(--input-border);
+      border-radius: 12px;
+      padding: 9.5px 14px 9.5px 42px;
+      font-size: 13px;
+      font-family: var(--font-body);
+      color: var(--text-main);
+      outline: none;
+      transition: all 0.2s ease;
+    }
+
+    .form-input:focus {
+      background: #ffffff;
+      border-color: var(--input-focus-border);
+      box-shadow: 0 0 0 3px var(--primary-glow);
+    }
+
+    [data-theme="kitchen"] .form-input:focus {
+      background: rgba(28, 41, 54, 0.95);
+      box-shadow: 0 0 0 3px rgba(34, 211, 238, 0.25);
+    }
+
+    .form-input:focus ~ .input-icon-left {
+      color: var(--primary);
+    }
+
+    [data-theme="kitchen"] .form-input:focus ~ .input-icon-left {
+      color: var(--accent-cyan);
+    }
+
+    .password-toggle-btn {
+      position: absolute;
+      right: 12px;
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      padding: 4px;
+      border-radius: 6px;
+      transition: color 0.2s;
+    }
+
+    .password-toggle-btn:hover {
+      color: var(--text-main);
+    }
+
+    /* Helper Row: Remember Me & Forgot PIN */
+    .form-options-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      font-size: 11.5px;
+    }
+
+    .remember-label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      color: var(--text-muted);
+      user-select: none;
+    }
+
+    .remember-checkbox {
+      accent-color: var(--primary);
+      width: 14px;
+      height: 14px;
+      cursor: pointer;
+    }
+
+    .forgot-link {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 600;
+      transition: opacity 0.2s;
+    }
+
+    .forgot-link:hover {
+      text-decoration: underline;
+      opacity: 0.85;
+    }
+
+    [data-theme="kitchen"] .forgot-link {
+      color: var(--accent-cyan);
+    }
+
+    /* ================= PRIMARY SUBMIT BUTTON ================= */
+    .btn-submit {
+      width: 100%;
+      padding: 11px 20px;
+      border: none;
+      border-radius: 99px;
+      background: linear-gradient(135deg, #007785, #004d58);
+      color: #ffffff;
+      font-family: var(--font-body);
+      font-size: 13.5px;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      box-shadow: 0 6px 18px var(--primary-glow);
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .btn-submit:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 22px rgba(0, 104, 116, 0.4);
+      background: linear-gradient(135deg, #008796, #005864);
+    }
+
+    .btn-submit:active {
+      transform: translateY(0);
+    }
+
+    [data-theme="kitchen"] .btn-submit {
+      background: linear-gradient(135deg, #00a0b2, #006064);
+      box-shadow: 0 6px 18px rgba(0, 160, 178, 0.35);
+    }
+
+    [data-theme="kitchen"] .btn-submit:hover {
+      background: linear-gradient(135deg, #00b4c8, #006f74);
+    }
+
+    /* ================= HORIZONTAL LINE DIVIDER AT BOTTOM ================= */
+    .auth-divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 15px 0 11px;
+    }
+
+    .auth-divider-line {
+      flex: 1;
+      height: 1px;
+      background: rgba(0, 104, 116, 0.14);
+    }
+
+    [data-theme="kitchen"] .auth-divider-line {
+      background: rgba(255, 255, 255, 0.12);
+    }
+
+    .auth-divider-text {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      white-space: nowrap;
+    }
+
+    /* ================= OTHER SIGN-IN OPTIONS (SMALL ICONS CENTERED UNDER LINE) ================= */
+    .other-signin-options {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      margin-bottom: 11px;
+    }
+
+    .social-circle-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--role-btn-bg);
+      border: 1px solid var(--role-btn-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+      color: var(--text-main);
+    }
+
+    .social-circle-btn:hover {
+      background: #ffffff;
+      border-color: var(--primary);
+      transform: translateY(-2px) scale(1.08);
+      box-shadow: 0 4px 12px rgba(0, 104, 116, 0.22);
+    }
+
+    [data-theme="kitchen"] .social-circle-btn {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 255, 255, 0.14);
+    }
+
+    [data-theme="kitchen"] .social-circle-btn:hover {
+      background: rgba(34, 211, 238, 0.18);
+      border-color: var(--accent-cyan);
+      box-shadow: 0 4px 12px rgba(0, 229, 255, 0.3);
+    }
+
+    /* ================= DEMO SHORTCUT CHIPS ROW ================= */
+    .demo-quick-bar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .demo-chip-btn {
+      background: rgba(0, 104, 116, 0.05);
+      border: 1px solid rgba(0, 104, 116, 0.1);
+      border-radius: 99px;
+      color: var(--primary);
+      font-family: inherit;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      padding: 4px 10px;
+      transition: all 0.2s ease;
+    }
+
+    .demo-chip-btn:hover {
+      background: var(--primary);
+      color: #ffffff;
+      border-color: var(--primary);
+      transform: translateY(-1px);
+    }
+
+    [data-theme="kitchen"] .demo-chip-btn {
+      background: rgba(34, 211, 238, 0.07);
+      border-color: rgba(34, 211, 238, 0.15);
+      color: var(--accent-cyan);
+    }
+
+    [data-theme="kitchen"] .demo-chip-btn:hover {
+      background: var(--accent-cyan);
+      color: #060b0e;
+      border-color: var(--accent-cyan);
+    }
+
+    /* ================= AUTH SUCCESS CARD ================= */
+    .auth-success-card {
+      display: none;
+      margin-top: 12px;
+      padding: 12px 14px;
+      border-radius: 14px;
+      background: rgba(16, 185, 129, 0.12);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      animation: fadeIn 0.3s ease;
+    }
+
+    .auth-success-card.show {
+      display: block;
+    }
+
+    .auth-success-head {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      color: #059669;
+      font-weight: 700;
+      font-size: 13px;
+      margin-bottom: 2px;
+    }
+
+    [data-theme="kitchen"] .auth-success-head {
+      color: #34d399;
+    }
+
+    .auth-success-body {
+      font-size: 11.5px;
+      color: var(--text-muted);
+      line-height: 1.35;
+      margin-bottom: 8px;
+    }
+
+    .auth-success-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .btn-launch-app {
+      flex: 1;
+      background: #059669;
+      color: #fff;
+      font-weight: 700;
+      font-size: 12px;
+      padding: 7px 12px;
+      border-radius: 99px;
+      text-decoration: none;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: background 0.2s;
+    }
+
+    .btn-launch-app:hover {
+      background: #047857;
+    }
+
+    .btn-dismiss-success {
+      background: transparent;
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      color: var(--text-muted);
+      font-size: 11px;
+      font-weight: 600;
+      padding: 6px 10px;
+      border-radius: 99px;
+      cursor: pointer;
+    }
+
+    [data-theme="kitchen"] .btn-dismiss-success {
+      border-color: rgba(255, 255, 255, 0.18);
+      color: var(--text-muted);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes spin {
+      100% { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Radiant Ambient Canvas -->
+  <div class="ambient-canvas">
+    <div class="ambient-orb orb-center"></div>
+    <div class="ambient-orb orb-1"></div>
+    <div class="ambient-orb orb-2"></div>
+    <div class="ambient-orb orb-3"></div>
+    <div class="ambient-grid"></div>
+  </div>
+
+  <!-- Topbar -->
+  <header class="auth-topbar">
+    <a href="landing.html" class="brand-link">
+      <div class="brand-icon">
+        <span class="material-symbols-outlined" style="font-size: 19px;">inventory_2</span>
+      </div>
+      <div>
+        <div class="brand-title">InvenTrack</div>
+        <div class="brand-tag">Campus Dining</div>
+      </div>
+    </a>
+
+    <div class="topbar-actions">
+      <!-- Theme Toggle -->
+      <button id="themeToggleBtn" class="theme-toggle-btn" title="Toggle Dark/Light Theme">
+        <span class="material-symbols-outlined" id="themeIcon" style="font-size: 19px;">dark_mode</span>
+      </button>
+
+      <a href="landing.html" class="topbar-link">
+        <span class="material-symbols-outlined" style="font-size: 16px;">arrow_back</span>
+        <span>Back</span>
+      </a>
+
+      <a href="index.html" class="topbar-btn-app">
+        <span>Open App &rarr;</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- Centered Wrap: 620px width, zero scrolling -->
+  <main class="auth-page-wrap">
+    <div class="auth-card-wrap">
+      
+      <div class="auth-card">
+        
+        <!-- Header -->
+        <div class="auth-card-header">
+          <div class="auth-card-badge" id="authCardBadge">
+            <span class="material-symbols-outlined" id="authBadgeIcon" style="font-size: 13px;">verified_user</span>
+            <span id="authBadgeText">Campus Single Sign-On</span>
+          </div>
+          <h1 class="auth-card-title" id="authCardTitle">User Login</h1>
+          <p class="auth-card-sub" id="authSubTitle">
+            Authenticate to access live order tokens, stock gauges, and dining balance.
+          </p>
+        </div>
+
+        <!-- Role Selector Buttons (3 Options: User, Kitchen, Admin) -->
+        <div class="role-buttons-grid">
+          <button type="button" class="role-btn active" data-role="user">
+            <span class="material-symbols-outlined role-icon">person</span>
+            <span>User</span>
+          </button>
+          <button type="button" class="role-btn" data-role="kitchen">
+            <span class="material-symbols-outlined role-icon">skillet</span>
+            <span>Kitchen</span>
+          </button>
+          <button type="button" class="role-btn" data-role="admin">
+            <span class="material-symbols-outlined role-icon">admin_panel_settings</span>
+            <span>Admin</span>
+          </button>
+        </div>
+
+        <!-- Pill Tabs: Login vs Sign In -->
+        <div class="pill-tabs">
+          <button type="button" class="pill-tab-btn active" id="tabBtnLogin">Login</button>
+          <button type="button" class="pill-tab-btn" id="tabBtnRegister">Sign In</button>
+        </div>
+
+        <!-- Form Elements -->
+        <form id="authForm" onsubmit="handleAuthSubmit(event)">
+          <div id="dynamicFormFields">
+            <!-- Dynamically populated according to active role & tab -->
+          </div>
+
+          <!-- Options Row -->
+          <div class="form-options-row">
+            <label class="remember-label">
+              <input type="checkbox" id="rememberMe" class="remember-checkbox" checked>
+              <span>Remember me</span>
+            </label>
+            <a href="#" onclick="alert('Demo reset instructions sent to registered campus email.'); return false;" class="forgot-link">
+              Forgot PIN?
+            </a>
+          </div>
+
+          <!-- Submit Button -->
+          <button type="submit" class="btn-submit" id="submitBtn">
+            <span class="material-symbols-outlined" style="font-size: 17px;">login</span>
+            <span id="submitBtnText">Login to Campus Dining Portal</span>
+          </button>
+        </form>
+
+        <!-- Authenticated Feedback Alert -->
+        <div class="auth-success-card" id="authSuccessBox">
+          <div class="auth-success-head">
+            <span class="material-symbols-outlined" style="font-size: 17px;">check_circle</span>
+            <span id="successTitle">Signed In Successfully!</span>
+          </div>
+          <p class="auth-success-body" id="successMsg">
+            Session authorized. Welcome back!
+          </p>
+          <div class="auth-success-actions">
+            <a href="index.html" class="btn-launch-app">
+              <span>Launch App Dashboard &rarr;</span>
+            </a>
+            <button type="button" onclick="document.getElementById('authSuccessBox').classList.remove('show')" class="btn-dismiss-success">
+              Dismiss
+            </button>
+          </div>
+        </div>
+
+        <!-- Horizontal Divider Line -->
+        <div class="auth-divider">
+          <span class="auth-divider-line"></span>
+          <span class="auth-divider-text">Or continue with</span>
+          <span class="auth-divider-line"></span>
+        </div>
+
+        <!-- Other Login Options (Small Icons Under Horizontal Line) -->
+        <div class="other-signin-options">
+          <!-- Google Sign-In Icon -->
+          <button type="button" class="social-circle-btn" id="googleSignInBtn" title="Continue with Google Account">
+            <svg width="18" height="18" viewBox="0 0 24 24">
+              <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+              <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+              <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+              <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+            </svg>
+          </button>
+
+          <!-- Campus Email Sign-In Icon -->
+          <button type="button" class="social-circle-btn" id="emailSignInBtn" title="Continue with University Email">
+            <span class="material-symbols-outlined" style="font-size: 19px; color: var(--primary);">mail</span>
+          </button>
+        </div>
+
+        <!-- Demo Quick Fill Row -->
+        <div class="demo-quick-bar">
+          <span style="font-size:11px; color:var(--text-muted); font-weight:600;">Demo:</span>
+          <button type="button" class="demo-chip-btn" id="demoUserBtn">ðŸ‘¤ User (Rohan)</button>
+          <button type="button" class="demo-chip-btn" id="demoKitchenBtn">ðŸ³ Kitchen</button>
+          <button type="button" class="demo-chip-btn" id="demoAdminBtn">ðŸ‘” Admin</button>
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+
+  <script>
+    // Theme toggle & persistent preference
+    const themeToggleBtn = document.getElementById('themeToggleBtn');
+    const themeIcon = document.getElementById('themeIcon');
+    const savedTheme = localStorage.getItem('invenTrack_theme') || (document.body.getAttribute('data-theme') === 'kitchen' ? 'kitchen' : 'default');
+    let isDark = savedTheme === 'kitchen';
+
+    function applyTheme(dark) {
+      isDark = Boolean(dark);
+      if (isDark) {
+        document.documentElement.setAttribute('data-theme', 'kitchen');
+        document.body.setAttribute('data-theme', 'kitchen');
+        if (themeIcon) themeIcon.textContent = 'light_mode';
+        try { localStorage.setItem('invenTrack_theme', 'kitchen'); } catch(e){}
+      } else {
+        document.documentElement.removeAttribute('data-theme');
+        document.body.removeAttribute('data-theme');
+        if (themeIcon) themeIcon.textContent = 'dark_mode';
+        try { localStorage.setItem('invenTrack_theme', 'default'); } catch(e){}
+      }
+    }
+
+    applyTheme(isDark);
+
+    if (themeToggleBtn) {
+      themeToggleBtn.addEventListener('click', () => {
+        applyTheme(!isDark);
+      });
+    }
+
+    // Auth State (Combined User, Kitchen, Admin)
+    let authMode = 'login'; // 'login' or 'register'
+    let currentRole = 'user';
+
+    const roleButtons = document.querySelectorAll('.role-btn');
+    const tabBtnLogin = document.getElementById('tabBtnLogin');
+    const tabBtnRegister = document.getElementById('tabBtnRegister');
+    const dynamicFields = document.getElementById('dynamicFormFields');
+    const authSubTitle = document.getElementById('authSubTitle');
+    const submitBtnText = document.getElementById('submitBtnText');
+    const authCardTitle = document.getElementById('authCardTitle');
+    const authBadgeText = document.getElementById('authBadgeText');
+    const authBadgeIcon = document.getElementById('authBadgeIcon');
+
+    // Password visibility toggle
+    window.togglePasswordVisibility = function(inputId, iconId) {
+      const input = document.getElementById(inputId);
+      const icon = document.getElementById(iconId);
+      if (!input) return;
+      if (input.type === 'password') {
+        input.type = 'text';
+        if (icon) icon.textContent = 'visibility_off';
+      } else {
+        input.type = 'password';
+        if (icon) icon.textContent = 'visibility';
+      }
+    };
+
+    function selectRole(role) {
+      currentRole = role;
+      roleButtons.forEach(btn => {
+        if (btn.getAttribute('data-role') === role) {
+          btn.classList.add('active');
+        } else {
+          btn.classList.remove('active');
+        }
+      });
+      renderForm();
+    }
+
+    roleButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const role = btn.getAttribute('data-role');
+        selectRole(role);
+      });
+    });
+
+    function renderForm() {
+      if (authMode === 'register') {
+        // Sign In Mode per Role (Enrollment / Registration)
+        if (currentRole === 'kitchen') {
+          if (authCardTitle) authCardTitle.textContent = 'Kitchen Staff Sign In';
+          if (authBadgeText) authBadgeText.textContent = 'Kitchen Staff Enrollment';
+          if (authBadgeIcon) authBadgeIcon.textContent = 'skillet';
+
+          dynamicFields.innerHTML = `
+            <div class="form-group">
+              <label class="input-label" for="regName">Full Name</label>
+              <div class="input-container">
+                <span class="material-symbols-outlined input-icon-left">person</span>
+                <input type="text" class="form-input" id="regName" placeholder="e.g. Chef Rajesh Kumar" required value="Chef Rajesh Kumar">
+              </div>
+            </div>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+              <div class="form-group">
+                <label class="input-label" for="regRoll">Staff Badge ID</label>
+                <div class="input-container">
+                  <span class="material-symbols-outlined input-icon-left">badge</span>
+                  <input type="text" class="form-input" id="regRoll" placeholder="e.g. KIT-104" required value="KIT-104">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="input-label" for="regStation">Assigned Station</label>
+                <div class="input-container">
+                  <span class="material-symbols-outlined input-icon-left">skillet</span>
+                  <select class="form-input" id="regStation" style="padding-left:42px; appearance:none; -webkit-appearance:none; cursor:pointer;">
+                    <option selected>Counter 1 (Hot Meals)</option>
+                    <option>Counter 2 (Quick Bites)</option>
+                    <option>Counter 3 (Cafe & Drinks)</option>
+                    <option>All Stations</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="input-label" for="regPhone">Mobile Number</label>
+              <div class="input-container">
+                <span class="material-symbols-outlined input-icon-left">phone_iphone</span>
+                <input type="tel" class="form-input" id="regPhone" placeholder="e.g. +91 98765 43218" required value="+91 98765 43218">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="input-label" for="regPin">Kitchen Station PIN</label>
+              <div class="input-container">
+                <span class="material-symbols-outlined input-icon-left">lock</span>
+                <input type="password" class="form-input" id="regPin" placeholder="4-digit access PIN" required value="7788">
+                <button type="button" class="password-toggle-btn" onclick="togglePasswordVisibility('regPin', 'regPinIcon')" title="Toggle PIN visibility">
+                  <span class="material-symbols-outlined" id="regPinIcon" style="font-size:18px;">visibility</span>
+                </button>
+              </div>
+            </div>
+          `;
+          submitBtnText.textContent = 'Sign In as Kitchen Staff';
+          authSubTitle.textContent = 'Enroll as authorized kitchen crew to access live Kanban board and stock adjuster.';
+        } else if (currentRole === 'admin') {
+          if (authCardTitle) authCardTitle.textContent = 'Campus Admin Sign In';
+          if (authBadgeText) authBadgeText.textContent = 'Campus Admin Enrollment';
+          if (authBadgeIcon) authBadgeIcon.textContent = 'admin_panel_settings';
+
+          dynamicFields.innerHTML = `
+            <div class="form-group">
+              <label class="input-label" for="regName">Full Name</label>
+              <div class="input-container">
+                <span class="material-symbols-outlined input-icon-left">person</span>
+                <input type="text" class="form-input" id="regName" placeholder="e.g. Dr. Vikram Malhotra" required value="Dr. Vikram Malhotra">
+              </div>
+            </div>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+              <div class="form-group">
+                <label class="input-label" for="regRoll">Admin Passkey ID</label>
+                <div class="input-container">
+                  <span class="material-symbols-outlined input-icon-left">badge</span>
+                  <input type="text" class="form-input" id="regRoll" placeholder="e.g. ADM-2026" required value="ADM-2026">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="input-label" for="regDept">Department</label>
+                <div class="input-container">
+                  <span class="material-symbols-outlined input-icon-left">business</span>
+                  <select class="form-input" id="regDept" style="padding-left:42px; appearance:none; -webkit-appearance:none; cursor:pointer;">
+                    <option selected>Campus Dining Directorate</option>
+                    <option>Procurement & Logistics</option>
+                    <option>Student Financial Affairs</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="input-label" for="regEmail">Institutional Email</label>
+              <div class="input-container">
+                <span class="material-symbols-outlined input-icon-left">mail</span>
+                <input type="email" class="form-input" id="regEmail" placeholder="admin@campus.edu" required value="admin@campus.edu">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="input-label" for="regPin">Master Administrative Passkey</label>
+              <div class="input-container">
+                <span class="material-symbols-outlined input-icon-left">lock</span>
+                <input type="password" class="form-input" id="regPin" placeholder="Master credentials" required value="admin2026">
+                <button type="button" class="password-toggle-btn" onclick="togglePasswordVisibility('regPin', 'regPinIcon')" title="Toggle PIN visibility">
+                  <span class="material-symbols-outlined" id="regPinIcon" style="font-size:18px;">visibility</span>
+                </button>
+              </div>
+            </div>
+          `;
+          submitBtnText.textContent = 'Sign In as Campus Admin';
+          authSubTitle.textContent = 'Enroll for institutional access to gross revenue analytics and inventory audits.';
+        } else {
+          // user
+          if (authCardTitle) authCardTitle.textContent = 'User Sign In';
+          if (authBadgeText) authBadgeText.textContent = 'New Diner Registration';
+          if (authBadgeIcon) authBadgeIcon.textContent = 'person_add';
+
+          dynamicFields.innerHTML = `
+            <div class="form-group">
+              <label class="input-label" for="regName">Full Name</label>
+              <div class="input-container">
+                <span class="material-symbols-outlined input-icon-left">person</span>
+                <input type="text" class="form-input" id="regName" placeholder="e.g. Rohan Sharma" required value="Rohan Sharma">
+              </div>
+            </div>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+              <div class="form-group">
+                <label class="input-label" for="regRoll">Roll Number / Student ID</label>
+                <div class="input-container">
+                  <span class="material-symbols-outlined input-icon-left">badge</span>
+                  <input type="text" class="form-input" id="regRoll" placeholder="e.g. 2301CS042" required value="2301CS042">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="input-label" for="regYear">Academic Year</label>
+                <div class="input-container">
+                  <span class="material-symbols-outlined input-icon-left">school</span>
+                  <select class="form-input" id="regYear" style="padding-left:42px; appearance:none; -webkit-appearance:none; cursor:pointer;">
+                    <option>1st Year</option>
+                    <option>2nd Year</option>
+                    <option selected>3rd Year</option>
+                    <option>4th Year / Staff</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="input-label" for="regPhone">Mobile Number</label>
+              <div class="input-container">
+                <span class="material-symbols-outlined input-icon-left">phone_iphone</span>
+                <input type="tel" class="form-input" id="regPhone" placeholder="e.g. +91 98765 43210" required value="+91 98765 43210">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="input-label" for="regPin">Campus Dining PIN / Password</label>
+              <div class="input-container">
+                <span class="material-symbols-outlined input-icon-left">lock</span>
+                <input type="password" class="form-input" id="regPin" placeholder="4 to 6 digit security PIN" required value="1234">
+                <button type="button" class="password-toggle-btn" onclick="togglePasswordVisibility('regPin', 'regPinIcon')" title="Toggle PIN visibility">
+                  <span class="material-symbols-outlined" id="regPinIcon" style="font-size:18px;">visibility</span>
+                </button>
+              </div>
+            </div>
+          `;
+          submitBtnText.textContent = 'Sign In to Campus Dining';
+          authSubTitle.textContent = 'Set up a new dining profile with your campus credentials to track tokens.';
+        }
+      } else {
+        // Login Mode per Role (user, kitchen, admin)
+        if (currentRole === 'user') {
+          if (authCardTitle) authCardTitle.textContent = 'User Login';
+          if (authBadgeText) authBadgeText.textContent = 'Campus Single Sign-On';
+          if (authBadgeIcon) authBadgeIcon.textContent = 'verified_user';
+
+          dynamicFields.innerHTML = `
+            <div class="form-group">
+              <label class="input-label" for="loginId">Campus ID, Roll Number or Email</label>
+              <div class="input-container">
+                <span class="material-symbols-outlined input-icon-left">person</span>
+                <input type="text" class="form-input" id="loginId" placeholder="e.g. 2301CS042 or user@campus.edu" required value="2301CS042">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="input-label" for="loginPass">Dining PIN or Password</label>
+              <div class="input-container">
+                <span class="material-symbols-outlined input-icon-left">lock</span>
+                <input type="password" class="form-input" id="loginPass" placeholder="Enter PIN or password" required value="1234">
+                <button type="button" class="password-toggle-btn" onclick="togglePasswordVisibility('loginPass', 'loginPassIcon')" title="Toggle PIN visibility">
+                  <span class="material-symbols-outlined" id="loginPassIcon" style="font-size:18px;">visibility</span>
+                </button>
+              </div>
+            </div>
+          `;
+          submitBtnText.textContent = 'Login to Campus Dining Portal';
+          authSubTitle.textContent = 'Authenticate to access live order tokens, stock gauges, and dining balance.';
+        } else if (currentRole === 'kitchen') {
+          if (authCardTitle) authCardTitle.textContent = 'Kitchen Login';
+          if (authBadgeText) authBadgeText.textContent = 'Kitchen Station Terminal';
+          if (authBadgeIcon) authBadgeIcon.textContent = 'skillet';
+
+          dynamicFields.innerHTML = `
+            <div class="form-group">
+              <label class="input-label" for="loginId">Kitchen Staff ID</label>
+              <div class="input-container">
+                <span class="material-symbols-outlined input-icon-left">badge</span>
+                <input type="text" class="form-input" id="loginId" placeholder="e.g. KIT-CHEF-01" required value="KIT-CHEF-01">
+              </div>
+            </div>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+              <div class="form-group">
+                <label class="input-label">Assigned Station</label>
+                <div class="input-container">
+                  <span class="material-symbols-outlined input-icon-left">skillet</span>
+                  <select class="form-input" style="padding-left:42px; appearance:none; -webkit-appearance:none; cursor:pointer;">
+                    <option selected>Counter 1 (Hot Meals)</option>
+                    <option>Counter 2 (Quick Bites)</option>
+                    <option>Counter 3 (Cafe & Drinks)</option>
+                    <option>All Stations</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="input-label" for="loginPass">Kitchen Access PIN</label>
+                <div class="input-container">
+                  <span class="material-symbols-outlined input-icon-left">lock</span>
+                  <input type="password" class="form-input" id="loginPass" placeholder="PIN" required value="7788">
+                  <button type="button" class="password-toggle-btn" onclick="togglePasswordVisibility('loginPass', 'loginPassIcon')" title="Toggle PIN visibility">
+                    <span class="material-symbols-outlined" id="loginPassIcon" style="font-size:18px;">visibility</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          `;
+          submitBtnText.textContent = 'Login to Kitchen KDS & POS Terminal';
+          authSubTitle.textContent = 'Access the real-time Kanban queue board and stock capacity adjuster.';
+        } else if (currentRole === 'admin') {
+          if (authCardTitle) authCardTitle.textContent = 'Admin Login';
+          if (authBadgeText) authBadgeText.textContent = 'Campus Administration';
+          if (authBadgeIcon) authBadgeIcon.textContent = 'admin_panel_settings';
+
+          dynamicFields.innerHTML = `
+            <div class="form-group">
+              <label class="input-label" for="loginId">Administrator Email / Passkey</label>
+              <div class="input-container">
+                <span class="material-symbols-outlined input-icon-left">admin_panel_settings</span>
+                <input type="email" class="form-input" id="loginId" placeholder="admin@campus.edu" required value="admin@campus.edu">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="input-label" for="loginPass">Executive Passkey</label>
+              <div class="input-container">
+                <span class="material-symbols-outlined input-icon-left">lock</span>
+                <input type="password" class="form-input" id="loginPass" placeholder="Master credentials" required value="admin2026">
+                <button type="button" class="password-toggle-btn" onclick="togglePasswordVisibility('loginPass', 'loginPassIcon')" title="Toggle PIN visibility">
+                  <span class="material-symbols-outlined" id="loginPassIcon" style="font-size:18px;">visibility</span>
+                </button>
+              </div>
+            </div>
+          `;
+          submitBtnText.textContent = 'Login to Campus Executive Suite';
+          authSubTitle.textContent = 'Review gross dining revenue, rush-hour velocity, and audit reports.';
+        }
+      }
+    }
+
+    // Tab buttons
+    tabBtnLogin.addEventListener('click', () => {
+      tabBtnLogin.classList.add('active');
+      tabBtnRegister.classList.remove('active');
+      authMode = 'login';
+      renderForm();
+    });
+
+    tabBtnRegister.addEventListener('click', () => {
+      tabBtnRegister.classList.add('active');
+      tabBtnLogin.classList.remove('active');
+      authMode = 'register';
+      renderForm();
+    });
+
+    // Demo Autofill Handlers
+    document.getElementById('demoUserBtn')?.addEventListener('click', () => {
+      authMode = 'login';
+      tabBtnLogin.classList.add('active');
+      tabBtnRegister.classList.remove('active');
+      selectRole('user');
+      const loginId = document.getElementById('loginId');
+      const loginPass = document.getElementById('loginPass');
+      if (loginId) loginId.value = '2301CS042';
+      if (loginPass) loginPass.value = '1234';
+      submitBtnText.textContent = 'Login as User (Rohan)';
+    });
+
+    document.getElementById('demoKitchenBtn')?.addEventListener('click', () => {
+      authMode = 'login';
+      tabBtnLogin.classList.add('active');
+      tabBtnRegister.classList.remove('active');
+      selectRole('kitchen');
+      const loginId = document.getElementById('loginId');
+      const loginPass = document.getElementById('loginPass');
+      if (loginId) loginId.value = 'KIT-CHEF-01';
+      if (loginPass) loginPass.value = '7788';
+      submitBtnText.textContent = 'Login as Kitchen Staff';
+    });
+
+    document.getElementById('demoAdminBtn')?.addEventListener('click', () => {
+      authMode = 'login';
+      tabBtnLogin.classList.add('active');
+      tabBtnRegister.classList.remove('active');
+      selectRole('admin');
+      const loginId = document.getElementById('loginId');
+      const loginPass = document.getElementById('loginPass');
+      if (loginId) loginId.value = 'admin@campus.edu';
+      if (loginPass) loginPass.value = 'admin2026';
+      submitBtnText.textContent = 'Login as Campus Admin';
+    });
+
+    // Cross-Tab & State-Engine Authentication Completion
+    function completeAuthentication(userData) {
+      // 1. Persist to localStorage for application session
+      try {
+        localStorage.setItem('invenTrack_user', JSON.stringify(userData));
+
+        // Sync with primary InvenTrack store
+        let appState = {};
+        const savedState = localStorage.getItem('inventrack_m3_state');
+        if (savedState) {
+          try { appState = JSON.parse(savedState); } catch(err){}
+        }
+        appState.loggedIn = true;
+        appState.currentUser = userData;
+        appState.activeRole = userData.role || 'user';
+        appState.activePage = userData.role === 'admin' ? 'admin-overview' : (userData.role === 'kitchen' ? 'kitchen-kanban' : 'home');
+        localStorage.setItem('inventrack_m3_state', JSON.stringify(appState));
+
+        // Set theme automatically for kitchen role
+        if (userData.role === 'kitchen') {
+          localStorage.setItem('invenTrack_theme', 'kitchen');
+        }
+      } catch(e){}
+
+      // 2. Broadcast across tabs (e.g. landing page tab)
+      try {
+        if ('BroadcastChannel' in window) {
+          const authChannel = new BroadcastChannel('inventrack_auth');
+          authChannel.postMessage({ type: 'AUTH_SUCCESS', user: userData });
+          authChannel.close();
+        }
+      } catch(e){}
+
+      // 3. UI feedback
+      const alertBox = document.getElementById('authSuccessBox');
+      const successTitle = document.getElementById('successTitle');
+      const successMsg = document.getElementById('successMsg');
+      if (alertBox) {
+        if (successTitle) successTitle.textContent = `Welcome, ${userData.name}!`;
+        if (successMsg) successMsg.textContent = `Authenticated as ${userData.title || userData.role.toUpperCase()}! Opening dashboard...`;
+        alertBox.classList.add('show');
+      }
+
+      // 4. Redirect to the main application dashboard
+      setTimeout(() => {
+        let redirectedOpener = false;
+        try {
+          if (window.opener && !window.opener.closed) {
+            window.opener.location.href = window.location.protocol === 'file:' ? 'index.html' : '/';
+            try { window.opener.focus(); } catch(err){}
+            redirectedOpener = true;
+          }
+        } catch(err) {
+          console.warn('Opener redirect fallback:', err);
+        }
+
+        // Close auth tab if opened via popup
+        if (redirectedOpener) {
+          try {
+            window.close();
+          } catch(e){}
+        }
+
+        // Safety navigation: Navigate current tab to dashboard
+        setTimeout(() => {
+          window.location.href = window.location.protocol === 'file:' ? 'index.html' : '/';
+        }, 800);
+      }, 500);
+    }
+
+    // Google Sign-In Simulation
+    document.getElementById('googleSignInBtn')?.addEventListener('click', () => {
+      const submitBtn = document.getElementById('submitBtn');
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = `
+        <span class="material-symbols-outlined" style="animation: spin 1s infinite linear; font-size:18px;">refresh</span>
+        <span>Connecting with Google Workspace...</span>
+      `;
+
+      setTimeout(() => {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = `
+          <span class="material-symbols-outlined" style="font-size:18px;">check</span>
+          <span>Google Authenticated</span>
+        `;
+
+        const googleUser = {
+          name: currentRole === 'kitchen' ? 'Chef Rajesh Kumar' : currentRole === 'admin' ? 'Dr. Vikram Malhotra' : 'Rohan Sharma',
+          year: currentRole === 'kitchen' ? 'Kitchen Staff' : currentRole === 'admin' ? 'Faculty / Admin' : '3rd year',
+          rollNo: currentRole === 'kitchen' ? 'KIT-104' : currentRole === 'admin' ? 'ADM-2026' : '2301CS042',
+          studentId: currentRole === 'kitchen' ? 'KIT-104' : currentRole === 'admin' ? 'ADM-2026' : 'ST-2023-42',
+          phone: '+91 98765 43210',
+          email: currentRole === 'kitchen' ? 'kitchen@campus.edu' : currentRole === 'admin' ? 'admin@campus.edu' : 'rohan.sharma@campus.edu',
+          authProvider: 'Google SSO',
+          title: currentRole === 'admin' ? 'Campus Administrator' : currentRole === 'kitchen' ? 'Executive Kitchen Chef' : 'Campus Student',
+          balance: currentRole === 'admin' ? 5000 : currentRole === 'kitchen' ? 2000 : 450,
+          role: currentRole
+        };
+
+        completeAuthentication(googleUser);
+      }, 600);
+    });
+
+    // Email Sign-In Quick Switch
+    document.getElementById('emailSignInBtn')?.addEventListener('click', () => {
+      selectRole('user');
+      const loginId = document.getElementById('loginId');
+      if (loginId) {
+        loginId.placeholder = 'user@campus.edu';
+        loginId.value = 'rohan.sharma@campus.edu';
+        loginId.focus();
+      }
+      const label = document.querySelector('label[for="loginId"]');
+      if (label) label.textContent = 'University Email Address';
+    });
+
+    // Form Submission
+    function handleAuthSubmit(e) {
+      e.preventDefault();
+      const submitBtn = document.getElementById('submitBtn');
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = `
+        <span class="material-symbols-outlined" style="animation: spin 1s infinite linear; font-size:18px;">refresh</span>
+        <span>${authMode === 'login' ? 'Logging In...' : 'Signing In...'}</span>
+      `;
+
+      setTimeout(() => {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = `
+          <span class="material-symbols-outlined" style="font-size:18px;">check</span>
+          <span>Authenticated</span>
+        `;
+
+        let userName = '';
+        let userEmail = '';
+        let userRoll = '';
+        let userTitle = '';
+        let userYear = '';
+        let userBalance = 450;
+
+        if (authMode === 'register') {
+          userName = document.getElementById('regName')?.value || (currentRole === 'kitchen' ? 'Chef Rajesh Kumar' : currentRole === 'admin' ? 'Dr. Vikram Malhotra' : 'Rohan Sharma');
+          userRoll = document.getElementById('regRoll')?.value || (currentRole === 'kitchen' ? 'KIT-104' : currentRole === 'admin' ? 'ADM-2026' : '2301CS042');
+          userYear = document.getElementById('regYear')?.value || (currentRole === 'kitchen' ? 'Kitchen Staff' : currentRole === 'admin' ? 'Faculty / Admin' : '3rd Year');
+          userEmail = currentRole === 'admin' 
+            ? (document.getElementById('regEmail')?.value || 'admin@campus.edu')
+            : (currentRole === 'kitchen' ? 'kitchen@campus.edu' : `${userRoll.toLowerCase().replace(/[^a-z0-9]/g, '')}@student.campus.edu`);
+          userTitle = currentRole === 'admin' ? 'Campus Administrator' : currentRole === 'kitchen' ? 'Executive Kitchen Chef' : 'Campus Student';
+        } else {
+          const inputIdVal = document.getElementById('loginId')?.value || '';
+          if (currentRole === 'kitchen') {
+            userName = 'Chef Rajesh Kumar';
+            userTitle = 'Executive Kitchen Chef';
+            userEmail = inputIdVal.includes('@') ? inputIdVal : 'kitchen@campus.edu';
+            userRoll = inputIdVal || 'KIT-CHEF-01';
+            userYear = 'Kitchen Staff';
+            userBalance = 2000;
+          } else if (currentRole === 'admin') {
+            userName = 'Dr. Vikram Malhotra';
+            userTitle = 'Campus Administrator';
+            userEmail = inputIdVal.includes('@') ? inputIdVal : 'admin@campus.edu';
+            userRoll = 'ADM-2026';
+            userYear = 'Faculty / Admin';
+            userBalance = 5000;
+          } else {
+            userName = 'Rohan Sharma';
+            userTitle = 'Campus Student';
+            userEmail = inputIdVal.includes('@') ? inputIdVal : 'rohan.sharma@campus.edu';
+            userRoll = inputIdVal || '2301CS042';
+            userYear = '3rd year';
+            userBalance = 450;
+          }
+        }
+
+        if (currentRole === 'admin') userBalance = 5000;
+        else if (currentRole === 'kitchen') userBalance = 2000;
+
+        const userData = {
+          name: userName,
+          year: userYear,
+          rollNo: userRoll,
+          studentId: userRoll,
+          email: userEmail,
+          title: userTitle,
+          phone: document.getElementById('regPhone')?.value || '+91 98765 43210',
+          balance: userBalance,
+          role: currentRole
+        };
+
+        completeAuthentication(userData);
+      }, 500);
+    }
+
+    // URL Query Parameter Parsing for Seamless Landing Page Routing
+    try {
+      const urlParams = new URLSearchParams(window.location.search);
+      const paramRole = urlParams.get('role');
+      const paramMode = urlParams.get('mode');
+
+      if (paramRole && ['user', 'kitchen', 'admin'].includes(paramRole.toLowerCase())) {
+        currentRole = paramRole.toLowerCase();
+      }
+
+      if (paramMode === 'register' || paramMode === 'signin' || paramMode === 'signup') {
+        authMode = 'register';
+        tabBtnRegister.classList.add('active');
+        tabBtnLogin.classList.remove('active');
+      } else {
+        authMode = 'login';
+        tabBtnLogin.classList.add('active');
+        tabBtnRegister.classList.remove('active');
+      }
+    } catch(err){}
+
+    // Initial render with selected role & mode
+    selectRole(currentRole);
+  </script>
+</body>
+</html>
+

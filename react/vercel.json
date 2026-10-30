@@ -1,14 +1,11 @@
 {
   "cleanUrls": true,
+  "trailingSlash": false,
   "rewrites": [
-    { "source": "/landing", "destination": "/landing.html" },
-    { "source": "/landing/(.*)", "destination": "/landing.html" },
-    { "source": "/signin", "destination": "/signin.html" },
-    { "source": "/signin/(.*)", "destination": "/signin.html" },
-    { "source": "/student-dashboard", "destination": "/student-dashboard.html" },
-    { "source": "/student-dashboard/(.*)", "destination": "/student-dashboard.html" },
+    { "source": "/landing", "destination": "/landing/index.html" },
+    { "source": "/signin", "destination": "/signin/index.html" },
+    { "source": "/student-dashboard", "destination": "/student-dashboard/index.html" },
     { "source": "/dashboard", "destination": "/index.html" },
-    { "source": "/app", "destination": "/index.html" },
-    { "source": "/((?!landing|signin|student-dashboard|frontend|backend|source|apis|css|js|public).*)", "destination": "/index.html" }
+    { "source": "/app", "destination": "/index.html" }
   ]
 }
