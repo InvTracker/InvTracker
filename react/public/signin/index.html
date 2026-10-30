@@ -8,7 +8,6 @@
   <title>Login &mdash; InvenTrack Campus Dining &amp; Inventory Platform</title>
   <meta name="description" content="InvenTrack Campus Dining Portal. Login or Sign In as User, Kitchen Staff, or Administrator with campus credentials.">
 
-  <!-- Google Material 3 Fonts & Material Symbols Outlined -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Roboto+Flex:wght@500;600;700;800&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..24,400,0,0&display=swap" rel="stylesheet">
@@ -86,14 +85,12 @@
       transition: background-color 0.4s ease, color 0.4s ease;
     }
 
-    /* Prevent mobile browser text-zoom on inputs */
     @media (max-width: 768px) {
       input, select, textarea {
         font-size: 16px !important;
       }
     }
 
-    /* ================= RADIANT BACKGROUND LIGHT (LIGHT & DARK) ================= */
     .ambient-canvas {
       position: fixed;
       inset: 0;
@@ -152,7 +149,6 @@
       animation: floatOrb3 16s infinite alternate ease-in-out;
     }
 
-    /* Dark Mode Aurora Light Boost */
     [data-theme="kitchen"] .orb-center {
       background: radial-gradient(circle, rgba(0, 210, 255, 0.5) 0%, rgba(0, 104, 116, 0.28) 50%, transparent 75%);
       opacity: 0.9;
@@ -204,7 +200,6 @@
       opacity: 0.45;
     }
 
-    /* ================= FIXED FLOATING TOPBAR ================= */
     .auth-topbar {
       position: fixed;
       top: 0;
@@ -336,7 +331,6 @@
       transform: translateY(-1px);
     }
 
-    /* ================= MAIN WRAP (ZERO SCROLLING, DEAD CENTER) ================= */
     main.auth-page-wrap,
     .auth-page-wrap {
       position: relative !important;
@@ -354,7 +348,6 @@
       justify-content: center !important;
     }
 
-    /* 620px Width Container */
     .auth-card-wrap {
       width: 100% !important;
       max-width: 620px !important;
@@ -378,7 +371,6 @@
       }
     }
 
-    /* ================= COMPACT HIGH-AESTHETIC FROSTED CARD ================= */
     .auth-card {
       width: 100%;
       background: var(--card-bg);
@@ -451,7 +443,6 @@
       line-height: 1.35;
     }
 
-    /* ================= ROLE SELECTOR BUTTONS (3 OPTIONS: USER, KITCHEN, ADMIN) ================= */
     .role-buttons-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -532,7 +523,6 @@
       color: var(--accent-cyan);
     }
 
-    /* ================= SMOOTH PILL SWITCH ================= */
     .pill-tabs {
       display: flex;
       background: rgba(0, 104, 116, 0.07);
@@ -573,7 +563,6 @@
       box-shadow: 0 3px 10px rgba(0, 0, 0, 0.35);
     }
 
-    /* ================= FORM INPUTS ================= */
     .form-group {
       margin-bottom: 11px;
     }
@@ -652,7 +641,6 @@
       color: var(--text-main);
     }
 
-    /* Helper Row: Remember Me & Forgot PIN */
     .form-options-row {
       display: flex;
       align-items: center;
@@ -693,7 +681,6 @@
       color: var(--accent-cyan);
     }
 
-    /* ================= PRIMARY SUBMIT BUTTON ================= */
     .btn-submit {
       width: 100%;
       padding: 11px 20px;
@@ -733,7 +720,6 @@
       background: linear-gradient(135deg, #00b4c8, #006f74);
     }
 
-    /* ================= HORIZONTAL LINE DIVIDER AT BOTTOM ================= */
     .auth-divider {
       display: flex;
       align-items: center;
@@ -760,7 +746,6 @@
       white-space: nowrap;
     }
 
-    /* ================= OTHER SIGN-IN OPTIONS (SMALL ICONS CENTERED UNDER LINE) ================= */
     .other-signin-options {
       display: flex;
       align-items: center;
@@ -802,7 +787,6 @@
       box-shadow: 0 4px 12px rgba(0, 229, 255, 0.3);
     }
 
-    /* ================= DEMO SHORTCUT CHIPS ROW ================= */
     .demo-quick-bar {
       display: flex;
       align-items: center;
@@ -843,7 +827,6 @@
       border-color: var(--accent-cyan);
     }
 
-    /* ================= AUTH SUCCESS CARD ================= */
     .auth-success-card {
       display: none;
       margin-top: 12px;
@@ -933,7 +916,6 @@
 </head>
 <body>
 
-  <!-- Radiant Ambient Canvas -->
   <div class="ambient-canvas">
     <div class="ambient-orb orb-center"></div>
     <div class="ambient-orb orb-1"></div>
@@ -942,7 +924,6 @@
     <div class="ambient-grid"></div>
   </div>
 
-  <!-- Topbar -->
   <header class="auth-topbar">
     <a href="landing.html" class="brand-link">
       <div class="brand-icon">
@@ -955,7 +936,7 @@
     </a>
 
     <div class="topbar-actions">
-      <!-- Theme Toggle -->
+      
       <button id="themeToggleBtn" class="theme-toggle-btn" title="Toggle Dark/Light Theme">
         <span class="material-symbols-outlined" id="themeIcon" style="font-size: 19px;">dark_mode</span>
       </button>
@@ -971,13 +952,11 @@
     </div>
   </header>
 
-  <!-- Centered Wrap: 620px width, zero scrolling -->
   <main class="auth-page-wrap">
     <div class="auth-card-wrap">
       
       <div class="auth-card">
-        
-        <!-- Header -->
+
         <div class="auth-card-header">
           <div class="auth-card-badge" id="authCardBadge">
             <span class="material-symbols-outlined" id="authBadgeIcon" style="font-size: 13px;">verified_user</span>
@@ -989,7 +968,6 @@
           </p>
         </div>
 
-        <!-- Role Selector Buttons (3 Options: User, Kitchen, Admin) -->
         <div class="role-buttons-grid">
           <button type="button" class="role-btn active" data-role="user">
             <span class="material-symbols-outlined role-icon">person</span>
@@ -1005,19 +983,16 @@
           </button>
         </div>
 
-        <!-- Pill Tabs: Login vs Sign In -->
         <div class="pill-tabs">
           <button type="button" class="pill-tab-btn active" id="tabBtnLogin">Login</button>
           <button type="button" class="pill-tab-btn" id="tabBtnRegister">Sign In</button>
         </div>
 
-        <!-- Form Elements -->
         <form id="authForm" onsubmit="handleAuthSubmit(event)">
           <div id="dynamicFormFields">
-            <!-- Dynamically populated according to active role & tab -->
+            
           </div>
 
-          <!-- Options Row -->
           <div class="form-options-row">
             <label class="remember-label">
               <input type="checkbox" id="rememberMe" class="remember-checkbox" checked>
@@ -1028,14 +1003,12 @@
             </a>
           </div>
 
-          <!-- Submit Button -->
           <button type="submit" class="btn-submit" id="submitBtn">
             <span class="material-symbols-outlined" style="font-size: 17px;">login</span>
             <span id="submitBtnText">Login to Campus Dining Portal</span>
           </button>
         </form>
 
-        <!-- Authenticated Feedback Alert -->
         <div class="auth-success-card" id="authSuccessBox">
           <div class="auth-success-head">
             <span class="material-symbols-outlined" style="font-size: 17px;">check_circle</span>
@@ -1054,16 +1027,14 @@
           </div>
         </div>
 
-        <!-- Horizontal Divider Line -->
         <div class="auth-divider">
           <span class="auth-divider-line"></span>
           <span class="auth-divider-text">Or continue with</span>
           <span class="auth-divider-line"></span>
         </div>
 
-        <!-- Other Login Options (Small Icons Under Horizontal Line) -->
         <div class="other-signin-options">
-          <!-- Google Sign-In Icon -->
+          
           <button type="button" class="social-circle-btn" id="googleSignInBtn" title="Continue with Google Account">
             <svg width="18" height="18" viewBox="0 0 24 24">
               <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
@@ -1073,13 +1044,11 @@
             </svg>
           </button>
 
-          <!-- Campus Email Sign-In Icon -->
           <button type="button" class="social-circle-btn" id="emailSignInBtn" title="Continue with University Email">
             <span class="material-symbols-outlined" style="font-size: 19px; color: var(--primary);">mail</span>
           </button>
         </div>
 
-        <!-- Demo Quick Fill Row -->
         <div class="demo-quick-bar">
           <span style="font-size:11px; color:var(--text-muted); font-weight:600;">Demo:</span>
           <button type="button" class="demo-chip-btn" id="demoUserBtn">ðŸ‘¤ User (Rohan)</button>
@@ -1093,7 +1062,6 @@
   </main>
 
   <script>
-    // Theme toggle & persistent preference
     const themeToggleBtn = document.getElementById('themeToggleBtn');
     const themeIcon = document.getElementById('themeIcon');
     const savedTheme = localStorage.getItem('invenTrack_theme') || (document.body.getAttribute('data-theme') === 'kitchen' ? 'kitchen' : 'default');
@@ -1121,8 +1089,6 @@
         applyTheme(!isDark);
       });
     }
-
-    // Auth State (Combined User, Kitchen, Admin)
     let authMode = 'login'; // 'login' or 'register'
     let currentRole = 'user';
 
@@ -1135,8 +1101,6 @@
     const authCardTitle = document.getElementById('authCardTitle');
     const authBadgeText = document.getElementById('authBadgeText');
     const authBadgeIcon = document.getElementById('authBadgeIcon');
-
-    // Password visibility toggle
     window.togglePasswordVisibility = function(inputId, iconId) {
       const input = document.getElementById(inputId);
       const icon = document.getElementById(iconId);
@@ -1171,7 +1135,6 @@
 
     function renderForm() {
       if (authMode === 'register') {
-        // Sign In Mode per Role (Enrollment / Registration)
         if (currentRole === 'kitchen') {
           if (authCardTitle) authCardTitle.textContent = 'Kitchen Staff Sign In';
           if (authBadgeText) authBadgeText.textContent = 'Kitchen Staff Enrollment';
@@ -1280,7 +1243,6 @@
           submitBtnText.textContent = 'Sign In as Campus Admin';
           authSubTitle.textContent = 'Enroll for institutional access to gross revenue analytics and inventory audits.';
         } else {
-          // user
           if (authCardTitle) authCardTitle.textContent = 'User Sign In';
           if (authBadgeText) authBadgeText.textContent = 'New Diner Registration';
           if (authBadgeIcon) authBadgeIcon.textContent = 'person_add';
@@ -1336,7 +1298,6 @@
           authSubTitle.textContent = 'Set up a new dining profile with your campus credentials to track tokens.';
         }
       } else {
-        // Login Mode per Role (user, kitchen, admin)
         if (currentRole === 'user') {
           if (authCardTitle) authCardTitle.textContent = 'User Login';
           if (authBadgeText) authBadgeText.textContent = 'Campus Single Sign-On';
@@ -1432,8 +1393,6 @@
         }
       }
     }
-
-    // Tab buttons
     tabBtnLogin.addEventListener('click', () => {
       tabBtnLogin.classList.add('active');
       tabBtnRegister.classList.remove('active');
@@ -1447,8 +1406,6 @@
       authMode = 'register';
       renderForm();
     });
-
-    // Demo Autofill Handlers
     document.getElementById('demoUserBtn')?.addEventListener('click', () => {
       authMode = 'login';
       tabBtnLogin.classList.add('active');
@@ -1484,14 +1441,9 @@
       if (loginPass) loginPass.value = 'admin2026';
       submitBtnText.textContent = 'Login as Campus Admin';
     });
-
-    // Cross-Tab & State-Engine Authentication Completion
     function completeAuthentication(userData) {
-      // 1. Persist to localStorage for application session
       try {
         localStorage.setItem('invenTrack_user', JSON.stringify(userData));
-
-        // Sync with primary InvenTrack store
         let appState = {};
         const savedState = localStorage.getItem('inventrack_m3_state');
         if (savedState) {
@@ -1502,14 +1454,10 @@
         appState.activeRole = userData.role || 'user';
         appState.activePage = userData.role === 'admin' ? 'admin-overview' : (userData.role === 'kitchen' ? 'kitchen-kanban' : 'home');
         localStorage.setItem('inventrack_m3_state', JSON.stringify(appState));
-
-        // Set theme automatically for kitchen role
         if (userData.role === 'kitchen') {
           localStorage.setItem('invenTrack_theme', 'kitchen');
         }
       } catch(e){}
-
-      // 2. Broadcast across tabs (e.g. landing page tab)
       try {
         if ('BroadcastChannel' in window) {
           const authChannel = new BroadcastChannel('inventrack_auth');
@@ -1517,8 +1465,6 @@
           authChannel.close();
         }
       } catch(e){}
-
-      // 3. UI feedback
       const alertBox = document.getElementById('authSuccessBox');
       const successTitle = document.getElementById('successTitle');
       const successMsg = document.getElementById('successMsg');
@@ -1527,8 +1473,6 @@
         if (successMsg) successMsg.textContent = `Authenticated as ${userData.title || userData.role.toUpperCase()}! Opening dashboard...`;
         alertBox.classList.add('show');
       }
-
-      // 4. Redirect to the main application dashboard
       setTimeout(() => {
         let redirectedOpener = false;
         try {
@@ -1540,22 +1484,16 @@
         } catch(err) {
           console.warn('Opener redirect fallback:', err);
         }
-
-        // Close auth tab if opened via popup
         if (redirectedOpener) {
           try {
             window.close();
           } catch(e){}
         }
-
-        // Safety navigation: Navigate current tab to dashboard
         setTimeout(() => {
           window.location.href = window.location.protocol === 'file:' ? 'index.html' : '/';
         }, 800);
       }, 500);
     }
-
-    // Google Sign-In Simulation
     document.getElementById('googleSignInBtn')?.addEventListener('click', () => {
       const submitBtn = document.getElementById('submitBtn');
       submitBtn.disabled = true;
@@ -1587,8 +1525,6 @@
         completeAuthentication(googleUser);
       }, 600);
     });
-
-    // Email Sign-In Quick Switch
     document.getElementById('emailSignInBtn')?.addEventListener('click', () => {
       selectRole('user');
       const loginId = document.getElementById('loginId');
@@ -1600,8 +1536,6 @@
       const label = document.querySelector('label[for="loginId"]');
       if (label) label.textContent = 'University Email Address';
     });
-
-    // Form Submission
     function handleAuthSubmit(e) {
       e.preventDefault();
       const submitBtn = document.getElementById('submitBtn');
@@ -1677,8 +1611,6 @@
         completeAuthentication(userData);
       }, 500);
     }
-
-    // URL Query Parameter Parsing for Seamless Landing Page Routing
     try {
       const urlParams = new URLSearchParams(window.location.search);
       const paramRole = urlParams.get('role');
@@ -1698,10 +1630,9 @@
         tabBtnRegister.classList.remove('active');
       }
     } catch(err){}
-
-    // Initial render with selected role & mode
     selectRole(currentRole);
   </script>
 </body>
 </html>
+
 

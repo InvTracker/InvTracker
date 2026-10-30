@@ -8,16 +8,15 @@
   <title>InvenTrack &mdash; Material 3 Campus Dining, Queue Tokens &amp; Inventory Platform</title>
   <meta name="description" content="Next-generation Google Material Design 3 campus food ordering, cafe POS, live queue tokens and real-time inventory management platform.">
 
-  <!-- Google Material 3 Fonts & Material Symbols Outlined -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Roboto+Flex:wght@400;500;600;700;800&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..24,400,0,0&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css">
 
   <style>
-    /* ================= DESIGN TOKENS & EXPERT CSS SYSTEM ================= */
+    
     :root {
-      /* M3 Light Palette Tokens */
+      
       --md-sys-color-primary: #006874;
       --md-sys-color-on-primary: #ffffff;
       --md-sys-color-primary-container: #9eeffd;
@@ -72,7 +71,6 @@
       --brand-glow: 0 4px 20px rgba(0, 104, 116, 0.22);
     }
 
-    /* ================= KITCHEN DARK THEME (M3 BACK OF HOUSE) ================= */
     [data-theme="kitchen"],
     [data-theme="dark"],
     html[data-theme="kitchen"],
@@ -156,7 +154,6 @@
       color: #deebec !important;
     }
 
-    /* Consistent Headline Gradient Design across all sections */
     .highlight {
       background: linear-gradient(135deg, var(--md-sys-color-primary, #006874) 0%, #0097a7 100%);
       -webkit-background-clip: text;
@@ -171,7 +168,6 @@
       -webkit-text-fill-color: transparent;
     }
 
-    /* Typewriter Blinking Caret */
     .typing-caret {
       display: inline-block;
       color: var(--md-sys-color-primary, #006874);
@@ -196,9 +192,6 @@
       opacity: 0;
     }
 
-    /* ================= DIVERSE HEADING ANIMATION STYLES ================= */
-
-    /* 2. Apple / Linear Staggered Word Lift & Blur */
     .anim-word-clip {
       display: inline-block;
       overflow: hidden;
@@ -224,7 +217,6 @@
       filter: blur(0);
     }
 
-    /* 3. 3D Perspective Flip & Unfold */
     .anim-3d-flip-wrap {
       display: inline-block;
       perspective: 900px;
@@ -248,7 +240,6 @@
       transform: rotateX(0deg) translateY(0);
     }
 
-    /* 4. Cyber Scramble & Terminal Decrypt Sparks */
     .cyber-scramble-char {
       display: inline-block;
       transition: color 0.15s ease, text-shadow 0.15s ease;
@@ -281,7 +272,6 @@
       }
     }
 
-    /* 5. Shimmer Wave Word Glide */
     .anim-shimmer-word {
       display: inline-block;
       margin-right: 0.26em;
@@ -299,7 +289,6 @@
       transform: translateY(0) scale(1);
     }
 
-    /* 6. Luminous Aura Reveal */
     .anim-aura-heading {
       opacity: 0;
       transform: scale(0.94);
@@ -316,7 +305,6 @@
       filter: blur(0);
     }
 
-    /* Gradient Preservation for Nested Highlight Words */
     .highlight-text {
       background: linear-gradient(135deg, var(--md-sys-color-primary, #006874) 0%, #0097a7 100%) !important;
       -webkit-background-clip: text !important;
@@ -331,7 +319,6 @@
       -webkit-text-fill-color: transparent !important;
     }
 
-    /* ================= SCROLL SLIDE TRANSITIONS ================= */
     .scroll-slide {
       opacity: 0;
       transform: translateY(28px);
@@ -340,13 +327,11 @@
       will-change: opacity, transform;
     }
 
-    /* Active State: sharp, bright, fully visible */
     .scroll-slide.is-in-view {
       opacity: 1;
       transform: translateY(0);
     }
 
-    /* Section Typography */
     .section-eyebrow {
       text-align: center;
       font-size: 11.5px;
@@ -367,7 +352,7 @@
       margin: 0 auto 12px;
       max-width: 840px;
       line-height: 1.2;
-      min-height: 1.25em; /* prevents layout jitter during typewriter */
+      min-height: 1.25em; 
     }
 
     @media (max-width: 768px) {
@@ -392,7 +377,6 @@
       line-height: 1.6;
     }
 
-    /* ================= TOP NAVIGATION HEADER ================= */
     .landing-header {
       position: sticky;
       top: 0;
@@ -494,7 +478,6 @@
       gap: 14px;
     }
 
-    /* Single High-Impact Sign In Pill Button on Top Right */
     .btn-signin-nav {
       display: inline-flex;
       align-items: center;
@@ -572,7 +555,6 @@
       text-transform: uppercase;
     }
 
-    /* Role Quick Selector Box in Hero */
     .hero-role-chooser {
       margin: 24px 0 26px;
       background: var(--card-glass);
@@ -750,7 +732,6 @@
       transform: scale(1.05);
     }
 
-    /* ================= 1. HERO SECTION ================= */
     .hero-section {
       position: relative;
       background: var(--hero-gradient);
@@ -915,7 +896,6 @@
       font-size: 17px;
     }
 
-    /* Hero Live Interactive Stepper Card with Gentle Floating Levitation */
     .hero-preview-wrapper {
       position: relative;
       animation: heroFloatCard 6s ease-in-out infinite alternate;
@@ -1115,7 +1095,6 @@
       justify-content: center;
     }
 
-    /* ================= 2. DIRECT STATS & NUMBERS STRIP WITH NUMBER ROLL ANIMATION ================= */
     .direct-stats-section {
       max-width: 1200px;
       margin: -24px auto 68px;
@@ -1192,7 +1171,6 @@
       margin-top: 2px;
     }
 
-    /* ================= 3. 4 PERSONAS SECTION WITH 3D UNFOLD PERSPECTIVE ================= */
     .landing-section {
       max-width: 1280px;
       margin: 0 auto;
@@ -1253,7 +1231,6 @@
       box-shadow: 0 4px 14px rgba(0, 104, 116, 0.3);
     }
 
-    /* 3D Perspective unfold effect for Persona container */
     .persona-content-box {
       background: var(--card-glass);
       backdrop-filter: blur(16px);
@@ -1348,7 +1325,6 @@
       background: var(--md-sys-color-surface-container-low, #19232d);
     }
 
-    /* ================= 4. INNOVATIONS: STAGGERED WAVE DISSOLVE ================= */
     .direct-features-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -1378,7 +1354,6 @@
       transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    /* Cascading staggered entrance */
     #features.is-in-view .direct-feature-item:nth-child(1) { transition-delay: 0.08s; opacity: 1; transform: translateY(0); }
     #features.is-in-view .direct-feature-item:nth-child(2) { transition-delay: 0.16s; opacity: 1; transform: translateY(0); }
     #features.is-in-view .direct-feature-item:nth-child(3) { transition-delay: 0.24s; opacity: 1; transform: translateY(0); }
@@ -1433,7 +1408,6 @@
       margin: 0;
     }
 
-    /* ================= 5. PERMISSIONS: RADAR SWEEP & SECURITY SCAN ================= */
     .permissions-container {
       position: relative;
       overflow: hidden;
@@ -1547,7 +1521,6 @@
       margin-top: 3px;
     }
 
-    /* ================= 6. SLIDING CARDS SHOWCASE ================= */
     .reel-control-bar {
       display: flex;
       justify-content: space-between;
@@ -1707,7 +1680,6 @@
       color: #ffffff;
     }
 
-    /* Sliding Reel Viewport & Infinite Tracks */
     .sliding-reel-container {
       position: relative;
       width: 100%;
@@ -1762,7 +1734,6 @@
       100% { transform: translate3d(0, 0, 0); }
     }
 
-    /* ================= REAL FOOD ITEM CARD STYLES ================= */
     .food-card-reel {
       width: 295px;
       flex: 0 0 295px;
@@ -1974,7 +1945,6 @@
       box-shadow: 0 4px 12px rgba(0, 104, 116, 0.4);
     }
 
-    /* Fallback Static Grid Mode */
     .catalog-demo-row {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -1982,7 +1952,6 @@
       margin-top: 14px;
     }
 
-    /* ================= 7. CTA BANNER WITH LUMINOUS PULSE ================= */
     .landing-cta-banner {
       background: linear-gradient(135deg, #004f58 0%, #006874 50%, #00363d 100%);
       color: #ffffff;
@@ -2033,7 +2002,6 @@
       box-shadow: 0 10px 28px rgba(0, 0, 0, 0.25);
     }
 
-    /* ================= TOAST NOTIFICATION ================= */
     .landing-toast {
       position: fixed;
       bottom: 24px;
@@ -2063,7 +2031,6 @@
       pointer-events: auto;
     }
 
-    /* ================= FOOTER ================= */
     .landing-footer {
       background-color: var(--md-sys-color-surface-container-low, rgba(0,0,0,0.02));
       border-top: 1px solid var(--card-border);
@@ -2102,7 +2069,6 @@
       gap: 12px;
     }
 
-    /* ================= COMPLETE KITCHEN DARK THEME REFINEMENTS ================= */
     [data-theme="kitchen"] .landing-header,
     [data-theme="dark"] .landing-header {
       background-color: rgba(14, 20, 21, 0.92);
@@ -2396,7 +2362,6 @@
       border-top-color: rgba(255, 255, 255, 0.08);
     }
 
-    /* Explicit Hero & Typography Dark Overrides */
     [data-theme="kitchen"] .hero-section,
     [data-theme="dark"] .hero-section {
       background: radial-gradient(circle at 50% 8%, rgba(0, 104, 116, 0.45) 0%, #0e1415 75%) !important;
@@ -2454,7 +2419,6 @@
 </head>
 <body>
 
-  <!-- ================= LANDING NAVBAR (CLEAN BRAND + SINGLE SIGN IN) ================= -->
   <header class="landing-header">
     <div class="nav-container">
       <a href="landing.html" class="brand-group">
@@ -2467,13 +2431,11 @@
         </div>
       </a>
 
-      <!-- Right Navigation Actions: Theme Toggle + Login / Sign In Buttons -->
       <div class="nav-actions">
         <button id="themeToggleBtn" class="theme-toggle-btn" title="Toggle Kitchen Dark / Daylight Theme" aria-label="Toggle Theme">
           <span class="material-symbols-outlined" style="font-size: 19px;" id="themeIcon">dark_mode</span>
         </button>
 
-        <!-- Unauthenticated View: Login & Sign In -->
         <div id="unauthNavActions" style="display:inline-flex; align-items:center; gap:8px;">
           <a href="signin.html?mode=login" class="btn-login-nav" id="topNavLoginBtn">
             <span class="material-symbols-outlined" style="font-size: 16px;">login</span>
@@ -2485,7 +2447,6 @@
           </a>
         </div>
 
-        <!-- Authenticated View: Active Session Indicator -->
         <div id="authNavActions" style="display:none; align-items:center; gap:10px;">
           <div class="auth-user-chip" id="authUserChip">
             <span class="material-symbols-outlined" style="font-size:16px;">account_circle</span>
@@ -2504,11 +2465,9 @@
     </div>
   </header>
 
-  <!-- ================= 1. HERO SLIDE ================= -->
   <section class="hero-section scroll-slide" id="hero-slide">
     <div class="hero-container">
       <div class="hero-text-col">
-        
 
         <h1 class="hero-headline" data-anim="typewriter">
           Campus Dining, Queue Tokens &amp; <span class="highlight">Real-Time Inventory</span>
@@ -2518,7 +2477,6 @@
           End campus cafeteria chaos. Choose your portal to <strong>Sign In</strong> or <strong>Log In</strong> with role-based access for <strong>Campus Diners</strong>, <strong>Kitchen Staff</strong>, and <strong>Administrators</strong>.
         </p>
 
-        <!-- Dedicated Role-Chooser Action Grid: Access Specific Roles -->
         <div class="hero-role-chooser">
           <div class="hero-role-title-row">
             <div class="hero-role-title">
@@ -2529,7 +2487,7 @@
           </div>
 
           <div class="hero-role-grid">
-            <!-- Role 1: Campus User (Diner / Student) -->
+            
             <div class="role-action-card">
               <div class="role-header-line">
                 <div class="role-icon-bubble user">
@@ -2553,7 +2511,6 @@
               </div>
             </div>
 
-            <!-- Role 2: Kitchen Staff -->
             <div class="role-action-card">
               <div class="role-header-line">
                 <div class="role-icon-bubble kitchen">
@@ -2577,7 +2534,6 @@
               </div>
             </div>
 
-            <!-- Role 3: Campus Admin -->
             <div class="role-action-card">
               <div class="role-header-line">
                 <div class="role-icon-bubble admin">
@@ -2630,7 +2586,6 @@
         </div>
       </div>
 
-      <!-- Hero Interactive Simulation Stepper Card with Floating Physics -->
       <div class="hero-preview-wrapper">
         <div class="preview-card-outer">
           <div class="preview-header-bar">
@@ -2683,7 +2638,6 @@
             </div>
           </div>
 
-          <!-- Mini Live Gauge Strip -->
           <div class="sim-gauge-grid">
             <div class="sim-gauge-card">
               <div class="sim-gauge-header">
@@ -2722,7 +2676,6 @@
     </div>
   </section>
 
-  <!-- ================= 2. DIRECT STATS SLIDE WITH NUMBER COUNTER ================= -->
   <section class="direct-stats-section scroll-slide" id="stats-slide">
     <div class="direct-stats-strip">
       <div class="stats-direct-row">
@@ -2753,7 +2706,6 @@
     </div>
   </section>
 
-  <!-- ================= 3. 3 ROLES SLIDE WITH 3D PERSPECTIVE ================= -->
   <section class="landing-section scroll-slide" id="personas">
     <div class="section-eyebrow">Unified Multi-Role Operations</div>
     <h2 class="section-heading" data-anim="word-reveal">
@@ -2763,7 +2715,6 @@
       Tailored interfaces for every participant in campus dining &mdash; from students and campus guests to line chefs and executive directors.
     </p>
 
-    <!-- Persona Switcher Tab Bar (3 Roles: User, Kitchen, Admin) -->
     <div class="persona-tab-bar">
       <button class="persona-tab-btn active" data-persona="user">
         <span class="material-symbols-outlined" style="font-size: 18px;">person</span>
@@ -2779,13 +2730,11 @@
       </button>
     </div>
 
-    <!-- Tab Content Display Box -->
     <div class="persona-content-box" id="personaContent">
-      <!-- Injected dynamically via JS below -->
+      
     </div>
   </section>
 
-  <!-- ================= 4. KEY INNOVATIONS SLIDE WITH WAVE DISSOLVE ================= -->
   <section class="landing-section scroll-slide" id="features">
     <div class="section-eyebrow">Core Innovations</div>
     <h2 class="section-heading" data-anim="flip-3d">
@@ -2870,7 +2819,6 @@
     </div>
   </section>
 
-  <!-- ================= 5. PERMISSIONS SLIDE WITH RADAR SCAN SWEEP ================= -->
   <section class="landing-section scroll-slide" id="permissions">
     <div class="permissions-container">
       <div class="radar-scan-line"></div>
@@ -2964,7 +2912,6 @@
     </div>
   </section>
 
-  <!-- ================= 6. LIVE FOOD SHOWCASE SLIDE ================= -->
   <section class="landing-section scroll-slide" id="demo-menu">
     <div class="section-eyebrow">Real-Time Culinary Stations</div>
     <h2 class="section-heading" data-anim="shimmer-wave">
@@ -2974,9 +2921,8 @@
       Real-time campus food stations with live capacity gauges, instant queue token stepping, and automated sold-out lockout.
     </p>
 
-    <!-- Interactive Reel Control Bar -->
     <div class="reel-control-bar">
-      <!-- Category Filter Chips -->
+      
       <div class="filter-chips-wrap" id="filterChips">
         <button class="filter-chip active" data-cat="All">All Delicacies</button>
         <button class="filter-chip" data-cat="Mains">Mains</button>
@@ -2985,7 +2931,6 @@
         <button class="filter-chip" data-cat="Desserts">Desserts</button>
       </div>
 
-      <!-- Animation Actions: Play/Pause, Speed, Prev, Next, View Switch -->
       <div class="reel-actions-wrap">
         <div class="reel-status-pill" id="reelStatusIndicator">
           <span class="reel-pulse-dot"></span>
@@ -3024,27 +2969,24 @@
       </div>
     </div>
 
-    <!-- Sliding Cards Viewport (Starts sliding smoothly once scrolled into view) -->
     <div class="sliding-reel-container" id="slidingReelContainer">
-      <!-- Upper Track: Glides Forward (Left) -->
+      
       <div class="sliding-reel-viewport" id="viewportRow1">
         <div class="sliding-track play-forward is-running" id="trackRow1">
-          <!-- Filled dynamically via JS -->
+          
         </div>
       </div>
 
-      <!-- Lower Track: Glides in Reverse (Right) for a rich, video-like showcase -->
       <div class="sliding-reel-viewport" id="viewportRow2" style="margin-top: 18px;">
         <div class="sliding-track play-reverse is-running" id="trackRow2">
-          <!-- Filled dynamically via JS -->
+          
         </div>
       </div>
     </div>
 
-    <!-- Alternative Grid View (Hidden by default, accessible via view toggle) -->
     <div class="catalog-grid-container" id="catalogGridContainer" style="display: none;">
       <div class="catalog-demo-row" id="catalogGrid">
-        <!-- Filled dynamically via JS -->
+        
       </div>
     </div>
 
@@ -3056,7 +2998,6 @@
     </div>
   </section>
 
-  <!-- ================= 7. HIGH-IMPACT LAUNCH BANNER SLIDE ================= -->
   <section style="padding: 0 24px;" class="scroll-slide" id="cta-slide">
     <div class="landing-cta-banner">
       <h2 class="cta-banner-title" data-anim="aura-reveal">
@@ -3074,7 +3015,6 @@
     </div>
   </section>
 
-  <!-- ================= CLEAN FOOTER ================= -->
   <footer class="landing-footer scroll-slide" id="footer-slide">
     <div class="footer-container">
       <div class="brand-group">
@@ -3098,19 +3038,14 @@
     </div>
   </footer>
 
-  <!-- Floating Toast Notification -->
   <div id="landingToast" class="landing-toast">
     <span class="material-symbols-outlined" style="color:var(--md-sys-color-avail, #00875a); font-size: 20px;">check_circle</span>
     <span id="landingToastMsg">Item added to ordering cart</span>
   </div>
 
-  <!-- ================= JAVASCRIPT LOGIC ================= -->
   <script>
-    // 1. Theme Toggle (Light Daylight vs. Kitchen Dark KDS)
     const themeToggleBtn = document.getElementById('themeToggleBtn');
     const themeIcon = document.getElementById('themeIcon');
-
-    // Retrieve saved theme or detect current state
     const savedTheme = localStorage.getItem('invenTrack_theme') || (document.body.getAttribute('data-theme') === 'kitchen' ? 'kitchen' : 'default');
     let isDark = savedTheme === 'kitchen';
 
@@ -3130,8 +3065,6 @@
         try { localStorage.setItem('invenTrack_theme', 'default'); } catch(e){}
       }
     }
-
-    // Initialize theme immediately on load
     applyTheme(isDark);
 
     if (themeToggleBtn) {
@@ -3139,8 +3072,6 @@
         applyTheme(!isDark);
       });
     }
-
-    // 2. Interactive Hero Token Stepper Simulation
     const stages = ['Placed', 'Preparing', 'Ready', 'Picked up'];
     const etaMsgs = [
       '~12 min to ready â€¢ Counter 1',
@@ -3196,8 +3127,6 @@
     });
 
     updateHeroStepper();
-
-    // 3. 3-Role Persona Data & Interactive Tab Switching
     const personaData = {
       user: {
         title: 'User Dining & Express Portal',
@@ -3338,8 +3267,6 @@
     });
 
     renderPersona('user');
-
-    // ================= 4. REAL FOOD IMAGES & SLIDING REEL SHOWCASE ENGINE =================
     const catalogSampleItems = [
       {
         id: 'biryani-chk',
@@ -3608,8 +3535,6 @@
         toastEl.classList.remove('show');
       }, 2600);
     }
-
-    // Reel play/pause control
     const trackRow1 = document.getElementById('trackRow1');
     const trackRow2 = document.getElementById('trackRow2');
     const reelStatusIndicator = document.getElementById('reelStatusIndicator');
@@ -3704,9 +3629,6 @@
         setReelRunning(true);
       });
     });
-
-    // ================= 5. DIVERSE HEADING ANIMATION SUITE =================
-    // Helper to wrap text into words while keeping HTML structure like <span class="highlight">
     function wrapWordsInElement(el, wrapClass, itemClass) {
       const highlights = el.querySelectorAll('.highlight');
       highlights.forEach(h => {
@@ -3745,8 +3667,6 @@
       }
       processNode(el, false);
     }
-
-    // 1. Slowed-Down Deliberate Typewriter Animation (Hero)
     function runSlowTypewriter(el) {
       if (el.dataset.animDone === 'true') return;
       el.dataset.animDone = 'true';
@@ -3767,11 +3687,7 @@
         }
       }
       collectText(el);
-
-      // Clear all text initially
       textNodes.forEach(item => { item.node.nodeValue = ''; });
-
-      // Add blinking cursor
       const caret = document.createElement('span');
       caret.className = 'typing-caret';
       caret.textContent = '|';
@@ -3801,8 +3717,6 @@
           nodeIdx++;
           charIdx = 0;
         }
-
-        // Paced typing speed: 65ms - 90ms with human pauses on punctuation
         let delay = Math.random() * 25 + 65;
         const typedChar = current.fullText[charIdx - 1];
         if (typedChar === ',' || typedChar === '&' || typedChar === ';' || typedChar === 'â€”') {
@@ -3816,8 +3730,6 @@
 
       setTimeout(typeChar, 250);
     }
-
-    // 2. Apple / Linear Staggered Word Lift & Blur (Personas)
     function runWordReveal(el) {
       if (el.dataset.animDone === 'true') return;
       el.dataset.animDone = 'true';
@@ -3830,8 +3742,6 @@
         }, idx * 90 + 60);
       });
     }
-
-    // 3. 3D Perspective Flip & Unfold (Core Innovations)
     function run3DFlip(el) {
       if (el.dataset.animDone === 'true') return;
       el.dataset.animDone = 'true';
@@ -3844,8 +3754,6 @@
         }, idx * 110 + 60);
       });
     }
-
-    // 4. Cyber Scramble & Terminal Decrypt Sparks (Enterprise Permissions & Security)
     function runCyberScramble(el) {
       if (el.dataset.animDone === 'true') return;
       el.dataset.animDone = 'true';
@@ -3902,8 +3810,6 @@
         }, 40);
       });
     }
-
-    // 5. Shimmer Wave Word Glide (Live Food Showcase)
     function runShimmerWave(el) {
       if (el.dataset.animDone === 'true') return;
       el.dataset.animDone = 'true';
@@ -3916,8 +3822,6 @@
         }, idx * 95 + 60);
       });
     }
-
-    // 6. Luminous Aura Reveal (CTA Banner)
     function runAuraReveal(el) {
       if (el.dataset.animDone === 'true') return;
       el.dataset.animDone = 'true';
@@ -3927,8 +3831,6 @@
         el.classList.add('is-revealed');
       }, 100);
     }
-
-    // Master Heading Animation Dispatcher
     function animateHeading(el) {
       if (!el || el.dataset.animDone === 'true') return;
       const animType = el.getAttribute('data-anim') || (el.getAttribute('data-typewrite') === 'true' ? 'typewriter' : 'typewriter');
@@ -3957,8 +3859,6 @@
           break;
       }
     }
-
-    // ================= 6. STATS NUMBER COUNTER ANIMATION =================
     let statsAnimated = false;
     function runStatsCounters() {
       if (statsAnimated) return;
@@ -3979,7 +3879,6 @@
         function updateCount(currentTime) {
           const elapsed = currentTime - startTime;
           const progress = Math.min(elapsed / duration, 1);
-          // Ease-out expo curve for buttery smooth stop
           const easeOut = 1 - Math.pow(1 - progress, 3);
           const currentVal = Math.round(start + (item.target - start) * easeOut);
 
@@ -3994,9 +3893,6 @@
         requestAnimationFrame(updateCount);
       });
     }
-
-    // ================= 7. SCROLL-DRIVEN SLIDE TRANSITION OBSERVER =================
-    // Tracks each slide: hides future slides until scrolled to, reveals active slide, and fades out old slide slowly
     const slides = document.querySelectorAll('.scroll-slide');
 
     const slideObserver = new IntersectionObserver((entries) => {
@@ -4004,17 +3900,12 @@
         const el = entry.target;
 
         if (entry.isIntersecting) {
-          // Entering view: reveal and keep permanently visible
           el.classList.add('is-in-view');
           el.classList.remove('is-past');
-
-          // Trigger heading animation if present in this slide
           const heading = el.querySelector('[data-anim], [data-typewrite="true"]');
           if (heading) {
             animateHeading(heading);
           }
-
-          // Section-specific triggers
           if (el.id === 'stats-slide') {
             runStatsCounters();
           }
@@ -4029,19 +3920,13 @@
     });
 
     slides.forEach(s => slideObserver.observe(s));
-
-    // Initial render
     renderShowcase();
-
-    // Trigger hero entrance immediately
     const heroSlide = document.getElementById('hero-slide');
     if (heroSlide) {
       heroSlide.classList.add('is-in-view');
       const heroH1 = heroSlide.querySelector('[data-anim], [data-typewrite="true"]');
       if (heroH1) animateHeading(heroH1);
     }
-
-    // ================= 8. DYNAMIC AUTHENTICATION & ROLE DETECTION =================
     function checkLandingAuth() {
       let user = null;
       try {
@@ -4088,11 +3973,7 @@
         });
       }
     }
-
-    // Check auth immediately
     checkLandingAuth();
-
-    // Logout handler from landing page
     const navLogoutBtn = document.getElementById('navLogoutBtn');
     if (navLogoutBtn) {
       navLogoutBtn.addEventListener('click', () => {
@@ -4110,8 +3991,6 @@
         showToast('Logged out. Choose a role to sign in or login.');
       });
     }
-
-    // Cross-tab notification via BroadcastChannel
     try {
       if ('BroadcastChannel' in window) {
         const authChannel = new BroadcastChannel('inventrack_auth');
@@ -4123,8 +4002,6 @@
         };
       }
     } catch(err){}
-
-    // Fallback Cross-tab notification via Storage Event
     window.addEventListener('storage', (e) => {
       if (e.key === 'invenTrack_user') {
         checkLandingAuth();
@@ -4136,4 +4013,5 @@
   </script>
 </body>
 </html>
+
 

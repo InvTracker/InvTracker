@@ -1,10 +1,8 @@
-import { dataStore, DEMO_ACCOUNTS } from '../models/dataStore.js';
+﻿import { dataStore, DEMO_ACCOUNTS } from '../models/dataStore.js';
 
 export const login = (req, res) => {
   const { loginId, role } = req.body;
   const targetRole = role || 'user';
-
-  // Check demo accounts first
   let user = DEMO_ACCOUNTS[targetRole];
   
   if (loginId) {
@@ -54,4 +52,5 @@ export const getProfile = (req, res) => {
   const user = DEMO_ACCOUNTS[role] || DEMO_ACCOUNTS.user;
   return res.status(200).json({ success: true, user });
 };
+
 

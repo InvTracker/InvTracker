@@ -1,4 +1,4 @@
-import { apiClient } from './apiClient.js';
+﻿import { apiClient } from './apiClient.js';
 
 export const inventoryApi = {
   getItems: async (filters = {}) => {
@@ -17,4 +17,5 @@ export const inventoryApi = {
     return apiClient.post('/inventory/items', itemData);
   }
 };
+
 

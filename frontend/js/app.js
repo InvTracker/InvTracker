@@ -1,23 +1,4 @@
-/**
- * InvenTrack — Campus Food & Cafe Inventory Platform
- * Material Design 3 (Material You / M3) Architecture
- * 
- * Supports 4 Unified Roles:
- * 1. Student (Live ordering, token tracking, spending analytics, feedback)
- * 2. Shopper (Fast-track quick order, express token checkout, receipts)
- * 3. Kitchen Staff (Live Kanban queue, stock adjuster, counter POS, complaints)
- * 4. Admin Management (Revenue metrics, demand matrix, audit table, CSV export)
- */
-
-// =========================================================================
-// 1. DATA INJECTION SLOT & DEMO FIXTURE
-// =========================================================================
-
-/**
- * CRITICAL DATA REQUIREMENT:
- * Zero pre-populated records by default. External datasets can be injected
- * directly into DATA_INJECTION_SLOT without breaking the UI.
- */
+﻿
 const DATA_INJECTION_SLOT = {
   menuItems: [],
   orders: [],
@@ -25,10 +6,6 @@ const DATA_INJECTION_SLOT = {
   feedbacks: []
 };
 
-/**
- * Toggleable Demo Fixture for Campus Dining.
- * Material Symbols and food catalog.
- */
 const CAMPUS_DEMO_FIXTURE = {
   menuItems: [
     { id: 'item-1', name: 'Chicken Dum Biryani', emoji: 'restaurant', price: 185, cat: 'Mains', counter: 'Counter 1 (Hot Meals)', stock: 25, lowThreshold: 8, restockTime: '15 min' },
@@ -128,16 +105,9 @@ const CAMPUS_DEMO_FIXTURE = {
   ]
 };
 
-// =========================================================================
-// 2. REACTIVE STATE ENGINE & LOCAL STORAGE ADAPTER
-// =========================================================================
-
 const STORAGE_KEY = 'inventrack_m3_state';
 const stages = ['Placed', 'Preparing', 'Ready', 'Picked up'];
-
-// Comprehensive Role-Based Access Control (RBAC) & Permissions Matrix
 const ROLE_PERMISSIONS = {
-  // Combined student + shopper customer role
   user: {
     label: 'User Portal',
     badgeText: 'Campus User (Dining & Store Access)',
@@ -265,7 +235,6 @@ class InvenTrackStore {
   }
 
   loadInitialState() {
-    // 1. Check for authenticated user from signin / login
     let authUser = null;
     try {
       const stored = localStorage.getItem('invenTrack_user');
@@ -283,13 +252,10 @@ class InvenTrackStore {
         console.warn('Failed to parse localStorage', e);
       }
     }
-
-    // Determine current user and authentication status
     const currentUser = authUser || (parsed && parsed.loggedIn && parsed.currentUser ? parsed.currentUser : null);
     const isLoggedIn = !!currentUser;
 
     if (!isLoggedIn) {
-      // Unauthenticated: Redirect directly to Landing Page
       try {
         window.location.replace(window.location.protocol === 'file:' ? 'landing.html' : '/landing');
       } catch (e) {}
@@ -311,16 +277,12 @@ class InvenTrackStore {
         counterFilter: 'All'
       };
     }
-
-    // User is authenticated: Setup role & dashboard view
     const role = (currentUser && currentUser.role) || 'user';
     const activeRole = role === 'admin' ? (parsed && parsed.activeRole ? parsed.activeRole : 'admin') : role;
     const defaultPage = role === 'admin' ? 'admin-overview' : (role === 'kitchen' ? 'kitchen-kanban' : 'home');
     const activePage = (parsed && parsed.activePage && ROLE_PERMISSIONS[role] && ROLE_PERMISSIONS[role].allowedPages && ROLE_PERMISSIONS[role].allowedPages.includes(parsed.activePage))
       ? parsed.activePage
       : defaultPage;
-
-    // Apply Back-of-House theme automatically for Kitchen role
     if (role === 'kitchen') {
       try {
         document.documentElement.setAttribute('data-theme', 'kitchen');
@@ -406,8 +368,6 @@ class InvenTrackStore {
     });
   }
 
-  // --- ACTIONS ---
-
   generateRandomExampleData() {
     const shuffled = [...CAMPUS_DEMO_FIXTURE.menuItems].sort(() => 0.5 - Math.random());
     const count = Math.floor(7 + Math.random() * 4); // 7 to 10 items
@@ -477,10 +437,8 @@ class InvenTrackStore {
 
   setRole(role) {
     const userRole = (this.state.currentUser && this.state.currentUser.role) || 'user';
-    
-    // Top bar switcher is for Admin only
     if (userRole !== 'admin') {
-      toast('🔒 Role switching is only permitted for Administrators.', 'error');
+      toast('ðŸ”’ Role switching is only permitted for Administrators.', 'error');
       return;
     }
 
@@ -495,14 +453,12 @@ class InvenTrackStore {
   setPage(page) {
     const userRole = (this.state.currentUser && this.state.currentUser.role) || 'user';
     const config = ROLE_PERMISSIONS[userRole] || ROLE_PERMISSIONS.user;
-
-    // Admin can navigate to any permitted page; Kitchen and User are strictly bounded
     if (userRole !== 'admin' && config.allowedPages && !config.allowedPages.includes(page)) {
       if (userRole === 'kitchen') {
-        toast('🔒 Access Restricted: Kitchen accounts can only access kitchen features.', 'error');
+        toast('ðŸ”’ Access Restricted: Kitchen accounts can only access kitchen features.', 'error');
         this.state.activePage = 'kitchen-kanban';
       } else {
-        toast('🔒 Access Restricted: Users can only access dining & store features.', 'error');
+        toast('ðŸ”’ Access Restricted: Users can only access dining & store features.', 'error');
         this.state.activePage = 'home';
       }
       this.save();
@@ -551,11 +507,9 @@ class InvenTrackStore {
       window.location.replace(window.location.protocol === 'file:' ? 'landing.html' : '/landing');
     }, 600);
   }
-
-  // Stock Adjustment - Protected by canAdjustStock permission
   adjustStock(itemId, delta) {
     if (!this.hasPermission('canAdjustStock')) {
-      toast('🔒 Permission Denied: Users cannot alter item stock levels or remaining quantities.', 'error');
+      toast('ðŸ”’ Permission Denied: Users cannot alter item stock levels or remaining quantities.', 'error');
       return;
     }
 
@@ -564,9 +518,9 @@ class InvenTrackStore {
     const oldStock = item.stock;
     item.stock = Math.max(0, item.stock + delta);
     if (item.stock === 0 && oldStock > 0) {
-      toast(`⚠️ "${item.name}" is now OUT OF STOCK`, 'warning');
+      toast(`âš ï¸ "${item.name}" is now OUT OF STOCK`, 'warning');
     } else if (item.stock > 0 && oldStock === 0) {
-      toast(`🟢 "${item.name}" is RESTOCKED (${item.stock} available)`, 'check_circle');
+      toast(`ðŸŸ¢ "${item.name}" is RESTOCKED (${item.stock} available)`, 'check_circle');
     } else {
       toast(`Stock updated: ${item.name} (${item.stock})`, 'inventory');
     }
@@ -575,21 +529,19 @@ class InvenTrackStore {
 
   setStockZero(itemId) {
     if (!this.hasPermission('canAdjustStock')) {
-      toast('🔒 Permission Denied: Only kitchen staff and admin can alter item availability.', 'error');
+      toast('ðŸ”’ Permission Denied: Only kitchen staff and admin can alter item availability.', 'error');
       return;
     }
 
     const item = this.state.menuItems.find((m) => m.id === itemId);
     if (!item) return;
     item.stock = 0;
-    toast(`🔴 Marked "${item.name}" as Out of Stock`, 'cancel');
+    toast(`ðŸ”´ Marked "${item.name}" as Out of Stock`, 'cancel');
     this.save();
   }
-
-  // Menu Catalog Modification - Protected by canEditMenu permission
   addMenuItem(itemData) {
     if (!this.hasPermission('canEditMenu')) {
-      toast('🔒 Permission Denied: Users cannot add or modify menu catalog items.', 'error');
+      toast('ðŸ”’ Permission Denied: Users cannot add or modify menu catalog items.', 'error');
       return false;
     }
 
@@ -610,8 +562,6 @@ class InvenTrackStore {
     toast(`Added "${newItem.name}" to menu catalog`, 'check_circle');
     return true;
   }
-
-  // Cart operations (Student)
   addToCart(itemId) {
     const item = this.state.menuItems.find((m) => m.id === itemId);
     if (!item || item.stock <= 0) {
@@ -648,8 +598,6 @@ class InvenTrackStore {
     delete this.state.cart[itemId];
     this.save();
   }
-
-  // Cart operations (Shopper)
   addToShopperCart(itemId) {
     const item = this.state.menuItems.find((m) => m.id === itemId);
     if (!item || item.stock <= 0) {
@@ -671,8 +619,6 @@ class InvenTrackStore {
     }
     this.save();
   }
-
-  // POS operations
   addToPosCart(itemId) {
     const item = this.state.menuItems.find((m) => m.id === itemId);
     if (!item || item.stock <= 0) {
@@ -698,8 +644,6 @@ class InvenTrackStore {
     this.state.posCart = {};
     this.save();
   }
-
-  // Order Placement
   createOrder({ itemsMap, customerName, role, counter, paymentMethod, packagingFee = 10 }) {
     const itemEntries = Object.entries(itemsMap);
     if (!itemEntries.length) return null;
@@ -754,8 +698,6 @@ class InvenTrackStore {
     this.save();
     return newOrder;
   }
-
-  // Advance Kitchen Order Status
   advanceOrderStatus(orderId) {
     const order = this.state.orders.find((o) => o.id === orderId);
     if (!order) return;
@@ -766,8 +708,6 @@ class InvenTrackStore {
       this.save();
     }
   }
-
-  // Feedback Submission
   addFeedback({ rating, category, comment }) {
     const studentName = this.state.currentUser ? this.state.currentUser.name : 'Student Diner';
     const newFb = {
@@ -779,17 +719,11 @@ class InvenTrackStore {
       date: 'Just now'
     };
     this.state.feedbacks.unshift(newFb);
-    toast('Thanks — feedback recorded!', 'thumb_up');
+    toast('Thanks â€” feedback recorded!', 'thumb_up');
     this.save();
   }
 }
-
-// Global Store Instance
 const store = new InvenTrackStore();
-
-// =========================================================================
-// 3. DOM UTILITIES & HELPERS
-// =========================================================================
 
 const $ = (sel, el = document) => el.querySelector(sel);
 const $$ = (sel, el = document) => Array.from(el.querySelectorAll(sel));
@@ -810,9 +744,6 @@ function getItemStatus(item) {
   return 'available';
 }
 
-/**
- * M3 Assist Chip with Material Symbol
- */
 function sbHTML(status) {
   const meta = {
     available: { label: 'AVAIL', icon: 'check_circle' },
@@ -853,10 +784,6 @@ function initials(name) {
   );
 }
 
-// =========================================================================
-// 4. ROLE SWITCHING & SHELL ADAPTATION
-// =========================================================================
-
 const roleLabels = {
   user: 'User Portal',
   student: 'User Portal',
@@ -869,8 +796,6 @@ function renderShell(state) {
   const { activeRole, activePage, currentUser } = state;
   const userRole = (currentUser && currentUser.role) || 'user';
   const isAdmin = userRole === 'admin';
-
-  // 1. Role Switcher in Top Bar: Kept ONLY for Admin logins!
   const roleSwitcher = $('#roleSwitcher');
   if (roleSwitcher) {
     if (isAdmin) {
@@ -887,8 +812,6 @@ function renderShell(state) {
       roleSwitcher.style.display = 'none';
     }
   }
-
-  // 2. Sidebar Brand Subtitle
   const brandSub = $('#brandSubRole');
   if (brandSub) {
     if (isAdmin) {
@@ -900,30 +823,23 @@ function renderShell(state) {
       brandSub.textContent = 'User Portal';
     }
   }
-
-  // 3. Toggle Sidebar Nav Groups with strict role-based dashboard permissions
   const navUser = $('#navGroupUser');
   const navKitchen = $('#navGroupKitchen');
   const navAdmin = $('#navGroupAdmin');
 
   if (isAdmin) {
-    // Admin can access all features; navigation reflects their active view
     if (navUser) navUser.style.display = activeRole === 'user' ? 'flex' : 'none';
     if (navKitchen) navKitchen.style.display = activeRole === 'kitchen' ? 'flex' : 'none';
     if (navAdmin) navAdmin.style.display = activeRole === 'admin' ? 'flex' : 'none';
   } else if (userRole === 'kitchen') {
-    // Kitchen accounts ONLY see kitchen features
     if (navUser) navUser.style.display = 'none';
     if (navKitchen) navKitchen.style.display = 'flex';
     if (navAdmin) navAdmin.style.display = 'none';
   } else {
-    // User accounts ONLY see user features
     if (navUser) navUser.style.display = 'flex';
     if (navKitchen) navKitchen.style.display = 'none';
     if (navAdmin) navAdmin.style.display = 'none';
   }
-
-  // Update Mobile Role Badge & Bottom Nav Role Groups
   const mobileRoleBadge = $('#mobileRoleBadge');
   if (mobileRoleBadge) {
     mobileRoleBadge.textContent = activeRole.toUpperCase();
@@ -934,18 +850,12 @@ function renderShell(state) {
   if (bottomUser) bottomUser.style.display = activeRole === 'user' ? 'flex' : 'none';
   if (bottomKitchen) bottomKitchen.style.display = activeRole === 'kitchen' ? 'flex' : 'none';
   if (bottomAdmin) bottomAdmin.style.display = activeRole === 'admin' ? 'flex' : 'none';
-
-  // 4. Update Nav Active Item (Sidebar & Bottom Bar)
   $$('.nav-item[data-page], .m3-bottom-nav-item[data-page]').forEach((item) => {
     item.classList.toggle('active', item.dataset.page === activePage);
   });
-
-  // 5. Update Active Page Section
   $$('.page').forEach((pg) => pg.classList.remove('active'));
   const targetPage = $(`#page-${activePage}`);
   if (targetPage) targetPage.classList.add('active');
-
-  // 6. Update Dev Fixture Bar Status & Controls
   const badge = $('#dataModeBadge');
   const stats = $('#dataStatsText');
   if (badge && stats) {
@@ -961,14 +871,10 @@ function renderShell(state) {
   if (clearTopBtn) {
     clearTopBtn.style.display = state.menuItems.length > 0 ? 'inline-flex' : 'none';
   }
-
-  // Gated Add Item Button - Only visible if user has permission to edit menu details
   const openItemBtn = $('#openAddItemModalBtn');
   if (openItemBtn) {
     openItemBtn.style.display = store.hasPermission('canEditMenu') ? 'inline-flex' : 'none';
   }
-
-  // 7. Badges
   const studentCartCount = Object.values(state.cart).reduce((a, b) => a + b, 0);
   const cartBadge = $('#cartBadge');
   if (cartBadge) {
@@ -1001,8 +907,6 @@ function renderShell(state) {
     kitchenBadge.textContent = inPrepCount;
     kitchenBadge.classList.toggle('hide', inPrepCount === 0);
   }
-
-  // 8. User Profile in Sidebar & Account Details
   const sideAvatar = $('#sideAvatar');
   const sideName = $('#sideName');
   const sideRole = $('#sideRole');
@@ -1010,12 +914,10 @@ function renderShell(state) {
     if (sideAvatar) sideAvatar.textContent = initials(state.currentUser.name);
     if (sideName) sideName.textContent = state.currentUser.name;
     if (sideRole) {
-      if (isAdmin) sideRole.textContent = 'Administrator · Full Access';
-      else if (userRole === 'kitchen') sideRole.textContent = 'Kitchen Staff · Back of House';
-      else sideRole.textContent = `${state.currentUser.year || 'Student'} · Dining & Store`;
+      if (isAdmin) sideRole.textContent = 'Administrator Â· Full Access';
+      else if (userRole === 'kitchen') sideRole.textContent = 'Kitchen Staff Â· Back of House';
+      else sideRole.textContent = `${state.currentUser.year || 'Student'} Â· Dining & Store`;
     }
-
-    // Populate Settings Account Panel
     if ($('#accName')) $('#accName').textContent = state.currentUser.name;
     if ($('#accEmail')) $('#accEmail').textContent = state.currentUser.email || 'rohan@student.campus.edu';
     if ($('#accRoleType')) {
@@ -1032,8 +934,6 @@ function renderShell(state) {
       roleBadge.textContent = userRole.toUpperCase();
       roleBadge.className = `status-badge ${isAdmin ? 'available' : userRole === 'kitchen' ? 'low' : 'available'}`;
     }
-
-    // Update permission indicator badges in settings
     const permStoreEl = $('#permStoreView');
     if (permStoreEl) {
       const canStore = store.hasPermission('canViewStore');
@@ -1073,12 +973,6 @@ function renderShell(state) {
     if (sideRole) sideRole.textContent = 'Sign In to Access';
   }
 }
-
-// =========================================================================
-// 5. STUDENT MODULE RENDERING
-// =========================================================================
-
-// Live Order Ticket (Home)
 function renderStudentTicket(state) {
   const activeOrder = state.orders.find((o) => o.status !== 'Picked up' && (o.role === 'Student' || !o.role));
   const advanceBtn = $('#advanceBtn');
@@ -1093,7 +987,7 @@ function renderStudentTicket(state) {
     if (ticketDesc) ticketDesc.textContent = 'Browse the menu to place an order and track your live token.';
     if (queueNo) queueNo.textContent = '#---';
     if (etaPill) etaPill.textContent = 'No active order';
-    if (ticketPaid) ticketPaid.textContent = '₹0';
+    if (ticketPaid) ticketPaid.textContent = 'â‚¹0';
     if (advanceBtn) {
       advanceBtn.disabled = true;
       advanceBtn.innerHTML = '<span>No active order</span>';
@@ -1102,17 +996,17 @@ function renderStudentTicket(state) {
     return;
   }
 
-  const itemsSummary = activeOrder.items.map((i) => `${i.qty}× ${i.name}`).join(' + ');
+  const itemsSummary = activeOrder.items.map((i) => `${i.qty}Ã— ${i.name}`).join(' + ');
   if (ticketTitle) ticketTitle.textContent = itemsSummary;
-  if (ticketDesc) ticketDesc.textContent = `Order placed · ${activeOrder.counter} · ${activeOrder.paymentMethod}`;
+  if (ticketDesc) ticketDesc.textContent = `Order placed Â· ${activeOrder.counter} Â· ${activeOrder.paymentMethod}`;
   if (queueNo) queueNo.textContent = activeOrder.token;
-  if (ticketPaid) ticketPaid.textContent = `₹${activeOrder.total}`;
+  if (ticketPaid) ticketPaid.textContent = `â‚¹${activeOrder.total}`;
 
   const etaMap = [
     '~12 min to ready',
     '~7 min to ready',
-    'Ready — collect at counter!',
-    'Order complete ✓'
+    'Ready â€” collect at counter!',
+    'Order complete âœ“'
   ];
   if (etaPill) etaPill.textContent = etaMap[activeOrder.stageIndex] || 'In progress';
 
@@ -1126,13 +1020,11 @@ function renderStudentTicket(state) {
     const isDone = activeOrder.stageIndex >= stages.length - 1;
     advanceBtn.disabled = isDone;
     advanceBtn.innerHTML = isDone 
-      ? '<span class="material-symbols-outlined">check_circle</span><span>Picked up ✓</span>' 
+      ? '<span class="material-symbols-outlined">check_circle</span><span>Picked up âœ“</span>' 
       : `<span class="material-symbols-outlined">arrow_forward</span><span>Advance "${stages[activeOrder.stageIndex + 1]}"</span>`;
     advanceBtn.dataset.orderId = activeOrder.id;
   }
 }
-
-// Live Counter Strip
 function renderCounterStrip(state) {
   const container = $('#counterStrip');
   if (!container) return;
@@ -1170,8 +1062,6 @@ function renderCounterStrip(state) {
     })
     .join('');
 }
-
-// M3 Student Menu Grid with M3 Filter Chips
 function renderStudentMenu(state, searchQuery = '') {
   const grid = $('#menuGrid');
   const filterRow = $('#filterRow');
@@ -1244,7 +1134,7 @@ function renderStudentMenu(state, searchQuery = '') {
               <span style="width:${getGaugeWidth(it)}%; background:${getGaugeColor(status)}"></span>
             </div>
             <div class="mrow">
-              <span class="rec-price mono">₹${it.price}</span>
+              <span class="rec-price mono">â‚¹${it.price}</span>
               <div style="display:flex; align-items:center; gap:8px;">
                 ${sbHTML(status)}
                 <button class="add-btn" data-add="${it.id}" ${isOut ? 'disabled title="Sold out"' : 'title="Add to Cart"'}>
@@ -1258,8 +1148,6 @@ function renderStudentMenu(state, searchQuery = '') {
     })
     .join('');
 }
-
-// Recommendations Section
 function renderRecommendations(state) {
   const homeRec = $('#homeRecGrid');
   const foryouRec = $('#foryouGrid');
@@ -1275,7 +1163,7 @@ function renderRecommendations(state) {
           <div class="rec-name">${it.name}</div>
           <div class="rec-tag">${status === 'low' ? 'Only few remaining' : 'Pairs with your usual'}</div>
           <div class="rec-row">
-            <span class="rec-price mono">₹${it.price}</span>
+            <span class="rec-price mono">â‚¹${it.price}</span>
             <button class="add-btn" data-add="${it.id}">+</button>
           </div>
         </div>
@@ -1295,8 +1183,6 @@ function renderRecommendations(state) {
       : '<div class="empty-state" style="grid-column:1 / -1;"><div class="em"><span class="material-symbols-outlined">auto_awesome</span></div>Load items to view graph-inspired recommendations.</div>';
   }
 }
-
-// Student Cart Page
 function renderStudentCart(state) {
   const cartList = $('#cartList');
   const cartSub = $('#cartSub');
@@ -1321,9 +1207,9 @@ function renderStudentCart(state) {
         <button class="mini-btn" style="margin-top:14px;" data-goto="menu">Browse Live Menu</button>
       </div>
     `;
-    if (subtotalEl) subtotalEl.textContent = '₹0';
-    if (packingEl) packingEl.textContent = '₹0';
-    if (totalEl) totalEl.textContent = '₹0';
+    if (subtotalEl) subtotalEl.textContent = 'â‚¹0';
+    if (packingEl) packingEl.textContent = 'â‚¹0';
+    if (totalEl) totalEl.textContent = 'â‚¹0';
     if (checkoutBtn) checkoutBtn.disabled = true;
     return;
   }
@@ -1341,10 +1227,10 @@ function renderStudentCart(state) {
           <div class="menu-emoji" style="width:38px; height:38px; font-size:18px;">${renderItemIcon(it.emoji)}</div>
           <div class="stub-info">
             <div class="t">${it.name}</div>
-            <div class="s mono">₹${it.price} each &middot; ₹${lineTotal}</div>
+            <div class="s mono">â‚¹${it.price} each &middot; â‚¹${lineTotal}</div>
           </div>
           <div class="qty-ctrl">
-            <button data-dec="${id}">−</button>
+            <button data-dec="${id}">âˆ’</button>
             <span>${qty}</span>
             <button data-inc="${id}">+</button>
           </div>
@@ -1359,20 +1245,18 @@ function renderStudentCart(state) {
   const packing = 10;
   const total = subtotal + packing;
 
-  if (subtotalEl) subtotalEl.textContent = `₹${subtotal}`;
-  if (packingEl) packingEl.textContent = `₹${packing}`;
-  if (totalEl) totalEl.textContent = `₹${total}`;
+  if (subtotalEl) subtotalEl.textContent = `â‚¹${subtotal}`;
+  if (packingEl) packingEl.textContent = `â‚¹${packing}`;
+  if (totalEl) totalEl.textContent = `â‚¹${total}`;
   if (checkoutBtn) checkoutBtn.disabled = false;
 }
-
-// Student Orders Page
 function renderOrdersList(state) {
   const homeList = $('#homeOrderList');
   const fullList = $('#ordersFullList');
 
   const makeRowHTML = (o, isFull = false) => {
     const isDone = o.status === 'Picked up';
-    const summary = o.items ? o.items.map((i) => `${i.qty}× ${i.name}`).join(', ') : 'Campus Meal';
+    const summary = o.items ? o.items.map((i) => `${i.qty}Ã— ${i.name}`).join(', ') : 'Campus Meal';
 
     return `
       <div class="stub-list-item">
@@ -1384,7 +1268,7 @@ function renderOrdersList(state) {
           <div class="s">${o.token} &middot; ${o.counter || 'Counter'} &middot; ${new Date(o.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
         </div>
         <div>
-          <div class="stub-amt mono">₹${o.total}</div>
+          <div class="stub-amt mono">â‚¹${o.total}</div>
           <div class="stub-status ${isDone ? 'done' : 'progress'}">${o.status}</div>
         </div>
         ${
@@ -1408,8 +1292,6 @@ function renderOrdersList(state) {
       : '<div class="empty-state" style="padding:48px 0;"><div class="em"><span class="material-symbols-outlined">receipt</span></div>No orders placed yet.<br><button class="mini-btn" style="margin-top:12px;" data-goto="menu">Browse menu</button></div>';
   }
 }
-
-// Spending Bars
 function renderSpendingBars(state) {
   const days = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'];
   const dayTotals = { MON: 0, TUE: 0, WED: 0, THU: 0, FRI: 0, SAT: 0, SUN: 0 };
@@ -1433,7 +1315,7 @@ function renderSpendingBars(state) {
         const pct = Math.round((val / maxSpend) * 100);
         const isPeak = val > 0 && val === maxSpend;
         return `
-          <div class="bar-col ${isPeak ? 'peak' : ''}" title="${day}: ₹${val}">
+          <div class="bar-col ${isPeak ? 'peak' : ''}" title="${day}: â‚¹${val}">
             <div class="bar" style="height:100%"><span style="height:${pct}%"></span></div>
             <div class="bar-label">${day}</div>
           </div>
@@ -1450,22 +1332,18 @@ function renderSpendingBars(state) {
 
   const homeAmt = $('#homeSpendTotalAmt');
   const homeLbl = $('#homeSpendTotalLbl');
-  if (homeAmt) homeAmt.textContent = `₹${totalSpent}`;
+  if (homeAmt) homeAmt.textContent = `â‚¹${totalSpent}`;
   if (homeLbl) {
-    homeLbl.textContent = totalSpent > 0 ? `spent this week across ${state.orders.length} orders` : 'spent this week · No orders placed yet';
+    homeLbl.textContent = totalSpent > 0 ? `spent this week across ${state.orders.length} orders` : 'spent this week Â· No orders placed yet';
   }
 
   const spAmt = $('#spendingPageTotalAmt');
   const spLbl = $('#spendingPageTotalLbl');
-  if (spAmt) spAmt.textContent = `₹${totalSpent}`;
+  if (spAmt) spAmt.textContent = `â‚¹${totalSpent}`;
   if (spLbl) {
-    spLbl.textContent = totalSpent > 0 ? `total recorded spend across campus counters` : 'total recorded spend · No orders placed yet';
+    spLbl.textContent = totalSpent > 0 ? `total recorded spend across campus counters` : 'total recorded spend Â· No orders placed yet';
   }
 }
-
-// =========================================================================
-// 6. SHOPPER MODULE RENDERING
-// =========================================================================
 
 function renderShopperStore(state) {
   const grid = $('#shopperGrid');
@@ -1514,7 +1392,7 @@ function renderShopperStore(state) {
             <div class="mn">${it.name}</div>
             <div class="mc">${it.cat} &middot; ${it.counter}</div>
             <div class="mrow" style="margin-top:8px;">
-              <span class="rec-price mono">₹${it.price}</span>
+              <span class="rec-price mono">â‚¹${it.price}</span>
               <div style="display:flex; align-items:center; gap:8px;">
                 ${sbHTML(status)}
                 <button class="dev-btn ${isOut ? '' : 'primary'}" data-shopper-add="${it.id}" ${isOut ? 'disabled' : ''}>
@@ -1551,9 +1429,9 @@ function renderShopperCart(state) {
         <div style="font-size:12px; color:var(--md-sys-color-on-surface-variant); margin-top:4px;">Tap "+ Fast Add" on any item in the store.</div>
       </div>
     `;
-    if (sumSub) sumSub.textContent = '₹0';
-    if (sumPack) sumPack.textContent = '₹0';
-    if (sumTot) sumTot.textContent = '₹0';
+    if (sumSub) sumSub.textContent = 'â‚¹0';
+    if (sumPack) sumPack.textContent = 'â‚¹0';
+    if (sumTot) sumTot.textContent = 'â‚¹0';
     if (btn) btn.disabled = true;
     return;
   }
@@ -1570,10 +1448,10 @@ function renderShopperCart(state) {
           <div class="menu-emoji" style="width:36px; height:36px;">${renderItemIcon(it.emoji)}</div>
           <div class="stub-info">
             <div class="t">${it.name}</div>
-            <div class="s mono">₹${it.price} each</div>
+            <div class="s mono">â‚¹${it.price} each</div>
           </div>
           <div class="qty-ctrl">
-            <button data-shopper-dec="${id}">−</button>
+            <button data-shopper-dec="${id}">âˆ’</button>
             <span>${qty}</span>
             <button data-shopper-inc="${id}">+</button>
           </div>
@@ -1584,9 +1462,9 @@ function renderShopperCart(state) {
 
   const packing = 10;
   const total = subtotal + packing;
-  if (sumSub) sumSub.textContent = `₹${subtotal}`;
-  if (sumPack) sumPack.textContent = `₹${packing}`;
-  if (sumTot) sumTot.textContent = `₹${total}`;
+  if (sumSub) sumSub.textContent = `â‚¹${subtotal}`;
+  if (sumPack) sumPack.textContent = `â‚¹${packing}`;
+  if (sumTot) sumTot.textContent = `â‚¹${total}`;
   if (btn) btn.disabled = false;
 }
 
@@ -1614,10 +1492,10 @@ function renderShopperReceipts(state) {
         </div>
         <div class="stub-info">
           <div class="t">${o.token} &middot; ${o.customerName}</div>
-          <div class="s">${o.items.map((i) => `${i.qty}× ${i.name}`).join(', ')}</div>
+          <div class="s">${o.items.map((i) => `${i.qty}Ã— ${i.name}`).join(', ')}</div>
         </div>
         <div>
-          <div class="stub-amt mono">₹${o.total}</div>
+          <div class="stub-amt mono">â‚¹${o.total}</div>
           <div class="stub-status ${o.status === 'Picked up' ? 'done' : 'progress'}">${o.status}</div>
         </div>
         <div class="stub-actions">
@@ -1627,10 +1505,6 @@ function renderShopperReceipts(state) {
     `)
     .join('');
 }
-
-// =========================================================================
-// 7. KITCHEN & STAFF MODULE RENDERING
-// =========================================================================
 
 function renderKitchenKanban(state) {
   const lists = {
@@ -1683,8 +1557,8 @@ function renderKitchenKanban(state) {
           .map(
             (i) => `
               <div class="kanban-item-line">
-                <span><strong>${i.qty}×</strong> ${i.name}</span>
-                <span class="mono">₹${i.price * i.qty}</span>
+                <span><strong>${i.qty}Ã—</strong> ${i.name}</span>
+                <span class="mono">â‚¹${i.price * i.qty}</span>
               </div>
             `
           )
@@ -1699,13 +1573,13 @@ function renderKitchenKanban(state) {
               <span class="kanban-token">${o.token}</span>
               <span class="kanban-time">${timeStr}</span>
             </div>
-            <div class="kanban-cust">👤 ${o.customerName} &middot; <span style="font-weight:400; color:var(--md-sys-color-on-surface-variant);">${o.counter}</span></div>
+            <div class="kanban-cust">ðŸ‘¤ ${o.customerName} &middot; <span style="font-weight:400; color:var(--md-sys-color-on-surface-variant);">${o.counter}</span></div>
             <div class="kanban-items">${itemsList}</div>
             <div class="kanban-card-footer">
-              <span class="kanban-total">₹${o.total}</span>
+              <span class="kanban-total">â‚¹${o.total}</span>
               <button class="kanban-advance-btn" data-kitchen-advance="${o.id}" ${isCompleted ? 'disabled' : ''}>
                 <span class="material-symbols-outlined" style="font-size:15px;">${isCompleted ? 'check' : 'arrow_forward'}</span>
-                <span>${isCompleted ? 'Picked up ✓' : `Mark "${nextStageName}"`}</span>
+                <span>${isCompleted ? 'Picked up âœ“' : `Mark "${nextStageName}"`}</span>
               </button>
             </div>
           </div>
@@ -1743,7 +1617,7 @@ function renderKitchenStock(state) {
               </div>
               <div>
                 <strong>${it.name}</strong>
-                <div style="font-size:11px; color:var(--md-sys-color-on-surface-variant);">${it.cat} &middot; ₹${it.price}</div>
+                <div style="font-size:11px; color:var(--md-sys-color-on-surface-variant);">${it.cat} &middot; â‚¹${it.price}</div>
               </div>
             </div>
           </td>
@@ -1757,7 +1631,7 @@ function renderKitchenStock(state) {
           <td class="mono" style="font-weight:700;">${it.stock}</td>
           <td>
             <div class="inline-stock-ctrl">
-              <button data-stock-dec="${it.id}" title="Decrease stock">−</button>
+              <button data-stock-dec="${it.id}" title="Decrease stock">âˆ’</button>
               <span>${it.stock}</span>
               <button data-stock-inc="${it.id}" title="Increase stock">+</button>
             </div>
@@ -1796,7 +1670,7 @@ function renderKitchenPos(state) {
               <button class="pos-item-btn" data-pos-add="${it.id}" ${isOut ? 'disabled' : ''}>
                 <span class="pos-item-emoji">${renderItemIcon(it.emoji)}</span>
                 <span class="pos-item-name">${it.name}</span>
-                <span class="pos-item-price">₹${it.price} (${it.stock} left)</span>
+                <span class="pos-item-price">â‚¹${it.price} (${it.stock} left)</span>
               </button>
             `;
           })
@@ -1808,9 +1682,9 @@ function renderKitchenPos(state) {
     const entries = Object.entries(state.posCart);
     if (!entries.length) {
       lines.innerHTML = '<div style="padding:16px 0; text-align:center; color:var(--md-sys-color-on-surface-variant); font-size:12px;">Register bill empty. Tap items to add.</div>';
-      if (subEl) subEl.textContent = '₹0';
-      if (packEl) packEl.textContent = '₹0';
-      if (totEl) totEl.textContent = '₹0';
+      if (subEl) subEl.textContent = 'â‚¹0';
+      if (packEl) packEl.textContent = 'â‚¹0';
+      if (totEl) totEl.textContent = 'â‚¹0';
       if (submitBtn) submitBtn.disabled = true;
       return;
     }
@@ -1826,12 +1700,12 @@ function renderKitchenPos(state) {
           <div style="display:flex; justify-content:space-between; align-items:center; padding:6px 0; font-size:12.5px;">
             <div>
               <strong>${it.name}</strong>
-              <div style="font-size:11px; color:var(--md-sys-color-on-surface-variant);">₹${it.price} × ${qty}</div>
+              <div style="font-size:11px; color:var(--md-sys-color-on-surface-variant);">â‚¹${it.price} Ã— ${qty}</div>
             </div>
             <div style="display:flex; align-items:center; gap:8px;">
-              <span class="mono" style="font-weight:700;">₹${lineTotal}</span>
+              <span class="mono" style="font-weight:700;">â‚¹${lineTotal}</span>
               <div class="inline-stock-ctrl">
-                <button data-pos-dec="${id}">−</button>
+                <button data-pos-dec="${id}">âˆ’</button>
                 <span>${qty}</span>
                 <button data-pos-inc="${id}">+</button>
               </div>
@@ -1843,9 +1717,9 @@ function renderKitchenPos(state) {
 
     const packing = entries.length ? 10 : 0;
     const total = subtotal + packing;
-    if (subEl) subEl.textContent = `₹${subtotal}`;
-    if (packEl) packEl.textContent = `₹${packing}`;
-    if (totEl) totEl.textContent = `₹${total}`;
+    if (subEl) subEl.textContent = `â‚¹${subtotal}`;
+    if (packEl) packEl.textContent = `â‚¹${packing}`;
+    if (totEl) totEl.textContent = `â‚¹${total}`;
     if (submitBtn) submitBtn.disabled = false;
   }
 }
@@ -1874,7 +1748,7 @@ function renderKitchenFeedback(state) {
         <div class="stub-info">
           <div class="t">
             <strong>${fb.studentName}</strong> &middot; 
-            <span style="color:var(--md-sys-color-primary); font-weight:700;">${'★'.repeat(fb.rating)}</span> 
+            <span style="color:var(--md-sys-color-primary); font-weight:700;">${'â˜…'.repeat(fb.rating)}</span> 
             <span class="dev-fixture-badge" style="margin-left:6px;">${fb.category}</span>
           </div>
           <div class="s" style="margin-top:4px; font-size:12.5px; color:var(--md-sys-color-on-surface);">${fb.comment}</div>
@@ -1885,15 +1759,11 @@ function renderKitchenFeedback(state) {
     .join('');
 }
 
-// =========================================================================
-// 8. ADMIN / MANAGEMENT MODULE RENDERING
-// =========================================================================
-
 function renderAdminOverview(state) {
   const rev = state.orders.reduce((sum, o) => sum + (o.total || 0), 0);
   const revEl = $('#metricTotalRevenue');
   const revSub = $('#metricTotalRevenueSub');
-  if (revEl) revEl.textContent = `₹${rev}`;
+  if (revEl) revEl.textContent = `â‚¹${rev}`;
   if (revSub) revSub.textContent = `Across ${state.orders.length} total orders`;
 
   const volEl = $('#metricOrderVolume');
@@ -2018,7 +1888,7 @@ function renderAdminAudit(state) {
           <td>${sbHTML(status)}</td>
           <td>
             <span style="color:${isCritical ? 'var(--md-sys-color-low)' : 'var(--md-sys-color-avail)'}; font-weight:600; font-size:12px;">
-              ${isCritical ? '⚠️ Urgent Restock' : '✓ Normal'}
+              ${isCritical ? 'âš ï¸ Urgent Restock' : 'âœ“ Normal'}
             </span>
           </td>
           <td>
@@ -2060,17 +1930,13 @@ function exportAuditCsv(state) {
   toast('Audit CSV exported successfully!', 'download');
 }
 
-// =========================================================================
-// 9. DIGITAL RECEIPT MODAL
-// =========================================================================
-
 function showReceiptModal(order) {
   const modal = $('#receiptModal');
   if (!modal || !order) return;
 
   $('#modalTokenNum').textContent = order.token;
   $('#modalCounterName').textContent = order.counter || 'Campus Dining Counter';
-  $('#modalTotalPaid').textContent = `₹${order.total}`;
+  $('#modalTotalPaid').textContent = `â‚¹${order.total}`;
   $('#modalReceiptStatus').textContent = order.status;
 
   const lines = $('#modalReceiptLines');
@@ -2079,8 +1945,8 @@ function showReceiptModal(order) {
       .map(
         (it) => `
           <div class="receipt-row">
-            <span>${it.qty}× ${it.name}</span>
-            <span class="mono">₹${it.price * it.qty}</span>
+            <span>${it.qty}Ã— ${it.name}</span>
+            <span class="mono">â‚¹${it.price * it.qty}</span>
           </div>
         `
       )
@@ -2088,7 +1954,7 @@ function showReceiptModal(order) {
       `
         <div class="receipt-row" style="color:var(--md-sys-color-on-surface-variant); font-size:12px;">
           <span>Packaging Fee</span>
-          <span class="mono">₹${order.packing || 10}</span>
+          <span class="mono">â‚¹${order.packing || 10}</span>
         </div>
       `;
   }
@@ -2101,12 +1967,7 @@ function hideReceiptModal() {
   if (modal) modal.classList.add('hide');
 }
 
-// =========================================================================
-// 10. COMPREHENSIVE EVENT DELEGATION & LISTENERS
-// =========================================================================
-
 function setupEventHandlers() {
-  // 1. Role Switcher (Admin Only)
   const roleSwitcher = $('#roleSwitcher');
   if (roleSwitcher) {
     roleSwitcher.addEventListener('click', (e) => {
@@ -2114,7 +1975,7 @@ function setupEventHandlers() {
       if (!btn) return;
       const userRole = (store.state.currentUser && store.state.currentUser.role) || 'user';
       if (userRole !== 'admin') {
-        toast('🔒 Access Restricted: The top bar role switcher is exclusively available for Administrators.', 'error');
+        toast('ðŸ”’ Access Restricted: The top bar role switcher is exclusively available for Administrators.', 'error');
         return;
       }
       const newRole = btn.dataset.role;
@@ -2122,8 +1983,6 @@ function setupEventHandlers() {
       toast(`Switched perspective to ${roleLabels[newRole] || newRole}`, 'sync');
     });
   }
-
-  // Mobile Drawer Toggle Helpers
   const sidebar = $('#appSidebar');
   const drawerBackdrop = $('#drawerBackdrop');
   function openMobileDrawer() {
@@ -2149,8 +2008,6 @@ function setupEventHandlers() {
   bottomMoreBtns.forEach((btn) => {
     if (btn) btn.addEventListener('click', openMobileDrawer);
   });
-
-  // Mobile Theme Toggle Button
   const mobileThemeToggleBtn = $('#mobileThemeToggleBtn');
   if (mobileThemeToggleBtn) {
     mobileThemeToggleBtn.addEventListener('click', () => {
@@ -2166,8 +2023,6 @@ function setupEventHandlers() {
       }
     });
   }
-
-  // 2. Navigation items (Sidebar links, Bottom Nav Bar, and [data-goto] elements)
   document.addEventListener('click', (e) => {
     const navBtn = e.target.closest('.nav-item[data-page], .m3-bottom-nav-item[data-page]');
     if (navBtn) {
@@ -2187,8 +2042,6 @@ function setupEventHandlers() {
       return;
     }
   });
-
-  // 3. Theme toggle
   const themeToggle = $('#themeToggle');
   if (themeToggle) {
     themeToggle.addEventListener('click', (e) => {
@@ -2202,8 +2055,6 @@ function setupEventHandlers() {
       $$('#themeToggle button[data-mode]').forEach((b) => b.classList.toggle('on', b === btn));
     });
   }
-
-  // 4. Notification Drawer Toggle
   const bellBtn = $('#bellBtn');
   if (bellBtn) {
     bellBtn.addEventListener('click', (e) => {
@@ -2218,8 +2069,6 @@ function setupEventHandlers() {
       if (notif) notif.classList.remove('open');
     }
   });
-
-  // 5. Global Search Input
   const searchInput = $('#searchInput');
   if (searchInput) {
     searchInput.addEventListener('input', (e) => {
@@ -2229,8 +2078,6 @@ function setupEventHandlers() {
       }
     });
   }
-
-  // 6. Category & Counter Filters
   document.addEventListener('click', (e) => {
     const chip = e.target.closest('.filter-chip[data-cat]');
     if (chip) {
@@ -2262,8 +2109,6 @@ function setupEventHandlers() {
       renderKitchenKanban(store.state);
     });
   }
-
-  // 7. Student Cart & Add Buttons
   document.addEventListener('click', (e) => {
     const addBtn = e.target.closest('[data-add]');
     if (addBtn) {
@@ -2289,8 +2134,6 @@ function setupEventHandlers() {
       return;
     }
   });
-
-  // 8. Payment Selector in Checkout
   const paymentGrid = $('#paymentOptions');
   if (paymentGrid) {
     paymentGrid.addEventListener('click', (e) => {
@@ -2301,8 +2144,6 @@ function setupEventHandlers() {
       store.state.selectedPaymentMethod = chip.dataset.method;
     });
   }
-
-  // 9. Student Checkout Order Placement
   const checkoutBtn = $('#checkoutBtn');
   if (checkoutBtn) {
     checkoutBtn.addEventListener('click', () => {
@@ -2325,8 +2166,6 @@ function setupEventHandlers() {
       }
     });
   }
-
-  // 10. Student Advance Order Stepper
   const advanceBtn = $('#advanceBtn');
   if (advanceBtn) {
     advanceBtn.addEventListener('click', () => {
@@ -2334,8 +2173,6 @@ function setupEventHandlers() {
       if (orderId) store.advanceOrderStatus(orderId);
     });
   }
-
-  // 11. Shopper Fast Add & Cart
   document.addEventListener('click', (e) => {
     const shopperAdd = e.target.closest('[data-shopper-add]');
     if (shopperAdd) {
@@ -2377,8 +2214,6 @@ function setupEventHandlers() {
       }
     });
   }
-
-  // 12. Kitchen Kanban Advance
   document.addEventListener('click', (e) => {
     const kAdvance = e.target.closest('[data-kitchen-advance]');
     if (kAdvance) {
@@ -2386,8 +2221,6 @@ function setupEventHandlers() {
       return;
     }
   });
-
-  // 13. Kitchen Stock Adjuster Controls
   document.addEventListener('click', (e) => {
     const stockInc = e.target.closest('[data-stock-inc]');
     if (stockInc) {
@@ -2419,8 +2252,6 @@ function setupEventHandlers() {
       return;
     }
   });
-
-  // 14. Counter POS Billing Interactions
   document.addEventListener('click', (e) => {
     const posAdd = e.target.closest('[data-pos-add]');
     if (posAdd) {
@@ -2470,8 +2301,6 @@ function setupEventHandlers() {
       }
     });
   }
-
-  // 15. View Receipt Modal Trigger
   document.addEventListener('click', (e) => {
     const viewBtn = e.target.closest('[data-view-receipt]');
     if (viewBtn) {
@@ -2492,13 +2321,11 @@ function setupEventHandlers() {
       if (e.target === modalBackdrop) hideReceiptModal();
     });
   }
-
-  // 16. Enter Example Data & Dev Fixture Controls
   const enterTopBtn = $('#enterExampleDataBtnTop');
   if (enterTopBtn) {
     enterTopBtn.addEventListener('click', () => {
       store.generateRandomExampleData();
-      toast('🎲 Random example campus data injected!', 'casino');
+      toast('ðŸŽ² Random example campus data injected!', 'casino');
     });
   }
 
@@ -2506,7 +2333,7 @@ function setupEventHandlers() {
   if (clearTopBtnEl) {
     clearTopBtnEl.addEventListener('click', () => {
       store.resetToEmptyState();
-      toast('🗑️ All data cleared. Website is now empty [].', 'delete_sweep');
+      toast('ðŸ—‘ï¸ All data cleared. Website is now empty [].', 'delete_sweep');
     });
   }
 
@@ -2514,7 +2341,7 @@ function setupEventHandlers() {
   if (loadFixtureBtn) {
     loadFixtureBtn.addEventListener('click', () => {
       store.generateRandomExampleData();
-      toast('🎲 Random example campus data injected!', 'casino');
+      toast('ðŸŽ² Random example campus data injected!', 'casino');
     });
   }
 
@@ -2522,16 +2349,14 @@ function setupEventHandlers() {
   if (resetDataBtn) {
     resetDataBtn.addEventListener('click', () => {
       store.resetToEmptyState();
-      toast('🗑️ State reset to empty schema []', 'restart_alt');
+      toast('ðŸ—‘ï¸ State reset to empty schema []', 'restart_alt');
     });
   }
-
-  // 17. Add Item Modal / Page Form - Protected by canEditMenu permission
   const openItemBtn = $('#openAddItemModalBtn');
   if (openItemBtn) {
     openItemBtn.addEventListener('click', () => {
       if (!store.hasPermission('canEditMenu')) {
-        toast('🔒 Permission Denied: Users cannot alter menu details or add items.', 'error');
+        toast('ðŸ”’ Permission Denied: Users cannot alter menu details or add items.', 'error');
         return;
       }
       store.setRole('admin');
@@ -2543,7 +2368,7 @@ function setupEventHandlers() {
   if (openItemBtnStock) {
     openItemBtnStock.addEventListener('click', () => {
       if (!store.hasPermission('canEditMenu')) {
-        toast('🔒 Permission Denied: Users cannot alter menu details or add items.', 'error');
+        toast('ðŸ”’ Permission Denied: Users cannot alter menu details or add items.', 'error');
         return;
       }
       store.setRole('admin');
@@ -2555,14 +2380,12 @@ function setupEventHandlers() {
   if (openItemBtnAdmin) {
     openItemBtnAdmin.addEventListener('click', () => {
       if (!store.hasPermission('canEditMenu')) {
-        toast('🔒 Permission Denied: Users cannot alter menu details or add items.', 'error');
+        toast('ðŸ”’ Permission Denied: Users cannot alter menu details or add items.', 'error');
         return;
       }
       store.setPage('admin-items');
     });
   }
-
-  // Staff Mode Testing Toggle
   const toggleStaffBtn = $('#toggleStaffUnlockBtn');
   if (toggleStaffBtn) {
     toggleStaffBtn.addEventListener('click', () => {
@@ -2593,14 +2416,10 @@ function setupEventHandlers() {
       store.setPage('admin-audit');
     });
   }
-
-  // 18. Export Audit CSV
   const exportCsvBtn = $('#exportCsvBtn');
   if (exportCsvBtn) {
     exportCsvBtn.addEventListener('click', () => exportAuditCsv(store.state));
   }
-
-  // 19. Feedback Submission
   let selectedStars = 0;
   let selectedFeedbackCat = 'Food Quality';
 
@@ -2641,8 +2460,6 @@ function setupEventHandlers() {
       $$('#starRow .star').forEach((s) => s.classList.remove('on'));
     });
   }
-
-  // 20. Campus Role-Based Authentication
   const qUser = $('#quickLoginUser');
   if (qUser) {
     qUser.addEventListener('click', () => {
@@ -2694,10 +2511,6 @@ function setupEventHandlers() {
   }
 }
 
-// =========================================================================
-// 11. CENTRAL RENDER DISPATCHER
-// =========================================================================
-
 function renderApp(state) {
   renderShell(state);
 
@@ -2721,19 +2534,11 @@ function renderApp(state) {
   renderAdminOverview(state);
   renderAdminAudit(state);
 }
-
-// Subscribe renderer to reactive store
 store.subscribe((state) => {
   renderApp(state);
 });
-
-// Setup event delegation and perform initial render
 setupEventHandlers();
 renderApp(store.state);
-
-// =========================================================================
-// 12. CROSS-TAB & GLOBAL SESSION SYNCHRONIZATION
-// =========================================================================
 try {
   if ('BroadcastChannel' in window) {
     const authChannel = new BroadcastChannel('inventrack_auth');
@@ -2782,3 +2587,4 @@ window.addEventListener('storage', (e) => {
     }
   }
 });
+

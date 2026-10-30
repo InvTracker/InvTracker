@@ -1,38 +1,26 @@
-/**
- * InvenTrack — Google Material Design 3 (Material You / M3) Stylesheet
- * Strict M3 specification with tonal color roles, elevation, shapes, and motion.
- */
-
-/* ==========================================================================
-   1. M3 DESIGN TOKENS & DYNAMIC COLOR ROLES
-   ========================================================================== */
-
+﻿
 :root {
-  /* Primary & Containers */
+  
   --md-sys-color-primary: #006874;
   --md-sys-color-on-primary: #ffffff;
   --md-sys-color-primary-container: #9eeffd;
   --md-sys-color-on-primary-container: #001f24;
 
-  /* Secondary & Containers */
   --md-sys-color-secondary: #4a6267;
   --md-sys-color-on-secondary: #ffffff;
   --md-sys-color-secondary-container: #cce8ea;
   --md-sys-color-on-secondary-container: #051f23;
 
-  /* Tertiary & Containers */
   --md-sys-color-tertiary: #535e7d;
   --md-sys-color-on-tertiary: #ffffff;
   --md-sys-color-tertiary-container: #dae2ff;
   --md-sys-color-on-tertiary-container: #0f1b36;
 
-  /* Error & Containers */
   --md-sys-color-error: #ba1a1a;
   --md-sys-color-on-error: #ffffff;
   --md-sys-color-error-container: #ffdad6;
   --md-sys-color-on-error-container: #410002;
 
-  /* Surface & Tonal Containers */
   --md-sys-color-surface: #fbfdfd;
   --md-sys-color-on-surface: #191c1d;
   --md-sys-color-on-surface-variant: #3f484a;
@@ -42,11 +30,9 @@
   --md-sys-color-surface-container-high: #e4e9ea;
   --md-sys-color-surface-container-highest: #dee4e4;
 
-  /* Outline & Borders */
   --md-sys-color-outline: #6f797a;
   --md-sys-color-outline-variant: #bfc8ca;
 
-  /* Semantic Food Inventory Status Tokens */
   --md-sys-color-avail: #1e6c38;
   --md-sys-color-avail-container: #d1f8d4;
   --md-sys-color-on-avail-container: #00210a;
@@ -59,12 +45,10 @@
   --md-sys-color-out-container: #ffdad6;
   --md-sys-color-on-out-container: #410002;
 
-  /* Typography */
   --md-sys-typescale-body-font: 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif;
   --md-sys-typescale-brand-font: 'Roboto Flex', 'Google Sans', 'Roboto', sans-serif;
   --md-sys-typescale-mono-font: 'Roboto Mono', 'IBM Plex Mono', monospace;
 
-  /* Shapes (M3 Shape Hierarchy) */
   --md-sys-shape-corner-extra-small: 4px;
   --md-sys-shape-corner-small: 8px;
   --md-sys-shape-corner-medium: 12px;
@@ -72,19 +56,16 @@
   --md-sys-shape-corner-extra-large: 28px;
   --md-sys-shape-corner-full: 9999px;
 
-  /* Motion & Easing */
   --md-sys-motion-easing-standard: cubic-bezier(0.2, 0.0, 0, 1.0);
   --md-sys-motion-duration-short: 150ms;
   --md-sys-motion-duration-medium: 200ms;
   --md-sys-motion-duration-long: 300ms;
 
-  /* Elevation (Tonal + Subtle Key Shadow) */
   --md-sys-elevation-0: none;
   --md-sys-elevation-1: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.04);
   --md-sys-elevation-2: 0 3px 6px rgba(0, 0, 0, 0.10), 0 2px 4px rgba(0, 0, 0, 0.06);
   --md-sys-elevation-3: 0 6px 16px rgba(0, 0, 0, 0.12), 0 3px 6px rgba(0, 0, 0, 0.08);
 
-  /* Legacy variable mappings for seamless compatibility */
   --bg: var(--md-sys-color-surface);
   --surface: var(--md-sys-color-surface-container-lowest);
   --surface-2: var(--md-sys-color-surface-container-low);
@@ -103,7 +84,6 @@
   --radius: var(--md-sys-shape-corner-large);
 }
 
-/* Back of House / Dark Theme (M3 Dark Scheme) */
 [data-theme="kitchen"],
 [data-theme="dark"] {
   --md-sys-color-primary: #82d3e0;
@@ -160,10 +140,6 @@
   --border: var(--md-sys-color-outline-variant);
 }
 
-/* ==========================================================================
-   2. BASE, TYPOGRAPHY & MATERIAL SYMBOLS
-   ========================================================================== */
-
 * {
   box-sizing: border-box;
 }
@@ -194,7 +170,6 @@ h1, h2, h3, .brand-name, .page-title {
   letter-spacing: 0.02em;
 }
 
-/* Google Material Symbols Outlined */
 .material-symbols-outlined {
   font-family: 'Material Symbols Outlined' !important;
   font-weight: normal;
@@ -217,7 +192,6 @@ button {
   cursor: pointer;
 }
 
-/* Scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -226,10 +200,6 @@ button {
   background: var(--md-sys-color-outline-variant);
   border-radius: var(--md-sys-shape-corner-full);
 }
-
-/* ==========================================================================
-   3. M3 NAVIGATION DRAWER / RAIL SHELL
-   ========================================================================== */
 
 .shell {
   display: grid;
@@ -325,7 +295,6 @@ nav.nav {
   padding: 14px 12px 6px;
 }
 
-/* M3 Navigation Item with State Layers */
 .nav-item {
   display: flex;
   align-items: center;
@@ -409,10 +378,6 @@ nav.nav {
   color: var(--md-sys-color-on-surface-variant);
 }
 
-/* ==========================================================================
-   4. M3 TOPBAR & CONTROLS
-   ========================================================================== */
-
 main {
   padding: 24px 32px 80px;
   max-width: 1240px;
@@ -439,7 +404,6 @@ main {
   display: none;
 }
 
-/* M3 Search Bar */
 .search {
   flex: 1;
   max-width: 380px;
@@ -481,7 +445,6 @@ main {
   position: relative;
 }
 
-/* M3 Segmented Button / Role Switcher */
 .role-switcher {
   display: flex;
   align-items: center;
@@ -558,7 +521,6 @@ main {
   color: #ba1a1a;
 }
 
-/* Theme Toggle Slider in M3 */
 .theme-toggle {
   display: flex;
   align-items: center;
@@ -608,7 +570,6 @@ main {
   transform: translateX(100%);
 }
 
-/* M3 Icon Button for Notifications */
 .bell {
   width: 40px;
   height: 40px;
@@ -680,10 +641,6 @@ main {
   font-size: 11px;
 }
 
-/* ==========================================================================
-   5. M3 DEV / FIXTURE BAR
-   ========================================================================== */
-
 .dev-fixture-bar {
   display: flex;
   align-items: center;
@@ -721,7 +678,6 @@ main {
   gap: 8px;
 }
 
-/* M3 Buttons */
 .dev-btn {
   border: 1px solid var(--md-sys-color-outline);
   background-color: transparent;
@@ -751,10 +707,6 @@ main {
   box-shadow: var(--md-sys-elevation-1);
   filter: brightness(1.06);
 }
-
-/* ==========================================================================
-   6. M3 DIGITAL TICKET & STEPPER COMPONENT
-   ========================================================================== */
 
 .ticket {
   background-color: var(--md-sys-color-surface-container);
@@ -802,7 +754,6 @@ main {
   margin-bottom: 24px;
 }
 
-/* M3 Stepper */
 .stepper {
   display: flex;
   align-items: center;
@@ -864,7 +815,6 @@ main {
   color: var(--md-sys-color-on-surface-variant);
 }
 
-/* Ticket Stub */
 .ticket-stub {
   background-color: var(--md-sys-color-surface-container-high);
   border-left: 1px dashed var(--md-sys-color-outline-variant);
@@ -931,10 +881,6 @@ main {
   cursor: not-allowed;
 }
 
-/* ==========================================================================
-   7. M3 QUICK SHORTCUT CARDS
-   ========================================================================== */
-
 .quick-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -990,10 +936,6 @@ main {
   color: var(--md-sys-color-on-surface-variant);
 }
 
-/* ==========================================================================
-   8. M3 SECTION HEADERS & FILTER CHIPS
-   ========================================================================== */
-
 .section-head {
   display: flex;
   align-items: center;
@@ -1021,7 +963,6 @@ main {
   text-decoration: underline;
 }
 
-/* M3 Filter Chips Row */
 .filter-row {
   display: flex;
   align-items: center;
@@ -1057,10 +998,6 @@ main {
   border-color: transparent;
   font-weight: 600;
 }
-
-/* ==========================================================================
-   9. M3 MENU CARDS & REAL-TIME INVENTORY GAUGES
-   ========================================================================== */
 
 .counter-strip {
   display: grid;
@@ -1099,7 +1036,6 @@ main {
   color: var(--md-sys-color-on-surface-variant);
 }
 
-/* Stock Gauge Bar */
 .gauge {
   height: 6px;
   background-color: var(--md-sys-color-surface-container-highest);
@@ -1114,7 +1050,6 @@ main {
   transition: width var(--md-sys-motion-duration-medium) var(--md-sys-motion-easing-standard);
 }
 
-/* M3 Status Pills / Assist Chips */
 .status-badge {
   font-size: 10px;
   font-weight: 700;
@@ -1142,7 +1077,6 @@ main {
   color: var(--md-sys-color-on-out-container);
 }
 
-/* Menu Grid */
 .menu-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
@@ -1211,7 +1145,6 @@ main {
   color: var(--md-sys-color-on-surface);
 }
 
-/* M3 Floating Action / Mini Add Button */
 .add-btn {
   width: 32px;
   height: 32px;
@@ -1238,10 +1171,6 @@ main {
   color: var(--md-sys-color-outline);
   cursor: not-allowed;
 }
-
-/* ==========================================================================
-   10. M3 RECOMMENDATION CARDS
-   ========================================================================== */
 
 .rec-grid {
   display: grid;
@@ -1300,10 +1229,6 @@ main {
   justify-content: space-between;
   margin-top: auto;
 }
-
-/* ==========================================================================
-   11. M3 PANELS & SPENDING BARS
-   ========================================================================== */
 
 .two-col {
   display: grid;
@@ -1404,10 +1329,6 @@ main {
   font-size: 12px;
   color: var(--md-sys-color-on-surface-variant);
 }
-
-/* ==========================================================================
-   12. M3 LISTS & STUB ROWS
-   ========================================================================== */
 
 .stub-list {
   display: flex;
@@ -1527,10 +1448,6 @@ main {
   cursor: pointer;
 }
 
-/* ==========================================================================
-   13. M3 CART & CHECKOUT LAYOUT
-   ========================================================================== */
-
 .cart-layout {
   display: grid;
   grid-template-columns: 1.4fr 1fr;
@@ -1631,10 +1548,6 @@ main {
   color: var(--md-sys-color-outline);
   cursor: not-allowed;
 }
-
-/* ==========================================================================
-   14. M3 KITCHEN KANBAN BOARD
-   ========================================================================== */
 
 .kanban-board {
   display: grid;
@@ -1801,10 +1714,6 @@ main {
   cursor: not-allowed;
 }
 
-/* ==========================================================================
-   15. M3 DATA TABLES & STOCK MANAGEMENT
-   ========================================================================== */
-
 .table-wrap {
   width: 100%;
   overflow-x: auto;
@@ -1886,10 +1795,6 @@ main {
   gap: 6px;
 }
 
-/* ==========================================================================
-   16. M3 COUNTER POS / RAPID BILLING
-   ========================================================================== */
-
 .pos-layout {
   display: grid;
   grid-template-columns: 1.4fr 1fr;
@@ -1963,10 +1868,6 @@ main {
   flex-direction: column;
   gap: 16px;
 }
-
-/* ==========================================================================
-   17. M3 ADMIN METRICS & VELOCITY
-   ========================================================================== */
 
 .metrics-grid {
   display: grid;
@@ -2063,10 +1964,6 @@ main {
   text-align: right;
 }
 
-/* ==========================================================================
-   18. M3 INPUTS, TEXTFIELDS & AUTH FORMS
-   ========================================================================== */
-
 .field {
   margin-bottom: 16px;
 }
@@ -2081,7 +1978,6 @@ main {
   margin-bottom: 6px;
 }
 
-/* M3 Outlined Inputs */
 .field input,
 .field select,
 textarea {
@@ -2117,7 +2013,6 @@ textarea {
   resize: vertical;
 }
 
-/* M3 Filled Button for Forms */
 .auth-submit {
   width: 100%;
   background-color: var(--md-sys-color-primary);
@@ -2148,7 +2043,6 @@ textarea {
   display: block;
 }
 
-/* M3 Segmented Auth Tabs */
 .auth-tabs {
   display: flex;
   gap: 4px;
@@ -2183,7 +2077,6 @@ textarea {
   margin: 0 0 16px;
 }
 
-/* Profile Grid */
 .account-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -2222,7 +2115,6 @@ textarea {
   cursor: pointer;
 }
 
-/* M3 Switch Component */
 .setting-row {
   display: flex;
   align-items: center;
@@ -2282,10 +2174,6 @@ textarea {
   top: 4px;
 }
 
-/* ==========================================================================
-   19. M3 CHECKOUT PAYMENT CHIPS
-   ========================================================================== */
-
 .checkout-payment-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -2330,10 +2218,6 @@ textarea {
   color: var(--md-sys-color-on-surface-variant);
 }
 
-/* ==========================================================================
-   20. M3 DIALOGS, MODALS & TOASTS
-   ========================================================================== */
-
 .receipt-modal-backdrop {
   position: fixed;
   top: 0;
@@ -2353,7 +2237,6 @@ textarea {
   display: none;
 }
 
-/* M3 Extra Large Rounded Dialog */
 .digital-receipt {
   background-color: var(--md-sys-color-surface-container-high);
   border: 1px solid var(--md-sys-color-outline-variant);
@@ -2425,7 +2308,6 @@ textarea {
   color: var(--md-sys-color-on-surface);
 }
 
-/* Star Rating in M3 */
 .stars {
   display: flex;
   gap: 8px;
@@ -2446,7 +2328,6 @@ textarea {
   color: var(--md-sys-color-primary);
 }
 
-/* M3 Snackbar / Toast Component */
 .toast-wrap {
   position: fixed;
   bottom: 24px;
@@ -2491,10 +2372,6 @@ textarea {
   }
 }
 
-/* ==========================================================================
-   21. EMPTY STATES & PAGES
-   ========================================================================== */
-
 .page {
   display: none;
 }
@@ -2537,11 +2414,6 @@ textarea {
   font-size: 14.5px;
 }
 
-/* ==========================================================================
-   22. M3 COMPLETE MOBILE & RESPONSIVE ADAPTIVE ARCHITECTURE (< 768px)
-   ========================================================================== */
-
-/* Mobile Elements: Hidden on Desktop, Revealed on Mobile */
 .mobile-app-bar {
   display: none;
 }
@@ -2559,7 +2431,7 @@ textarea {
 }
 
 @media (max-width: 768px) {
-  /* 1. Base Shell Layout: Single Column Edge-to-Edge */
+  
   .shell {
     grid-template-columns: 1fr !important;
     display: block !important;
@@ -2569,7 +2441,6 @@ textarea {
     overflow-x: hidden !important;
   }
 
-  /* 2. Off-Canvas Navigation Drawer */
   .sidebar {
     position: fixed !important;
     top: 0 !important;
@@ -2595,7 +2466,6 @@ textarea {
     box-shadow: 0 0 50px rgba(0, 0, 0, 0.4), var(--md-sys-elevation-4) !important;
   }
 
-  /* Drawer Mobile Header & Close Button */
   .sidebar-mobile-header {
     display: flex !important;
     align-items: center !important;
@@ -2624,7 +2494,6 @@ textarea {
     color: var(--md-sys-color-on-surface) !important;
   }
 
-  /* Full labels visible inside drawer */
   .sidebar .brand-name,
   .sidebar .brand-sub,
   .sidebar .nav-item span:not(.material-symbols-outlined),
@@ -2646,7 +2515,6 @@ textarea {
     justify-content: flex-start !important;
   }
 
-  /* Modal Backdrop */
   .drawer-backdrop {
     display: block !important;
     position: fixed !important;
@@ -2665,16 +2533,14 @@ textarea {
     pointer-events: auto !important;
   }
 
-  /* 3. Main Application Content Area */
   main {
-    padding: 12px 14px 88px !important; /* bottom clearance for fixed M3 bottom nav */
+    padding: 12px 14px 88px !important; 
     max-width: 100vw !important;
     width: 100% !important;
     box-sizing: border-box !important;
     overflow-x: hidden !important;
   }
 
-  /* 4. Top App Bar for Mobile */
   .mobile-app-bar {
     display: flex !important;
     align-items: center !important;
@@ -2775,7 +2641,6 @@ textarea {
     display: none !important;
   }
 
-  /* Desktop-only elements inside .topbar hidden on mobile */
   .topbar-desktop-only {
     display: none !important;
   }
@@ -2787,7 +2652,6 @@ textarea {
     align-items: stretch !important;
   }
 
-  /* Search Bar spans full width on mobile */
   .search {
     max-width: 100% !important;
     width: 100% !important;
@@ -2801,7 +2665,6 @@ textarea {
     font-size: 15px !important;
   }
 
-  /* Role Switcher on mobile */
   .role-switcher {
     width: 100% !important;
     display: flex !important;
@@ -2817,7 +2680,6 @@ textarea {
     font-size: 11.5px !important;
   }
 
-  /* Dev Fixture Bar on Mobile */
   .dev-fixture-bar {
     flex-direction: column !important;
     align-items: stretch !important;
@@ -2839,7 +2701,6 @@ textarea {
     font-size: 12px !important;
   }
 
-  /* 5. Material 3 Bottom Navigation Bar */
   .m3-bottom-nav {
     display: flex !important;
     position: fixed !important;
@@ -2949,7 +2810,6 @@ textarea {
     display: none !important;
   }
 
-  /* 6. Active Ticket Component on Mobile */
   .ticket {
     grid-template-columns: 1fr !important;
     border-radius: var(--md-sys-shape-corner-large) !important;
@@ -2986,7 +2846,6 @@ textarea {
     display: none !important;
   }
 
-  /* 7. Grids & Layouts */
   .quick-grid {
     grid-template-columns: repeat(2, 1fr) !important;
     gap: 10px !important;
@@ -3012,7 +2871,6 @@ textarea {
     gap: 14px !important;
   }
 
-  /* 8. Kanban Board Horizontal Swipeable Carousel */
   .kanban-board {
     display: flex !important;
     overflow-x: auto !important;
@@ -3032,7 +2890,6 @@ textarea {
     padding: 12px !important;
   }
 
-  /* 9. Metrics Cards */
   .metrics-grid {
     grid-template-columns: repeat(2, 1fr) !important;
     gap: 10px !important;
@@ -3046,7 +2903,6 @@ textarea {
     font-size: 22px !important;
   }
 
-  /* 10. Table touch scrolling */
   .table-wrap {
     overflow-x: auto !important;
     -webkit-overflow-scrolling: touch !important;
@@ -3060,7 +2916,6 @@ textarea {
     white-space: nowrap !important;
   }
 
-  /* 11. Modal Dialogs: Modern Bottom Sheet Pattern */
   .receipt-modal-backdrop {
     padding: 0 !important;
     align-items: flex-end !important;
@@ -3076,7 +2931,6 @@ textarea {
     box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.25) !important;
   }
 
-  /* 12. iOS Form Zoom Prevention */
   input, select, textarea {
     font-size: 16px !important;
   }
@@ -3095,3 +2949,4 @@ textarea {
     display: none !important;
   }
 }
+

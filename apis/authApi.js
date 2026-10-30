@@ -1,4 +1,4 @@
-import { apiClient } from './apiClient.js';
+﻿import { apiClient } from './apiClient.js';
 
 export const authApi = {
   login: async (credentials) => {
@@ -13,4 +13,5 @@ export const authApi = {
     return apiClient.get(`/auth/profile?role=${role}`);
   }
 };
+
 

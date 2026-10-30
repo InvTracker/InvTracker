@@ -1,4 +1,4 @@
-import { dataStore } from '../models/dataStore.js';
+﻿import { dataStore } from '../models/dataStore.js';
 
 export const getOrders = (req, res) => {
   const { status, counter } = req.query;
@@ -25,8 +25,6 @@ export const placeOrder = (req, res) => {
   if (!items || !items.length) {
     return res.status(400).json({ success: false, message: 'Cart items cannot be empty' });
   }
-
-  // Deduct inventory stock
   items.forEach(cartItem => {
     dataStore.updateStock(cartItem.id, -Number(cartItem.qty || 1));
   });
@@ -70,4 +68,5 @@ export const updateStatus = (req, res) => {
     order: updatedOrder
   });
 };
+
 

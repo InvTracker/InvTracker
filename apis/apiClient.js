@@ -1,8 +1,4 @@
-/**
- * InvenTrack Unified HTTP API Client
- * Configurable base URL with fallback to local backend or mock state
- */
-
+﻿
 const API_BASE_URL = typeof window !== 'undefined' && window.INVENTRACK_API_URL 
   ? window.INVENTRACK_API_URL 
   : 'http://localhost:5000/api';
@@ -13,8 +9,6 @@ async function request(endpoint, options = {}) {
     'Content-Type': 'application/json',
     ...(options.headers || {})
   };
-
-  // Inject session auth token if available
   try {
     const rawUser = localStorage.getItem('invenTrack_user');
     if (rawUser) {
@@ -53,4 +47,5 @@ export const apiClient = {
   patch: (endpoint, body, options) => request(endpoint, { ...options, method: 'PATCH', body: JSON.stringify(body) }),
   delete: (endpoint, options) => request(endpoint, { ...options, method: 'DELETE' })
 };
+
 

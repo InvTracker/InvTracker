@@ -1,8 +1,4 @@
-/**
- * InvenTrack In-Memory / Persistent Data Store
- * Initialized with standard campus dining schema and fixture datasets
- */
-
+﻿
 export const DEMO_ACCOUNTS = {
   admin: {
     id: 'usr-admin-1',
@@ -151,8 +147,6 @@ class DataStore {
     this.users = [DEMO_ACCOUNTS.user, DEMO_ACCOUNTS.kitchen, DEMO_ACCOUNTS.admin];
     this.sessions = new Map();
   }
-
-  // Inventory
   getAllItems() {
     return this.menuItems;
   }
@@ -174,8 +168,6 @@ class DataStore {
     this.menuItems.push(item);
     return item;
   }
-
-  // Orders
   getAllOrders() {
     return this.orders;
   }
@@ -209,8 +201,6 @@ class DataStore {
     order.status = newStatus;
     return order;
   }
-
-  // Users & Auth
   findUserByRollOrEmail(identifier) {
     if (!identifier) return null;
     const clean = identifier.toLowerCase().trim();
@@ -240,4 +230,5 @@ class DataStore {
 }
 
 export const dataStore = new DataStore();
+
 
