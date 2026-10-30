@@ -265,43 +265,87 @@ class InvenTrackStore {
   }
 
   loadInitialState() {
-    const MIGRATION_KEY = 'inventrack_role_auth_v3';
-    if (!localStorage.getItem(MIGRATION_KEY)) {
-      localStorage.removeItem(STORAGE_KEY);
-      localStorage.setItem(MIGRATION_KEY, 'true');
+    // 1. Check for authenticated user from signin / login
+    let authUser = null;
+    try {
+      const stored = localStorage.getItem('invenTrack_user');
+      if (stored) authUser = JSON.parse(stored);
+    } catch (e) {
+      console.warn('Failed to parse invenTrack_user', e);
     }
 
     const saved = localStorage.getItem(STORAGE_KEY);
+    let parsed = null;
     if (saved) {
       try {
-        const parsed = JSON.parse(saved);
-        const currentUser = parsed.currentUser || DEFAULT_USER;
-        const role = currentUser.role || 'user';
-        const activeRole = role === 'admin' ? (parsed.activeRole || 'admin') : role;
-        const defaultPage = role === 'admin' ? 'admin-overview' : role === 'kitchen' ? 'kitchen-kanban' : 'home';
-        const activePage = parsed.activePage && ROLE_PERMISSIONS[role] && ROLE_PERMISSIONS[role].allowedPages.includes(parsed.activePage)
-          ? parsed.activePage
-          : defaultPage;
-
-        return {
-          menuItems: parsed.menuItems || [],
-          orders: parsed.orders || [],
-          users: parsed.users || [],
-          feedbacks: parsed.feedbacks || [],
-          cart: parsed.cart || {},
-          shopperCart: parsed.shopperCart || {},
-          posCart: parsed.posCart || {},
-          currentUser,
-          loggedIn: parsed.loggedIn !== false,
-          activeRole,
-          activePage,
-          selectedPaymentMethod: 'Campus UPI',
-          activeCat: 'All',
-          counterFilter: 'All'
-        };
+        parsed = JSON.parse(saved);
       } catch (e) {
         console.warn('Failed to parse localStorage', e);
       }
+    }
+
+    // Determine current user and authentication status
+    const currentUser = authUser || (parsed && parsed.loggedIn && parsed.currentUser ? parsed.currentUser : null);
+    const isLoggedIn = !!currentUser;
+
+    if (!isLoggedIn) {
+      // Unauthenticated: Redirect directly to Landing Page
+      try {
+        window.location.replace('landing.html');
+      } catch (e) {}
+
+      return {
+        menuItems: [...DATA_INJECTION_SLOT.menuItems],
+        orders: [...DATA_INJECTION_SLOT.orders],
+        users: [...DATA_INJECTION_SLOT.users],
+        feedbacks: [...DATA_INJECTION_SLOT.feedbacks],
+        cart: {},
+        shopperCart: {},
+        posCart: {},
+        currentUser: null,
+        loggedIn: false,
+        activeRole: 'user',
+        activePage: 'home',
+        selectedPaymentMethod: 'Campus UPI',
+        activeCat: 'All',
+        counterFilter: 'All'
+      };
+    }
+
+    // User is authenticated: Setup role & dashboard view
+    const role = (currentUser && currentUser.role) || 'user';
+    const activeRole = role === 'admin' ? (parsed && parsed.activeRole ? parsed.activeRole : 'admin') : role;
+    const defaultPage = role === 'admin' ? 'admin-overview' : (role === 'kitchen' ? 'kitchen-kanban' : 'home');
+    const activePage = (parsed && parsed.activePage && ROLE_PERMISSIONS[role] && ROLE_PERMISSIONS[role].allowedPages && ROLE_PERMISSIONS[role].allowedPages.includes(parsed.activePage))
+      ? parsed.activePage
+      : defaultPage;
+
+    // Apply Back-of-House theme automatically for Kitchen role
+    if (role === 'kitchen') {
+      try {
+        document.documentElement.setAttribute('data-theme', 'kitchen');
+        document.body.setAttribute('data-theme', 'kitchen');
+        localStorage.setItem('invenTrack_theme', 'kitchen');
+      } catch(e){}
+    }
+
+    if (parsed) {
+      return {
+        menuItems: parsed.menuItems || [...DATA_INJECTION_SLOT.menuItems],
+        orders: parsed.orders || [...DATA_INJECTION_SLOT.orders],
+        users: parsed.users || [...DATA_INJECTION_SLOT.users],
+        feedbacks: parsed.feedbacks || [...DATA_INJECTION_SLOT.feedbacks],
+        cart: parsed.cart || {},
+        shopperCart: parsed.shopperCart || {},
+        posCart: parsed.posCart || {},
+        currentUser,
+        loggedIn: true,
+        activeRole,
+        activePage,
+        selectedPaymentMethod: parsed.selectedPaymentMethod || 'Campus UPI',
+        activeCat: parsed.activeCat || 'All',
+        counterFilter: parsed.counterFilter || 'All'
+      };
     }
 
     return {
@@ -312,10 +356,10 @@ class InvenTrackStore {
       cart: {},
       shopperCart: {},
       posCart: {},
-      currentUser: DEFAULT_USER,
+      currentUser,
       loggedIn: true,
-      activeRole: 'user',
-      activePage: 'home',
+      activeRole,
+      activePage,
       selectedPaymentMethod: 'Campus UPI',
       activeCat: 'All',
       counterFilter: 'All'
@@ -497,9 +541,15 @@ class InvenTrackStore {
     this.state.loggedIn = false;
     this.state.currentUser = null;
     this.state.activeRole = 'user';
-    this.state.activePage = 'settings';
+    this.state.activePage = 'home';
+    try {
+      localStorage.removeItem('invenTrack_user');
+    } catch (e) {}
     this.save();
-    toast('Logged out. Please sign in to access features.', 'logout');
+    toast('Logged out successfully. Redirecting to landing page...', 'logout');
+    setTimeout(() => {
+      window.location.replace('landing.html');
+    }, 600);
   }
 
   // Stock Adjustment - Protected by canAdjustStock permission
@@ -2610,3 +2660,55 @@ store.subscribe((state) => {
 // Setup event delegation and perform initial render
 setupEventHandlers();
 renderApp(store.state);
+
+// =========================================================================
+// 12. CROSS-TAB & GLOBAL SESSION SYNCHRONIZATION
+// =========================================================================
+try {
+  if ('BroadcastChannel' in window) {
+    const authChannel = new BroadcastChannel('inventrack_auth');
+    authChannel.onmessage = (event) => {
+      if (event.data && event.data.type === 'AUTH_SUCCESS' && event.data.user) {
+        const user = event.data.user;
+        store.state.currentUser = user;
+        store.state.loggedIn = true;
+        const role = user.role || 'user';
+        store.state.activeRole = role;
+        store.state.activePage = role === 'admin' ? 'admin-overview' : (role === 'kitchen' ? 'kitchen-kanban' : 'home');
+        if (role === 'kitchen') {
+          try {
+            document.documentElement.setAttribute('data-theme', 'kitchen');
+            document.body.setAttribute('data-theme', 'kitchen');
+          } catch(e){}
+        }
+        store.save();
+        renderApp(store.state);
+      }
+    };
+  }
+} catch (e) {}
+
+window.addEventListener('storage', (e) => {
+  if (e.key === 'invenTrack_user') {
+    if (!e.newValue) {
+      window.location.replace('landing.html');
+    } else {
+      try {
+        const user = JSON.parse(e.newValue);
+        store.state.currentUser = user;
+        store.state.loggedIn = true;
+        const role = user.role || 'user';
+        store.state.activeRole = role;
+        store.state.activePage = role === 'admin' ? 'admin-overview' : (role === 'kitchen' ? 'kitchen-kanban' : 'home');
+        if (role === 'kitchen') {
+          try {
+            document.documentElement.setAttribute('data-theme', 'kitchen');
+            document.body.setAttribute('data-theme', 'kitchen');
+          } catch(err){}
+        }
+        store.save();
+        renderApp(store.state);
+      } catch (err) {}
+    }
+  }
+});

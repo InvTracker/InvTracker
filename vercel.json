@@ -1,6 +1,6 @@
 {
   "cleanUrls": true,
   "rewrites": [
-    { "source": "/(.*)", "destination": "/index.html" }
+    { "source": "/((?!landing|signin|css|js|react|src).*)", "destination": "/index.html" }
   ]
 }

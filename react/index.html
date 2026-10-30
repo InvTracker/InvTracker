@@ -12,6 +12,31 @@
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Roboto+Flex:wght@400;500;600;700&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..24,400,0,0&display=swap" rel="stylesheet">
   
   <link rel="stylesheet" href="css/styles.css">
+
+  <!-- ================= INVENTRACK AUTH GUARD ================= -->
+  <!-- Enforces landing and signin before home page opens -->
+  <script>
+    (function() {
+      try {
+        var userAuth = localStorage.getItem('invenTrack_user');
+        var appState = localStorage.getItem('inventrack_m3_state');
+        var authed = false;
+        if (userAuth) {
+          var u = JSON.parse(userAuth);
+          if (u && (u.role || u.name)) authed = true;
+        }
+        if (!authed && appState) {
+          var s = JSON.parse(appState);
+          if (s && s.loggedIn && s.currentUser && s.currentUser.role) authed = true;
+        }
+        if (!authed) {
+          window.location.replace('landing.html');
+        }
+      } catch (e) {
+        window.location.replace('landing.html');
+      }
+    })();
+  </script>
 </head>
 <body>
   <div class="shell">
@@ -133,6 +158,10 @@
             </div>
           </div>
         </button>
+        <a href="landing.html" class="nav-item" style="text-decoration:none; margin-bottom:6px; color:inherit;">
+          <span class="material-symbols-outlined">explore</span>
+          <span>Landing Page</span>
+        </a>
         <button class="nav-item" id="logoutNavBtn">
           <span class="material-symbols-outlined">logout</span>
           <span>Log out</span>

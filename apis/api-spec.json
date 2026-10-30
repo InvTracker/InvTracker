@@ -1,0 +1,114 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "InvenTrack Campus Dining & Inventory API",
+    "version": "1.0.0",
+    "description": "REST API specification for InvenTrack Material 3 platform supporting User, Kitchen Staff, and Campus Administrator workflows."
+  },
+  "servers": [
+    {
+      "url": "http://localhost:5000/api",
+      "description": "Local Development Server"
+    }
+  ],
+  "paths": {
+    "/auth/login": {
+      "post": {
+        "summary": "Authenticate user or staff by credentials/role",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "loginId": { "type": "string" },
+                  "role": { "type": "string", "enum": ["user", "kitchen", "admin"] }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Authentication successful" }
+        }
+      }
+    },
+    "/auth/register": {
+      "post": {
+        "summary": "Register new diner, kitchen crew, or administrator",
+        "responses": {
+          "201": { "description": "User created successfully" }
+        }
+      }
+    },
+    "/inventory/items": {
+      "get": {
+        "summary": "Fetch menu catalog with stock gauges",
+        "responses": {
+          "200": { "description": "Catalog items returned" }
+        }
+      },
+      "post": {
+        "summary": "Add new menu item (Admin only)",
+        "responses": {
+          "201": { "description": "Item created" }
+        }
+      }
+    },
+    "/inventory/items/{id}/stock": {
+      "patch": {
+        "summary": "Adjust remaining inventory capacity delta (Kitchen & Admin only)",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": { "description": "Stock updated" }
+        }
+      }
+    },
+    "/orders": {
+      "get": {
+        "summary": "Fetch live orders for tickets and Kanban queue board",
+        "responses": {
+          "200": { "description": "List of active orders" }
+        }
+      }
+    },
+    "/orders/place": {
+      "post": {
+        "summary": "Place cart order and generate live queue token",
+        "responses": {
+          "201": { "description": "Order token generated" }
+        }
+      }
+    },
+    "/orders/{id}/status": {
+      "patch": {
+        "summary": "Advance Kanban ticket status (Placed -> Preparing -> Ready -> Picked up)",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": { "description": "Status updated" }
+        }
+      }
+    },
+    "/audit/overview": {
+      "get": {
+        "summary": "Retrieve executive revenue metrics and deficit counts (Admin)",
+        "responses": {
+          "200": { "description": "Overview KPIs returned" }
+        }
+      }
+    },
+    "/audit/export-csv": {
+      "get": {
+        "summary": "Download procurement inventory deficit audit CSV",
+        "responses": {
+          "200": { "description": "CSV stream returned" }
+        }
+      }
+    }
+  }
+}

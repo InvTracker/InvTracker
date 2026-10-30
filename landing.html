@@ -11,7 +11,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Roboto+Flex:wght@400;500;600;700;800&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..24,400,0,0&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/src/index.css">
+  <link rel="stylesheet" href="css/styles.css">
 
   <style>
     /* ================= DESIGN TOKENS & EXPERT CSS SYSTEM ================= */
@@ -484,6 +484,220 @@
     .btn-signin-nav:hover {
       transform: translateY(-1.5px);
       box-shadow: 0 6px 20px rgba(0, 104, 116, 0.45);
+    }
+
+    .btn-login-nav {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 13.5px;
+      font-weight: 600;
+      padding: 8px 18px;
+      border-radius: var(--md-sys-shape-corner-full, 99px);
+      text-decoration: none;
+      background: var(--md-sys-color-surface-container, rgba(0,0,0,0.04));
+      color: var(--md-sys-color-primary, #006874) !important;
+      border: 1px solid var(--md-sys-color-outline-variant, rgba(0, 104, 116, 0.25));
+      transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
+      white-space: nowrap;
+    }
+
+    .btn-login-nav:hover {
+      background: var(--md-sys-color-surface-container-high, rgba(0,0,0,0.08));
+      transform: translateY(-1.5px);
+      border-color: var(--md-sys-color-primary);
+    }
+
+    [data-theme="kitchen"] .btn-login-nav {
+      color: #82d3e0 !important;
+      border-color: rgba(130, 211, 224, 0.3);
+    }
+
+    .auth-user-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 6px 14px;
+      border-radius: 99px;
+      background: var(--md-sys-color-primary-container, #9eeffd);
+      color: var(--md-sys-color-on-primary-container, #001f24);
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    [data-theme="kitchen"] .auth-user-chip {
+      background: #004f58;
+      color: #9eeffd;
+    }
+
+    .auth-role-tag {
+      font-size: 10px;
+      letter-spacing: 0.05em;
+      padding: 2px 7px;
+      background: var(--md-sys-color-primary, #006874);
+      color: #fff;
+      border-radius: 99px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    /* Role Quick Selector Box in Hero */
+    .hero-role-chooser {
+      margin: 24px 0 26px;
+      background: var(--card-glass);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--card-border);
+      border-radius: 18px;
+      padding: 16px 18px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+    }
+
+    [data-theme="kitchen"] .hero-role-chooser {
+      background: rgba(14, 22, 30, 0.85);
+      border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .hero-role-title-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+
+    .hero-role-title {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--md-sys-color-on-surface);
+      letter-spacing: -0.01em;
+    }
+
+    .hero-role-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+
+    @media (max-width: 680px) {
+      .hero-role-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .role-action-card {
+      background: var(--md-sys-color-surface-container-low, #f0f5f5);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      padding: 12px 12px 10px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 8px;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .role-action-card:hover {
+      transform: translateY(-2px);
+      border-color: var(--md-sys-color-primary, #006874);
+      box-shadow: 0 8px 20px rgba(0, 104, 116, 0.14);
+    }
+
+    [data-theme="kitchen"] .role-action-card {
+      background: rgba(22, 34, 46, 0.6);
+      border-color: rgba(255, 255, 255, 0.08);
+    }
+
+    [data-theme="kitchen"] .role-action-card:hover {
+      border-color: #22d3ee;
+      box-shadow: 0 8px 24px rgba(0, 229, 255, 0.2);
+    }
+
+    .role-header-line {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .role-icon-bubble {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--md-sys-color-primary-container, #9eeffd);
+      color: var(--md-sys-color-primary, #006874);
+    }
+
+    .role-icon-bubble.kitchen {
+      background: #ffddb7;
+      color: #855300;
+    }
+
+    .role-icon-bubble.admin {
+      background: #dae2ff;
+      color: #3b4866;
+    }
+
+    .role-card-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--md-sys-color-on-surface);
+      line-height: 1.2;
+    }
+
+    .role-card-desc {
+      font-size: 11px;
+      color: var(--md-sys-color-on-surface-variant);
+      line-height: 1.35;
+      flex-grow: 1;
+    }
+
+    .role-btn-pair {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+      margin-top: 2px;
+    }
+
+    .btn-role-cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      padding: 6px 8px;
+      border-radius: 7px;
+      font-size: 11.5px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+
+    .btn-role-cta.login {
+      background: var(--md-sys-color-primary, #006874);
+      color: #ffffff !important;
+      box-shadow: 0 2px 6px rgba(0, 104, 116, 0.25);
+    }
+
+    .btn-role-cta.login:hover {
+      background: #004f58;
+      transform: translateY(-1px);
+    }
+
+    .btn-role-cta.signin {
+      background: transparent;
+      color: var(--md-sys-color-on-surface) !important;
+      border: 1px solid var(--card-border);
+    }
+
+    .btn-role-cta.signin:hover {
+      background: var(--md-sys-color-surface-container-high, rgba(0,0,0,0.06));
+      color: var(--md-sys-color-primary, #006874) !important;
+      border-color: var(--md-sys-color-primary);
     }
 
     .theme-toggle-btn {
@@ -2178,16 +2392,39 @@
         </div>
       </a>
 
-      <!-- Right Navigation Actions: Theme Toggle + Only One Sign In Button -->
+      <!-- Right Navigation Actions: Theme Toggle + Login / Sign In Buttons -->
       <div class="nav-actions">
         <button id="themeToggleBtn" class="theme-toggle-btn" title="Toggle Kitchen Dark / Daylight Theme" aria-label="Toggle Theme">
           <span class="material-symbols-outlined" style="font-size: 19px;" id="themeIcon">dark_mode</span>
         </button>
 
-        <a href="signin.html" class="btn-signin-nav" id="topNavSignInBtn" target="_blank" rel="opener">
-          <span class="material-symbols-outlined" style="font-size: 18px;">login</span>
-          <span>Sign In</span>
-        </a>
+        <!-- Unauthenticated View: Login & Sign In -->
+        <div id="unauthNavActions" style="display:inline-flex; align-items:center; gap:8px;">
+          <a href="signin.html?mode=login" class="btn-login-nav" id="topNavLoginBtn">
+            <span class="material-symbols-outlined" style="font-size: 16px;">login</span>
+            <span>Login</span>
+          </a>
+          <a href="signin.html?mode=register" class="btn-signin-nav" id="topNavSignInBtn">
+            <span class="material-symbols-outlined" style="font-size: 16px;">person_add</span>
+            <span>Sign In</span>
+          </a>
+        </div>
+
+        <!-- Authenticated View: Active Session Indicator -->
+        <div id="authNavActions" style="display:none; align-items:center; gap:10px;">
+          <div class="auth-user-chip" id="authUserChip">
+            <span class="material-symbols-outlined" style="font-size:16px;">account_circle</span>
+            <span id="authUserName">User</span>
+            <span class="auth-role-tag" id="authUserRole">USER</span>
+          </div>
+          <a href="index.html" class="btn-signin-nav" style="padding:7px 16px;">
+            <span>Open Dashboard &rarr;</span>
+          </a>
+          <button type="button" id="navLogoutBtn" class="theme-toggle-btn" title="Sign Out / Switch Persona" style="border-radius:10px; width:auto; padding:0 10px; gap:4px; font-size:12px;">
+            <span class="material-symbols-outlined" style="font-size: 16px;">logout</span>
+            <span>Logout</span>
+          </button>
+        </div>
       </div>
     </div>
   </header>
@@ -2203,13 +2440,98 @@
         </h1>
 
         <p class="hero-subhead">
-          End campus cafeteria chaos. Connect <strong>Users &amp; Diners</strong>, <strong>Kitchen Staff</strong>, and <strong>Administrators</strong> in a synchronized, zero-wait digital food court experience.
+          End campus cafeteria chaos. Choose your portal to <strong>Sign In</strong> or <strong>Log In</strong> with role-based access for <strong>Campus Diners</strong>, <strong>Kitchen Staff</strong>, and <strong>Administrators</strong>.
         </p>
 
+        <!-- Dedicated Role-Chooser Action Grid: Access Specific Roles -->
+        <div class="hero-role-chooser">
+          <div class="hero-role-title-row">
+            <div class="hero-role-title">
+              <span class="material-symbols-outlined" style="font-size:18px; color:var(--md-sys-color-primary);">badge</span>
+              <span>Sign In or Login to Your Role:</span>
+            </div>
+            <span style="font-size:11px; color:var(--md-sys-color-outline); font-weight:500;">Role-Adaptive Access</span>
+          </div>
+
+          <div class="hero-role-grid">
+            <!-- Role 1: Campus User (Diner / Student) -->
+            <div class="role-action-card">
+              <div class="role-header-line">
+                <div class="role-icon-bubble user">
+                  <span class="material-symbols-outlined" style="font-size:17px;">person</span>
+                </div>
+                <div>
+                  <div class="role-card-title">Campus User</div>
+                  <div style="font-size:10px; color:var(--md-sys-color-primary); font-weight:700;">DINER &amp; STORE</div>
+                </div>
+              </div>
+              <div class="role-card-desc">Live tokens, digital meal pass balance, menu ordering &amp; receipts.</div>
+              <div class="role-btn-pair">
+                <a href="signin.html?role=user&mode=login" class="btn-role-cta login">
+                  <span class="material-symbols-outlined" style="font-size:13px;">login</span>
+                  <span>Login</span>
+                </a>
+                <a href="signin.html?role=user&mode=register" class="btn-role-cta signin">
+                  <span class="material-symbols-outlined" style="font-size:13px;">person_add</span>
+                  <span>Sign In</span>
+                </a>
+              </div>
+            </div>
+
+            <!-- Role 2: Kitchen Staff -->
+            <div class="role-action-card">
+              <div class="role-header-line">
+                <div class="role-icon-bubble kitchen">
+                  <span class="material-symbols-outlined" style="font-size:17px;">skillet</span>
+                </div>
+                <div>
+                  <div class="role-card-title">Kitchen Staff</div>
+                  <div style="font-size:10px; color:#855300; font-weight:700;">BACK OF HOUSE</div>
+                </div>
+              </div>
+              <div class="role-card-desc">Real-time KDS Kanban queue, one-tap stock adjuster &amp; counter POS.</div>
+              <div class="role-btn-pair">
+                <a href="signin.html?role=kitchen&mode=login" class="btn-role-cta login">
+                  <span class="material-symbols-outlined" style="font-size:13px;">login</span>
+                  <span>Login</span>
+                </a>
+                <a href="signin.html?role=kitchen&mode=register" class="btn-role-cta signin">
+                  <span class="material-symbols-outlined" style="font-size:13px;">badge</span>
+                  <span>Sign In</span>
+                </a>
+              </div>
+            </div>
+
+            <!-- Role 3: Campus Admin -->
+            <div class="role-action-card">
+              <div class="role-header-line">
+                <div class="role-icon-bubble admin">
+                  <span class="material-symbols-outlined" style="font-size:17px;">admin_panel_settings</span>
+                </div>
+                <div>
+                  <div class="role-card-title">Campus Admin</div>
+                  <div style="font-size:10px; color:#3b4866; font-weight:700;">EXECUTIVE SUITE</div>
+                </div>
+              </div>
+              <div class="role-card-desc">Gross revenue metrics, rush-hour volume curves, deficit audit &amp; CSV.</div>
+              <div class="role-btn-pair">
+                <a href="signin.html?role=admin&mode=login" class="btn-role-cta login">
+                  <span class="material-symbols-outlined" style="font-size:13px;">login</span>
+                  <span>Login</span>
+                </a>
+                <a href="signin.html?role=admin&mode=register" class="btn-role-cta signin">
+                  <span class="material-symbols-outlined" style="font-size:13px;">how_to_reg</span>
+                  <span>Sign In</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div class="hero-cta-group">
-          <a href="/" class="btn-hero-primary">
+          <a href="signin.html" class="btn-hero-primary" id="mainLaunchBtn">
             <span class="material-symbols-outlined" style="font-size: 20px;">restaurant</span>
-            <span>Launch Live App</span>
+            <span>Launch InvenTrack Portal</span>
           </a>
 
           <a href="#demo-menu" class="btn-hero-secondary">
@@ -2652,7 +2974,7 @@
     </div>
 
     <div style="text-align:center; margin-top:36px;">
-      <a href="/" class="btn-hero-primary" style="font-size:14.5px; padding:12px 28px;">
+      <a href="signin.html" class="btn-hero-primary catalog-action-btn" style="font-size:14.5px; padding:12px 28px;">
         <span class="material-symbols-outlined">shopping_cart</span>
         <span>Open Interactive Ordering Experience &rarr;</span>
       </a>
@@ -2669,7 +2991,7 @@
         Synchronized queue tokens, real-time stock gauges, and rapid cashier checkouts across university dining spaces.
       </p>
       <div>
-        <a href="/" class="btn-cta-launch">
+        <a href="signin.html" class="btn-cta-launch" id="bottomCtaLaunchBtn">
           <span class="material-symbols-outlined">rocket_launch</span>
           <span>Launch InvenTrack Platform</span>
         </a>
@@ -2915,9 +3237,14 @@
               </li>
             `).join('')}
           </ul>
-          <div>
-            <a href="/" class="btn-hero-primary" style="font-size:13.5px; padding:10px 22px;">
-              <span>Explore Persona in App &rarr;</span>
+          <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-top:16px;">
+            <a href="signin.html?role=${key}&mode=login" class="btn-hero-primary" style="font-size:13.5px; padding:10px 20px;">
+              <span class="material-symbols-outlined" style="font-size:17px;">login</span>
+              <span>Login as ${key === 'kitchen' ? 'Kitchen Staff' : key === 'admin' ? 'Campus Admin' : 'User'}</span>
+            </a>
+            <a href="signin.html?role=${key}&mode=register" class="btn-hero-secondary" style="font-size:13.5px; padding:9px 18px;">
+              <span class="material-symbols-outlined" style="font-size:17px;">person_add</span>
+              <span>Sign In (${key === 'kitchen' ? 'Enroll' : key === 'admin' ? 'Register' : 'New Diner'})</span>
             </a>
           </div>
         </div>
@@ -3639,21 +3966,73 @@
       if (heroH1) animateHeading(heroH1);
     }
 
-    // ================= 8. CROSS-TAB AUTHENTICATION ORCHESTRATION =================
-    // When a user signs in via the new tab, this landing page tab automatically transitions to the main app dashboard
-    const topNavSignInBtn = document.getElementById('topNavSignInBtn');
-    let authWindowRef = null;
+    // ================= 8. DYNAMIC AUTHENTICATION & ROLE DETECTION =================
+    function checkLandingAuth() {
+      let user = null;
+      try {
+        const raw = localStorage.getItem('invenTrack_user');
+        if (raw) user = JSON.parse(raw);
+      } catch(e){}
 
-    if (topNavSignInBtn) {
-      topNavSignInBtn.addEventListener('click', (e) => {
-        // Open sign-in in a fresh tab with opener reference
-        e.preventDefault();
-        authWindowRef = window.open('signin.html', 'invenTrackAuthTab');
-        if (authWindowRef) {
-          try { authWindowRef.focus(); } catch(err){}
-        } else {
-          window.location.href = 'signin.html';
-        }
+      if (!user) {
+        try {
+          const stateRaw = localStorage.getItem('inventrack_m3_state');
+          if (stateRaw) {
+            const s = JSON.parse(stateRaw);
+            if (s && s.loggedIn && s.currentUser) user = s.currentUser;
+          }
+        } catch(e){}
+      }
+
+      const unauthNav = document.getElementById('unauthNavActions');
+      const authNav = document.getElementById('authNavActions');
+      const authUserName = document.getElementById('authUserName');
+      const authUserRole = document.getElementById('authUserRole');
+
+      const launchButtons = document.querySelectorAll('#mainLaunchBtn, #bottomCtaLaunchBtn, .catalog-action-btn');
+
+      if (user && user.role) {
+        if (unauthNav) unauthNav.style.display = 'none';
+        if (authNav) authNav.style.display = 'inline-flex';
+        if (authUserName) authUserName.textContent = user.name || 'User';
+        if (authUserRole) authUserRole.textContent = (user.role || 'user').toUpperCase();
+
+        launchButtons.forEach(btn => {
+          btn.setAttribute('href', 'index.html');
+          const span = btn.querySelector('span:not(.material-symbols-outlined)');
+          if (span && !span.textContent.includes('Dashboard')) {
+            span.textContent = `Open Dashboard (${user.role.toUpperCase()}) \u2192`;
+          }
+        });
+      } else {
+        if (unauthNav) unauthNav.style.display = 'inline-flex';
+        if (authNav) authNav.style.display = 'none';
+
+        launchButtons.forEach(btn => {
+          btn.setAttribute('href', 'signin.html');
+        });
+      }
+    }
+
+    // Check auth immediately
+    checkLandingAuth();
+
+    // Logout handler from landing page
+    const navLogoutBtn = document.getElementById('navLogoutBtn');
+    if (navLogoutBtn) {
+      navLogoutBtn.addEventListener('click', () => {
+        try {
+          localStorage.removeItem('invenTrack_user');
+          const stateRaw = localStorage.getItem('inventrack_m3_state');
+          if (stateRaw) {
+            const s = JSON.parse(stateRaw);
+            s.loggedIn = false;
+            s.currentUser = null;
+            localStorage.setItem('inventrack_m3_state', JSON.stringify(s));
+          }
+        } catch(e){}
+        checkLandingAuth();
+        showToast('Logged out. Choose a role to sign in or login.');
       });
     }
 
@@ -3663,7 +4042,8 @@
         const authChannel = new BroadcastChannel('inventrack_auth');
         authChannel.onmessage = (event) => {
           if (event.data && event.data.type === 'AUTH_SUCCESS') {
-            window.location.href = '/';
+            checkLandingAuth();
+            window.location.href = 'index.html';
           }
         };
       }
@@ -3671,8 +4051,11 @@
 
     // Fallback Cross-tab notification via Storage Event
     window.addEventListener('storage', (e) => {
-      if (e.key === 'invenTrack_user' && e.newValue) {
-        window.location.href = '/';
+      if (e.key === 'invenTrack_user') {
+        checkLandingAuth();
+        if (e.newValue) {
+          window.location.href = 'index.html';
+        }
       }
     });
   </script>

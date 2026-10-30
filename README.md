@@ -194,50 +194,68 @@ Ensures zero 404 errors on deep linking, client-side routing, and page reloads w
 
 ## 📁 Codebase & Directory Structure
 
+InvenTrack is structured into four dedicated, modular tiers:
+
 ```text
 InvenTrack/
+├── frontend/                        # Web Presentation Tier
+│   ├── index.html                   # Multi-role M3 application shell (User, Kitchen, Admin)
+│   ├── landing.html                 # Landing page with role selector & live queue simulation
+│   ├── signin.html                  # Role-adaptive authentication portal (SSO / Register / Login)
+│   ├── student-dashboard.html       # Standalone all-in-one student diner dashboard
+│   ├── css/
+│   │   └── styles.css               # Complete M3 token system & responsive layout
+│   └── js/
+│       └── app.js                   # Client-side state engine & UI controllers
+│
+├── backend/                         # Backend Service Tier
+│   ├── server.js                    # Express REST API microservice with CORS & health checks
+│   ├── package.json                 # Backend dependencies & scripts
+│   ├── models/
+│   │   └── dataStore.js             # Data models & persistent in-memory data store
+│   ├── controllers/
+│   │   ├── authController.js        # Authentication & role-based session logic
+│   │   ├── inventoryController.js   # Stock capacity adjustments & item manager
+│   │   ├── orderController.js       # Live order tokens & Kanban advancement
+│   │   └── auditController.js       # Executive revenue KPIs & CSV export
+│   └── routes/
+│       ├── authRoutes.js            # POST /api/auth/login, POST /api/auth/register
+│       ├── inventoryRoutes.js       # GET /api/inventory/items, PATCH /api/inventory/items/:id/stock
+│       ├── orderRoutes.js           # GET /api/orders, POST /api/orders/place
+│       └── auditRoutes.js           # GET /api/audit/overview, GET /api/audit/export-csv
+│
+├── source/                          # Modular Application Source Tier (React 18 / ES6)
+│   ├── App.jsx                      # Main application router & layout shell
+│   ├── main.jsx                     # React DOM mount point
+│   ├── index.css                    # Material Design 3 tokens & styling
+│   ├── app.js                       # Core reactive store engine
+│   ├── package.json                 # React dependencies & build scripts
+│   ├── vite.config.js               # Vite build configuration
+│   ├── context/
+│   │   └── AppContext.jsx           # Central React Context state store & hooks
+│   ├── data/
+│   │   └── initialData.js           # Menu items & order fixtures
+│   ├── components/
+│   │   ├── layout/                  # Sidebar, Topbar, NotificationPanel, ToastContainer
+│   │   └── common/                  # StockGauge, StatusBadge, RecCard
+│   └── pages/                       # Home, Menu, Cart, Orders, Spending, ForYou, Settings, Feedback
+│
+├── apis/                            # API Services & Integration Tier
+│   ├── index.js                     # Unified barrel export for API services
+│   ├── apiClient.js                 # Central HTTP client with headers & error handling
+│   ├── authApi.js                   # Authentication & profile endpoints
+│   ├── inventoryApi.js              # Catalog querying & stock modification
+│   ├── ordersApi.js                 # Live order submission & ticket stepping
+│   ├── auditApi.js                  # Executive overview & CSV audit exports
+│   └── api-spec.json                # OpenAPI 3.0 specification for all REST endpoints
+│
+├── index.html                       # Root application entrypoint (with Auth Guard)
+├── landing.html                     # Root landing page mirror
+├── signin.html                      # Root sign-in mirror
+├── vercel.json                      # Vercel SPA routing configuration
 ├── LICENSE                          # MIT License
-├── README.md                        # Project documentation (this file)
-├── index.html                       # Standalone M3 Multi-Role Application
-├── student-dashboard.html           # Dedicated full-featured standalone dashboard
-├── vercel.json                      # Root Vercel SPA routing configuration
-│
-├── css/
-│   └── styles.css                   # Complete M3 token system & components
-│
-├── js/
-│   └── app.js                       # Vanilla ES6 multi-role reactive application logic
-│
-└── react/                           # React 18 + Vite Modern SPA Build
-    ├── index.html                   # React HTML mount
-    ├── package.json                 # Dependencies & build scripts
-    ├── vite.config.js               # Vite build configuration
-    ├── vercel.json                  # React Vercel SPA routing rules
-    │
-    ├── public/
-    │   ├── css/styles.css           # Static assets for public build
-    │   └── js/app.js
-    │
-    └── src/
-        ├── main.jsx                 # React DOM mount point
-        ├── App.jsx                  # Main application router & shell
-        ├── index.css                # Material Design 3 tokens & layout styles
-        │
-        ├── context/
-        │   └── AppContext.jsx       # Central React Context state store & hooks
-        │
-        ├── data/
-        │   └── initialData.js       # Empty schema & dynamic random data generator
-        │
-        ├── components/
-        │   ├── layout/
-        │   │   ├── Sidebar.jsx      # Navigation drawer & profile widget
-        │   │   ├── Topbar.jsx       # Search, theme toggle, example data button
-        │   │   ├── NotificationPanel.jsx
-        │   │   └── ToastContainer.jsx
-        │   └── common/
-        │       ├── StockGauge.jsx   # Animated stock capacity meter
-        │       ├── StatusBadge.jsx  # Color-coded AVAIL/LOW/OUT chips
+└── README.md                        # Project documentation (this file)
+```
         │       └── RecCard.jsx      # Food pairing & recommendation card
         │
         └── pages/
