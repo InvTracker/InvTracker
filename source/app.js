@@ -923,8 +923,20 @@ function renderShell(state) {
     if (navAdmin) navAdmin.style.display = 'none';
   }
 
-  // 4. Update Nav Active Item
-  $$('.nav-item[data-page]').forEach((item) => {
+  // Update Mobile Role Badge & Bottom Nav Role Groups
+  const mobileRoleBadge = $('#mobileRoleBadge');
+  if (mobileRoleBadge) {
+    mobileRoleBadge.textContent = activeRole.toUpperCase();
+  }
+  const bottomUser = $('#bottomNavUser');
+  const bottomKitchen = $('#bottomNavKitchen');
+  const bottomAdmin = $('#bottomNavAdmin');
+  if (bottomUser) bottomUser.style.display = activeRole === 'user' ? 'flex' : 'none';
+  if (bottomKitchen) bottomKitchen.style.display = activeRole === 'kitchen' ? 'flex' : 'none';
+  if (bottomAdmin) bottomAdmin.style.display = activeRole === 'admin' ? 'flex' : 'none';
+
+  // 4. Update Nav Active Item (Sidebar & Bottom Bar)
+  $$('.nav-item[data-page], .m3-bottom-nav-item[data-page]').forEach((item) => {
     item.classList.toggle('active', item.dataset.page === activePage);
   });
 
@@ -962,6 +974,18 @@ function renderShell(state) {
   if (cartBadge) {
     cartBadge.textContent = studentCartCount;
     cartBadge.classList.toggle('hide', studentCartCount === 0);
+  }
+
+  const bottomCartBadge = $('#bottomCartBadge');
+  if (bottomCartBadge) {
+    bottomCartBadge.textContent = studentCartCount;
+    bottomCartBadge.classList.toggle('hide', studentCartCount === 0);
+  }
+
+  const mobileCartBadge = $('#mobileCartBadge');
+  if (mobileCartBadge) {
+    mobileCartBadge.textContent = studentCartCount;
+    mobileCartBadge.classList.toggle('hide', studentCartCount === 0);
   }
 
   const shopperCartCount = Object.values(state.shopperCart).reduce((a, b) => a + b, 0);
@@ -2099,12 +2123,57 @@ function setupEventHandlers() {
     });
   }
 
-  // 2. Navigation items
+  // Mobile Drawer Toggle Helpers
+  const sidebar = $('#appSidebar');
+  const drawerBackdrop = $('#drawerBackdrop');
+  function openMobileDrawer() {
+    if (sidebar) sidebar.classList.add('open');
+    if (drawerBackdrop) drawerBackdrop.classList.add('show');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeMobileDrawer() {
+    if (sidebar) sidebar.classList.remove('open');
+    if (drawerBackdrop) drawerBackdrop.classList.remove('show');
+    document.body.style.overflow = '';
+  }
+
+  const mobileMenuBtn = $('#mobileMenuBtn');
+  if (mobileMenuBtn) mobileMenuBtn.addEventListener('click', openMobileDrawer);
+
+  const drawerCloseBtn = $('#drawerCloseBtn');
+  if (drawerCloseBtn) drawerCloseBtn.addEventListener('click', closeMobileDrawer);
+
+  if (drawerBackdrop) drawerBackdrop.addEventListener('click', closeMobileDrawer);
+
+  const bottomMoreBtns = [$('#bottomMoreBtn'), $('#bottomMoreKitchenBtn'), $('#bottomMoreAdminBtn')];
+  bottomMoreBtns.forEach((btn) => {
+    if (btn) btn.addEventListener('click', openMobileDrawer);
+  });
+
+  // Mobile Theme Toggle Button
+  const mobileThemeToggleBtn = $('#mobileThemeToggleBtn');
+  if (mobileThemeToggleBtn) {
+    mobileThemeToggleBtn.addEventListener('click', () => {
+      const isKitchen = document.body.getAttribute('data-theme') === 'kitchen';
+      if (isKitchen) {
+        document.body.removeAttribute('data-theme');
+        const icon = $('#mobileThemeIcon');
+        if (icon) icon.textContent = 'dark_mode';
+      } else {
+        document.body.setAttribute('data-theme', 'kitchen');
+        const icon = $('#mobileThemeIcon');
+        if (icon) icon.textContent = 'light_mode';
+      }
+    });
+  }
+
+  // 2. Navigation items (Sidebar links, Bottom Nav Bar, and [data-goto] elements)
   document.addEventListener('click', (e) => {
-    const navBtn = e.target.closest('.nav-item[data-page]');
+    const navBtn = e.target.closest('.nav-item[data-page], .m3-bottom-nav-item[data-page]');
     if (navBtn) {
       const pageKey = navBtn.dataset.page;
       store.setPage(pageKey);
+      closeMobileDrawer();
       window.scrollTo({ top: 0, behavior: 'smooth' });
       return;
     }
@@ -2113,6 +2182,7 @@ function setupEventHandlers() {
     if (gotoBtn) {
       const pageKey = gotoBtn.dataset.goto;
       store.setPage(pageKey);
+      closeMobileDrawer();
       window.scrollTo({ top: 0, behavior: 'smooth' });
       return;
     }

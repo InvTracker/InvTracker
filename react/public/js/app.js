@@ -265,43 +265,87 @@ class InvenTrackStore {
   }
 
   loadInitialState() {
-    const MIGRATION_KEY = 'inventrack_role_auth_v3';
-    if (!localStorage.getItem(MIGRATION_KEY)) {
-      localStorage.removeItem(STORAGE_KEY);
-      localStorage.setItem(MIGRATION_KEY, 'true');
+    // 1. Check for authenticated user from signin / login
+    let authUser = null;
+    try {
+      const stored = localStorage.getItem('invenTrack_user');
+      if (stored) authUser = JSON.parse(stored);
+    } catch (e) {
+      console.warn('Failed to parse invenTrack_user', e);
     }
 
     const saved = localStorage.getItem(STORAGE_KEY);
+    let parsed = null;
     if (saved) {
       try {
-        const parsed = JSON.parse(saved);
-        const currentUser = parsed.currentUser || DEFAULT_USER;
-        const role = currentUser.role || 'user';
-        const activeRole = role === 'admin' ? (parsed.activeRole || 'admin') : role;
-        const defaultPage = role === 'admin' ? 'admin-overview' : role === 'kitchen' ? 'kitchen-kanban' : 'home';
-        const activePage = parsed.activePage && ROLE_PERMISSIONS[role] && ROLE_PERMISSIONS[role].allowedPages.includes(parsed.activePage)
-          ? parsed.activePage
-          : defaultPage;
-
-        return {
-          menuItems: parsed.menuItems || [],
-          orders: parsed.orders || [],
-          users: parsed.users || [],
-          feedbacks: parsed.feedbacks || [],
-          cart: parsed.cart || {},
-          shopperCart: parsed.shopperCart || {},
-          posCart: parsed.posCart || {},
-          currentUser,
-          loggedIn: parsed.loggedIn !== false,
-          activeRole,
-          activePage,
-          selectedPaymentMethod: 'Campus UPI',
-          activeCat: 'All',
-          counterFilter: 'All'
-        };
+        parsed = JSON.parse(saved);
       } catch (e) {
         console.warn('Failed to parse localStorage', e);
       }
+    }
+
+    // Determine current user and authentication status
+    const currentUser = authUser || (parsed && parsed.loggedIn && parsed.currentUser ? parsed.currentUser : null);
+    const isLoggedIn = !!currentUser;
+
+    if (!isLoggedIn) {
+      // Unauthenticated: Redirect directly to Landing Page
+      try {
+        window.location.replace(window.location.protocol === 'file:' ? 'landing.html' : '/landing');
+      } catch (e) {}
+
+      return {
+        menuItems: [...DATA_INJECTION_SLOT.menuItems],
+        orders: [...DATA_INJECTION_SLOT.orders],
+        users: [...DATA_INJECTION_SLOT.users],
+        feedbacks: [...DATA_INJECTION_SLOT.feedbacks],
+        cart: {},
+        shopperCart: {},
+        posCart: {},
+        currentUser: null,
+        loggedIn: false,
+        activeRole: 'user',
+        activePage: 'home',
+        selectedPaymentMethod: 'Campus UPI',
+        activeCat: 'All',
+        counterFilter: 'All'
+      };
+    }
+
+    // User is authenticated: Setup role & dashboard view
+    const role = (currentUser && currentUser.role) || 'user';
+    const activeRole = role === 'admin' ? (parsed && parsed.activeRole ? parsed.activeRole : 'admin') : role;
+    const defaultPage = role === 'admin' ? 'admin-overview' : (role === 'kitchen' ? 'kitchen-kanban' : 'home');
+    const activePage = (parsed && parsed.activePage && ROLE_PERMISSIONS[role] && ROLE_PERMISSIONS[role].allowedPages && ROLE_PERMISSIONS[role].allowedPages.includes(parsed.activePage))
+      ? parsed.activePage
+      : defaultPage;
+
+    // Apply Back-of-House theme automatically for Kitchen role
+    if (role === 'kitchen') {
+      try {
+        document.documentElement.setAttribute('data-theme', 'kitchen');
+        document.body.setAttribute('data-theme', 'kitchen');
+        localStorage.setItem('invenTrack_theme', 'kitchen');
+      } catch(e){}
+    }
+
+    if (parsed) {
+      return {
+        menuItems: parsed.menuItems || [...DATA_INJECTION_SLOT.menuItems],
+        orders: parsed.orders || [...DATA_INJECTION_SLOT.orders],
+        users: parsed.users || [...DATA_INJECTION_SLOT.users],
+        feedbacks: parsed.feedbacks || [...DATA_INJECTION_SLOT.feedbacks],
+        cart: parsed.cart || {},
+        shopperCart: parsed.shopperCart || {},
+        posCart: parsed.posCart || {},
+        currentUser,
+        loggedIn: true,
+        activeRole,
+        activePage,
+        selectedPaymentMethod: parsed.selectedPaymentMethod || 'Campus UPI',
+        activeCat: parsed.activeCat || 'All',
+        counterFilter: parsed.counterFilter || 'All'
+      };
     }
 
     return {
@@ -312,10 +356,10 @@ class InvenTrackStore {
       cart: {},
       shopperCart: {},
       posCart: {},
-      currentUser: DEFAULT_USER,
+      currentUser,
       loggedIn: true,
-      activeRole: 'user',
-      activePage: 'home',
+      activeRole,
+      activePage,
       selectedPaymentMethod: 'Campus UPI',
       activeCat: 'All',
       counterFilter: 'All'
@@ -497,9 +541,15 @@ class InvenTrackStore {
     this.state.loggedIn = false;
     this.state.currentUser = null;
     this.state.activeRole = 'user';
-    this.state.activePage = 'settings';
+    this.state.activePage = 'home';
+    try {
+      localStorage.removeItem('invenTrack_user');
+    } catch (e) {}
     this.save();
-    toast('Logged out. Please sign in to access features.', 'logout');
+    toast('Logged out successfully. Redirecting to landing page...', 'logout');
+    setTimeout(() => {
+      window.location.replace(window.location.protocol === 'file:' ? 'landing.html' : '/landing');
+    }, 600);
   }
 
   // Stock Adjustment - Protected by canAdjustStock permission
@@ -873,8 +923,20 @@ function renderShell(state) {
     if (navAdmin) navAdmin.style.display = 'none';
   }
 
-  // 4. Update Nav Active Item
-  $$('.nav-item[data-page]').forEach((item) => {
+  // Update Mobile Role Badge & Bottom Nav Role Groups
+  const mobileRoleBadge = $('#mobileRoleBadge');
+  if (mobileRoleBadge) {
+    mobileRoleBadge.textContent = activeRole.toUpperCase();
+  }
+  const bottomUser = $('#bottomNavUser');
+  const bottomKitchen = $('#bottomNavKitchen');
+  const bottomAdmin = $('#bottomNavAdmin');
+  if (bottomUser) bottomUser.style.display = activeRole === 'user' ? 'flex' : 'none';
+  if (bottomKitchen) bottomKitchen.style.display = activeRole === 'kitchen' ? 'flex' : 'none';
+  if (bottomAdmin) bottomAdmin.style.display = activeRole === 'admin' ? 'flex' : 'none';
+
+  // 4. Update Nav Active Item (Sidebar & Bottom Bar)
+  $$('.nav-item[data-page], .m3-bottom-nav-item[data-page]').forEach((item) => {
     item.classList.toggle('active', item.dataset.page === activePage);
   });
 
@@ -912,6 +974,18 @@ function renderShell(state) {
   if (cartBadge) {
     cartBadge.textContent = studentCartCount;
     cartBadge.classList.toggle('hide', studentCartCount === 0);
+  }
+
+  const bottomCartBadge = $('#bottomCartBadge');
+  if (bottomCartBadge) {
+    bottomCartBadge.textContent = studentCartCount;
+    bottomCartBadge.classList.toggle('hide', studentCartCount === 0);
+  }
+
+  const mobileCartBadge = $('#mobileCartBadge');
+  if (mobileCartBadge) {
+    mobileCartBadge.textContent = studentCartCount;
+    mobileCartBadge.classList.toggle('hide', studentCartCount === 0);
   }
 
   const shopperCartCount = Object.values(state.shopperCart).reduce((a, b) => a + b, 0);
@@ -2049,12 +2123,57 @@ function setupEventHandlers() {
     });
   }
 
-  // 2. Navigation items
+  // Mobile Drawer Toggle Helpers
+  const sidebar = $('#appSidebar');
+  const drawerBackdrop = $('#drawerBackdrop');
+  function openMobileDrawer() {
+    if (sidebar) sidebar.classList.add('open');
+    if (drawerBackdrop) drawerBackdrop.classList.add('show');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeMobileDrawer() {
+    if (sidebar) sidebar.classList.remove('open');
+    if (drawerBackdrop) drawerBackdrop.classList.remove('show');
+    document.body.style.overflow = '';
+  }
+
+  const mobileMenuBtn = $('#mobileMenuBtn');
+  if (mobileMenuBtn) mobileMenuBtn.addEventListener('click', openMobileDrawer);
+
+  const drawerCloseBtn = $('#drawerCloseBtn');
+  if (drawerCloseBtn) drawerCloseBtn.addEventListener('click', closeMobileDrawer);
+
+  if (drawerBackdrop) drawerBackdrop.addEventListener('click', closeMobileDrawer);
+
+  const bottomMoreBtns = [$('#bottomMoreBtn'), $('#bottomMoreKitchenBtn'), $('#bottomMoreAdminBtn')];
+  bottomMoreBtns.forEach((btn) => {
+    if (btn) btn.addEventListener('click', openMobileDrawer);
+  });
+
+  // Mobile Theme Toggle Button
+  const mobileThemeToggleBtn = $('#mobileThemeToggleBtn');
+  if (mobileThemeToggleBtn) {
+    mobileThemeToggleBtn.addEventListener('click', () => {
+      const isKitchen = document.body.getAttribute('data-theme') === 'kitchen';
+      if (isKitchen) {
+        document.body.removeAttribute('data-theme');
+        const icon = $('#mobileThemeIcon');
+        if (icon) icon.textContent = 'dark_mode';
+      } else {
+        document.body.setAttribute('data-theme', 'kitchen');
+        const icon = $('#mobileThemeIcon');
+        if (icon) icon.textContent = 'light_mode';
+      }
+    });
+  }
+
+  // 2. Navigation items (Sidebar links, Bottom Nav Bar, and [data-goto] elements)
   document.addEventListener('click', (e) => {
-    const navBtn = e.target.closest('.nav-item[data-page]');
+    const navBtn = e.target.closest('.nav-item[data-page], .m3-bottom-nav-item[data-page]');
     if (navBtn) {
       const pageKey = navBtn.dataset.page;
       store.setPage(pageKey);
+      closeMobileDrawer();
       window.scrollTo({ top: 0, behavior: 'smooth' });
       return;
     }
@@ -2063,6 +2182,7 @@ function setupEventHandlers() {
     if (gotoBtn) {
       const pageKey = gotoBtn.dataset.goto;
       store.setPage(pageKey);
+      closeMobileDrawer();
       window.scrollTo({ top: 0, behavior: 'smooth' });
       return;
     }
@@ -2610,3 +2730,55 @@ store.subscribe((state) => {
 // Setup event delegation and perform initial render
 setupEventHandlers();
 renderApp(store.state);
+
+// =========================================================================
+// 12. CROSS-TAB & GLOBAL SESSION SYNCHRONIZATION
+// =========================================================================
+try {
+  if ('BroadcastChannel' in window) {
+    const authChannel = new BroadcastChannel('inventrack_auth');
+    authChannel.onmessage = (event) => {
+      if (event.data && event.data.type === 'AUTH_SUCCESS' && event.data.user) {
+        const user = event.data.user;
+        store.state.currentUser = user;
+        store.state.loggedIn = true;
+        const role = user.role || 'user';
+        store.state.activeRole = role;
+        store.state.activePage = role === 'admin' ? 'admin-overview' : (role === 'kitchen' ? 'kitchen-kanban' : 'home');
+        if (role === 'kitchen') {
+          try {
+            document.documentElement.setAttribute('data-theme', 'kitchen');
+            document.body.setAttribute('data-theme', 'kitchen');
+          } catch(e){}
+        }
+        store.save();
+        renderApp(store.state);
+      }
+    };
+  }
+} catch (e) {}
+
+window.addEventListener('storage', (e) => {
+  if (e.key === 'invenTrack_user') {
+    if (!e.newValue) {
+      window.location.replace(window.location.protocol === 'file:' ? 'landing.html' : '/landing');
+    } else {
+      try {
+        const user = JSON.parse(e.newValue);
+        store.state.currentUser = user;
+        store.state.loggedIn = true;
+        const role = user.role || 'user';
+        store.state.activeRole = role;
+        store.state.activePage = role === 'admin' ? 'admin-overview' : (role === 'kitchen' ? 'kitchen-kanban' : 'home');
+        if (role === 'kitchen') {
+          try {
+            document.documentElement.setAttribute('data-theme', 'kitchen');
+            document.body.setAttribute('data-theme', 'kitchen');
+          } catch(err){}
+        }
+        store.save();
+        renderApp(store.state);
+      } catch (err) {}
+    }
+  }
+});
