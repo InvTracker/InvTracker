@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>ðŸ½ï¸</text></svg>">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22></text></svg>">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>InvenTrack &mdash; Material 3 Campus Dining, Queue Tokens &amp; Inventory Platform</title>
+  <title>InvenTrack - Material 3 Campus Dining, Queue Tokens &amp; Inventory Platform</title>
   <meta name="description" content="Next-generation Google Material Design 3 campus food ordering, cafe POS, live queue tokens and real-time inventory management platform.">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -2632,7 +2632,7 @@
             </div>
 
             <div style="display:flex; justify-content:space-between; align-items:center; margin-top:14px; padding-top:10px; border-top:1px dashed var(--card-border);">
-              <span style="font-size:12px; color:var(--md-sys-color-on-surface-variant);" id="heroEtaText">&sim; 7 min to ready &bull; Hot station</span>
+              <span style="font-size:12px; color:var(--md-sys-color-on-surface-variant);" id="heroEtaText">&sim; 7 min to ready - Hot station</span>
               <span class="status-badge progress" id="heroStatusBadge" style="font-size:10.5px; padding:2px 8px; border-radius:99px; background:var(--md-sys-color-primary-container, #9eeffd); color:var(--md-sys-color-on-primary-container, #001f24); font-weight:700;">PREPARING</span>
             </div>
           </div>
@@ -2711,7 +2711,7 @@
       Three Roles, <span class="highlight">One Unified Platform</span>
     </h2>
     <p class="section-subhead">
-      Tailored interfaces for every participant in campus dining &mdash; from students and campus guests to line chefs and executive directors.
+      Tailored interfaces for every participant in campus dining - from students and campus guests to line chefs and executive directors.
     </p>
 
     <div class="persona-tab-bar">
@@ -3032,7 +3032,7 @@
     </div>
 
     <div class="footer-bottom">
-      <div>&copy; 2026 InvenTrack Platform &bull; Open Source MIT License</div>
+      <div>&copy; 2026 InvenTrack Platform - Open Source MIT License</div>
       <div>Designed with Google Material Design 3 (Material You)</div>
     </div>
   </footer>
@@ -3073,10 +3073,10 @@
     }
     const stages = ['Placed', 'Preparing', 'Ready', 'Picked up'];
     const etaMsgs = [
-      '~12 min to ready â€¢ Counter 1',
-      '~7 min to ready â€¢ Hot station',
+      '~12 min to ready  Counter 1',
+      '~7 min to ready  Hot station',
       'Ready! Please head to Counter 1',
-      'Order picked up â€¢ Thank you!'
+      'Order picked up  Thank you!'
     ];
     let currentStage = 1;
 
@@ -3103,12 +3103,12 @@
       if (currentStage >= 3) {
         heroStatusBadge.style.background = 'var(--md-sys-color-avail-container, #d3f9d8)';
         heroStatusBadge.style.color = 'var(--md-sys-color-avail, #00875a)';
-        simBtnLabel.textContent = 'Order Complete âœ“';
+        simBtnLabel.textContent = 'Order Complete "';
         simAdvanceBtn.disabled = true;
       } else {
         heroStatusBadge.style.background = 'var(--md-sys-color-primary-container, #9eeffd)';
         heroStatusBadge.style.color = 'var(--md-sys-color-on-primary-container, #001f24)';
-        simBtnLabel.textContent = `Advance to "${stages[currentStage + 1]}" â†’`;
+        simBtnLabel.textContent = `Advance to "${stages[currentStage + 1]}" '`;
         simAdvanceBtn.disabled = false;
       }
     }
@@ -3152,7 +3152,7 @@
           </div>
           <div style="display:flex; justify-content:space-between; align-items:center; font-size:12px; color:var(--md-sys-color-on-surface-variant);">
             <span>Recent: Chicken Dum Biryani</span>
-            <span style="font-weight:700; color:var(--md-sys-color-primary, #006874);">&#8377;180.00 &bull; Ready at Counter 1</span>
+            <span style="font-weight:700; color:var(--md-sys-color-primary, #006874);">&#8377;180.00 - Ready at Counter 1</span>
           </div>
         `
       },
@@ -3528,7 +3528,7 @@
 
     function handleCardOrder(foodName) {
       clearTimeout(toastTimeout);
-      toastMsgEl.textContent = `âœ“ "${foodName}" added to order ticket`;
+      toastMsgEl.textContent = `" "${foodName}" added to order ticket`;
       toastEl.classList.add('show');
       toastTimeout = setTimeout(() => {
         toastEl.classList.remove('show');
@@ -3718,7 +3718,7 @@
         }
         let delay = Math.random() * 25 + 65;
         const typedChar = current.fullText[charIdx - 1];
-        if (typedChar === ',' || typedChar === '&' || typedChar === ';' || typedChar === 'â€”') {
+        if (typedChar === ',' || typedChar === '&' || typedChar === ';' || typedChar === '"') {
           delay += 160;
         } else if (typedChar === ' ') {
           delay += 35;

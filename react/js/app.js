@@ -454,7 +454,7 @@ class InvenTrackStore {
     }
 
     if (userRole !== 'admin') {
-      toast('🔒 Role switching is only permitted for Administrators.', 'error');
+      toast(' Role switching is only permitted for Administrators.', 'error');
       return;
     }
 
@@ -538,7 +538,7 @@ class InvenTrackStore {
   }
   adjustStock(itemId, delta) {
     if (!this.hasPermission('canAdjustStock')) {
-      toast('ðŸ”’ Permission Denied: Users cannot alter item stock levels or remaining quantities.', 'error');
+      toast('"' Permission Denied: Users cannot alter item stock levels or remaining quantities.', 'error');
       return;
     }
 
@@ -547,9 +547,9 @@ class InvenTrackStore {
     const oldStock = item.stock;
     item.stock = Math.max(0, item.stock + delta);
     if (item.stock === 0 && oldStock > 0) {
-      toast(`âš ï¸⚠️ "${item.name}" is now OUT OF STOCK`, 'warning');
+      toast(` "${item.name}" is now OUT OF STOCK`, 'warning');
     } else if (item.stock > 0 && oldStock === 0) {
-      toast(`ðŸŸ¢ "${item.name}" is RESTOCKED (${item.stock} available)`, 'check_circle');
+      toast(` "${item.name}" is RESTOCKED (${item.stock} available)`, 'check_circle');
     } else {
       toast(`Stock updated: ${item.name} (${item.stock})`, 'inventory');
     }
@@ -558,19 +558,19 @@ class InvenTrackStore {
 
   setStockZero(itemId) {
     if (!this.hasPermission('canAdjustStock')) {
-      toast('ðŸ”’ Permission Denied: Only kitchen staff and admin can alter item availability.', 'error');
+      toast('"' Permission Denied: Only kitchen staff and admin can alter item availability.', 'error');
       return;
     }
 
     const item = this.state.menuItems.find((m) => m.id === itemId);
     if (!item) return;
     item.stock = 0;
-    toast(`ðŸ”´ Marked "${item.name}" as Out of Stock`, 'cancel');
+    toast(`" Marked "${item.name}" as Out of Stock`, 'cancel');
     this.save();
   }
   addMenuItem(itemData) {
     if (!this.hasPermission('canEditMenu')) {
-      toast('ðŸ”’ Permission Denied: Users cannot add or modify menu catalog items.', 'error');
+      toast('"' Permission Denied: Users cannot add or modify menu catalog items.', 'error');
       return false;
     }
 
@@ -748,7 +748,7 @@ class InvenTrackStore {
       date: 'Just now'
     };
     this.state.feedbacks.unshift(newFb);
-    toast('Thanks â€” feedback recorded!', 'thumb_up');
+    toast('Thanks " feedback recorded!', 'thumb_up');
     this.save();
   }
 }
@@ -964,9 +964,9 @@ function renderShell(state) {
     if (sideAvatar) sideAvatar.textContent = initials(state.currentUser.name);
     if (sideName) sideName.textContent = state.currentUser.name;
     if (sideRole) {
-      if (isAdmin) sideRole.textContent = 'Administrator Â· Full Access';
-      else if (userRole === 'kitchen') sideRole.textContent = 'Kitchen Staff Â· Back of House';
-      else sideRole.textContent = `${state.currentUser.year || 'Student'} Â· Dining & Store`;
+      if (isAdmin) sideRole.textContent = 'Administrator - Full Access';
+      else if (userRole === 'kitchen') sideRole.textContent = 'Kitchen Staff - Back of House';
+      else sideRole.textContent = `${state.currentUser.year || 'Student'} - Dining & Store`;
     }
     if ($('#accName')) $('#accName').textContent = state.currentUser.name;
     if ($('#accEmail')) $('#accEmail').textContent = state.currentUser.email || 'rohan@student.campus.edu';
@@ -1037,7 +1037,7 @@ function renderStudentTicket(state) {
     if (ticketDesc) ticketDesc.textContent = 'Browse the menu to place an order and track your live token.';
     if (queueNo) queueNo.textContent = '#---';
     if (etaPill) etaPill.textContent = 'No active order';
-    if (ticketPaid) ticketPaid.textContent = 'â‚¹0';
+    if (ticketPaid) ticketPaid.textContent = '0';
     if (advanceBtn) {
       advanceBtn.disabled = true;
       advanceBtn.innerHTML = '<span>No active order</span>';
@@ -1046,17 +1046,17 @@ function renderStudentTicket(state) {
     return;
   }
 
-  const itemsSummary = activeOrder.items.map((i) => `${i.qty}Ã— ${i.name}`).join(' + ');
+  const itemsSummary = activeOrder.items.map((i) => `${i.qty} - ${i.name}`).join(' + ');
   if (ticketTitle) ticketTitle.textContent = itemsSummary;
-  if (ticketDesc) ticketDesc.textContent = `Order placed Â· ${activeOrder.counter} Â· ${activeOrder.paymentMethod}`;
+  if (ticketDesc) ticketDesc.textContent = `Order placed - ${activeOrder.counter} - ${activeOrder.paymentMethod}`;
   if (queueNo) queueNo.textContent = activeOrder.token;
-  if (ticketPaid) ticketPaid.textContent = `â‚¹${activeOrder.total}`;
+  if (ticketPaid) ticketPaid.textContent = `${activeOrder.total}`;
 
   const etaMap = [
     '~12 min to ready',
     '~7 min to ready',
-    'Ready â€” collect at counter!',
-    'Order complete âœ“'
+    'Ready " collect at counter!',
+    'Order complete "'
   ];
   if (etaPill) etaPill.textContent = etaMap[activeOrder.stageIndex] || 'In progress';
 
@@ -1070,7 +1070,7 @@ function renderStudentTicket(state) {
     const isDone = activeOrder.stageIndex >= stages.length - 1;
     advanceBtn.disabled = isDone;
     advanceBtn.innerHTML = isDone 
-      ? '<span class="material-symbols-outlined">check_circle</span><span>Picked up âœ“</span>' 
+      ? '<span class="material-symbols-outlined">check_circle</span><span>Picked up "</span>' 
       : `<span class="material-symbols-outlined">arrow_forward</span><span>Advance "${stages[activeOrder.stageIndex + 1]}"</span>`;
     advanceBtn.dataset.orderId = activeOrder.id;
   }
@@ -1103,7 +1103,7 @@ function renderCounterStrip(state) {
             <span class="counter-name">${it.name}</span>
             ${sbHTML(status)}
           </div>
-          <div class="stock-count">${it.stock} servings left &middot; <span style="color:var(--md-sys-color-on-surface-variant); font-size:11px;">${it.restockTime || '15 min'}</span></div>
+          <div class="stock-count">${it.stock} servings left - <span style="color:var(--md-sys-color-on-surface-variant); font-size:11px;">${it.restockTime || '15 min'}</span></div>
           <div class="gauge">
             <span style="width:${getGaugeWidth(it)}%; background:${getGaugeColor(status)}"></span>
           </div>
@@ -1175,16 +1175,16 @@ function renderStudentMenu(state, searchQuery = '') {
           <div class="menu-emoji">${renderItemIcon(it.emoji)}</div>
           <div class="menu-info">
             <div class="mn">${it.name}</div>
-            <div class="mc">${it.cat} &middot; <span>${it.counter || 'Counter 1'}</span></div>
+            <div class="mc">${it.cat} - <span>${it.counter || 'Counter 1'}</span></div>
             <div style="font-size:11px; color:var(--md-sys-color-on-surface-variant); margin-top:4px;">
-              Stock: <strong>${it.stock}</strong> &middot; Gauge: 
+              Stock: <strong>${it.stock}</strong> - Gauge: 
               <span style="color:${getGaugeColor(status)}; font-weight:700;">${status.toUpperCase()}</span>
             </div>
             <div class="gauge" style="margin:6px 0 8px;">
               <span style="width:${getGaugeWidth(it)}%; background:${getGaugeColor(status)}"></span>
             </div>
             <div class="mrow">
-              <span class="rec-price mono">â‚¹${it.price}</span>
+              <span class="rec-price mono">${it.price}</span>
               <div style="display:flex; align-items:center; gap:8px;">
                 ${sbHTML(status)}
                 <button class="add-btn" data-add="${it.id}" ${isOut ? 'disabled title="Sold out"' : 'title="Add to Cart"'}>
@@ -1213,7 +1213,7 @@ function renderRecommendations(state) {
           <div class="rec-name">${it.name}</div>
           <div class="rec-tag">${status === 'low' ? 'Only few remaining' : 'Pairs with your usual'}</div>
           <div class="rec-row">
-            <span class="rec-price mono">â‚¹${it.price}</span>
+            <span class="rec-price mono">${it.price}</span>
             <button class="add-btn" data-add="${it.id}">+</button>
           </div>
         </div>
@@ -1257,9 +1257,9 @@ function renderStudentCart(state) {
         <button class="mini-btn" style="margin-top:14px;" data-goto="menu">Browse Live Menu</button>
       </div>
     `;
-    if (subtotalEl) subtotalEl.textContent = 'â‚¹0';
-    if (packingEl) packingEl.textContent = 'â‚¹0';
-    if (totalEl) totalEl.textContent = 'â‚¹0';
+    if (subtotalEl) subtotalEl.textContent = '0';
+    if (packingEl) packingEl.textContent = '0';
+    if (totalEl) totalEl.textContent = '0';
     if (checkoutBtn) checkoutBtn.disabled = true;
     return;
   }
@@ -1277,10 +1277,10 @@ function renderStudentCart(state) {
           <div class="menu-emoji" style="width:38px; height:38px; font-size:18px;">${renderItemIcon(it.emoji)}</div>
           <div class="stub-info">
             <div class="t">${it.name}</div>
-            <div class="s mono">â‚¹${it.price} each &middot; â‚¹${lineTotal}</div>
+            <div class="s mono">${it.price} each - ${lineTotal}</div>
           </div>
           <div class="qty-ctrl">
-            <button data-dec="${id}">âˆ’</button>
+            <button data-dec="${id}">'</button>
             <span>${qty}</span>
             <button data-inc="${id}">+</button>
           </div>
@@ -1295,9 +1295,9 @@ function renderStudentCart(state) {
   const packing = 10;
   const total = subtotal + packing;
 
-  if (subtotalEl) subtotalEl.textContent = `â‚¹${subtotal}`;
-  if (packingEl) packingEl.textContent = `â‚¹${packing}`;
-  if (totalEl) totalEl.textContent = `â‚¹${total}`;
+  if (subtotalEl) subtotalEl.textContent = `${subtotal}`;
+  if (packingEl) packingEl.textContent = `${packing}`;
+  if (totalEl) totalEl.textContent = `${total}`;
   if (checkoutBtn) checkoutBtn.disabled = false;
 }
 function renderOrdersList(state) {
@@ -1306,7 +1306,7 @@ function renderOrdersList(state) {
 
   const makeRowHTML = (o, isFull = false) => {
     const isDone = o.status === 'Picked up';
-    const summary = o.items ? o.items.map((i) => `${i.qty}Ã— ${i.name}`).join(', ') : 'Campus Meal';
+    const summary = o.items ? o.items.map((i) => `${i.qty} - ${i.name}`).join(', ') : 'Campus Meal';
 
     return `
       <div class="stub-list-item">
@@ -1315,10 +1315,10 @@ function renderOrdersList(state) {
         </div>
         <div class="stub-info">
           <div class="t">${summary}</div>
-          <div class="s">${o.token} &middot; ${o.counter || 'Counter'} &middot; ${new Date(o.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
+          <div class="s">${o.token} - ${o.counter || 'Counter'} - ${new Date(o.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
         </div>
         <div>
-          <div class="stub-amt mono">â‚¹${o.total}</div>
+          <div class="stub-amt mono">${o.total}</div>
           <div class="stub-status ${isDone ? 'done' : 'progress'}">${o.status}</div>
         </div>
         ${
@@ -1365,7 +1365,7 @@ function renderSpendingBars(state) {
         const pct = Math.round((val / maxSpend) * 100);
         const isPeak = val > 0 && val === maxSpend;
         return `
-          <div class="bar-col ${isPeak ? 'peak' : ''}" title="${day}: â‚¹${val}">
+          <div class="bar-col ${isPeak ? 'peak' : ''}" title="${day}: ${val}">
             <div class="bar" style="height:100%"><span style="height:${pct}%"></span></div>
             <div class="bar-label">${day}</div>
           </div>
@@ -1382,16 +1382,16 @@ function renderSpendingBars(state) {
 
   const homeAmt = $('#homeSpendTotalAmt');
   const homeLbl = $('#homeSpendTotalLbl');
-  if (homeAmt) homeAmt.textContent = `â‚¹${totalSpent}`;
+  if (homeAmt) homeAmt.textContent = `${totalSpent}`;
   if (homeLbl) {
-    homeLbl.textContent = totalSpent > 0 ? `spent this week across ${state.orders.length} orders` : 'spent this week Â· No orders placed yet';
+    homeLbl.textContent = totalSpent > 0 ? `spent this week across ${state.orders.length} orders` : 'spent this week - No orders placed yet';
   }
 
   const spAmt = $('#spendingPageTotalAmt');
   const spLbl = $('#spendingPageTotalLbl');
-  if (spAmt) spAmt.textContent = `â‚¹${totalSpent}`;
+  if (spAmt) spAmt.textContent = `${totalSpent}`;
   if (spLbl) {
-    spLbl.textContent = totalSpent > 0 ? `total recorded spend across campus counters` : 'total recorded spend Â· No orders placed yet';
+    spLbl.textContent = totalSpent > 0 ? `total recorded spend across campus counters` : 'total recorded spend - No orders placed yet';
   }
 }
 
@@ -1440,9 +1440,9 @@ function renderShopperStore(state) {
           <div class="menu-emoji">${renderItemIcon(it.emoji)}</div>
           <div class="menu-info">
             <div class="mn">${it.name}</div>
-            <div class="mc">${it.cat} &middot; ${it.counter}</div>
+            <div class="mc">${it.cat} - ${it.counter}</div>
             <div class="mrow" style="margin-top:8px;">
-              <span class="rec-price mono">â‚¹${it.price}</span>
+              <span class="rec-price mono">${it.price}</span>
               <div style="display:flex; align-items:center; gap:8px;">
                 ${sbHTML(status)}
                 <button class="dev-btn ${isOut ? '' : 'primary'}" data-shopper-add="${it.id}" ${isOut ? 'disabled' : ''}>
@@ -1479,9 +1479,9 @@ function renderShopperCart(state) {
         <div style="font-size:12px; color:var(--md-sys-color-on-surface-variant); margin-top:4px;">Tap "+ Fast Add" on any item in the store.</div>
       </div>
     `;
-    if (sumSub) sumSub.textContent = 'â‚¹0';
-    if (sumPack) sumPack.textContent = 'â‚¹0';
-    if (sumTot) sumTot.textContent = 'â‚¹0';
+    if (sumSub) sumSub.textContent = '0';
+    if (sumPack) sumPack.textContent = '0';
+    if (sumTot) sumTot.textContent = '0';
     if (btn) btn.disabled = true;
     return;
   }
@@ -1498,10 +1498,10 @@ function renderShopperCart(state) {
           <div class="menu-emoji" style="width:36px; height:36px;">${renderItemIcon(it.emoji)}</div>
           <div class="stub-info">
             <div class="t">${it.name}</div>
-            <div class="s mono">â‚¹${it.price} each</div>
+            <div class="s mono">${it.price} each</div>
           </div>
           <div class="qty-ctrl">
-            <button data-shopper-dec="${id}">âˆ’</button>
+            <button data-shopper-dec="${id}">'</button>
             <span>${qty}</span>
             <button data-shopper-inc="${id}">+</button>
           </div>
@@ -1512,9 +1512,9 @@ function renderShopperCart(state) {
 
   const packing = 10;
   const total = subtotal + packing;
-  if (sumSub) sumSub.textContent = `â‚¹${subtotal}`;
-  if (sumPack) sumPack.textContent = `â‚¹${packing}`;
-  if (sumTot) sumTot.textContent = `â‚¹${total}`;
+  if (sumSub) sumSub.textContent = `${subtotal}`;
+  if (sumPack) sumPack.textContent = `${packing}`;
+  if (sumTot) sumTot.textContent = `${total}`;
   if (btn) btn.disabled = false;
 }
 
@@ -1541,11 +1541,11 @@ function renderShopperReceipts(state) {
           <span class="material-symbols-outlined">confirmation_number</span>
         </div>
         <div class="stub-info">
-          <div class="t">${o.token} &middot; ${o.customerName}</div>
-          <div class="s">${o.items.map((i) => `${i.qty}Ã— ${i.name}`).join(', ')}</div>
+          <div class="t">${o.token} - ${o.customerName}</div>
+          <div class="s">${o.items.map((i) => `${i.qty} - ${i.name}`).join(', ')}</div>
         </div>
         <div>
-          <div class="stub-amt mono">â‚¹${o.total}</div>
+          <div class="stub-amt mono">${o.total}</div>
           <div class="stub-status ${o.status === 'Picked up' ? 'done' : 'progress'}">${o.status}</div>
         </div>
         <div class="stub-actions">
@@ -1607,8 +1607,8 @@ function renderKitchenKanban(state) {
           .map(
             (i) => `
               <div class="kanban-item-line">
-                <span><strong>${i.qty}Ã—</strong> ${i.name}</span>
-                <span class="mono">â‚¹${i.price * i.qty}</span>
+                <span><strong>${i.qty} - </strong> ${i.name}</span>
+                <span class="mono">${i.price * i.qty}</span>
               </div>
             `
           )
@@ -1623,13 +1623,13 @@ function renderKitchenKanban(state) {
               <span class="kanban-token">${o.token}</span>
               <span class="kanban-time">${timeStr}</span>
             </div>
-            <div class="kanban-cust">ðŸ‘¤ ${o.customerName} &middot; <span style="font-weight:400; color:var(--md-sys-color-on-surface-variant);">${o.counter}</span></div>
+            <div class="kanban-cust">' ${o.customerName} - <span style="font-weight:400; color:var(--md-sys-color-on-surface-variant);">${o.counter}</span></div>
             <div class="kanban-items">${itemsList}</div>
             <div class="kanban-card-footer">
-              <span class="kanban-total">â‚¹${o.total}</span>
+              <span class="kanban-total">${o.total}</span>
               <button class="kanban-advance-btn" data-kitchen-advance="${o.id}" ${isCompleted ? 'disabled' : ''}>
                 <span class="material-symbols-outlined" style="font-size:15px;">${isCompleted ? 'check' : 'arrow_forward'}</span>
-                <span>${isCompleted ? 'Picked up âœ“' : `Mark "${nextStageName}"`}</span>
+                <span>${isCompleted ? 'Picked up "' : `Mark "${nextStageName}"`}</span>
               </button>
             </div>
           </div>
@@ -1667,7 +1667,7 @@ function renderKitchenStock(state) {
               </div>
               <div>
                 <strong>${it.name}</strong>
-                <div style="font-size:11px; color:var(--md-sys-color-on-surface-variant);">${it.cat} &middot; â‚¹${it.price}</div>
+                <div style="font-size:11px; color:var(--md-sys-color-on-surface-variant);">${it.cat} - ${it.price}</div>
               </div>
             </div>
           </td>
@@ -1681,7 +1681,7 @@ function renderKitchenStock(state) {
           <td class="mono" style="font-weight:700;">${it.stock}</td>
           <td>
             <div class="inline-stock-ctrl">
-              <button data-stock-dec="${it.id}" title="Decrease stock">âˆ’</button>
+              <button data-stock-dec="${it.id}" title="Decrease stock">'</button>
               <span>${it.stock}</span>
               <button data-stock-inc="${it.id}" title="Increase stock">+</button>
             </div>
@@ -1720,7 +1720,7 @@ function renderKitchenPos(state) {
               <button class="pos-item-btn" data-pos-add="${it.id}" ${isOut ? 'disabled' : ''}>
                 <span class="pos-item-emoji">${renderItemIcon(it.emoji)}</span>
                 <span class="pos-item-name">${it.name}</span>
-                <span class="pos-item-price">â‚¹${it.price} (${it.stock} left)</span>
+                <span class="pos-item-price">${it.price} (${it.stock} left)</span>
               </button>
             `;
           })
@@ -1732,9 +1732,9 @@ function renderKitchenPos(state) {
     const entries = Object.entries(state.posCart);
     if (!entries.length) {
       lines.innerHTML = '<div style="padding:16px 0; text-align:center; color:var(--md-sys-color-on-surface-variant); font-size:12px;">Register bill empty. Tap items to add.</div>';
-      if (subEl) subEl.textContent = 'â‚¹0';
-      if (packEl) packEl.textContent = 'â‚¹0';
-      if (totEl) totEl.textContent = 'â‚¹0';
+      if (subEl) subEl.textContent = '0';
+      if (packEl) packEl.textContent = '0';
+      if (totEl) totEl.textContent = '0';
       if (submitBtn) submitBtn.disabled = true;
       return;
     }
@@ -1750,12 +1750,12 @@ function renderKitchenPos(state) {
           <div style="display:flex; justify-content:space-between; align-items:center; padding:6px 0; font-size:12.5px;">
             <div>
               <strong>${it.name}</strong>
-              <div style="font-size:11px; color:var(--md-sys-color-on-surface-variant);">â‚¹${it.price} Ã— ${qty}</div>
+              <div style="font-size:11px; color:var(--md-sys-color-on-surface-variant);">${it.price}  - ${qty}</div>
             </div>
             <div style="display:flex; align-items:center; gap:8px;">
-              <span class="mono" style="font-weight:700;">â‚¹${lineTotal}</span>
+              <span class="mono" style="font-weight:700;">${lineTotal}</span>
               <div class="inline-stock-ctrl">
-                <button data-pos-dec="${id}">âˆ’</button>
+                <button data-pos-dec="${id}">'</button>
                 <span>${qty}</span>
                 <button data-pos-inc="${id}">+</button>
               </div>
@@ -1767,9 +1767,9 @@ function renderKitchenPos(state) {
 
     const packing = entries.length ? 10 : 0;
     const total = subtotal + packing;
-    if (subEl) subEl.textContent = `â‚¹${subtotal}`;
-    if (packEl) packEl.textContent = `â‚¹${packing}`;
-    if (totEl) totEl.textContent = `â‚¹${total}`;
+    if (subEl) subEl.textContent = `${subtotal}`;
+    if (packEl) packEl.textContent = `${packing}`;
+    if (totEl) totEl.textContent = `${total}`;
     if (submitBtn) submitBtn.disabled = false;
   }
 }
@@ -1797,8 +1797,8 @@ function renderKitchenFeedback(state) {
         </div>
         <div class="stub-info">
           <div class="t">
-            <strong>${fb.studentName}</strong> &middot; 
-            <span style="color:var(--md-sys-color-primary); font-weight:700;">${'â˜…'.repeat(fb.rating)}</span> 
+            <strong>${fb.studentName}</strong> - 
+            <span style="color:var(--md-sys-color-primary); font-weight:700;">${'...'.repeat(fb.rating)}</span> 
             <span class="dev-fixture-badge" style="margin-left:6px;">${fb.category}</span>
           </div>
           <div class="s" style="margin-top:4px; font-size:12.5px; color:var(--md-sys-color-on-surface);">${fb.comment}</div>
@@ -1813,7 +1813,7 @@ function renderAdminOverview(state) {
   const rev = state.orders.reduce((sum, o) => sum + (o.total || 0), 0);
   const revEl = $('#metricTotalRevenue');
   const revSub = $('#metricTotalRevenueSub');
-  if (revEl) revEl.textContent = `â‚¹${rev}`;
+  if (revEl) revEl.textContent = `${rev}`;
   if (revSub) revSub.textContent = `Across ${state.orders.length} total orders`;
 
   const volEl = $('#metricOrderVolume');
@@ -1938,7 +1938,7 @@ function renderAdminAudit(state) {
           <td>${sbHTML(status)}</td>
           <td>
             <span style="color:${isCritical ? 'var(--md-sys-color-low)' : 'var(--md-sys-color-avail)'}; font-weight:600; font-size:12px;">
-              ${isCritical ? 'âš ï¸⚠️ Urgent Restock' : 'âœ“ Normal'}
+              ${isCritical ? ' Urgent Restock' : '" Normal'}
             </span>
           </td>
           <td>
@@ -1986,7 +1986,7 @@ function showReceiptModal(order) {
 
   $('#modalTokenNum').textContent = order.token;
   $('#modalCounterName').textContent = order.counter || 'Campus Dining Counter';
-  $('#modalTotalPaid').textContent = `â‚¹${order.total}`;
+  $('#modalTotalPaid').textContent = `${order.total}`;
   $('#modalReceiptStatus').textContent = order.status;
 
   const lines = $('#modalReceiptLines');
@@ -1995,8 +1995,8 @@ function showReceiptModal(order) {
       .map(
         (it) => `
           <div class="receipt-row">
-            <span>${it.qty}Ã— ${it.name}</span>
-            <span class="mono">â‚¹${it.price * it.qty}</span>
+            <span>${it.qty} - ${it.name}</span>
+            <span class="mono">${it.price * it.qty}</span>
           </div>
         `
       )
@@ -2004,7 +2004,7 @@ function showReceiptModal(order) {
       `
         <div class="receipt-row" style="color:var(--md-sys-color-on-surface-variant); font-size:12px;">
           <span>Packaging Fee</span>
-          <span class="mono">â‚¹${order.packing || 10}</span>
+          <span class="mono">${order.packing || 10}</span>
         </div>
       `;
   }
@@ -2025,7 +2025,7 @@ function setupEventHandlers() {
       if (!btn) return;
       const userRole = (store.state.currentUser && store.state.currentUser.role) || 'user';
       if (userRole !== 'admin') {
-        toast('ðŸ”’ Access Restricted: The top bar role switcher is exclusively available for Administrators.', 'error');
+        toast('"' Access Restricted: The top bar role switcher is exclusively available for Administrators.', 'error');
         return;
       }
       const newRole = btn.dataset.role;
@@ -2375,7 +2375,7 @@ function setupEventHandlers() {
   if (enterTopBtn) {
     enterTopBtn.addEventListener('click', () => {
       store.generateRandomExampleData();
-      toast('ðŸŽ² Random example campus data injected!', 'casino');
+      toast(' Random example campus data injected!', 'casino');
     });
   }
 
@@ -2383,7 +2383,7 @@ function setupEventHandlers() {
   if (clearTopBtnEl) {
     clearTopBtnEl.addEventListener('click', () => {
       store.resetToEmptyState();
-      toast('ðŸ—‘ï¸ All data cleared. Website is now empty [].', 'delete_sweep');
+      toast(' - ' All data cleared. Website is now empty [].', 'delete_sweep');
     });
   }
 
@@ -2391,7 +2391,7 @@ function setupEventHandlers() {
   if (loadFixtureBtn) {
     loadFixtureBtn.addEventListener('click', () => {
       store.generateRandomExampleData();
-      toast('ðŸŽ² Random example campus data injected!', 'casino');
+      toast(' Random example campus data injected!', 'casino');
     });
   }
 
@@ -2399,14 +2399,14 @@ function setupEventHandlers() {
   if (resetDataBtn) {
     resetDataBtn.addEventListener('click', () => {
       store.resetToEmptyState();
-      toast('ðŸ—‘ï¸ State reset to empty schema []', 'restart_alt');
+      toast(' - ' State reset to empty schema []', 'restart_alt');
     });
   }
   const openItemBtn = $('#openAddItemModalBtn');
   if (openItemBtn) {
     openItemBtn.addEventListener('click', () => {
       if (!store.hasPermission('canEditMenu')) {
-        toast('ðŸ”’ Permission Denied: Users cannot alter menu details or add items.', 'error');
+        toast('"' Permission Denied: Users cannot alter menu details or add items.', 'error');
         return;
       }
       store.setRole('admin');
@@ -2418,7 +2418,7 @@ function setupEventHandlers() {
   if (openItemBtnStock) {
     openItemBtnStock.addEventListener('click', () => {
       if (!store.hasPermission('canEditMenu')) {
-        toast('ðŸ”’ Permission Denied: Users cannot alter menu details or add items.', 'error');
+        toast('"' Permission Denied: Users cannot alter menu details or add items.', 'error');
         return;
       }
       store.setRole('admin');
@@ -2430,7 +2430,7 @@ function setupEventHandlers() {
   if (openItemBtnAdmin) {
     openItemBtnAdmin.addEventListener('click', () => {
       if (!store.hasPermission('canEditMenu')) {
-        toast('ðŸ”’ Permission Denied: Users cannot alter menu details or add items.', 'error');
+        toast('"' Permission Denied: Users cannot alter menu details or add items.', 'error');
         return;
       }
       store.setPage('admin-items');

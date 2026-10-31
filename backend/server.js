@@ -30,8 +30,8 @@ app.use((err, req, res, next) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`ðŸš€ InvenTrack Backend Server running on http://localhost:${PORT}`);
-  console.log(`ðŸ“‹ Health Check: http://localhost:${PORT}/api/health`);
+  console.log(` InvenTrack Backend Server running on http://localhost:${PORT}`);
+  console.log(`" Health Check: http://localhost:${PORT}/api/health`);
 });
 
 export default app;
