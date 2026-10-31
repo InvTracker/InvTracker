@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: inventrack-api
+    restart: unless-stopped
+    ports:
+      - "5000:5000"
+    environment:
+      - NODE_ENV=production
+      - PORT=5000
+      - REDIS_URL=redis://redis:6379
+      - FIREBASE_PROJECT_ID=invtracker-9a207
+      - CORS_ORIGINS=https://invtracker-henna.vercel.app,http://localhost:5173,http://localhost:3000
+      - ADMIN_EMAILS=admin@example.com,admin@campus.edu
+      - KITCHEN_EMAILS=kitchen@example.com,kitchen@campus.edu
+    depends_on:
+      redis:
+        condition: service_healthy
+    networks:
+      - inventrack-net
+
+  redis:
+    image: redis:7-alpine
+    container_name: inventrack-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    command: redis-server --appendonly yes --maxmemory 256mb --maxmemory-policy allkeys-lru
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    networks:
+      - inventrack-net
+
+volumes:
+  redis-data:
+
+networks:
+  inventrack-net:
+    driver: bridge
