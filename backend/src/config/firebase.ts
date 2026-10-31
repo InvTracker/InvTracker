@@ -44,10 +44,9 @@ export function initializeFirebaseAdmin(): admin.app.App {
 }
 
 export const firebaseAdmin = admin;
-export const firebaseAuth = () => {
+export const firebaseAuth = (): admin.auth.Auth => {
   if (!firebaseInitialized) {
     initializeFirebaseAdmin();
   }
   return admin.auth();
 };
-
