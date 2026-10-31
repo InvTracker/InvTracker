@@ -1,8 +1,10 @@
 window.__FIREBASE_CONFIG__ = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_PROJECT_ID.appspot.com",
-  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-  appId: "YOUR_APP_ID"
+ apiKey: "AIzaSyArRw2D5YbD-zpqnnaSgHNYlzQivPl4HU4",
+  authDomain: "invtracker-9a207.firebaseapp.com",
+  projectId: "invtracker-9a207",
+  storageBucket: "invtracker-9a207.firebasestorage.app",
+  messagingSenderId: "814787261991",
+  appId: "1:814787261991:web:f40341dba73c0cdb12c002",
+  measurementId: "G-Q191MFY0N7"
 };
+

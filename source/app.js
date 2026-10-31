@@ -493,13 +493,21 @@ class InvenTrackStore {
     toast(`Signed in as ${userObj.name} (${role.toUpperCase()})`, 'verified_user');
   }
 
-  logout() {
+  async logout() {
     this.state.loggedIn = false;
     this.state.currentUser = null;
     this.state.activeRole = 'user';
     this.state.activePage = 'home';
     try {
       localStorage.removeItem('invenTrack_user');
+    } catch (e) {}
+    try {
+      if (window.__FIREBASE_CONFIG__) {
+        const { initializeApp } = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js");
+        const { getAuth, signOut } = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js");
+        const auth = getAuth(initializeApp(window.__FIREBASE_CONFIG__));
+        await signOut(auth);
+      }
     } catch (e) {}
     this.save();
     toast('Logged out successfully. Redirecting to landing page...', 'logout');
