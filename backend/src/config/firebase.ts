@@ -50,3 +50,4 @@ export const firebaseAuth = () => {
   }
   return admin.auth();
 };
+

@@ -10,3 +10,4 @@ export function requestIdMiddleware(req: AuthenticatedRequest, res: Response, ne
   res.setHeader('X-Request-Id', requestId);
   next();
 }
+

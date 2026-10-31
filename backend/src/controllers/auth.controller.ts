@@ -24,3 +24,4 @@ export function getProfile(req: AuthenticatedRequest, res: Response, next: NextF
     next(err);
   }
 }
+

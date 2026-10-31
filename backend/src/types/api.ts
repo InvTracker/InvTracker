@@ -19,3 +19,4 @@ export interface ApiErrorResponse {
   requestId: string;
   timestamp: string;
 }
+

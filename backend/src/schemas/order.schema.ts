@@ -35,3 +35,4 @@ export const getOrdersQuerySchema = z.object({
     .optional()
     .transform((val) => (val ? parseInt(val, 10) : 50))
 });
+

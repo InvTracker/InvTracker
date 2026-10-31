@@ -7,3 +7,4 @@ const router = Router();
 router.get('/profile', authenticateUser, getProfile);
 
 export default router;
+

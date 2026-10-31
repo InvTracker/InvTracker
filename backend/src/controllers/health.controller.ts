@@ -34,3 +34,4 @@ export function getHealth(req: Request, res: Response): void {
     }
   });
 }
+

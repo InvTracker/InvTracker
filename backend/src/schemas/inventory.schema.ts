@@ -23,3 +23,4 @@ export const getItemsQuerySchema = z.object({
   cat: z.string().trim().optional(),
   search: z.string().trim().max(100).optional()
 });
+
