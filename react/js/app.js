@@ -436,9 +436,25 @@ class InvenTrackStore {
   }
 
   setRole(role) {
-    const userRole = (this.state.currentUser && this.state.currentUser.role) || 'user';
+    const rawRole = (this.state.currentUser && (this.state.currentUser.role || (window.getUserRole ? window.getUserRole(this.state.currentUser.email) : 'student'))) || 'student';
+    const userRole = (rawRole === 'student' || rawRole === 'user') ? 'student' : rawRole;
+
+    if (userRole === 'student') {
+      if (role === 'admin' || role === 'kitchen') {
+        alert("Access denied: Students cannot access this section");
+        const isLocal = window.location.protocol === 'file:';
+        window.location.replace(isLocal ? 'student-dashboard.html' : '/student-dashboard.html');
+        return;
+      }
+    } else if (userRole === 'kitchen') {
+      if (role === 'admin') {
+        alert("Access denied: Kitchen staff cannot access Admin Dashboard");
+        return;
+      }
+    }
+
     if (userRole !== 'admin') {
-      toast('ðŸ”’ Role switching is only permitted for Administrators.', 'error');
+      toast('🔒 Role switching is only permitted for Administrators.', 'error');
       return;
     }
 
@@ -451,18 +467,23 @@ class InvenTrackStore {
   }
 
   setPage(page) {
-    const userRole = (this.state.currentUser && this.state.currentUser.role) || 'user';
-    const config = ROLE_PERMISSIONS[userRole] || ROLE_PERMISSIONS.user;
-    if (userRole !== 'admin' && config.allowedPages && !config.allowedPages.includes(page)) {
-      if (userRole === 'kitchen') {
-        toast('ðŸ”’ Access Restricted: Kitchen accounts can only access kitchen features.', 'error');
-        this.state.activePage = 'kitchen-kanban';
-      } else {
-        toast('ðŸ”’ Access Restricted: Users can only access dining & store features.', 'error');
-        this.state.activePage = 'home';
+    const rawRole = (this.state.currentUser && (this.state.currentUser.role || (window.getUserRole ? window.getUserRole(this.state.currentUser.email) : 'student'))) || 'student';
+    const userRole = (rawRole === 'student' || rawRole === 'user') ? 'student' : rawRole;
+
+    if (userRole === 'student') {
+      if (page.startsWith('admin-') || page.startsWith('kitchen-')) {
+        alert("Access denied: Students cannot access this section");
+        const isLocal = window.location.protocol === 'file:';
+        window.location.replace(isLocal ? 'student-dashboard.html' : '/student-dashboard.html');
+        return;
       }
-      this.save();
-      return;
+    } else if (userRole === 'kitchen') {
+      if (page.startsWith('admin-')) {
+        alert("Access denied: Kitchen staff cannot access Admin Dashboard");
+        this.state.activePage = 'kitchen-kanban';
+        this.save();
+        return;
+      }
     }
 
     this.state.activePage = page;
@@ -855,9 +876,30 @@ function renderShell(state) {
   const bottomUser = $('#bottomNavUser');
   const bottomKitchen = $('#bottomNavKitchen');
   const bottomAdmin = $('#bottomNavAdmin');
-  if (bottomUser) bottomUser.style.display = activeRole === 'user' ? 'flex' : 'none';
-  if (bottomKitchen) bottomKitchen.style.display = activeRole === 'kitchen' ? 'flex' : 'none';
-  if (bottomAdmin) bottomAdmin.style.display = activeRole === 'admin' ? 'flex' : 'none';
+
+  if (userRole === 'student' || userRole === 'user') {
+    if (bottomUser) bottomUser.style.display = 'flex';
+    if (bottomKitchen) bottomKitchen.style.display = 'none';
+    if (bottomAdmin) bottomAdmin.style.display = 'none';
+    const kBtn = document.querySelector('#roleSwitcher [data-role="kitchen"]');
+    const aBtn = document.querySelector('#roleSwitcher [data-role="admin"]');
+    if (kBtn) kBtn.style.display = 'none';
+    if (aBtn) aBtn.style.display = 'none';
+    if (roleSwitcher) roleSwitcher.style.display = 'none';
+    if (navKitchen) navKitchen.style.display = 'none';
+    if (navAdmin) navAdmin.style.display = 'none';
+  } else if (userRole === 'kitchen') {
+    if (bottomUser) bottomUser.style.display = 'none';
+    if (bottomKitchen) bottomKitchen.style.display = 'flex';
+    if (bottomAdmin) bottomAdmin.style.display = 'none';
+    const aBtn = document.querySelector('#roleSwitcher [data-role="admin"]');
+    if (aBtn) aBtn.style.display = 'none';
+    if (navAdmin) navAdmin.style.display = 'none';
+  } else {
+    if (bottomUser) bottomUser.style.display = activeRole === 'user' ? 'flex' : 'none';
+    if (bottomKitchen) bottomKitchen.style.display = activeRole === 'kitchen' ? 'flex' : 'none';
+    if (bottomAdmin) bottomAdmin.style.display = activeRole === 'admin' ? 'flex' : 'none';
+  }
   $$('.nav-item[data-page], .m3-bottom-nav-item[data-page]').forEach((item) => {
     item.classList.toggle('active', item.dataset.page === activePage);
   });
@@ -2517,6 +2559,69 @@ function setupEventHandlers() {
       store.logout();
     });
   }
+
+  document.addEventListener('click', (e) => {
+    const navItem = e.target.closest('[data-page]');
+    if (navItem) {
+      const pageKey = navItem.dataset.page;
+      const rawRole = (store.state.currentUser && (store.state.currentUser.role || (window.getUserRole ? window.getUserRole(store.state.currentUser.email) : 'student'))) || 'student';
+      const role = (rawRole === 'student' || rawRole === 'user') ? 'student' : rawRole;
+      if (role === 'student' && (pageKey.startsWith('admin-') || pageKey.startsWith('kitchen-'))) {
+        e.preventDefault();
+        e.stopPropagation();
+        alert("Access denied: Students cannot access this section");
+        const isLocal = window.location.protocol === 'file:';
+        window.location.replace(isLocal ? 'student-dashboard.html' : '/student-dashboard.html');
+        return;
+      }
+      if (role === 'kitchen' && pageKey.startsWith('admin-')) {
+        e.preventDefault();
+        e.stopPropagation();
+        alert("Access denied: Kitchen staff cannot access Admin Dashboard");
+        store.setPage('kitchen-kanban');
+        return;
+      }
+    }
+    const roleBtn = e.target.closest('.role-btn[data-role]');
+    if (roleBtn) {
+      const targetRole = roleBtn.dataset.role;
+      const rawRole = (store.state.currentUser && (store.state.currentUser.role || (window.getUserRole ? window.getUserRole(store.state.currentUser.email) : 'student'))) || 'student';
+      const role = (rawRole === 'student' || rawRole === 'user') ? 'student' : rawRole;
+      if (role === 'student' && (targetRole === 'admin' || targetRole === 'kitchen')) {
+        e.preventDefault();
+        e.stopPropagation();
+        alert("Access denied: Students cannot access this section");
+        const isLocal = window.location.protocol === 'file:';
+        window.location.replace(isLocal ? 'student-dashboard.html' : '/student-dashboard.html');
+        return;
+      }
+      if (role === 'kitchen' && targetRole === 'admin') {
+        e.preventDefault();
+        e.stopPropagation();
+        alert("Access denied: Kitchen staff cannot access Admin Dashboard");
+        return;
+      }
+    }
+  }, true);
+
+  window.addEventListener('hashchange', () => {
+    const hash = (window.location.hash || '').replace('#', '');
+    if (!hash) return;
+    const rawRole = (store.state.currentUser && (store.state.currentUser.role || (window.getUserRole ? window.getUserRole(store.state.currentUser.email) : 'student'))) || 'student';
+    const role = (rawRole === 'student' || rawRole === 'user') ? 'student' : rawRole;
+    if (role === 'student' && (hash.startsWith('admin') || hash.startsWith('kitchen'))) {
+      alert("Access denied: Students cannot access this section");
+      const isLocal = window.location.protocol === 'file:';
+      window.location.replace(isLocal ? 'student-dashboard.html' : '/student-dashboard.html');
+      return;
+    }
+    if (role === 'kitchen' && hash.startsWith('admin')) {
+      alert("Access denied: Kitchen staff cannot access Admin Dashboard");
+      store.setPage('kitchen-kanban');
+      return;
+    }
+    store.setPage(hash);
+  });
 }
 
 function renderApp(state) {
@@ -2596,3 +2701,45 @@ window.addEventListener('storage', (e) => {
   }
 });
 
+
+(async function initFirebaseObserver() {
+  if (typeof window === 'undefined' || !window.__FIREBASE_CONFIG__) return;
+  try {
+    const { initializeApp } = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js");
+    const { getAuth, onAuthStateChanged } = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js");
+    const app = initializeApp(window.__FIREBASE_CONFIG__);
+    const auth = getAuth(app);
+    window.__FIREBASE_AUTH__ = auth;
+
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        const determinedRole = window.getUserRole ? window.getUserRole(user.email) : 'student';
+        if (store.state.currentUser) {
+          store.state.currentUser.email = user.email;
+          store.state.currentUser.role = determinedRole;
+          store.state.currentUser.name = user.displayName || store.state.currentUser.name;
+          store.state.currentUser.photoURL = user.photoURL || store.state.currentUser.photoURL;
+        }
+        if (determinedRole === 'student' || determinedRole === 'user') {
+          const currentPage = store.state.activePage || '';
+          if (currentPage.startsWith('admin-') || currentPage.startsWith('kitchen-')) {
+            alert("Access denied: Students cannot access this section");
+            const isLocal = window.location.protocol === 'file:';
+            window.location.replace(isLocal ? 'student-dashboard.html' : '/student-dashboard.html');
+            return;
+          }
+        } else if (determinedRole === 'kitchen') {
+          const currentPage = store.state.activePage || '';
+          if (currentPage.startsWith('admin-')) {
+            alert("Access denied: Kitchen staff cannot access Admin Dashboard");
+            store.setPage('kitchen-kanban');
+            return;
+          }
+        }
+        renderApp(store.state);
+      }
+    });
+  } catch(e) {
+    console.warn('Firebase observer init in app.js:', e);
+  }
+})();

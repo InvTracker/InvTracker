@@ -11,6 +11,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Roboto+Flex:wght@500;600;700;800&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..24,400,0,0&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css">
+  <script src="/js/roles.js"></script>
+  <script src="/js/firebase-config.js"></script>
 
   <style>
     :root {
@@ -1637,6 +1639,17 @@
       submitBtnText.textContent = 'Login as Campus Admin';
     });
     function completeAuthentication(userData) {
+      const userRole = userData.role || (window.getUserRole ? window.getUserRole(userData.email) : 'student');
+      userData.role = userRole;
+      let targetDest = '/student-dashboard.html';
+      if (userRole === 'admin') {
+        targetDest = window.location.protocol === 'file:' ? 'index.html#admin-overview' : '/#admin-overview';
+      } else if (userRole === 'kitchen') {
+        targetDest = window.location.protocol === 'file:' ? 'index.html#kitchen-kanban' : '/#kitchen-kanban';
+      } else {
+        targetDest = window.location.protocol === 'file:' ? 'student-dashboard.html' : '/student-dashboard.html';
+      }
+
       try {
         localStorage.setItem('invenTrack_user', JSON.stringify(userData));
         let appState = {};
@@ -1646,10 +1659,10 @@
         }
         appState.loggedIn = true;
         appState.currentUser = userData;
-        appState.activeRole = userData.role || 'user';
-        appState.activePage = userData.role === 'admin' ? 'admin-overview' : (userData.role === 'kitchen' ? 'kitchen-kanban' : 'home');
+        appState.activeRole = userRole === 'student' ? 'user' : userRole;
+        appState.activePage = userRole === 'admin' ? 'admin-overview' : (userRole === 'kitchen' ? 'kitchen-kanban' : 'home');
         localStorage.setItem('inventrack_m3_state', JSON.stringify(appState));
-        if (userData.role === 'kitchen') {
+        if (userRole === 'kitchen') {
           localStorage.setItem('invenTrack_theme', 'kitchen');
         }
       } catch(e){}
@@ -1663,16 +1676,21 @@
       const alertBox = document.getElementById('authSuccessBox');
       const successTitle = document.getElementById('successTitle');
       const successMsg = document.getElementById('successMsg');
+      const launchLink = alertBox ? alertBox.querySelector('.btn-launch-app') : null;
+      if (launchLink) {
+        launchLink.setAttribute('href', targetDest);
+        launchLink.innerHTML = `<span>Launch ${userRole === 'admin' ? 'Admin' : (userRole === 'kitchen' ? 'Kitchen' : 'Student')} Dashboard &rarr;</span>`;
+      }
       if (alertBox) {
         if (successTitle) successTitle.textContent = `Welcome, ${userData.name}!`;
-        if (successMsg) successMsg.textContent = `Authenticated as ${userData.title || userData.role.toUpperCase()}! Opening dashboard...`;
+        if (successMsg) successMsg.textContent = `Authenticated as ${userData.title || userRole.toUpperCase()}! Redirecting to ${userRole.toUpperCase()} dashboard...`;
         alertBox.classList.add('show');
       }
       setTimeout(() => {
         let redirectedOpener = false;
         try {
           if (window.opener && !window.opener.closed) {
-            window.opener.location.href = window.location.protocol === 'file:' ? 'index.html' : '/';
+            window.opener.location.href = targetDest;
             try { window.opener.focus(); } catch(err){}
             redirectedOpener = true;
           }
@@ -1685,7 +1703,7 @@
           } catch(e){}
         }
         setTimeout(() => {
-          window.location.href = window.location.protocol === 'file:' ? 'index.html' : '/';
+          window.location.href = targetDest;
         }, 800);
       }, 500);
     }
@@ -1749,11 +1767,7 @@
             if (authContainer) authContainer.style.display = 'block';
             if (unauthContainer) unauthContainer.style.display = 'none';
 
-            let assignedRole = currentRole || 'user';
-            try {
-              const savedUser = JSON.parse(localStorage.getItem('invenTrack_user') || '{}');
-              if (savedUser && savedUser.role) assignedRole = savedUser.role;
-            } catch(e) {}
+            const assignedRole = window.getUserRole ? window.getUserRole(user.email) : 'student';
 
             if (authName) authName.textContent = user.displayName || 'Campus User';
             if (authEmail) authEmail.textContent = user.email || '';
@@ -1763,6 +1777,20 @@
                 : assignedRole === 'kitchen' 
                 ? 'Kitchen Staff' 
                 : 'Campus Student';
+            }
+
+            const continueBtn = document.getElementById('continueToAppBtn');
+            if (continueBtn) {
+              if (assignedRole === 'admin') {
+                continueBtn.href = window.location.protocol === 'file:' ? 'index.html#admin-overview' : '/#admin-overview';
+                continueBtn.innerHTML = '<span>Go to Admin Dashboard &rarr;</span>';
+              } else if (assignedRole === 'kitchen') {
+                continueBtn.href = window.location.protocol === 'file:' ? 'index.html#kitchen-kanban' : '/#kitchen-kanban';
+                continueBtn.innerHTML = '<span>Go to Kitchen Dashboard &rarr;</span>';
+              } else {
+                continueBtn.href = window.location.protocol === 'file:' ? 'student-dashboard.html' : '/student-dashboard.html';
+                continueBtn.innerHTML = '<span>Go to Student Dashboard &rarr;</span>';
+              }
             }
 
             if (user.photoURL && authAvatar) {
@@ -1801,15 +1829,16 @@
 
         if (primaryLabel) primaryLabel.textContent = 'Google Authenticated';
 
+        const determinedRole = window.getUserRole ? window.getUserRole(user.email) : 'student';
         const googleUser = {
-          name: user.displayName || 'Campus User',
+          name: user.displayName || (determinedRole === 'admin' ? 'Dr. Vikram Malhotra' : (determinedRole === 'kitchen' ? 'Chef Rajesh Kumar' : 'Campus Student')),
           email: user.email,
           photoURL: user.photoURL || '',
-          rollNo: user.email ? user.email.split('@')[0].toUpperCase() : 'G-USER',
+          rollNo: user.email ? user.email.split('@')[0].toUpperCase() : 'ST-2026',
           studentId: 'ST-' + user.uid.slice(0, 6).toUpperCase(),
-          role: currentRole || 'user',
-          title: currentRole === 'admin' ? 'Campus Administrator' : currentRole === 'kitchen' ? 'Executive Kitchen Chef' : 'Campus Student',
-          balance: currentRole === 'admin' ? 5000 : currentRole === 'kitchen' ? 2000 : 450,
+          role: determinedRole,
+          title: determinedRole === 'admin' ? 'Campus Administrator' : (determinedRole === 'kitchen' ? 'Executive Kitchen Staff' : 'Campus Student'),
+          balance: determinedRole === 'admin' ? 5000 : (determinedRole === 'kitchen' ? 2000 : 450),
           authProvider: 'Google (Firebase)',
           uid: user.uid
         };

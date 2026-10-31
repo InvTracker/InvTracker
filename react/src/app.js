@@ -9,9 +9,6 @@
  * 4. Admin Management (Revenue metrics, demand matrix, audit table, CSV export)
  */
 
-// =========================================================================
-// 1. DATA INJECTION SLOT & DEMO FIXTURE
-// =========================================================================
 
 /**
  * CRITICAL DATA REQUIREMENT:
@@ -128,9 +125,6 @@ const CAMPUS_DEMO_FIXTURE = {
   ]
 };
 
-// =========================================================================
-// 2. REACTIVE STATE ENGINE & LOCAL STORAGE ADAPTER
-// =========================================================================
 
 const STORAGE_KEY = 'inventrack_m3_state';
 const stages = ['Placed', 'Preparing', 'Ready', 'Picked up'];
@@ -265,8 +259,7 @@ class InvenTrackStore {
   }
 
   loadInitialState() {
-    // 1. Check for authenticated user from signin / login
-    let authUser = null;
+        let authUser = null;
     try {
       const stored = localStorage.getItem('invenTrack_user');
       if (stored) authUser = JSON.parse(stored);
@@ -787,9 +780,6 @@ class InvenTrackStore {
 // Global Store Instance
 const store = new InvenTrackStore();
 
-// =========================================================================
-// 3. DOM UTILITIES & HELPERS
-// =========================================================================
 
 const $ = (sel, el = document) => el.querySelector(sel);
 const $$ = (sel, el = document) => Array.from(el.querySelectorAll(sel));
@@ -853,9 +843,6 @@ function initials(name) {
   );
 }
 
-// =========================================================================
-// 4. ROLE SWITCHING & SHELL ADAPTATION
-// =========================================================================
 
 const roleLabels = {
   user: 'User Portal',
@@ -888,8 +875,7 @@ function renderShell(state) {
     }
   }
 
-  // 2. Sidebar Brand Subtitle
-  const brandSub = $('#brandSubRole');
+    const brandSub = $('#brandSubRole');
   if (brandSub) {
     if (isAdmin) {
       const viewName = activeRole === 'user' ? 'User Store View' : activeRole === 'kitchen' ? 'Kitchen Staff View' : 'Executive Overview';
@@ -901,8 +887,7 @@ function renderShell(state) {
     }
   }
 
-  // 3. Toggle Sidebar Nav Groups with strict role-based dashboard permissions
-  const navUser = $('#navGroupUser');
+    const navUser = $('#navGroupUser');
   const navKitchen = $('#navGroupKitchen');
   const navAdmin = $('#navGroupAdmin');
 
@@ -923,18 +908,15 @@ function renderShell(state) {
     if (navAdmin) navAdmin.style.display = 'none';
   }
 
-  // 4. Update Nav Active Item
-  $$('.nav-item[data-page]').forEach((item) => {
+    $$('.nav-item[data-page]').forEach((item) => {
     item.classList.toggle('active', item.dataset.page === activePage);
   });
 
-  // 5. Update Active Page Section
-  $$('.page').forEach((pg) => pg.classList.remove('active'));
+    $$('.page').forEach((pg) => pg.classList.remove('active'));
   const targetPage = $(`#page-${activePage}`);
   if (targetPage) targetPage.classList.add('active');
 
-  // 6. Update Dev Fixture Bar Status & Controls
-  const badge = $('#dataModeBadge');
+    const badge = $('#dataModeBadge');
   const stats = $('#dataStatsText');
   if (badge && stats) {
     const isDemoLoaded = state.menuItems.length > 0;
@@ -956,8 +938,7 @@ function renderShell(state) {
     openItemBtn.style.display = store.hasPermission('canEditMenu') ? 'inline-flex' : 'none';
   }
 
-  // 7. Badges
-  const studentCartCount = Object.values(state.cart).reduce((a, b) => a + b, 0);
+    const studentCartCount = Object.values(state.cart).reduce((a, b) => a + b, 0);
   const cartBadge = $('#cartBadge');
   if (cartBadge) {
     cartBadge.textContent = studentCartCount;
@@ -978,8 +959,7 @@ function renderShell(state) {
     kitchenBadge.classList.toggle('hide', inPrepCount === 0);
   }
 
-  // 8. User Profile in Sidebar & Account Details
-  const sideAvatar = $('#sideAvatar');
+    const sideAvatar = $('#sideAvatar');
   const sideName = $('#sideName');
   const sideRole = $('#sideRole');
   if (state.currentUser) {
@@ -1050,9 +1030,6 @@ function renderShell(state) {
   }
 }
 
-// =========================================================================
-// 5. STUDENT MODULE RENDERING
-// =========================================================================
 
 // Live Order Ticket (Home)
 function renderStudentTicket(state) {
@@ -1439,9 +1416,6 @@ function renderSpendingBars(state) {
   }
 }
 
-// =========================================================================
-// 6. SHOPPER MODULE RENDERING
-// =========================================================================
 
 function renderShopperStore(state) {
   const grid = $('#shopperGrid');
@@ -1604,9 +1578,6 @@ function renderShopperReceipts(state) {
     .join('');
 }
 
-// =========================================================================
-// 7. KITCHEN & STAFF MODULE RENDERING
-// =========================================================================
 
 function renderKitchenKanban(state) {
   const lists = {
@@ -1861,9 +1832,6 @@ function renderKitchenFeedback(state) {
     .join('');
 }
 
-// =========================================================================
-// 8. ADMIN / MANAGEMENT MODULE RENDERING
-// =========================================================================
 
 function renderAdminOverview(state) {
   const rev = state.orders.reduce((sum, o) => sum + (o.total || 0), 0);
@@ -2036,9 +2004,6 @@ function exportAuditCsv(state) {
   toast('Audit CSV exported successfully!', 'download');
 }
 
-// =========================================================================
-// 9. DIGITAL RECEIPT MODAL
-// =========================================================================
 
 function showReceiptModal(order) {
   const modal = $('#receiptModal');
@@ -2077,9 +2042,6 @@ function hideReceiptModal() {
   if (modal) modal.classList.add('hide');
 }
 
-// =========================================================================
-// 10. COMPREHENSIVE EVENT DELEGATION & LISTENERS
-// =========================================================================
 
 function setupEventHandlers() {
   // 1. Role Switcher (Admin Only)
@@ -2099,8 +2061,7 @@ function setupEventHandlers() {
     });
   }
 
-  // 2. Navigation items
-  document.addEventListener('click', (e) => {
+    document.addEventListener('click', (e) => {
     const navBtn = e.target.closest('.nav-item[data-page]');
     if (navBtn) {
       const pageKey = navBtn.dataset.page;
@@ -2118,8 +2079,7 @@ function setupEventHandlers() {
     }
   });
 
-  // 3. Theme toggle
-  const themeToggle = $('#themeToggle');
+    const themeToggle = $('#themeToggle');
   if (themeToggle) {
     themeToggle.addEventListener('click', (e) => {
       const btn = e.target.closest('button[data-mode]');
@@ -2133,8 +2093,7 @@ function setupEventHandlers() {
     });
   }
 
-  // 4. Notification Drawer Toggle
-  const bellBtn = $('#bellBtn');
+    const bellBtn = $('#bellBtn');
   if (bellBtn) {
     bellBtn.addEventListener('click', (e) => {
       e.stopPropagation();
@@ -2149,8 +2108,7 @@ function setupEventHandlers() {
     }
   });
 
-  // 5. Global Search Input
-  const searchInput = $('#searchInput');
+    const searchInput = $('#searchInput');
   if (searchInput) {
     searchInput.addEventListener('input', (e) => {
       if (store.state.activeRole === 'user' || store.state.activeRole === 'student') {
@@ -2160,8 +2118,7 @@ function setupEventHandlers() {
     });
   }
 
-  // 6. Category & Counter Filters
-  document.addEventListener('click', (e) => {
+    document.addEventListener('click', (e) => {
     const chip = e.target.closest('.filter-chip[data-cat]');
     if (chip) {
       store.state.activeCat = chip.dataset.cat;
@@ -2193,8 +2150,7 @@ function setupEventHandlers() {
     });
   }
 
-  // 7. Student Cart & Add Buttons
-  document.addEventListener('click', (e) => {
+    document.addEventListener('click', (e) => {
     const addBtn = e.target.closest('[data-add]');
     if (addBtn) {
       store.addToCart(addBtn.dataset.add);
@@ -2220,8 +2176,7 @@ function setupEventHandlers() {
     }
   });
 
-  // 8. Payment Selector in Checkout
-  const paymentGrid = $('#paymentOptions');
+    const paymentGrid = $('#paymentOptions');
   if (paymentGrid) {
     paymentGrid.addEventListener('click', (e) => {
       const chip = e.target.closest('.payment-chip');
@@ -2232,8 +2187,7 @@ function setupEventHandlers() {
     });
   }
 
-  // 9. Student Checkout Order Placement
-  const checkoutBtn = $('#checkoutBtn');
+    const checkoutBtn = $('#checkoutBtn');
   if (checkoutBtn) {
     checkoutBtn.addEventListener('click', () => {
       const counter = $('#checkoutCounterSelect') ? $('#checkoutCounterSelect').value : 'Counter 2 (Quick Bites)';
@@ -2256,8 +2210,7 @@ function setupEventHandlers() {
     });
   }
 
-  // 10. Student Advance Order Stepper
-  const advanceBtn = $('#advanceBtn');
+    const advanceBtn = $('#advanceBtn');
   if (advanceBtn) {
     advanceBtn.addEventListener('click', () => {
       const orderId = advanceBtn.dataset.orderId;
@@ -2265,8 +2218,7 @@ function setupEventHandlers() {
     });
   }
 
-  // 11. Shopper Fast Add & Cart
-  document.addEventListener('click', (e) => {
+    document.addEventListener('click', (e) => {
     const shopperAdd = e.target.closest('[data-shopper-add]');
     if (shopperAdd) {
       store.addToShopperCart(shopperAdd.dataset.shopperAdd);
@@ -2308,8 +2260,7 @@ function setupEventHandlers() {
     });
   }
 
-  // 12. Kitchen Kanban Advance
-  document.addEventListener('click', (e) => {
+    document.addEventListener('click', (e) => {
     const kAdvance = e.target.closest('[data-kitchen-advance]');
     if (kAdvance) {
       store.advanceOrderStatus(kAdvance.dataset.kitchenAdvance);
@@ -2317,8 +2268,7 @@ function setupEventHandlers() {
     }
   });
 
-  // 13. Kitchen Stock Adjuster Controls
-  document.addEventListener('click', (e) => {
+    document.addEventListener('click', (e) => {
     const stockInc = e.target.closest('[data-stock-inc]');
     if (stockInc) {
       store.adjustStock(stockInc.dataset.stockInc, 1);
@@ -2350,8 +2300,7 @@ function setupEventHandlers() {
     }
   });
 
-  // 14. Counter POS Billing Interactions
-  document.addEventListener('click', (e) => {
+    document.addEventListener('click', (e) => {
     const posAdd = e.target.closest('[data-pos-add]');
     if (posAdd) {
       store.addToPosCart(posAdd.dataset.posAdd);
@@ -2401,8 +2350,7 @@ function setupEventHandlers() {
     });
   }
 
-  // 15. View Receipt Modal Trigger
-  document.addEventListener('click', (e) => {
+    document.addEventListener('click', (e) => {
     const viewBtn = e.target.closest('[data-view-receipt]');
     if (viewBtn) {
       const order = store.state.orders.find((o) => o.id === viewBtn.dataset.viewReceipt);
@@ -2423,8 +2371,7 @@ function setupEventHandlers() {
     });
   }
 
-  // 16. Enter Example Data & Dev Fixture Controls
-  const enterTopBtn = $('#enterExampleDataBtnTop');
+    const enterTopBtn = $('#enterExampleDataBtnTop');
   if (enterTopBtn) {
     enterTopBtn.addEventListener('click', () => {
       store.generateRandomExampleData();
@@ -2456,8 +2403,7 @@ function setupEventHandlers() {
     });
   }
 
-  // 17. Add Item Modal / Page Form - Protected by canEditMenu permission
-  const openItemBtn = $('#openAddItemModalBtn');
+    const openItemBtn = $('#openAddItemModalBtn');
   if (openItemBtn) {
     openItemBtn.addEventListener('click', () => {
       if (!store.hasPermission('canEditMenu')) {
@@ -2524,14 +2470,12 @@ function setupEventHandlers() {
     });
   }
 
-  // 18. Export Audit CSV
-  const exportCsvBtn = $('#exportCsvBtn');
+    const exportCsvBtn = $('#exportCsvBtn');
   if (exportCsvBtn) {
     exportCsvBtn.addEventListener('click', () => exportAuditCsv(store.state));
   }
 
-  // 19. Feedback Submission
-  let selectedStars = 0;
+    let selectedStars = 0;
   let selectedFeedbackCat = 'Food Quality';
 
   const starRow = $('#starRow');
@@ -2572,8 +2516,7 @@ function setupEventHandlers() {
     });
   }
 
-  // 20. Campus Role-Based Authentication
-  const qUser = $('#quickLoginUser');
+    const qUser = $('#quickLoginUser');
   if (qUser) {
     qUser.addEventListener('click', () => {
       store.login('user@student.campus.edu', 'Rohan Sharma');
@@ -2624,9 +2567,6 @@ function setupEventHandlers() {
   }
 }
 
-// =========================================================================
-// 11. CENTRAL RENDER DISPATCHER
-// =========================================================================
 
 function renderApp(state) {
   renderShell(state);
@@ -2661,9 +2601,6 @@ store.subscribe((state) => {
 setupEventHandlers();
 renderApp(store.state);
 
-// =========================================================================
-// 12. CROSS-TAB & GLOBAL SESSION SYNCHRONIZATION
-// =========================================================================
 try {
   if ('BroadcastChannel' in window) {
     const authChannel = new BroadcastChannel('inventrack_auth');

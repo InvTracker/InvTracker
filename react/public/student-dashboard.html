@@ -10,30 +10,54 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Roboto+Flex:wght@400;500;600;700&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..24,400,0,0&display=swap" rel="stylesheet">
 
+  <script src="/js/roles.js"></script>
+  <script src="/js/firebase-config.js"></script>
   <script>
     (function() {
       try {
         var userAuth = localStorage.getItem('invenTrack_user');
         var appState = localStorage.getItem('inventrack_m3_state');
         var authed = false;
+        var activeUser = null;
         if (userAuth) {
           var u = JSON.parse(userAuth);
-          if (u && (u.role || u.name)) authed = true;
+          if (u && (u.role || u.name)) { authed = true; activeUser = u; }
         }
         if (!authed && appState) {
           var s = JSON.parse(appState);
-          if (s && s.loggedIn && s.currentUser && s.currentUser.role) authed = true;
+          if (s && s.loggedIn && s.currentUser && s.currentUser.role) {
+            authed = true;
+            activeUser = s.currentUser;
+          }
         }
         if (!authed) {
-          window.location.replace('landing.html');
+          var isLocal = window.location.protocol === 'file:';
+          window.location.replace(isLocal ? 'landing.html' : '/landing');
+          return;
+        }
+
+        var userEmail = activeUser ? (activeUser.email || '') : '';
+        var role = window.getUserRole ? window.getUserRole(userEmail) : (activeUser ? activeUser.role : 'student');
+        if (activeUser && activeUser.role !== role) {
+          activeUser.role = role;
+          try { localStorage.setItem('invenTrack_user', JSON.stringify(activeUser)); } catch(e){}
+        }
+
+        var hash = (window.location.hash || '').toLowerCase();
+        if (role === 'student' || role === 'user') {
+          if (hash.includes('admin') || hash.includes('kitchen')) {
+            alert("Access denied: Students cannot access this section");
+            window.location.hash = '';
+          }
         }
       } catch (e) {
-        window.location.replace('landing.html');
+        var isLocal = window.location.protocol === 'file:';
+        window.location.replace(isLocal ? 'landing.html' : '/landing');
       }
     })();
   </script>
   
-  <link rel="stylesheet" href="/css/styles.css">
+  <link rel="stylesheet" href="css/styles.css">
   <style>
 
 :root {
@@ -3923,7 +3947,23 @@ class InvenTrackStore {
   }
 
   setPage(page) {
-    const userRole = (this.state.currentUser && this.state.currentUser.role) || 'user';
+    const userRole = (this.state.currentUser && this.state.currentUser.role) || 'student';
+    const adminPages = ['admin-overview', 'admin-inventory', 'admin-demand', 'admin-audit'];
+    const kitchenPages = ['kitchen-kanban', 'kitchen-stock', 'kitchen-counter', 'kitchen-feedback'];
+    if (userRole === 'student' || userRole === 'user') {
+      if (adminPages.includes(page) || kitchenPages.includes(page)) {
+        alert("Access denied: Students cannot access this section");
+        const isLocal = window.location.protocol === 'file:';
+        window.location.replace(isLocal ? 'student-dashboard.html' : '/student-dashboard.html');
+        return;
+      }
+    }
+    if (userRole === 'kitchen' && adminPages.includes(page)) {
+      alert("Access denied: Kitchen staff cannot access Admin Dashboard");
+      this.state.activePage = 'kitchen-kanban';
+      this.save();
+      return;
+    }
     const config = ROLE_PERMISSIONS[userRole] || ROLE_PERMISSIONS.user;
     if (userRole !== 'admin' && config.allowedPages && !config.allowedPages.includes(page)) {
       if (userRole === 'kitchen') {
