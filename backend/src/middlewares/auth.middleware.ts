@@ -27,7 +27,7 @@ export function determineUserRole(email?: string, customClaimRole?: string): Use
 
 export async function authenticateUser(
   req: AuthenticatedRequest,
-  res: Response,
+  _res: Response,
   next: NextFunction
 ): Promise<void> {
   const authHeader = req.headers.authorization;
@@ -89,7 +89,7 @@ export async function authenticateUser(
 }
 
 export function requireRole(...allowedRoles: UserRole[]) {
-  return (req: AuthenticatedRequest, res: Response, next: NextFunction): void => {
+  return (req: AuthenticatedRequest, _res: Response, next: NextFunction): void => {
     if (!req.user) {
       return next(new UnauthorizedError('User authentication must precede role verification.'));
     }
@@ -120,4 +120,3 @@ export function requireRole(...allowedRoles: UserRole[]) {
     next();
   };
 }
-

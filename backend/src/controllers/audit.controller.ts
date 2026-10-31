@@ -19,7 +19,7 @@ export async function getOverview(req: AuthenticatedRequest, res: Response, next
   }
 }
 
-export async function exportCSV(req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> {
+export async function exportCSV(_req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> {
   try {
     const csvData = await auditService.generateCSV();
 
@@ -30,4 +30,3 @@ export async function exportCSV(req: AuthenticatedRequest, res: Response, next: 
     next(err);
   }
 }
-

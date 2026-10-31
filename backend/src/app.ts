@@ -52,7 +52,7 @@ export function createApp(): Express {
   app.use('/api', apiRouter);
 
   // 7. Unmatched route 404 handler
-  app.use((req: Request, res: Response, next: NextFunction) => {
+  app.use((req: Request, _res: Response, next: NextFunction) => {
     next(new NotFoundError(`Cannot ${req.method} ${req.originalUrl}. Route does not exist.`));
   });
 
@@ -61,4 +61,3 @@ export function createApp(): Express {
 
   return app;
 }
-

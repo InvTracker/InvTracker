@@ -7,10 +7,9 @@ export function errorHandler(
   err: Error | AppError,
   req: Request,
   res: Response,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  next: NextFunction
+  _next: NextFunction
 ): void {
-  const requestId = (req as Request & { requestId?: string }).requestId || 'unknown';
+  const requestId = req.requestId || 'unknown';
   const isAppError = err instanceof AppError;
 
   const statusCode = isAppError ? err.statusCode : (err as { status?: number }).status || 500;
@@ -43,4 +42,3 @@ export function errorHandler(
     timestamp: new Date().toISOString()
   });
 }
-

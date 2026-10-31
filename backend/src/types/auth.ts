@@ -11,9 +11,14 @@ export interface AuthUser {
   emailVerified?: boolean;
 }
 
-export interface AuthenticatedRequest extends Request {
-  user?: AuthUser;
-  requestId: string;
-  idempotencyKey?: string;
+declare global {
+  namespace Express {
+    interface Request {
+      user?: AuthUser;
+      requestId: string;
+      idempotencyKey?: string;
+    }
+  }
 }
 
+export type AuthenticatedRequest = Request;

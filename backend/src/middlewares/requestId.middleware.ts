@@ -1,8 +1,7 @@
-import { Response, NextFunction } from 'express';
+import { Request, Response, NextFunction } from 'express';
 import crypto from 'crypto';
-import { AuthenticatedRequest } from '../types/auth.js';
 
-export function requestIdMiddleware(req: AuthenticatedRequest, res: Response, next: NextFunction): void {
+export function requestIdMiddleware(req: Request, res: Response, next: NextFunction): void {
   const incomingId = req.headers['x-request-id'];
   const requestId = typeof incomingId === 'string' && incomingId.trim() ? incomingId.trim() : crypto.randomUUID();
 
@@ -10,4 +9,3 @@ export function requestIdMiddleware(req: AuthenticatedRequest, res: Response, ne
   res.setHeader('X-Request-Id', requestId);
   next();
 }
-

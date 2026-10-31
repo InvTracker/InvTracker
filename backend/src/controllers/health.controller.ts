@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { isRedisConnected } from '../config/redis.js';
 import { env } from '../config/env.js';
 
-export function getHealth(req: Request, res: Response): void {
+export function getHealth(_req: Request, res: Response): void {
   const memory = process.memoryUsage();
   const uptimeSeconds = Math.floor(process.uptime());
 
@@ -34,4 +34,3 @@ export function getHealth(req: Request, res: Response): void {
     }
   });
 }
-
