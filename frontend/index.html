@@ -449,11 +449,12 @@
                 <div class="payment-chip" data-method="Cash">
                   <div class="payment-chip-name">
                     <span class="material-symbols-outlined" style="font-size:18px;">payments</span>
-                    <span>Cash</span>
+                    <span>Cash at Counter</span>
                   </div>
-                  <div class="payment-chip-sub">Pay at counter</div>
+                  <div class="payment-chip-sub">Pay when collecting token</div>
                 </div>
               </div>
+              <div class="payment-method-details" id="paymentMethodDetails"></div>
             </div>
 
             <div class="summary-row"><span>Subtotal</span><span id="sumSubtotal">&#8377;0</span></div>
@@ -1240,6 +1241,7 @@
       </div>
     </div>
   </nav>
+  <script src="js/qrcode.min.js"></script>
   <script src="js/app.js"></script>
   <div class="dev-persona-pill" id="devPersonaPill" style="display:none;" title="Developer Persona Switcher">
     <button class="dev-pill-toggle" id="devPillToggle" aria-label="Toggle Dev Persona Switcher">

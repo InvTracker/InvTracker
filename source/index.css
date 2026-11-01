@@ -3209,3 +3209,436 @@ body.has-sticky-cart .floating-token-bar {
     bottom: 92px;
   }
 }
+
+/* Payment Tender Details Area */
+.payment-method-details {
+  margin-top: 14px;
+  animation: fadeInTender 0.25s ease;
+}
+
+@keyframes fadeInTender {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Mobile UPI Card */
+.upi-mobile-card {
+  background: var(--md-sys-color-surface-container-low, #f4f6fa);
+  border: 1px solid var(--md-sys-color-outline-variant, #c4c6d0);
+  border-radius: 14px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+[data-theme="dark"] .upi-mobile-card,
+[data-theme="kitchen"] .upi-mobile-card {
+  background: #182234;
+  border-color: #2e3e5c;
+}
+
+.upi-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.upi-badge-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+}
+
+.upi-lightning-icon {
+  font-size: 18px;
+  color: #f59e0b;
+}
+
+.upi-amount-pill {
+  font-size: 13px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 9999px;
+  background: var(--md-sys-color-primary-container, #d1e4ff);
+  color: var(--md-sys-color-on-primary-container, #001d36);
+}
+
+.upi-card-sub {
+  font-size: 12.5px;
+  color: var(--md-sys-color-on-surface-variant, #555);
+  line-height: 1.4;
+}
+
+.upi-intent-primary-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: #00639b;
+  color: #ffffff !important;
+  text-decoration: none;
+  font-size: 13.5px;
+  font-weight: 600;
+  padding: 12px 16px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 99, 155, 0.3);
+  transition: background 0.15s ease, transform 0.15s ease;
+  text-align: center;
+  cursor: pointer;
+}
+
+.upi-intent-primary-btn:hover {
+  background: #004d7a;
+}
+
+.upi-intent-primary-btn:active {
+  transform: scale(0.98);
+}
+
+.upi-apps-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+
+.upi-app-pill {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 6px;
+  background: var(--md-sys-color-surface-container-high, #e0e2ec);
+  color: var(--md-sys-color-on-surface, #333);
+  border: 1px solid var(--md-sys-color-outline-variant, #d0d2dc);
+}
+
+[data-theme="dark"] .upi-app-pill,
+[data-theme="kitchen"] .upi-app-pill {
+  background: #25334d;
+  color: #d1d5db;
+  border-color: #374151;
+}
+
+.upi-intent-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  font-size: 11.5px;
+  color: var(--md-sys-color-on-surface-variant, #666);
+  line-height: 1.35;
+}
+
+/* Desktop UPI Card */
+.upi-desktop-card {
+  background: var(--md-sys-color-surface-container-low, #f4f6fa);
+  border: 1px solid var(--md-sys-color-outline-variant, #c4c6d0);
+  border-radius: 14px;
+  padding: 16px;
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+[data-theme="dark"] .upi-desktop-card,
+[data-theme="kitchen"] .upi-desktop-card {
+  background: #182234;
+  border-color: #2e3e5c;
+}
+
+.upi-qr-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.upi-qr-box {
+  width: 140px;
+  height: 140px;
+  background: #ffffff;
+  border: 1px solid var(--md-sys-color-outline-variant, #c4c6d0);
+  border-radius: 10px;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.upi-qr-box img,
+.upi-qr-box canvas {
+  width: 124px !important;
+  height: 124px !important;
+  display: block;
+}
+
+.upi-countdown-timer {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  border-radius: 9999px;
+  font-size: 11.5px;
+  font-weight: 700;
+  background: rgba(220, 38, 38, 0.1);
+  color: #dc2626;
+  border: 1px solid rgba(220, 38, 38, 0.25);
+}
+
+.upi-countdown-timer.expired {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.upi-desktop-details {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+}
+
+.upi-desktop-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 14px;
+}
+
+.upi-desktop-amt {
+  font-weight: 700;
+  color: var(--md-sys-color-primary, #00639b);
+  font-size: 15px;
+}
+
+.upi-desktop-desc {
+  font-size: 12px;
+  color: var(--md-sys-color-on-surface-variant, #555);
+  line-height: 1.4;
+}
+
+.upi-meta-box {
+  background: var(--md-sys-color-surface, #ffffff);
+  border: 1px solid var(--md-sys-color-outline-variant, #d0d2dc);
+  border-radius: 8px;
+  padding: 8px 10px;
+  font-size: 11.5px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+[data-theme="dark"] .upi-meta-box,
+[data-theme="kitchen"] .upi-meta-box {
+  background: #111827;
+  border-color: #374151;
+}
+
+.upi-meta-row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.upi-expiry-text {
+  font-size: 11px;
+  color: var(--md-sys-color-on-surface-variant, #666);
+}
+
+/* Meal Pass Card */
+.meal-pass-card {
+  background: var(--md-sys-color-surface-container-low, #f4f6fa);
+  border: 1px solid var(--md-sys-color-outline-variant, #c4c6d0);
+  border-radius: 14px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+[data-theme="dark"] .meal-pass-card,
+[data-theme="kitchen"] .meal-pass-card {
+  background: #182234;
+  border-color: #2e3e5c;
+}
+
+.meal-pass-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 13.5px;
+}
+
+.meal-pass-title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.meal-pass-tag {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 2px 8px;
+  border-radius: 9999px;
+  background: #e0f2f1;
+  color: #00796b;
+}
+
+.meal-pass-stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 8px;
+  background: var(--md-sys-color-surface, #ffffff);
+  border: 1px solid var(--md-sys-color-outline-variant, #d0d2dc);
+  border-radius: 10px;
+  padding: 10px;
+}
+
+[data-theme="dark"] .meal-pass-stats-grid,
+[data-theme="kitchen"] .meal-pass-stats-grid {
+  background: #111827;
+  border-color: #374151;
+}
+
+.meal-pass-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.meal-pass-stat .lbl {
+  font-size: 10.5px;
+  color: var(--md-sys-color-on-surface-variant, #666);
+}
+
+.meal-pass-stat .val {
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.meal-pass-stat .val.deduct {
+  color: #e11d48;
+}
+
+.meal-pass-stat .val.remaining {
+  color: #059669;
+}
+
+.meal-pass-stat .val.insufficient {
+  color: #dc2626;
+}
+
+.meal-pass-alert-box {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  padding: 8px 10px;
+  border-radius: 8px;
+}
+
+.meal-pass-alert-box.success {
+  background: #ecfdf5;
+  color: #065f46;
+  border: 1px solid #a7f3d0;
+}
+
+.meal-pass-alert-box.error {
+  background: #fef2f2;
+  color: #991b1b;
+  border: 1px solid #fecaca;
+}
+
+/* Cash at Counter Card */
+.cash-card {
+  background: var(--md-sys-color-surface-container-low, #f4f6fa);
+  border: 1px solid var(--md-sys-color-outline-variant, #c4c6d0);
+  border-radius: 14px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+[data-theme="dark"] .cash-card,
+[data-theme="kitchen"] .cash-card {
+  background: #182234;
+  border-color: #2e3e5c;
+}
+
+.cash-card-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13.5px;
+}
+
+.cash-notice-box {
+  background: #fffbeb;
+  border: 1px solid #fde68a;
+  border-radius: 8px;
+  padding: 10px 12px;
+  color: #92400e;
+}
+
+[data-theme="dark"] .cash-notice-box,
+[data-theme="kitchen"] .cash-notice-box {
+  background: #2a2213;
+  border-color: #573e0e;
+  color: #fcd34d;
+}
+
+.cash-notice-title {
+  font-size: 12.5px;
+  font-weight: 700;
+  margin-bottom: 2px;
+}
+
+.cash-notice-sub {
+  font-size: 11.5px;
+  line-height: 1.35;
+}
+
+/* Card Payment Card */
+.card-payment-card {
+  background: var(--md-sys-color-surface-container-low, #f4f6fa);
+  border: 1px solid var(--md-sys-color-outline-variant, #c4c6d0);
+  border-radius: 14px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+[data-theme="dark"] .card-payment-card,
+[data-theme="kitchen"] .card-payment-card {
+  background: #182234;
+  border-color: #2e3e5c;
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13.5px;
+}
+
+.card-sub {
+  font-size: 12px;
+  color: var(--md-sys-color-on-surface-variant, #666);
+  line-height: 1.4;
+}
+
+@media (max-width: 520px) {
+  .upi-desktop-card {
+    flex-direction: column;
+    text-align: center;
+  }
+  .upi-desktop-header {
+    flex-direction: column;
+    gap: 4px;
+  }
+}

@@ -743,6 +743,20 @@ class InvenTrackStore {
       createdAt: new Date().toISOString()
     };
 
+    if (paymentMethod === 'Meal Pass' && this.state.currentUser) {
+      const curBal = typeof this.state.currentUser.balance === 'number' ? this.state.currentUser.balance : 450;
+      this.state.currentUser.balance = Math.max(0, curBal - total);
+      try {
+        localStorage.setItem('invenTrack_user', JSON.stringify(this.state.currentUser));
+      } catch (e) {}
+      const mealChip = $('#mealPassBalanceText');
+      if (mealChip) {
+        mealChip.textContent = `Bal: Rs ${this.state.currentUser.balance}`;
+      }
+    }
+    stopUpiCountdownTimer();
+    this.state.pendingUpiOrderRef = null;
+
     this.state.orders.unshift(newOrder);
     this.save();
     return newOrder;
@@ -1448,6 +1462,259 @@ function renderRecommendations(state) {
 }
 
 // Student Cart Page
+
+let upiCountdownInterval = null;
+let upiCountdownRemainingSecs = 300;
+
+function isMobileDevice() {
+  try {
+    const ua = navigator.userAgent || '';
+    const mobileRegex = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile/i;
+    const isSmallScreen = window.innerWidth <= 768;
+    return mobileRegex.test(ua) || isSmallScreen;
+  } catch (e) {
+    return false;
+  }
+}
+
+function startUpiCountdownTimer(onTick, onExpire) {
+  if (upiCountdownInterval) {
+    clearInterval(upiCountdownInterval);
+    upiCountdownInterval = null;
+  }
+  upiCountdownRemainingSecs = 300;
+  
+  const updateTimer = () => {
+    const mins = Math.floor(upiCountdownRemainingSecs / 60);
+    const secs = upiCountdownRemainingSecs % 60;
+    const timeFormatted = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+    if (onTick) onTick(timeFormatted, upiCountdownRemainingSecs);
+
+    if (upiCountdownRemainingSecs <= 0) {
+      clearInterval(upiCountdownInterval);
+      upiCountdownInterval = null;
+      if (onExpire) onExpire();
+    } else {
+      upiCountdownRemainingSecs--;
+    }
+  };
+
+  updateTimer();
+  upiCountdownInterval = setInterval(updateTimer, 1000);
+}
+
+function stopUpiCountdownTimer() {
+  if (upiCountdownInterval) {
+    clearInterval(upiCountdownInterval);
+    upiCountdownInterval = null;
+  }
+}
+
+function renderPaymentMethodDetails(state) {
+  const container = $('#paymentMethodDetails');
+  if (!container) return;
+
+  const itemEntries = Object.entries(state.cart || {});
+  const subtotal = itemEntries.reduce((acc, [id, qty]) => {
+    const it = (state.menuItems || []).find((m) => m.id === id);
+    return acc + (it ? it.price * qty : 0);
+  }, 0);
+  const totalAmount = itemEntries.length > 0 ? (subtotal + 10) : 0;
+  
+  const selectedMethod = state.selectedPaymentMethod || 'Campus UPI';
+  const isMobile = isMobileDevice();
+
+  if (totalAmount <= 0) {
+    container.innerHTML = '';
+    stopUpiCountdownTimer();
+    return;
+  }
+
+  if (selectedMethod === 'Campus UPI') {
+    if (!state.pendingUpiOrderRef) {
+      state.pendingUpiOrderRef = 'CP' + Math.floor(1000 + Math.random() * 9000);
+    }
+    const orderRef = state.pendingUpiOrderRef;
+    const upiUri = `upi://pay?pa=canteenupi@bank&pn=CampusCanteen&am=${totalAmount}&cu=INR&tn=Order_${orderRef}`;
+
+    if (isMobile) {
+      stopUpiCountdownTimer();
+      container.innerHTML = `
+        <div class="upi-mobile-card">
+          <div class="upi-card-top">
+            <div class="upi-badge-row">
+              <span class="material-symbols-outlined upi-lightning-icon">bolt</span>
+              <strong>Instant UPI Intent</strong>
+            </div>
+            <div class="upi-amount-pill">Rs ${totalAmount}</div>
+          </div>
+          <div class="upi-card-sub">Tap below to trigger payment directly in your installed UPI app.</div>
+          <a href="${upiUri}" class="upi-intent-primary-btn" id="upiIntentBtn">
+            <span class="material-symbols-outlined">send_to_mobile</span>
+            <span>Pay via any UPI App (GPay / PhonePe / Paytm)</span>
+          </a>
+          <div class="upi-apps-row">
+            <span class="upi-app-pill">GPay</span>
+            <span class="upi-app-pill">PhonePe</span>
+            <span class="upi-app-pill">Paytm</span>
+            <span class="upi-app-pill">BHIM</span>
+            <span class="upi-app-pill">CRED</span>
+          </div>
+          <div class="upi-intent-note">
+            <span class="material-symbols-outlined" style="font-size:14px;">info</span>
+            <span>After authorizing in your UPI app, return and tap "Place order &amp; Generate Token" below.</span>
+          </div>
+        </div>
+      `;
+      const upiBtn = $('#upiIntentBtn');
+      if (upiBtn) {
+        upiBtn.addEventListener('click', () => {
+          triggerHaptic(50);
+          toast('Opening UPI checkout intent...', 'payments');
+        });
+      }
+    } else {
+      container.innerHTML = `
+        <div class="upi-desktop-card">
+          <div class="upi-qr-wrapper">
+            <div id="upiQrCodeContainer" class="upi-qr-box"></div>
+            <div class="upi-countdown-timer" id="upiCountdownTimer">
+              <span class="material-symbols-outlined" style="font-size:14px;">timer</span>
+              <span id="upiTimerDisplay">05:00</span>
+            </div>
+          </div>
+          <div class="upi-desktop-details">
+            <div class="upi-desktop-header">
+              <strong>Scan &amp; Pay via UPI</strong>
+              <span class="upi-desktop-amt">Rs ${totalAmount}</span>
+            </div>
+            <div class="upi-desktop-desc">Open any UPI app on your mobile and scan this dynamic QR code to pay.</div>
+            <div class="upi-meta-box">
+              <div class="upi-meta-row"><span>Payee:</span> <strong>Campus Canteen</strong></div>
+              <div class="upi-meta-row"><span>VPA:</span> <strong>canteenupi@bank</strong></div>
+              <div class="upi-meta-row"><span>Order Ref:</span> <strong>Order_${orderRef}</strong></div>
+            </div>
+            <div class="upi-expiry-text" id="upiExpiryNotice">QR code expires in 5 minutes.</div>
+          </div>
+        </div>
+      `;
+
+      const qrContainer = $('#upiQrCodeContainer');
+      if (qrContainer) {
+        qrContainer.innerHTML = '';
+        if (typeof QRCode !== 'undefined') {
+          try {
+            new QRCode(qrContainer, {
+              text: upiUri,
+              width: 124,
+              height: 124,
+              colorDark: '#000000',
+              colorLight: '#ffffff',
+              correctLevel: QRCode.CorrectLevel.M
+            });
+          } catch (e) {
+            qrContainer.innerHTML = `<img src="https://api.qrserver.com/v1/create-qr-code/?size=124x124&data=${encodeURIComponent(upiUri)}" alt="UPI QR" width="124" height="124" />`;
+          }
+        } else {
+          qrContainer.innerHTML = `<img src="https://api.qrserver.com/v1/create-qr-code/?size=124x124&data=${encodeURIComponent(upiUri)}" alt="UPI QR" width="124" height="124" />`;
+        }
+      }
+
+      startUpiCountdownTimer(
+        (timeFormatted) => {
+          const display = $('#upiTimerDisplay');
+          if (display) display.textContent = timeFormatted;
+        },
+        () => {
+          const timerBadge = $('#upiCountdownTimer');
+          const notice = $('#upiExpiryNotice');
+          if (timerBadge) {
+            timerBadge.classList.add('expired');
+            timerBadge.innerHTML = `<span class="material-symbols-outlined" style="font-size:14px;">error</span><span>Expired</span>`;
+          }
+          if (notice) {
+            notice.innerHTML = `<button type="button" class="mini-btn" id="refreshUpiQrBtn" style="padding:4px 10px; font-size:11px;">Refresh QR Code</button>`;
+            const refBtn = $('#refreshUpiQrBtn');
+            if (refBtn) {
+              refBtn.addEventListener('click', () => {
+                state.pendingUpiOrderRef = 'CP' + Math.floor(1000 + Math.random() * 9000);
+                renderPaymentMethodDetails(state);
+              });
+            }
+          }
+        }
+      );
+    }
+  } else if (selectedMethod === 'Meal Pass') {
+    stopUpiCountdownTimer();
+    const currentBal = (state.currentUser && typeof state.currentUser.balance === 'number') ? state.currentUser.balance : 450;
+    const remBalance = currentBal - totalAmount;
+    
+    const mealChipText = $('#mealPassBalanceText');
+    if (mealChipText) mealChipText.textContent = `Bal: Rs ${currentBal}`;
+
+    container.innerHTML = `
+      <div class="meal-pass-card">
+        <div class="meal-pass-header">
+          <div class="meal-pass-title">
+            <span class="material-symbols-outlined" style="color:#00897b; font-size:20px;">badge</span>
+            <strong>Meal Pass Instant Deduction</strong>
+          </div>
+          <span class="meal-pass-tag">Live Balance</span>
+        </div>
+        <div class="meal-pass-stats-grid">
+          <div class="meal-pass-stat">
+            <span class="lbl">Current Balance</span>
+            <span class="val">Rs ${currentBal}</span>
+          </div>
+          <div class="meal-pass-stat">
+            <span class="lbl">Order Total</span>
+            <span class="val deduct">- Rs ${totalAmount}</span>
+          </div>
+          <div class="meal-pass-stat">
+            <span class="lbl">Remaining Balance</span>
+            <span class="val ${remBalance < 0 ? 'insufficient' : 'remaining'}">Rs ${Math.max(0, remBalance)}</span>
+          </div>
+        </div>
+        ${remBalance < 0 
+          ? '<div class="meal-pass-alert-box error"><span class="material-symbols-outlined">error</span><span>Insufficient meal pass balance. Please top up or choose UPI / Cash.</span></div>' 
+          : '<div class="meal-pass-alert-box success"><span class="material-symbols-outlined">check_circle</span><span>Instant balance deduction upon placing order.</span></div>'
+        }
+      </div>
+    `;
+
+    const checkoutBtn = $('#checkoutBtn');
+    if (checkoutBtn && remBalance < 0) {
+      checkoutBtn.disabled = true;
+    }
+  } else if (selectedMethod === 'Cash') {
+    stopUpiCountdownTimer();
+    container.innerHTML = `
+      <div class="cash-card">
+        <div class="cash-card-header">
+          <span class="material-symbols-outlined" style="color:#f59e0b; font-size:20px;">payments</span>
+          <strong>Cash at Counter</strong>
+        </div>
+        <div class="cash-notice-box">
+          <div class="cash-notice-title">Pay when collecting token</div>
+          <div class="cash-notice-sub">Please present exact cash of Rs ${totalAmount} at your selected pickup counter when collecting your meal token.</div>
+        </div>
+      </div>
+    `;
+  } else if (selectedMethod === 'Card') {
+    stopUpiCountdownTimer();
+    container.innerHTML = `
+      <div class="card-payment-card">
+        <div class="card-header">
+          <span class="material-symbols-outlined" style="color:#3b82f6; font-size:20px;">credit_card</span>
+          <strong>Debit / Credit Card</strong>
+        </div>
+        <div class="card-sub">Tap or swipe your card at the POS terminal at Counter upon token collection.</div>
+      </div>
+    `;
+  }
+}
+
 function renderStudentCart(state) {
   const cartList = $('#cartList');
   const cartSub = $('#cartSub');
@@ -1476,6 +1743,7 @@ function renderStudentCart(state) {
     if (packingEl) packingEl.textContent = 'Rs. 0';
     if (totalEl) totalEl.textContent = 'Rs. 0';
     if (checkoutBtn) checkoutBtn.disabled = true;
+    renderPaymentMethodDetails(state);
     return;
   }
 
@@ -1514,6 +1782,7 @@ function renderStudentCart(state) {
   if (packingEl) packingEl.textContent = `Rs. ${packing}`;
   if (totalEl) totalEl.textContent = `Rs. ${total}`;
   if (checkoutBtn) checkoutBtn.disabled = false;
+  renderPaymentMethodDetails(state);
 }
 
 // Student Orders Page
@@ -2417,6 +2686,8 @@ function setupEventHandlers() {
       $$('.payment-chip').forEach((c) => c.classList.remove('selected'));
       chip.classList.add('selected');
       store.state.selectedPaymentMethod = chip.dataset.method;
+      renderPaymentMethodDetails(store.state);
+      triggerHaptic(40);
     });
   }
 
@@ -2426,6 +2697,17 @@ function setupEventHandlers() {
       triggerHaptic(60);
       const counter = $('#checkoutCounterSelect') ? $('#checkoutCounterSelect').value : 'Counter 2 (Quick Bites)';
       const paymentMethod = store.state.selectedPaymentMethod || 'Campus UPI';
+      if (paymentMethod === 'Meal Pass') {
+        const curBal = (store.state.currentUser && typeof store.state.currentUser.balance === 'number') ? store.state.currentUser.balance : 450;
+        const totalAmount = Object.entries(store.state.cart).reduce((sum, [id, qty]) => {
+          const it = store.state.menuItems.find((m) => m.id === id);
+          return sum + (it ? it.price * qty : 0);
+        }, 0) + 10;
+        if (curBal < totalAmount) {
+          toast('Insufficient Meal Pass balance. Please top up or choose UPI / Cash.', 'error');
+          return;
+        }
+      }
       const order = store.createOrder({
         itemsMap: store.state.cart,
         customerName: store.state.currentUser ? store.state.currentUser.name : 'Campus User',
@@ -2858,6 +3140,12 @@ try {
     };
   }
 } catch (e) {}
+
+window.addEventListener('resize', () => {
+  if (typeof store !== 'undefined' && store.state && store.state.activePage === 'cart') {
+    renderPaymentMethodDetails(store.state);
+  }
+});
 
 window.addEventListener('storage', (e) => {
   if (e.key === 'invenTrack_user') {
