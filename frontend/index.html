@@ -316,6 +316,16 @@
             </button>
           </div>
         </section>
+        <div class="canteen-rush-card quiet" id="homeRushMeter">
+          <div class="rush-card-header">
+            <div class="rush-card-title-group">
+              <span class="rush-indicator-dot quiet"></span>
+              <span class="rush-card-title">Canteen Quiet - Est. Wait: 3 - 5 mins</span>
+            </div>
+            <span class="rush-card-badge">0 active</span>
+          </div>
+          <div class="rush-card-sub">Counter lines are fast. Ideal time to order instant meals.</div>
+        </div>
         <div class="quick-grid">
           <button class="quick-card" data-goto="menu">
             <div class="quick-icon">
@@ -385,6 +395,13 @@
         </div>
       </section>
       <section class="page" id="page-menu">
+        <div class="canteen-rush-banner quiet" id="canteenRushBanner">
+          <div class="rush-banner-content">
+            <span class="rush-indicator-dot quiet"></span>
+            <span class="rush-title-text">Canteen Quiet - Est. Wait: 3 - 5 mins</span>
+          </div>
+          <div class="rush-badge-meta">Queue: 0 in prep</div>
+        </div>
         <div
           style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:16px;">
           <div class="filter-row" id="filterRow" style="margin-bottom:0;"></div>
@@ -419,6 +436,15 @@
                 <option value="Counter 1 (Hot Meals)">Counter 1 (Hot Meals)</option>
                 <option value="Counter 2 (Quick Bites)" selected>Counter 2 (Quick Bites)</option>
                 <option value="Counter 3 (Cafe & Drinks)">Counter 3 (Cafe &amp; Drinks)</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label>Pickup Time</label>
+              <select id="checkoutPickupTimeSelect">
+                <option value="Instant" selected>Instant</option>
+                <option value="In 15 mins">In 15 mins</option>
+                <option value="In 30 mins">In 30 mins</option>
               </select>
             </div>
 

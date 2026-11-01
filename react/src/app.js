@@ -693,7 +693,7 @@ class InvenTrackStore {
   }
 
   // Order Placement
-  createOrder({ itemsMap, customerName, role, counter, paymentMethod, packagingFee = 10 }) {
+  createOrder({ itemsMap, customerName, role, counter, paymentMethod, pickupTime = 'Instant', packagingFee = 10 }) {
     const itemEntries = Object.entries(itemsMap);
     if (!itemEntries.length) return null;
 
@@ -737,6 +737,7 @@ class InvenTrackStore {
       packing: packagingFee,
       total,
       paymentMethod: paymentMethod || 'Campus UPI',
+      pickupTime: pickupTime || 'Instant',
       status: 'Placed',
       stageIndex: 0,
       counter: counter || 'Counter 2 (Quick Bites)',
@@ -1211,6 +1212,66 @@ function renderShell(state) {
 
 
 // Live Order Ticket (Home)
+
+function renderCanteenRushMeter(state) {
+  const inPrepCount = (state.orders || []).filter((o) => o.status === 'Placed' || o.status === 'Preparing').length;
+  
+  let rushLevel = 'quiet';
+  let rushDotClass = 'quiet';
+  let rushTitle = 'Canteen Quiet - Est. Wait: 3 - 5 mins';
+
+  if (inPrepCount < 5) {
+    rushLevel = 'quiet';
+    rushDotClass = 'quiet';
+    rushTitle = 'Canteen Quiet - Est. Wait: 3 - 5 mins';
+  } else if (inPrepCount <= 15) {
+    rushLevel = 'moderate';
+    rushDotClass = 'moderate';
+    rushTitle = 'Moderate Rush - Est. Wait: 8 - 12 mins';
+  } else {
+    rushLevel = 'peak';
+    rushDotClass = 'peak';
+    rushTitle = 'Peak Rush Hour - Est. Wait: 15 - 20 mins';
+  }
+
+  const menuBanner = $('#canteenRushBanner');
+  if (menuBanner) {
+    menuBanner.className = `canteen-rush-banner ${rushLevel}`;
+    menuBanner.innerHTML = `
+      <div class="rush-banner-content">
+        <span class="rush-indicator-dot ${rushDotClass}"></span>
+        <span class="rush-title-text">${rushTitle}</span>
+      </div>
+      <div class="rush-badge-meta">
+        <span class="material-symbols-outlined" style="font-size:14px;">soup_kitchen</span>
+        <span>${inPrepCount} ${inPrepCount === 1 ? 'ticket' : 'tickets'} in prep</span>
+      </div>
+    `;
+  }
+
+  const homeRush = $('#homeRushMeter');
+  if (homeRush) {
+    homeRush.className = `canteen-rush-card ${rushLevel}`;
+    homeRush.innerHTML = `
+      <div class="rush-card-header">
+        <div class="rush-card-title-group">
+          <span class="rush-indicator-dot ${rushDotClass}"></span>
+          <span class="rush-card-title">${rushTitle}</span>
+        </div>
+        <span class="rush-card-badge">${inPrepCount} active</span>
+      </div>
+      <div class="rush-card-sub">
+        ${rushLevel === 'quiet' 
+          ? 'Counter lines are fast. Ideal time to order instant meals.' 
+          : (rushLevel === 'moderate' 
+              ? 'Moderate counter queue. Pre-order recommended for short breaks.' 
+              : 'Kitchen is at peak capacity. Pre-order for upcoming breaks to skip queue.')
+        }
+      </div>
+    `;
+  }
+}
+
 function renderStudentTicket(state) {
   const activeOrder = state.orders.find((o) => o.status !== 'Picked up' && (o.role === 'Student' || !o.role));
   const advanceBtn = $('#advanceBtn');
@@ -1236,7 +1297,10 @@ function renderStudentTicket(state) {
 
   const itemsSummary = activeOrder.items.map((i) => `${i.qty} ${i.name}`).join(' + ');
   if (ticketTitle) ticketTitle.textContent = itemsSummary;
-  if (ticketDesc) ticketDesc.textContent = `Order placed - ${activeOrder.counter} - ${activeOrder.paymentMethod}`;
+  if (ticketDesc) {
+    const sched = (activeOrder.pickupTime && activeOrder.pickupTime !== 'Instant') ? ` - Scheduled: ${activeOrder.pickupTime}` : '';
+    ticketDesc.textContent = `Order placed - ${activeOrder.counter} - ${activeOrder.paymentMethod}${sched}`;
+  }
   if (queueNo) queueNo.textContent = activeOrder.token;
   if (ticketPaid) ticketPaid.textContent = `Rs. ${activeOrder.total}`;
 
@@ -2494,6 +2558,10 @@ function showReceiptModal(order) {
       )
       .join('') +
       `
+        <div class="receipt-row" style="color:var(--md-sys-color-primary); font-size:12px; font-weight:600;">
+          <span>Pickup Time</span>
+          <span class="mono">${order.pickupTime || 'Instant'}</span>
+        </div>
         <div class="receipt-row" style="color:var(--md-sys-color-on-surface-variant); font-size:12px;">
           <span>Packaging Fee</span>
           <span class="mono">Rs. ${order.packing || 10}</span>
@@ -2696,6 +2764,7 @@ function setupEventHandlers() {
     checkoutBtn.addEventListener('click', () => {
       triggerHaptic(60);
       const counter = $('#checkoutCounterSelect') ? $('#checkoutCounterSelect').value : 'Counter 2 (Quick Bites)';
+      const pickupTime = $('#checkoutPickupTimeSelect') ? $('#checkoutPickupTimeSelect').value : 'Instant';
       const paymentMethod = store.state.selectedPaymentMethod || 'Campus UPI';
       if (paymentMethod === 'Meal Pass') {
         const curBal = (store.state.currentUser && typeof store.state.currentUser.balance === 'number') ? store.state.currentUser.balance : 450;
@@ -2713,7 +2782,8 @@ function setupEventHandlers() {
         customerName: store.state.currentUser ? store.state.currentUser.name : 'Campus User',
         role: 'User',
         counter,
-        paymentMethod
+        paymentMethod,
+        pickupTime
       });
 
       if (order) {
@@ -2855,7 +2925,8 @@ function setupEventHandlers() {
         customerName: custName,
         role: 'Counter POS',
         counter,
-        paymentMethod
+        paymentMethod,
+        pickupTime
       });
 
       if (order) {
@@ -3086,6 +3157,7 @@ function setupEventHandlers() {
 
 function renderApp(state) {
   renderShell(state);
+  renderCanteenRushMeter(state);
 
   renderStudentTicket(state);
   renderCounterStrip(state);

@@ -3642,3 +3642,173 @@ body.has-sticky-cart .floating-token-bar {
     gap: 4px;
   }
 }
+
+/* Canteen Rush Meter Styles */
+.canteen-rush-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 10px 16px;
+  border-radius: var(--md-sys-shape-corner-medium, 12px);
+  margin-bottom: 16px;
+  font-size: 13.5px;
+  font-weight: 600;
+  border: 1px solid transparent;
+  transition: all 0.25s ease;
+}
+
+.canteen-rush-banner.quiet {
+  background: rgba(16, 185, 129, 0.12);
+  color: #065f46;
+  border-color: rgba(16, 185, 129, 0.3);
+}
+
+.canteen-rush-banner.moderate {
+  background: rgba(245, 158, 11, 0.12);
+  color: #92400e;
+  border-color: rgba(245, 158, 11, 0.3);
+}
+
+.canteen-rush-banner.peak {
+  background: rgba(239, 68, 68, 0.12);
+  color: #991b1b;
+  border-color: rgba(239, 68, 68, 0.3);
+}
+
+[data-theme="dark"] .canteen-rush-banner.quiet,
+[data-theme="kitchen"] .canteen-rush-banner.quiet {
+  background: rgba(16, 185, 129, 0.18);
+  color: #6ee7b7;
+  border-color: rgba(16, 185, 129, 0.4);
+}
+
+[data-theme="dark"] .canteen-rush-banner.moderate,
+[data-theme="kitchen"] .canteen-rush-banner.moderate {
+  background: rgba(245, 158, 11, 0.18);
+  color: #fcd34d;
+  border-color: rgba(245, 158, 11, 0.4);
+}
+
+[data-theme="dark"] .canteen-rush-banner.peak,
+[data-theme="kitchen"] .canteen-rush-banner.peak {
+  background: rgba(239, 68, 68, 0.2);
+  color: #fca5a5;
+  border-color: rgba(239, 68, 68, 0.45);
+}
+
+.rush-banner-content {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.rush-title-text {
+  font-weight: 700;
+  letter-spacing: -0.1px;
+}
+
+.rush-badge-meta {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  font-weight: 600;
+  opacity: 0.9;
+}
+
+.rush-indicator-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+.rush-indicator-dot.quiet {
+  background-color: #10b981;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.25);
+}
+
+.rush-indicator-dot.moderate {
+  background-color: #f59e0b;
+  box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.25);
+}
+
+.rush-indicator-dot.peak {
+  background-color: #ef4444;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.25);
+  animation: rushPulse 1.5s infinite;
+}
+
+@keyframes rushPulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.15); box-shadow: 0 0 0 5px rgba(239, 68, 68, 0.35); }
+  100% { transform: scale(1); }
+}
+
+/* Home Screen Canteen Rush Card */
+.canteen-rush-card {
+  padding: 12px 16px;
+  border-radius: var(--md-sys-shape-corner-medium, 14px);
+  margin: 12px 0 16px 0;
+  border: 1px solid transparent;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.canteen-rush-card.quiet {
+  background: var(--md-sys-color-surface-container, #f0f2fa);
+  border-color: rgba(16, 185, 129, 0.25);
+}
+
+.canteen-rush-card.moderate {
+  background: var(--md-sys-color-surface-container, #f0f2fa);
+  border-color: rgba(245, 158, 11, 0.25);
+}
+
+.canteen-rush-card.peak {
+  background: var(--md-sys-color-surface-container, #f0f2fa);
+  border-color: rgba(239, 68, 68, 0.3);
+}
+
+[data-theme="dark"] .canteen-rush-card,
+[data-theme="kitchen"] .canteen-rush-card {
+  background: #182234;
+}
+
+.rush-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.rush-card-title-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.rush-card-title {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--md-sys-color-on-surface);
+}
+
+.rush-card-badge {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 9999px;
+  background: var(--md-sys-color-surface-container-high, #e0e2ec);
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.rush-card-sub {
+  font-size: 12px;
+  color: var(--md-sys-color-on-surface-variant);
+  line-height: 1.4;
+  padding-left: 18px;
+}
