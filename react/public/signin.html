@@ -1157,7 +1157,7 @@
               <div class="auth-user-email" id="authUserEmail">user@example.com</div>
               <div class="auth-user-badge" id="authUserRoleBadge">
                 <span class="material-symbols-outlined" style="font-size: 13px;">verified</span>
-                <span id="authUserRoleText">Campus Student</span>
+                <span id="authUserRoleText">Student</span>
               </div>
             </div>
           </div>
@@ -1773,10 +1773,10 @@
             if (authEmail) authEmail.textContent = user.email || '';
             if (authRole) {
               authRole.textContent = assignedRole === 'admin' 
-                ? 'Campus Administrator' 
+                ? 'Administrator' 
                 : assignedRole === 'kitchen' 
                 ? 'Kitchen Staff' 
-                : 'Campus Student';
+                : 'Student';
             }
 
             const continueBtn = document.getElementById('continueToAppBtn');
@@ -1837,7 +1837,7 @@
           rollNo: user.email ? user.email.split('@')[0].toUpperCase() : 'ST-2026',
           studentId: 'ST-' + user.uid.slice(0, 6).toUpperCase(),
           role: determinedRole,
-          title: determinedRole === 'admin' ? 'Campus Administrator' : (determinedRole === 'kitchen' ? 'Executive Kitchen Staff' : 'Campus Student'),
+          title: determinedRole === 'admin' ? 'Administrator' : (determinedRole === 'kitchen' ? 'Executive Kitchen Staff' : 'Campus Student'),
           balance: determinedRole === 'admin' ? 5000 : (determinedRole === 'kitchen' ? 2000 : 450),
           authProvider: 'Google (Firebase)',
           uid: user.uid
@@ -1951,7 +1951,7 @@
           userEmail = currentRole === 'admin' 
             ? (document.getElementById('regEmail')?.value || 'admin@campus.edu')
             : (currentRole === 'kitchen' ? 'kitchen@campus.edu' : `${userRoll.toLowerCase().replace(/[^a-z0-9]/g, '')}@student.campus.edu`);
-          userTitle = currentRole === 'admin' ? 'Campus Administrator' : currentRole === 'kitchen' ? 'Executive Kitchen Chef' : 'Campus Student';
+          userTitle = currentRole === 'admin' ? 'Administrator' : currentRole === 'kitchen' ? 'Executive Kitchen Chef' : 'Student';
         } else {
           const inputIdVal = document.getElementById('loginId')?.value || '';
           if (currentRole === 'kitchen') {
@@ -1970,7 +1970,7 @@
             userBalance = 5000;
           } else {
             userName = 'Rohan Sharma';
-            userTitle = 'Campus Student';
+            userTitle = 'Student';
             userEmail = inputIdVal.includes('@') ? inputIdVal : 'rohan.sharma@campus.edu';
             userRoll = inputIdVal || '2301CS042';
             userYear = '3rd year';

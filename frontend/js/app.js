@@ -1,3 +1,14 @@
+try {
+  ['invenTrack_user', 'inventrack_m3_state'].forEach((k) => {
+    const raw = localStorage.getItem(k);
+    if (raw && (raw.includes('\u00C2') || raw.includes('\u00B7') || raw.includes('\\u00C2') || raw.includes('\\u00B7') || raw.includes('\\u2022') || raw.includes('&middot;'))) {
+      const sanitized = raw.replace(/[\u00C2\u00A0\u00B7\u2022\u26a1]/g, '').replace(/\\u00C2\\u00B7/g, '').replace(/\\u00C2/g, '').replace(/\\u00B7/g, '').replace(/\\u2022/g, '').replace(/&middot;/g, '');
+      localStorage.setItem(k, sanitized);
+    }
+  });
+} catch(e) {}
+
+// storage_sanitizer_added
 
 const DATA_INJECTION_SLOT = {
   menuItems: [],
@@ -709,6 +720,10 @@ class InvenTrackStore {
     if (order.stageIndex < stages.length - 1) {
       order.stageIndex++;
       order.status = stages[order.stageIndex];
+      if (order.status === 'Ready' || order.status === 'Ready for Pickup') {
+        playPickupChime();
+        triggerHaptic(80);
+      }
       toast(`Order ${order.token} advanced to "${order.status}"`, 'check_circle');
       this.save();
     }
@@ -814,6 +829,115 @@ const roleLabels = {
   kitchen: 'Kitchen & Staff',
   admin: 'Admin Portal'
 };
+
+
+function triggerHaptic(duration = 50) {
+  try {
+    if (typeof navigator !== 'undefined' && 'vibrate' in navigator) {
+      navigator.vibrate(duration);
+    }
+  } catch (e) {}
+}
+
+let audioCtx = null;
+function playPickupChime() {
+  try {
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    if (!AudioContext) return;
+    if (!audioCtx) audioCtx = new AudioContext();
+    if (audioCtx.state === 'suspended') {
+      audioCtx.resume();
+    }
+    const now = audioCtx.currentTime;
+    
+    const osc1 = audioCtx.createOscillator();
+    const gain1 = audioCtx.createGain();
+    osc1.type = 'sine';
+    osc1.frequency.setValueAtTime(587.33, now);
+    gain1.gain.setValueAtTime(0, now);
+    gain1.gain.linearRampToValueAtTime(0.18, now + 0.04);
+    gain1.gain.exponentialRampToValueAtTime(0.001, now + 0.38);
+    osc1.connect(gain1);
+    gain1.connect(audioCtx.destination);
+    osc1.start(now);
+    osc1.stop(now + 0.38);
+
+    const osc2 = audioCtx.createOscillator();
+    const gain2 = audioCtx.createGain();
+    osc2.type = 'sine';
+    osc2.frequency.setValueAtTime(880, now + 0.12);
+    gain2.gain.setValueAtTime(0, now + 0.12);
+    gain2.gain.linearRampToValueAtTime(0.22, now + 0.16);
+    gain2.gain.exponentialRampToValueAtTime(0.001, now + 0.65);
+    osc2.connect(gain2);
+    gain2.connect(audioCtx.destination);
+    osc2.start(now + 0.12);
+    osc2.stop(now + 0.65);
+  } catch (e) {}
+}
+
+function openTokenSheet(state) {
+  const overlay = $('#tokenSheetOverlay');
+  const content = $('#tokenSheetContent');
+  if (!overlay || !content) return;
+  const activeOrder = (state.orders || []).find((o) => o.status !== 'Picked up' && (o.role === 'Student' || !o.role || state.activeRole === 'user'));
+  if (!activeOrder) {
+    toast('No active order currently in queue', 'info');
+    return;
+  }
+  
+  const statusColor = activeOrder.status === 'Ready' ? '#10b981' : (activeOrder.status === 'Preparing' ? '#f59e0b' : '#3b82f6');
+  const itemsHtml = Object.entries(activeOrder.itemsMap || {}).map(([id, qty]) => {
+    const item = (state.catalog || []).find((c) => c.id === id);
+    const title = item ? item.name : id;
+    const price = item ? item.price * qty : 0;
+    return `
+      <div style="display:flex; justify-content:space-between; padding:6px 0; border-bottom:1px solid rgba(0,0,0,0.06); font-size:13.5px;">
+        <span>${qty}x ${title}</span>
+        <span style="font-weight:600;">Rs ${price}</span>
+      </div>
+    `;
+  }).join('');
+
+  content.innerHTML = `
+    <div style="text-align:center; padding:12px 0 18px 0;">
+      <div style="font-size:12px; font-weight:600; text-transform:uppercase; letter-spacing:0.8px; color:var(--md-sys-color-on-surface-variant,#666);">Pickup Token</div>
+      <div style="font-size:38px; font-weight:800; color:var(--md-sys-color-primary,#00639b); margin:4px 0 8px 0; letter-spacing:1px;">#${activeOrder.token}</div>
+      <div style="display:inline-flex; align-items:center; gap:6px; padding:4px 12px; border-radius:9999px; background:${statusColor}18; color:${statusColor}; font-weight:700; font-size:13px;">
+        <span style="width:8px; height:8px; border-radius:50%; background:${statusColor};"></span>
+        <span>${activeOrder.status || 'Placed'}</span>
+      </div>
+    </div>
+
+    <div style="background:var(--md-sys-color-surface,#ffffff); border:1px solid var(--md-sys-color-outline-variant,#e0e0e0); border-radius:14px; padding:14px; margin-bottom:16px;">
+      <div style="display:flex; justify-content:space-between; margin-bottom:8px; font-size:13px;">
+        <span style="color:var(--md-sys-color-on-surface-variant,#666);">Assigned Counter</span>
+        <span style="font-weight:600;">${activeOrder.counter || 'Counter 2 (Dining Hall)'}</span>
+      </div>
+      <div style="display:flex; justify-content:space-between; margin-bottom:8px; font-size:13px;">
+        <span style="color:var(--md-sys-color-on-surface-variant,#666);">Estimated Ready In</span>
+        <span style="font-weight:600; color:#10b981;">${activeOrder.status === 'Ready' ? 'Ready Now!' : '4 - 7 mins'}</span>
+      </div>
+      <div style="display:flex; justify-content:space-between; font-size:13px;">
+        <span style="color:var(--md-sys-color-on-surface-variant,#666);">Payment</span>
+        <span style="font-weight:600;">${activeOrder.paymentMethod || 'Campus UPI'} (Paid)</span>
+      </div>
+    </div>
+
+    <div style="margin-bottom:16px;">
+      <div style="font-size:13px; font-weight:700; margin-bottom:8px; color:var(--md-sys-color-on-surface,#333);">Order Items</div>
+      <div style="background:var(--md-sys-color-surface,#ffffff); border:1px solid var(--md-sys-color-outline-variant,#e0e0e0); border-radius:14px; padding:10px 14px;">
+        ${itemsHtml || '<div style="font-size:13px; color:#888;">Items details recorded</div>'}
+        <div style="display:flex; justify-content:space-between; padding-top:10px; margin-top:6px; font-size:14px; font-weight:700;">
+          <span>Total Paid</span>
+          <span style="color:var(--md-sys-color-primary,#00639b);">Rs ${activeOrder.total || 0}</span>
+        </div>
+      </div>
+    </div>
+  `;
+
+  overlay.classList.add('open');
+}
 
 function renderShell(state) {
   const { activeRole, activePage, currentUser } = state;
@@ -975,9 +1099,9 @@ function renderShell(state) {
     if (sideAvatar) sideAvatar.textContent = initials(state.currentUser.name);
     if (sideName) sideName.textContent = state.currentUser.name;
     if (sideRole) {
-      if (isAdmin) sideRole.textContent = 'Administrator - Full Access';
-      else if (userRole === 'kitchen') sideRole.textContent = 'Kitchen Staff - Back of House';
-      else sideRole.textContent = `${state.currentUser.year || 'Student'} - Dining and Store`;
+      if (isAdmin) sideRole.textContent = 'Administrator';
+      else if (userRole === 'kitchen') sideRole.textContent = 'Kitchen Staff';
+      else sideRole.textContent = 'Student';
     }
     if ($('#accName')) $('#accName').textContent = state.currentUser.name;
     if ($('#accEmail')) $('#accEmail').textContent = state.currentUser.email || 'rohan@student.campus.edu';
@@ -1033,6 +1157,50 @@ function renderShell(state) {
     if (sideName) sideName.textContent = 'Guest User';
     if (sideRole) sideRole.textContent = 'Sign In to Access';
   }
+
+  // Sticky Mobile Cart Bar
+  const stickyCartBar = $('#stickyCartBar');
+  const stickyCartCount = $('#stickyCartCount');
+  const stickyCartTotal = $('#stickyCartTotal');
+  const cartItemCount = Object.values(state.cart || {}).reduce((s, q) => s + q, 0);
+  if (stickyCartBar) {
+    if (cartItemCount > 0 && state.activePage !== 'cart') {
+      stickyCartBar.classList.remove('hide');
+      document.body.classList.add('has-sticky-cart');
+      if (stickyCartCount) stickyCartCount.textContent = `${cartItemCount} ${cartItemCount === 1 ? 'item' : 'items'}`;
+      if (stickyCartTotal) {
+        const total = Object.entries(state.cart || {}).reduce((sum, [id, qty]) => {
+          const item = (state.catalog || []).find((c) => c.id === id);
+          return sum + (item ? item.price * qty : 0);
+        }, 0);
+        stickyCartTotal.textContent = `Rs ${total}`;
+      }
+    } else {
+      stickyCartBar.classList.add('hide');
+      document.body.classList.remove('has-sticky-cart');
+    }
+  }
+
+  // Persistent Floating Active Token Bar
+  const floatingTokenBar = $('#floatingTokenBar');
+  const tokenPulseDot = $('#tokenPulseDot');
+  const tokenPillText = $('#tokenPillText');
+  const activeTokenOrder = (state.orders || []).find((o) => o.status !== 'Picked up' && (o.role === 'Student' || !o.role || state.activeRole === 'user'));
+  if (floatingTokenBar) {
+    if (activeTokenOrder) {
+      floatingTokenBar.classList.remove('hide');
+      const st = activeTokenOrder.status || 'Placed';
+      if (tokenPulseDot) {
+        tokenPulseDot.className = 'token-pulse-dot ' + (st === 'Ready' ? 'ready' : (st === 'Preparing' ? 'preparing' : 'placed'));
+      }
+      if (tokenPillText) {
+        tokenPillText.textContent = `Token #${activeTokenOrder.token} - ${st} - Counter ${activeTokenOrder.counter || 1}`;
+      }
+    } else {
+      floatingTokenBar.classList.add('hide');
+    }
+  }
+
 }
 function renderStudentTicket(state) {
   const activeOrder = state.orders.find((o) => o.status !== 'Picked up' && (o.role === 'Student' || !o.role));
@@ -1160,7 +1328,7 @@ function renderStudentMenu(state, searchQuery = '') {
   const filterRow = $('#filterRow');
   if (!grid) return;
 
-  const CATEGORY_CHIPS = ['All', '⚡ Express / Grab & Go', 'Hot Meals', 'Quick Bites', 'Beverages', 'Desserts'];
+  const CATEGORY_CHIPS = ['All', 'Express / Grab and Go', 'Hot Meals', 'Quick Bites', 'Beverages', 'Desserts'];
   if (filterRow) {
     filterRow.innerHTML = CATEGORY_CHIPS
       .map((c) => {
@@ -1252,7 +1420,7 @@ function renderStudentMenu(state, searchQuery = '') {
               ` : ''}
               ${isExp ? `
                 <span class="express-chip-tag" title="Grab & Go Express">
-                  ⚡ Express
+                  Express
                 </span>
               ` : ''}
             </div>
@@ -2106,6 +2274,37 @@ function hideReceiptModal() {
 }
 
 function setupEventHandlers() {
+
+  const stickyCartBtn = $('#stickyCartBtn');
+  if (stickyCartBtn) {
+    stickyCartBtn.addEventListener('click', () => {
+      triggerHaptic(50);
+      store.setPage('cart');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
+
+  const floatingTokenBar = $('#floatingTokenBar');
+  if (floatingTokenBar) {
+    floatingTokenBar.addEventListener('click', () => {
+      triggerHaptic(50);
+      openTokenSheet(store.state);
+    });
+  }
+
+  const closeTokenSheetBtn = $('#closeTokenSheetBtn');
+  const tokenSheetOverlay = $('#tokenSheetOverlay');
+  if (closeTokenSheetBtn && tokenSheetOverlay) {
+    closeTokenSheetBtn.addEventListener('click', () => {
+      tokenSheetOverlay.classList.remove('open');
+    });
+    tokenSheetOverlay.addEventListener('click', (e) => {
+      if (e.target === tokenSheetOverlay) {
+        tokenSheetOverlay.classList.remove('open');
+      }
+    });
+  }
+
   const devPillBtn = $('#devPillToggle');
   const devPill = $('#devPersonaPill');
   if (devPillBtn && devPill) {
@@ -2271,24 +2470,28 @@ function setupEventHandlers() {
   document.addEventListener('click', (e) => {
     const addBtn = e.target.closest('[data-add]');
     if (addBtn) {
+      triggerHaptic(50);
       store.addToCart(addBtn.dataset.add);
       return;
     }
 
     const incBtn = e.target.closest('[data-inc]');
     if (incBtn) {
+      triggerHaptic(50);
       store.changeCartQty(incBtn.dataset.inc, 1);
       return;
     }
 
     const decBtn = e.target.closest('[data-dec]');
     if (decBtn) {
+      triggerHaptic(50);
       store.changeCartQty(decBtn.dataset.dec, -1);
       return;
     }
 
     const removeBtn = e.target.closest('[data-remove]');
     if (removeBtn) {
+      triggerHaptic(50);
       store.removeCartItem(removeBtn.dataset.remove);
       return;
     }
@@ -2306,6 +2509,7 @@ function setupEventHandlers() {
   const checkoutBtn = $('#checkoutBtn');
   if (checkoutBtn) {
     checkoutBtn.addEventListener('click', () => {
+      triggerHaptic(60);
       const counter = $('#checkoutCounterSelect') ? $('#checkoutCounterSelect').value : 'Counter 2 (Quick Bites)';
       const paymentMethod = store.state.selectedPaymentMethod || 'Campus UPI';
       const order = store.createOrder({
