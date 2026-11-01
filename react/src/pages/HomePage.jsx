@@ -22,7 +22,83 @@ const HomePage = () => {
     recommendedIds,
     advanceStage,
     switchPage,
+    currentUser,
+    addToCart,
+    addToast,
   } = useApp();
+
+  // 1. Identify 3 most frequently ordered items
+  const frequencyMap = {};
+  orders.forEach((order) => {
+    (order.items || []).forEach((it) => {
+      const key = it.id || it.name;
+      if (!frequencyMap[key]) {
+        frequencyMap[key] = {
+          id: it.id,
+          name: it.name,
+          price: it.price,
+          count: 0
+        };
+      }
+      frequencyMap[key].count += (it.qty || 1);
+    });
+  });
+
+  const sortedFreq = Object.values(frequencyMap).sort((a, b) => b.count - a.count);
+
+  let favoriteItems = [];
+  if (sortedFreq.length > 0) {
+    favoriteItems = sortedFreq.slice(0, 3).map((entry) => {
+      const catalogItem = menuItems.find((m) => m.id === entry.id || m.name?.toLowerCase() === entry.name?.toLowerCase());
+      return {
+        id: catalogItem ? catalogItem.id : entry.id,
+        name: catalogItem ? catalogItem.name : entry.name,
+        price: catalogItem ? catalogItem.price : entry.price,
+        counter: catalogItem ? catalogItem.counter : 'Counter 2 (Quick Bites)',
+        stock: catalogItem ? catalogItem.stock : 10,
+        orderCount: entry.count,
+        isHistory: true
+      };
+    });
+  } else if (menuItems.length > 0) {
+    favoriteItems = menuItems.filter((m) => m.stock > 0).slice(0, 3).map((m) => ({
+      id: m.id,
+      name: m.name,
+      price: m.price,
+      counter: m.counter || 'Counter 1 (Hot Meals)',
+      stock: m.stock,
+      orderCount: 0,
+      isHistory: false
+    }));
+  }
+
+  // 2. Identify if last placed order was a combo (>= 2 paired items)
+  let lastOrder = null;
+  if (orders.length > 0) {
+    lastOrder = [...orders].sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0))[0] || orders[0];
+  }
+  const lastOrderItems = (lastOrder && Array.isArray(lastOrder.items)) ? lastOrder.items : [];
+  const hasCombo = lastOrderItems.length >= 2;
+
+  const handleReorderCombo = () => {
+    let addedCount = 0;
+    lastOrderItems.forEach((it) => {
+      const catItem = menuItems.find((m) => m.id === it.id || m.name?.toLowerCase() === it.name?.toLowerCase());
+      const itemId = catItem ? catItem.id : it.id;
+      if (catItem && catItem.stock > 0) {
+        addToCart(itemId);
+        addedCount++;
+      } else if (!catItem) {
+        addToCart(itemId);
+        addedCount++;
+      }
+    });
+    if (addedCount > 0) {
+      addToast(`Re-ordered combo (${addedCount} items) added to cart!`);
+    } else {
+      addToast('Items in previous combo are currently out of stock.');
+    }
+  };
 
   const currentLiveOrder = orders.find((o) => o.live);
   const done = stageIndex >= stages.length - 1;
@@ -33,6 +109,74 @@ const HomePage = () => {
 
   return (
     <div className="page active">
+            {/* Student Greeting */}
+      <div className="home-greeting-bar">
+        <h2 className="greeting-heading">Welcome back, {currentUser?.name || 'Student'}!</h2>
+        <p className="greeting-sub">High-speed re-order for your frequent cafeteria favorites.</p>
+      </div>
+
+      {/* High-Speed Quick Re-Order Shelf */}
+      <section className="quick-reorder-section">
+        <div className="section-head" style={{ marginTop: '4px', marginBottom: '8px' }}>
+          <div className="section-title" style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+            <span className="material-symbols-outlined" style={{ fontSize: '20px', color: '#f59e0b' }}>bolt</span>
+            <span>Quick Re-Order</span>
+          </div>
+          {hasCombo && (
+            <button
+              type="button"
+              className="reorder-combo-cta-btn"
+              onClick={handleReorderCombo}
+              title={`Re-order all ${lastOrderItems.length} items from your previous meal`}
+            >
+              <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>autorenew</span>
+              <span>Re-order Entire Combo ({lastOrderItems.length} items)</span>
+            </button>
+          )}
+        </div>
+        <div className="quick-reorder-scroll-row">
+          {favoriteItems.length === 0 ? (
+            <div className="empty-state" style={{ padding: '18px', width: '100%', textAlign: 'left', background: 'var(--md-sys-color-surface-container-low)', borderRadius: '12px', border: '1px dashed var(--md-sys-color-outline-variant)' }}>
+              <div style={{ fontSize: '13.5px', fontWeight: 600, color: 'var(--md-sys-color-on-surface)' }}>Your frequent favorites will appear here</div>
+              <div style={{ fontSize: '12px', color: 'var(--md-sys-color-on-surface-variant)', marginTop: '2px' }}>Load menu items or place your first order to enable high-speed 1-tap re-ordering.</div>
+            </div>
+          ) : (
+            favoriteItems.map((it) => (
+              <div key={it.id} className="reorder-card">
+                <div className="reorder-card-top">
+                  <div className="reorder-card-icon">
+                    <span className="material-symbols-outlined" style={{ fontSize: '24px' }}>restaurant</span>
+                  </div>
+                  <div className="reorder-card-info">
+                    <div className="reorder-card-title" title={it.name}>{it.name}</div>
+                    <span className="reorder-card-counter" title={it.counter}>{it.counter}</span>
+                    <div className="reorder-card-frequency">
+                      <span className="material-symbols-outlined" style={{ fontSize: '12px' }}>{it.isHistory ? 'history' : 'star'}</span>
+                      <span>{it.isHistory && it.orderCount > 1 ? `Ordered ${it.orderCount}x` : (it.isHistory ? 'Recent order' : 'Campus staple')}</span>
+                    </div>
+                  </div>
+                </div>
+                <div className="reorder-card-bottom">
+                  <span className="reorder-card-price mono">Rs {it.price}</span>
+                  <button
+                    type="button"
+                    className="reorder-add-btn"
+                    onClick={() => {
+                      addToCart(it.id);
+                      addToast(`Added ${it.name} to cart`);
+                    }}
+                    disabled={it.stock <= 0}
+                  >
+                    <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>add</span>
+                    <span>{it.stock <= 0 ? 'Sold Out' : 'Add'}</span>
+                  </button>
+                </div>
+              </div>
+            ))
+          )}
+        </div>
+      </section>
+
       {/* Hero Ticket */}
       <div className="ticket">
         <div className="ticket-main">

@@ -1357,6 +1357,146 @@ function renderCanteenRushMeter(state) {
   }
 }
 
+
+function renderQuickReorder(state) {
+  const greetingName = $('#homeGreetingName');
+  if (greetingName) {
+    const rawName = state.currentUser ? state.currentUser.name : 'Student';
+    const cleanName = rawName.replace(/[^\x20-\x7E]/g, '').trim() || 'Student';
+    greetingName.textContent = `Welcome back, ${cleanName}!`;
+  }
+
+  const container = $('#quickReorderRow');
+  const ctaContainer = $('#reorderComboCtaContainer');
+  if (!container) return;
+
+  const userOrders = (state.orders || []).filter((o) =>
+    o.role === 'Student' || !o.role || state.activeRole === 'user' || (state.currentUser && o.customerName === state.currentUser.name)
+  );
+
+  // 1. Identify 3 most frequently ordered items
+  const frequencyMap = {};
+  userOrders.forEach((order) => {
+    (order.items || []).forEach((it) => {
+      const key = it.id || it.name;
+      if (!frequencyMap[key]) {
+        frequencyMap[key] = {
+          id: it.id,
+          name: it.name,
+          price: it.price,
+          count: 0
+        };
+      }
+      frequencyMap[key].count += (it.qty || 1);
+    });
+  });
+
+  const sortedFreq = Object.values(frequencyMap).sort((a, b) => b.count - a.count);
+
+  let favoriteItems = [];
+  if (sortedFreq.length > 0) {
+    favoriteItems = sortedFreq.slice(0, 3).map((entry) => {
+      const catalogItem = (state.menuItems || []).find((m) => m.id === entry.id || m.name.toLowerCase() === entry.name.toLowerCase());
+      return {
+        id: catalogItem ? catalogItem.id : entry.id,
+        name: catalogItem ? catalogItem.name : entry.name,
+        emoji: catalogItem ? catalogItem.emoji : 'restaurant',
+        price: catalogItem ? catalogItem.price : entry.price,
+        counter: catalogItem ? catalogItem.counter : 'Counter 2 (Quick Bites)',
+        stock: catalogItem ? catalogItem.stock : 10,
+        orderCount: entry.count,
+        isHistory: true
+      };
+    });
+  } else if ((state.menuItems || []).length > 0) {
+    favoriteItems = (state.menuItems || []).filter((m) => m.stock > 0).slice(0, 3).map((m) => ({
+      id: m.id,
+      name: m.name,
+      emoji: m.emoji,
+      price: m.price,
+      counter: m.counter || 'Counter 1 (Hot Meals)',
+      stock: m.stock,
+      orderCount: 0,
+      isHistory: false
+    }));
+  }
+
+  // 2. Identify if last placed order was a combo (>= 2 paired items)
+  let lastOrder = null;
+  if (userOrders.length > 0) {
+    lastOrder = [...userOrders].sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0))[0] || userOrders[0];
+  }
+  const lastOrderItems = (lastOrder && Array.isArray(lastOrder.items)) ? lastOrder.items : [];
+  const hasCombo = lastOrderItems.length >= 2;
+
+  // Render "Re-order Entire Combo" CTA button if previous order consisted of 2 or more paired items
+  if (ctaContainer) {
+    if (hasCombo) {
+      const comboIds = lastOrderItems.map((it) => {
+        const catItem = (state.menuItems || []).find((m) => m.id === it.id || m.name.toLowerCase() === it.name.toLowerCase());
+        return catItem ? catItem.id : it.id;
+      });
+      const idsAttr = JSON.stringify(comboIds).replace(/"/g, '&quot;');
+      ctaContainer.innerHTML = `
+        <button type="button" class="reorder-combo-cta-btn" id="reorderComboBtn" data-combo-ids="${idsAttr}" title="Re-order all ${lastOrderItems.length} items from your previous meal">
+          <span class="material-symbols-outlined" style="font-size:16px;">autorenew</span>
+          <span>Re-order Entire Combo (${lastOrderItems.length} items)</span>
+        </button>
+      `;
+    } else {
+      ctaContainer.innerHTML = '';
+    }
+  }
+
+  // Render cards
+  if (favoriteItems.length === 0) {
+    container.innerHTML = `
+      <div class="empty-state" style="padding: 18px; width: 100%; text-align: left; background: var(--md-sys-color-surface-container-low, #f8fafc); border-radius: 12px; border: 1px dashed var(--md-sys-color-outline-variant, #cbd5e1);">
+        <div style="font-size: 13.5px; font-weight: 600; color: var(--md-sys-color-on-surface);">Your frequent favorites will appear here</div>
+        <div style="font-size: 12px; color: var(--md-sys-color-on-surface-variant); margin-top: 2px;">Load menu items or place your first order to enable high-speed 1-tap re-ordering.</div>
+      </div>
+    `;
+    return;
+  }
+
+  container.innerHTML = favoriteItems.map((it) => {
+    const isOut = it.stock <= 0;
+    const isLow = it.stock > 0 && it.stock <= 5;
+    const badgeText = it.isHistory && it.orderCount > 1 
+      ? `Ordered ${it.orderCount}x` 
+      : (it.isHistory ? 'Recent order' : 'Campus staple');
+    const badgeIcon = it.isHistory ? 'history' : 'star';
+    const safeName = String(it.name).replace(/"/g, '&quot;');
+    const safeCounter = String(it.counter).replace(/"/g, '&quot;');
+
+    return `
+      <div class="reorder-card">
+        <div class="reorder-card-top">
+          <div class="reorder-card-icon">
+            ${renderItemIcon(it.emoji)}
+          </div>
+          <div class="reorder-card-info">
+            <div class="reorder-card-title" title="${safeName}">${it.name}</div>
+            <span class="reorder-card-counter" title="${safeCounter}">${it.counter}</span>
+            <div class="reorder-card-frequency">
+              <span class="material-symbols-outlined" style="font-size:12px;">${badgeIcon}</span>
+              <span>${badgeText}</span>
+            </div>
+            ${isLow ? '<div style="font-size:10px; color:#ef4444; font-weight:700; margin-top:3px;">Only ' + it.stock + ' left!</div>' : ''}
+          </div>
+        </div>
+        <div class="reorder-card-bottom">
+          <span class="reorder-card-price mono">Rs ${it.price}</span>
+          <button type="button" class="reorder-add-btn" data-add="${it.id}" ${isOut ? 'disabled title="Out of stock"' : 'title="Add to tray"'}>
+            <span class="material-symbols-outlined" style="font-size:16px;">add</span>
+            <span>${isOut ? 'Sold Out' : 'Add'}</span>
+          </button>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
 function renderStudentTicket(state) {
   const activeOrder = state.orders.find((o) => o.status !== 'Picked up' && (o.role === 'Student' || !o.role));
   const advanceBtn = $('#advanceBtn');
@@ -2692,6 +2832,32 @@ function hideReceiptModal() {
 
 function setupEventHandlers() {
 
+  
+  document.addEventListener('click', (e) => {
+    const comboBtn = e.target.closest('#reorderComboBtn');
+    if (comboBtn && comboBtn.dataset.comboIds) {
+      triggerHaptic(60);
+      try {
+        const ids = JSON.parse(comboBtn.dataset.comboIds.replace(/&quot;/g, '"'));
+        let addedCount = 0;
+        ids.forEach((id) => {
+          const item = store.state.menuItems.find((m) => m.id === id);
+          if (item && item.stock > 0) {
+            store.addToCart(id);
+            addedCount++;
+          }
+        });
+        if (addedCount > 0) {
+          toast(`Re-ordered combo (${addedCount} items) added to cart!`, 'shopping_cart');
+        } else {
+          toast('Previous combo items are out of stock.', 'cancel');
+        }
+      } catch (err) {
+        console.warn('Reorder combo error', err);
+      }
+    }
+  });
+
   const stickyCartBtn = $('#stickyCartBtn');
   if (stickyCartBtn) {
     stickyCartBtn.addEventListener('click', () => {
@@ -3373,6 +3539,7 @@ function setupEventHandlers() {
 function renderApp(state) {
   renderShell(state);
   renderCanteenRushMeter(state);
+  renderQuickReorder(state);
 
   renderStudentTicket(state);
   renderCounterStrip(state);

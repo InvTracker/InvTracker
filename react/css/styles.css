@@ -4068,3 +4068,171 @@ body.has-sticky-cart .floating-token-bar {
   line-height: 1.4;
   padding-left: 18px;
 }
+
+
+/* Quick Re-Order / Order Again Shelf */
+.home-greeting-bar {
+  margin-top: 4px;
+  margin-bottom: 16px;
+}
+.greeting-heading {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--md-sys-color-on-surface);
+  letter-spacing: -0.3px;
+  margin: 0 0 4px 0;
+}
+.greeting-sub {
+  font-size: 13px;
+  color: var(--md-sys-color-on-surface-variant);
+  margin: 0;
+}
+.quick-reorder-section {
+  margin-bottom: 22px;
+}
+.quick-reorder-scroll-row {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  padding: 4px 2px 12px 2px;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+.quick-reorder-scroll-row::-webkit-scrollbar {
+  height: 5px;
+}
+.quick-reorder-scroll-row::-webkit-scrollbar-thumb {
+  background: var(--md-sys-color-outline-variant, #cbd5e1);
+  border-radius: 9999px;
+}
+.reorder-card {
+  flex: 0 0 240px;
+  min-width: 220px;
+  max-width: 260px;
+  scroll-snap-align: start;
+  background: var(--md-sys-color-surface-container-low, #f8fafc);
+  border: 1px solid var(--md-sys-color-outline-variant, #e2e8f0);
+  border-radius: var(--md-sys-shape-corner-large, 16px);
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.reorder-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+.reorder-card-top {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+.reorder-card-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: var(--md-sys-color-surface, #ffffff);
+  border: 1px solid var(--md-sys-color-outline-variant, #e2e8f0);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  flex-shrink: 0;
+  color: var(--md-sys-color-primary, #006874);
+}
+.reorder-card-info {
+  flex: 1;
+  min-width: 0;
+}
+.reorder-card-title {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--md-sys-color-on-surface, #1e293b);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 2px;
+}
+.reorder-card-counter {
+  font-size: 11px;
+  color: var(--md-sys-color-on-surface-variant, #64748b);
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.reorder-card-frequency {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 10.5px;
+  font-weight: 600;
+  color: #0284c7;
+  background: rgba(2, 132, 199, 0.08);
+  padding: 2px 7px;
+  border-radius: 9999px;
+  margin-top: 4px;
+}
+.reorder-card-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: auto;
+  padding-top: 10px;
+  border-top: 1px solid rgba(0,0,0,0.05);
+}
+.reorder-card-price {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--md-sys-color-on-surface, #0f172a);
+}
+.reorder-add-btn {
+  background: var(--md-sys-color-primary, #006874);
+  color: var(--md-sys-color-on-primary, #ffffff);
+  border: none;
+  border-radius: 9999px;
+  padding: 6px 14px;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: background 0.15s ease, transform 0.1s ease;
+}
+.reorder-add-btn:hover:not(:disabled) {
+  background: var(--md-sys-color-primary-container, #004f58);
+  transform: scale(1.02);
+}
+.reorder-add-btn:active:not(:disabled) {
+  transform: scale(0.97);
+}
+.reorder-add-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.reorder-combo-cta-btn {
+  background: linear-gradient(135deg, #006874, #0284c7);
+  color: #ffffff;
+  border: none;
+  border-radius: 9999px;
+  padding: 6px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  box-shadow: 0 2px 6px rgba(0, 104, 116, 0.2);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.reorder-combo-cta-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(0, 104, 116, 0.3);
+}
+.reorder-combo-cta-btn:active {
+  transform: scale(0.97);
+}
