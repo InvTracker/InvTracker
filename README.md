@@ -1,406 +1,393 @@
-# 🍽️ InvenTrack — Material Design 3 Campus Food & Inventory Platform
+# InvenTrack - Material Design 3 Campus Food & Inventory Platform
 
 [![React 18](https://img.shields.io/badge/React-18.3-61dafb?logo=react&logoColor=black)](https://react.dev/)
 [![Vite](https://img.shields.io/badge/Vite-5.4-646CFF?logo=vite&logoColor=white)](https://vitejs.dev/)
 [![Material Design 3](https://img.shields.io/badge/Google-Material%20Design%203-006874?logo=google&logoColor=white)](https://m3.material.io/)
-[![Vercel Deployment Ready](https://img.shields.io/badge/Vercel-Deployment%20Ready-black?logo=vercel&logoColor=white)](https://vercel.com/)
+[![Vercel Deployment](https://img.shields.io/badge/Vercel-Deployment%20Ready-black?logo=vercel&logoColor=white)](https://invtracker-henna.vercel.app/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
-**InvenTrack** is a next-generation, **Google Material Design 3 (Material You)** campus food ordering, cafe POS, and inventory management platform. Built to solve the chaos of university dining halls, campus cafeterias, and student food courts, InvenTrack connects **Students**, **Express Shoppers**, **Kitchen Chefs**, and **Campus Administrators** in a real-time, synchronized ecosystem.
+**InvenTrack** is a modern, **Google Material Design 3 (Material You)** campus food ordering, cafe POS, and inventory management platform. Built specifically to eliminate the chaos of university dining halls, campus cafeterias, and student food courts, InvenTrack synchronizes **Students**, **Kitchen Chefs**, **Counter Cashiers**, and **Campus Administrators** in a real-time, responsive ecosystem.
 
-Whether deployed as a **high-performance React 18 Single-Page Application (SPA)** or accessed as a **zero-dependency vanilla HTML5/CSS3/ES6 web platform**, InvenTrack delivers live inventory tracking, queue token management, rapid POS billing, kitchen kanban processing, and procurement auditing.
-
----
-
-## 📌 Table of Contents
-
-- [🌟 The InvenTrack Vision](#-the-invenTrack-vision)
-- [👥 Four Role-Adaptive Personas](#-four-role-adaptive-personas)
-  - [1. 🎓 Student Dining Portal](#1--student-dining-portal)
-  - [2. ⚡ Express Shopper Portal](#2--express-shopper-portal)
-  - [3. 🍳 Kitchen & Back of House (BOH)](#3--kitchen--back-of-house-boh)
-  - [4. 👔 Campus Admin & Executive Suite](#4--campus-admin--executive-suite)
-- [✨ Recent & Key Features](#-recent--key-features)
-  - [🎲 Clean Schema & Dynamic Example Data Injection](#-clean-schema--dynamic-example-data-injection)
-  - [🎨 Strict Google Material Design 3 (M3) Theming](#-strict-google-material-design-3-m3-theming)
-  - [🌓 Dual Theme Engine (Front vs. Back of House)](#-dual-theme-engine-front-vs-back-of-house)
-  - [🧾 Digital Receipt Modal & Printable Tokens](#-digital-receipt-modal--printable-tokens)
-  - [🚀 Cloud-Ready Vercel SPA Routing](#-cloud-ready-vercel-spa-routing)
-- [🏗️ System Architecture](#️-system-architecture)
-- [📁 Codebase & Directory Structure](#-codebase--directory-structure)
-- [📊 Data Models & Schema](#-data-models--schema)
-- [🚀 Quickstart & Installation](#-quickstart--installation)
-  - [Option A: Running the React 18 Application](#option-a-running-the-react-18-application)
-  - [Option B: Running the Standalone Web Version](#option-b-running-the-standalone-web-version)
-- [☁️ Deployment](#️-deployment)
-- [🛠️ Technology Stack](#️-technology-stack)
-- [🤝 Contributing & License](#-contributing--license)
+Live Production Deployment: **https://invtracker-henna.vercel.app/**
 
 ---
 
-## 🌟 The InvenTrack Vision
+## Table of Contents
+
+- [The InvenTrack Vision](#the-inventrack-vision)
+- [Role-Based Workflows](#role-based-workflows)
+  - [1. Student Dining Portal](#1-student-dining-portal)
+  - [2. Kitchen Back-of-House (BOH) & KDS](#2-kitchen-back-of-house-boh--kds)
+  - [3. Counter POS & Cashier Terminal](#3-counter-pos--cashier-terminal)
+  - [4. Campus Admin & Executive Suite](#4-campus-admin--executive-suite)
+- [Key Features & Upgrades](#key-features--upgrades)
+  - [Unified Dining & Express Flow](#unified-dining--express-flow)
+  - [Mobile-First PWA Navigation & Sticky Cart](#mobile-first-pwa-navigation--sticky-cart)
+  - [Persistent Floating Token Pill & QR Sheet](#persistent-floating-token-pill--qr-sheet)
+  - [Native UPI Intent Deep-Linking & Desktop QR](#native-upi-intent-deep-linking--desktop-qr)
+  - [Dynamic Canteen Rush Meter & Break Pre-Orders](#dynamic-canteen-rush-meter--break-pre-orders)
+  - [High-Speed "Order Again" Combo Shelf](#high-speed-order-again-combo-shelf)
+  - [Cart Item Cooking Requests (60-Char Notes)](#cart-item-cooking-requests-60-char-notes)
+  - [Kitchen Kanban Audio Ding, Aging Badges & Note Chips](#kitchen-kanban-audio-ding-aging-badges--note-chips)
+  - [Optimistic UI Updates & Offline Storage Hydration](#optimistic-ui-updates--offline-storage-hydration)
+- [System Architecture](#system-architecture)
+- [Codebase & Directory Structure](#codebase--directory-structure)
+- [Data Models & Schema](#data-models--schema)
+- [Quickstart & Installation](#quickstart--installation)
+- [Deployment](#deployment)
+- [Technology Stack](#technology-stack)
+- [License](#license)
+
+---
+
+## The InvenTrack Vision
 
 Campus dining spaces typically suffer from distinct operational pain points:
 * **Students** endure unpredictable wait times, arrive at counters only to discover their favorite items sold out, and face confusing token pickup calls.
-* **Kitchen Staff** juggle messy paper receipts, lose track of order aging, and cannot quickly communicate real-time stock runouts.
+* **Kitchen Staff** juggle messy paper receipts, lose track of order aging, and miss special preparation requests during peak rush hours.
 * **Cashiers** require rapid counter registers that support mixed student tenders (Campus UPI QR, Meal Passes, Cards, Cash).
 * **Administrators** lack unified oversight over revenue, rush-hour demand curves, and supplier procurement thresholds.
 
-**InvenTrack eliminates these bottlenecks** by unifying real-time stock gauges, live digital token stepping, rapid cashier POS, interactive kitchen kanbans, and automated inventory audit exports into one cohesive, accessible platform.
+**InvenTrack eliminates these bottlenecks** by combining live stock gauges, persistent token tracking, rapid cashier POS, interactive kitchen kanbans, and automated inventory audit exports into one cohesive, accessible platform.
 
 ---
 
-## 👥 Four Role-Adaptive Personas
+## Role-Based Workflows
 
-InvenTrack features an instant **Role-Switcher** located in the top navigation bar. Switching personas dynamically updates the navigation drawer, viewports, and action bars tailored to that persona's workflow.
-
+```text
+       +-------------------------------------------------------------+
+       |               INVENTRACK MULTI-ROLE ECOSYSTEM               |
+       +------------------------------+------------------------------+
+                                      |
+         +----------------------------+----------------------------+
+         |                                                         |
+         v                                                         v
+   +-----------+                                             +-----------+
+   |  STUDENT  | <----------- Front of House ------------>   |  COUNTER  |
+   |  PORTAL   |                                             |    POS    |
+   +-----------+                                             +-----------+
+         |                                                         |
+         v                                                         v
+   +-----------+                                             +-----------+
+   |  KITCHEN  | <----------- Back of House ------------->   |   ADMIN   |
+   | (BOH) KDS |                                             | EXECUTIVE |
+   +-----------+                                             +-----------+
 ```
-       ┌─────────────────────────────────────────────────────────────┐
-       │              INVENTRACK MULTI-ROLE ECOSYSTEM                │
-       └──────────────────────────────┬──────────────────────────────┘
-                                      │
-         ┌───────────────┬────────────┴───┬────────────────┐
-         ▼               ▼                ▼                ▼
-   ┌───────────┐   ┌───────────┐    ┌───────────┐    ┌───────────┐
-   │  STUDENT  │   │  SHOPPER  │    │  KITCHEN  │    │   ADMIN   │
-   │  PORTAL   │   │  EXPRESS  │    │ (BOH) POS │    │ EXECUTIVE │
-   └───────────┘   └───────────┘    └───────────┘    └───────────┘
-```
 
-### 1. 🎓 Student Dining Portal
-Designed for students ordering meals from their laptops or mobile devices:
-* **Live Digital Token Stepper**: Live tracker showing token numbers (e.g., `#A-042`) with real-time stage progression (**Placed → Preparing → Ready for Pickup → Picked Up**) and dynamic pickup ETAs.
-* **Real-Time Stock Gauges**: Visual meters and semantic badges (`AVAIL`, `LOW`, `OUT`) displaying exact remaining portions.
-* **Counter-Categorized Menu**: Browse meals filtered by counter (**Counter 1: Hot Meals**, **Counter 2: Quick Bites**, **Counter 3: Cafe & Drinks**) or category (**Mains, Snacks, Beverages, Desserts**) with instant search.
-* **Smart Cart & Interactive Checkout**: Add/remove items, adjust quantities, calculate subtotal and campus packaging fees, and choose pickup counters.
-* **Multi-Tender Payment**: Support for **Campus UPI (GPay/PhonePe QR)**, **Meal Pass** (with live balance tracking), **Debit/Credit Card**, and **Cash at Counter**.
-* **Weekly Spending Analytics**: Interactive day-by-day expense bar chart identifying spending patterns and peak budget days.
-* **"For You" Recommendation Engine**: Curated food suggestions based on frequent meal pairings and popular combos.
-* **Interactive 5-Star Feedback**: Submit ratings and comments across categories (**Food Quality, Packaging, Wait Time, Hygiene**) that dispatch directly to the kitchen dashboard.
-* **Student Profile & Auth**: Mock campus authentication (Student ID, Roll No, Year, Branch, Phone) with customizable notification preferences.
+### 1. Student Dining Portal
+Designed for students ordering meals from mobile devices or laptops:
+* **Unified Dining Menu**: Seamless discovery across all counters and categories with instant live search.
+* **Dietary & Urgency Badges**: Pure Veg and Non-Veg indicators, spice level markers (Mild, Medium, Hot), and animated stock urgency tags (`Only X left!`).
+* **Customization Notes**: Attach optional 60-character preparation notes to items (e.g., "Less ice", "Extra spicy", "No onion").
+* **Multi-Tender Payment**: Support for **Campus UPI Intent (GPay/PhonePe/Paytm)**, desktop dynamic QR, **Meal Pass** with instant balance deduction, and **Cash at Counter**.
+* **Order Tracking & Token Pill**: Persistent floating bottom pill with live status stepping (`Placed -> Preparing -> Ready for Pickup -> Picked Up`) and slide-up QR pickup sheet.
+* **Weekly Spending Analytics**: Interactive expense chart identifying day-by-day spending patterns.
+* **Interactive Feedback**: Submit 5-star ratings and comments across categories (Food Quality, Packaging, Wait Time, Hygiene) directly to the kitchen team.
 
-### 2. ⚡ Express Shopper Portal
-Streamlined for fast-track walk-ins, faculty, and grab-and-go guests:
-* **Fast-Track Store**: Single-click item discovery for high-frequency snacks, coffee, and daily specials.
-* **Express Cart**: Quick order submission with customer name/reference tagging.
-* **Instant Digital Token Receipts**: Generates printable token slips immediately upon order completion.
+### 2. Kitchen Back-of-House (BOH) & KDS
+Tailored for kitchen managers and line cooks:
+* **Interactive Kanban Queue**: Real-time tickets organized across 4 stages: `Placed`, `Preparing`, `Ready`, and `Picked up`.
+* **New Order Audio Chimes & Entry Pulse**: Audible chimes and pulsing animations when new tickets arrive in the queue, with a one-click header mute toggle.
+* **Elapsed Time Tracker & Visual Aging**: Live duration counters with automatic visual transitions:
+  * 0 to 5 minutes: Normal subtle theme border.
+  * 5 to 10 minutes: Amber border with "Prep delay" warning badge.
+  * 10+ minutes: Pulsing red border with urgent "Priority pickup needed" badge.
+* **Prominent Customization Note Chips**: Highlighted amber chips displaying student preparation instructions directly on the ticket.
+* **Real-Time Stock Adjuster**: Quick increment (`+`), decrement (`-`), or out-of-stock toggles that reflect immediately on student menus.
 
-### 3. 🍳 Kitchen & Back of House (BOH)
-Tailored for kitchen managers, line cooks, and counter cashiers:
-* **Live Interactive Kanban Queue Board**: Drag-and-drop / one-click stage advancement across 4 columns:
-  1. `Placed` (Incoming tickets)
-  2. `Preparing` (Orders currently cooking)
-  3. `Ready for Pickup` (Customer notified / chime sound)
-  4. `Picked up` (Completed orders)
-  * Includes counter filtering and instant count badges.
-* **Real-Time Stock Adjuster**: Data table allowing line cooks to increment (`+`), decrement (`-`), or toggle items **Out of Stock** with one tap, instantly updating student menus.
-* **Counter POS & Rapid Billing Terminal**: Fast cashier terminal for counter sales with real-time search, counter selection, customer tagging, multiple tenders, and one-click token printing.
-* **Incoming Complaint & Feedback Feed**: Live stream of student ratings, wait-time reports, and packaging complaints to guide kitchen quality control.
+### 3. Counter POS & Cashier Terminal
+Fast cashier register for counter walk-ins and rapid sales:
+* **Rapid Item Search & Counter Selector**: Search by name or category, select designated service counter, and add items with one tap.
+* **Flexible Tender Options**: Process UPI, Meal Pass, Card, or Cash transactions with automated packaging fee calculations.
+* **One-Click Token Printing**: Printable token slips formatted for thermal receipt printers.
 
-### 4. 👔 Campus Admin & Executive Suite
+### 4. Campus Admin & Executive Suite
 Equipped for cafeteria managers, facility supervisors, and procurement leads:
-* **Executive Overview Dashboard**: Real-time KPI summary cards displaying:
-  * 💰 **Total Gross Revenue**
-  * 📋 **Total Order Volume**
-  * ⚠️ **Critical Low Stock Count**
-  * 🍳 **In-Flight Active Orders**
-* **Demand Matrix & Re-Order Velocity**: Hourly meal distribution charts highlighting peak rush windows (e.g., `12:00 - 14:00` lunch rush) alongside top-velocity reordered items.
+* **Executive Overview Dashboard**: Real-time KPI summary cards displaying Total Gross Revenue, Total Order Volume, Critical Low Stock Count, and Active In-Flight Orders.
+* **Demand Matrix & Re-Order Velocity**: Hourly meal distribution charts highlighting peak rush windows alongside top-velocity reordered items.
 * **Procurement & Inventory Audit Table**: Threshold alarm monitors, restock urgency badges, and inline restock controls.
 * **Export Audit CSV**: One-click export downloading current inventory counts, threshold deficits, and restock urgencies into a CSV spreadsheet.
-* **Food Catalog Item Manager**: Dynamic form to inject new items into the live catalog (specifying name, emoji/icon, category, service counter, price, initial stock, low-stock threshold, and restock time).
+* **Catalog Manager**: Dynamic form to add new items into the live catalog (specifying name, icon, category, counter, price, initial stock, threshold, and restock time).
 
 ---
 
-## ✨ Recent & Key Features
+## Key Features & Upgrades
 
-### 🎲 Clean Schema & Dynamic Example Data Injection
-InvenTrack adopts an enterprise-grade **zero-hardcoded data policy**:
-* **Empty Schema Default**: On fresh startup, the app initializes with a clean, empty state (`[]` - 0 items, 0 orders, ₹0 revenue).
-* **"Enter Example Data" Generator**: Integrated into both the Topbar and Dev Fixture Bar. Clicking this button dynamically generates a rich, realistic campus catalog of 7–9 randomized meals, realistic stock counts (`available`, `low`, `out`), counter assignments, price variances, and active order tickets in various preparation stages.
-* **"Clear Data" Button**: One-click reset back to a clean empty schema for testing edge states.
+### Unified Dining & Express Flow
+* Merged previously separated shopping carts and sections into a single global cart state and persistent checkout flow.
+* Top category filter bar featuring: `[All, Express / Grab & Go, Hot Meals, Quick Bites, Beverages, Desserts]`.
+* Every card includes standardized dietary tags (Pure Veg green square icon, Non-Veg red/brown icon), spice level badges, and live portion stock counters.
+* Animated urgency tag `Only X left!` automatically displays when inventory drops to 5 or fewer items.
 
-### 🎨 Strict Google Material Design 3 (M3) Theming
-Built according to Google's official Material Design 3 guidelines:
-* **M3 Dynamic Tonal Palette**: Primary cyan/teal tones (`#006874`), tonal containers (`#9eeffd`), surface container elevation levels (`lowest` to `highest`), and outline variants.
-* **Semantic Status Roles**: M3-compliant tones for food inventory:
-  * 🟢 **Available (`--md-sys-color-avail` / `#1e6c38`)**: Healthy stock levels.
-  * 🟠 **Low Stock (`--md-sys-color-low` / `#855300`)**: At or below threshold.
-  * 🔴 **Out of Stock (`--md-sys-color-out` / `#ba1a1a`)**: Exhausted portions.
-* **M3 Typography & Icons**: Powered by Google Fonts `Roboto`, `Roboto Flex`, and `Material Symbols Outlined`.
+### Mobile-First PWA Navigation & Sticky Cart
+* Optimized mobile viewport layout styled with Google Material Design 3 tokens.
+* Replaced cumbersome scrolling with an app-like sticky bottom bar displaying `[Total Items | Total Price | View Order]` for instant cart access.
+* Haptic feedback cues (`navigator.vibrate(50)`) on cart additions, quantity changes, and checkout actions.
 
-### 🌓 Dual Theme Engine (Front vs. Back of House)
-* **Front of House (Light Mode)**: Clean, high-clarity daylight theme optimized for student mobile devices and counter ordering tablets.
-* **Back of House (Dark / Kitchen Mode)**: High-contrast, dark slate layout (`[data-theme="kitchen"]`) engineered for kitchen display systems (KDS) in warm, low-light kitchen environments.
+### Persistent Floating Token Pill & QR Sheet
+* While an order is active in the kitchen, a persistent floating pill stays visible at the bottom of the screen:
+  ```text
+  Token #A-042 - Placed - Counter 2
+  ```
+* Tapping the pill smoothly slides up an interactive bottom sheet displaying the high-resolution QR token, assigned pickup counter, and complete item breakdown.
+* An audio chime automatically alerts students when their ticket advances to **Ready for Pickup**.
 
-### 🧾 Digital Receipt Modal & Printable Tokens
-Whenever an order is placed (via Student checkout, Express Shopper, or Counter POS), InvenTrack triggers an interactive **Digital Receipt Modal** containing:
-* Official Token Number (e.g., `#A-042`)
-* Assigned Service Counter
-* Itemized breakdown with pricing
-* Total amount paid & timestamp
-* Native **Print Receipt** trigger formatted for thermal receipt printers.
+### Native UPI Intent Deep-Linking & Desktop QR
+* **Mobile Devices**: Tapping "Pay via any UPI App" launches installed payment apps (Google Pay, PhonePe, Paytm, BHIM) via a generated URI scheme:
+  ```text
+  upi://pay?pa=canteenupi@bank&pn=CampusCanteen&am={totalAmount}&cu=INR&tn=Order_{orderId}
+  ```
+* **Desktop Devices**: Dynamically renders a client-side QR code encoding the same UPI intent alongside a live 5-minute countdown timer.
+* Fully supports **Meal Pass** instant deduction with live remaining balance displays, and **Cash at Counter** with collection notes.
 
-### 🚀 Cloud-Ready Vercel SPA Routing
-Pre-configured with `vercel.json` rewrite rules:
-```json
-{
-  "rewrites": [
-    { "source": "/(.*)", "destination": "/" }
-  ]
-}
-```
-Ensures zero 404 errors on deep linking, client-side routing, and page reloads when deployed to Vercel, Netlify, or GitHub Pages.
+### Dynamic Canteen Rush Meter & Break Pre-Orders
+* Real-time kitchen queue analysis displays an active status banner at the top of the menu:
+  * [Green] **Canteen Quiet**: < 5 active tickets, estimated wait 3-5 mins.
+  * [Yellow] **Moderate Rush**: 5-15 active tickets, estimated wait 8-12 mins.
+  * [Red] **Peak Rush Hour**: > 15 active tickets, estimated wait 15-20 mins.
+* Pre-order dropdown under checkout (`Pickup Time: [Instant / In 15 mins / In 30 mins]`) allows students to schedule pickups during upcoming class breaks.
+
+### High-Speed "Order Again" Combo Shelf
+* Positioned directly below the home greeting and search bar as a horizontal scroll shelf (`Quick Re-Order` / `Order Again`).
+* Automatically surfaces the student's 3 most frequently ordered items or last meal combo with direct "+ Add" buttons.
+* Includes a one-click **"Re-order Entire Combo"** button to re-add multi-item meals to the cart instantly.
+
+### Cart Item Cooking Requests (60-Char Notes)
+* Under each item in the cart drawer, an expandable link allows students to add cooking instructions.
+* Concise input field with placeholder examples (`e.g., Less ice, Extra spicy, No onion`) with a live `X/60 max` character counter.
+* Students can edit or delete their saved instructions anytime before placing the order.
+* Order item schemas (`items: [{ id, name, qty, price, note }]`) preserve and transmit cooking notes to the backend.
+
+### Kitchen Kanban Audio Ding, Aging Badges & Note Chips
+* **Audio & Visual Arrivals**: Plays an audible ding (`/notification.mp3` with Web Audio oscillator fallback) and triggers a green pulse animation when new tickets enter the "Placed" column.
+* **Elapsed Time Tracker**: Calculates live elapsed time (`Placed 4m ago`).
+* **Visual Aging States**: Dynamically updates card styling to alert chefs to aging tickets:
+  * Normal border for fresh orders (< 5 mins).
+  * Amber warning border with a `Prep delay` badge (5-10 mins).
+  * Pulsing red border with a `Priority pickup needed` badge (10+ mins).
+* **Highlighted Note Chips**: Cooking requests render prominently in bold yellow highlight chips (`.kanban-item-note-chip`) so line cooks notice customizations at a glance.
+
+### Optimistic UI Updates & Offline Storage Hydration
+* Instant UI updates when adding, incrementing, or removing items from the cart, backed by immediate `localStorage` synchronization.
+* If an inventory check fails or an item runs out of stock, the UI rolls back gracefully with an inline alert: `"Item currently out of stock"`.
+* Persists active tokens and cart states across page reloads or campus Wi-Fi drops.
 
 ---
 
-## 🏗️ System Architecture
+## System Architecture
 
 ```text
 +-----------------------------------------------------------------------------------+
 |                           INVENTRACK APPLICATION SHELL                            |
 |                                                                                   |
-|  [ M3 Navigation Drawer ]  [ Topbar: Persona Switcher | Data Fixtures | Theme ]   |
+|  [ M3 Navigation Bar ]  [ Persona Navigation ]  [ Mobile Bottom Bar & Token Pill ]|
 +-----------------------------------------------------------------------------------+
-                                          │
-                                          ▼
+                                          |
+                                          v
 +-----------------------------------------------------------------------------------+
 |                       CENTRAL STATE ENGINE & DATA FLOW                            |
 |                                                                                   |
-|  • menuCatalog (Stock, Prices, Counters, Status, Thresholds)                      |
-|  • orderTickets (Tokens, Stages: Placed->Preparing->Ready->Picked, Counter)       |
-|  • cartState (Item ID -> Quantity Map & Counters)                                 |
-|  • activePersona ('student' | 'shopper' | 'kitchen' | 'admin')                    |
-|  • themeMode ('counter' / Light  |  'kitchen' / Dark)                             |
-|  • studentProfile & authSession                                                   |
+|  * menuCatalog (Stock, Prices, Counters, Dietary Tags, Urgency Flags)             |
+|  * cartState & cartNotes (Item Map, Quantities, 60-Char Preparation Notes)        |
+|  * orderTickets (Tokens, Stages: Placed->Preparing->Ready->Picked, Notes)        |
+|  * rushMeter (Queue Ticket Velocity, Estimated Wait Times)                        |
+|  * offlineHydration (localStorage: cart, cart_notes, active_token)                |
 +-----------------------------------------------------------------------------------+
-                                          │
-         ┌───────────────────┬────────────┴───────┬────────────────────┐
-         ▼                   ▼                    ▼                    ▼
-   ┌───────────┐       ┌───────────┐        ┌───────────┐        ┌───────────┐
-   │  STUDENT  │       │  SHOPPER  │        │  KITCHEN  │        │   ADMIN   │
-   ├───────────┤       ├───────────┤        ├───────────┤        ├───────────┤
-   │ • Home    │       │ • Fast-   │        │ • Live    │        │ • Exec    │
-   │ • Menu    │       │   Track   │        │   Kanban  │        │   Overview│
-   │ • Cart    │       │ • Express │        │ • Stock   │        │ • Audit & │
-   │ • Orders  │       │   Cart    │        │   Adjust  │        │   CSV Exp │
-   │ • Spending│       │ • Digital │        │ • Counter │        │ • Catalog │
-   │ • For You │       │   Receipt │        │   POS     │        │   Manager │
-   │ • Feedback│       └───────────┘        │ • Feedback│        └───────────┘
-   │ • Account │                            │   Feed    │
-   └───────────┘                            └───────────┘
+                                          |
+         +--------------------------------+--------------------------------+
+         |                                                                 |
+         v                                                                 v
++----------------------------------+             +----------------------------------+
+|      STUDENT CONSUMER FLOW       |             |      BACK OF HOUSE OPERATIONS    |
+|                                  |             |                                  |
+|  * Menu & Dietary Filters        |             |  * Live Kitchen Kanban Board     |
+|  * Quick Re-Order Combo Shelf    |             |  * Elapsed Prep Timers & Aging   |
+|  * Cart with Cooking Requests    |             |  * New Order Chime & Note Chips  |
+|  * UPI Deep-Link & Desktop QR    |             |  * Rapid Counter POS Billing     |
+|  * Break Pre-Order Scheduling    |             |  * Stock Capacity Adjustments    |
+|  * Floating Token Bottom Sheet   |             |  * Executive KPI Audit Export    |
++----------------------------------+             +----------------------------------+
 ```
 
 ---
 
-## 📁 Codebase & Directory Structure
-
-InvenTrack is structured into four dedicated, modular tiers:
+## Codebase & Directory Structure
 
 ```text
 InvenTrack/
-├── frontend/                        # Web Presentation Tier
-│   ├── index.html                   # Multi-role M3 application shell (User, Kitchen, Admin)
-│   ├── landing.html                 # Landing page with role selector & live queue simulation
-│   ├── signin.html                  # Role-adaptive authentication portal (SSO / Register / Login)
-│   ├── student-dashboard.html       # Standalone all-in-one student diner dashboard
-│   ├── css/
-│   │   └── styles.css               # Complete M3 token system & responsive layout
-│   └── js/
-│       └── app.js                   # Client-side state engine & UI controllers
-│
-├── backend/                         # Backend Service Tier
-│   ├── server.js                    # Express REST API microservice with CORS & health checks
-│   ├── package.json                 # Backend dependencies & scripts
-│   ├── models/
-│   │   └── dataStore.js             # Data models & persistent in-memory data store
-│   ├── controllers/
-│   │   ├── authController.js        # Authentication & role-based session logic
-│   │   ├── inventoryController.js   # Stock capacity adjustments & item manager
-│   │   ├── orderController.js       # Live order tokens & Kanban advancement
-│   │   └── auditController.js       # Executive revenue KPIs & CSV export
-│   └── routes/
-│       ├── authRoutes.js            # POST /api/auth/login, POST /api/auth/register
-│       ├── inventoryRoutes.js       # GET /api/inventory/items, PATCH /api/inventory/items/:id/stock
-│       ├── orderRoutes.js           # GET /api/orders, POST /api/orders/place
-│       └── auditRoutes.js           # GET /api/audit/overview, GET /api/audit/export-csv
-│
-├── source/                          # Modular Application Source Tier (React 18 / ES6)
-│   ├── App.jsx                      # Main application router & layout shell
-│   ├── main.jsx                     # React DOM mount point
-│   ├── index.css                    # Material Design 3 tokens & styling
-│   ├── app.js                       # Core reactive store engine
-│   ├── package.json                 # React dependencies & build scripts
-│   ├── vite.config.js               # Vite build configuration
-│   ├── context/
-│   │   └── AppContext.jsx           # Central React Context state store & hooks
-│   ├── data/
-│   │   └── initialData.js           # Menu items & order fixtures
-│   ├── components/
-│   │   ├── layout/                  # Sidebar, Topbar, NotificationPanel, ToastContainer
-│   │   └── common/                  # StockGauge, StatusBadge, RecCard
-│   └── pages/                       # Home, Menu, Cart, Orders, Spending, ForYou, Settings, Feedback
-│
-├── apis/                            # API Services & Integration Tier
-│   ├── index.js                     # Unified barrel export for API services
-│   ├── apiClient.js                 # Central HTTP client with headers & error handling
-│   ├── authApi.js                   # Authentication & profile endpoints
-│   ├── inventoryApi.js              # Catalog querying & stock modification
-│   ├── ordersApi.js                 # Live order submission & ticket stepping
-│   ├── auditApi.js                  # Executive overview & CSV audit exports
-│   └── api-spec.json                # OpenAPI 3.0 specification for all REST endpoints
-│
-├── index.html                       # Root application entrypoint (with Auth Guard)
-├── landing.html                     # Root landing page mirror
-├── signin.html                      # Root sign-in mirror
-├── vercel.json                      # Vercel SPA routing configuration
-├── LICENSE                          # MIT License
-└── README.md                        # Project documentation (this file)
-```
-        │       └── RecCard.jsx      # Food pairing & recommendation card
-        │
-        └── pages/
-            ├── HomePage.jsx         # Live token stepper, gauges, spending preview
-            ├── MenuPage.jsx         # Menu grid with category & counter filters
-            ├── CartPage.jsx         # Cart items, bill breakdown, multi-tender
-            ├── OrdersPage.jsx       # Live & historical ticket list
-            ├── SpendingPage.jsx     # Spending bar chart analytics
-            ├── ForYouPage.jsx       # Personalization & combo cards
-            ├── FeedbackPage.jsx     # 5-star rating & complaint dispatch
-            └── SettingsPage.jsx     # Student auth, profile & notification toggles
++-- frontend/                        # Web Presentation Tier
+|   +-- index.html                   # Multi-role M3 application shell
+|   +-- landing.html                 # Landing page with role selector & live queue demo
+|   +-- signin.html                  # Authentication portal (SSO / Register / Login)
+|   +-- student-dashboard.html       # Standalone all-in-one student diner dashboard
+|   +-- css/
+|   |   +-- styles.css               # Complete M3 token system & responsive layout
+|   +-- js/
+|       +-- app.js                   # Client-side state engine & UI controllers
+|
++-- backend/                         # Backend Service Tier (Node.js / TypeScript)
+|   +-- src/
+|   |   +-- controllers/             # Order, inventory, auth, and audit controllers
+|   |   +-- schemas/                 # Zod validation schemas (orderItemSchema with note)
+|   |   +-- services/                # Concurrency-safe atomic stock deduction & order service
+|   |   +-- types/                   # OrderCartItem, Order, User type definitions
+|   +-- server.js                    # Express REST API microservice with CORS & health checks
+|   +-- package.json                 # Backend dependencies & build scripts
+|
++-- source/                          # Modular Application Source Tier (React 18 / ES6)
+|   +-- App.jsx                      # Main application router & layout shell
+|   +-- main.jsx                     # React DOM mount point
+|   +-- index.css                    # Material Design 3 tokens & styling
+|   +-- app.js                       # Core reactive store engine
+|   +-- package.json                 # React dependencies & build scripts
+|   +-- vite.config.js               # Vite build configuration
+|
++-- apis/                            # API Services & Integration Tier
+|   +-- index.js                     # Unified barrel export for API services
+|   +-- apiClient.js                 # Central HTTP client with headers & error handling
+|   +-- ordersApi.js                 # Live order submission & ticket stepping
+|   +-- inventoryApi.js              # Catalog querying & stock modification
+|   +-- auditApi.js                  # Executive overview & CSV audit exports
+|   +-- api-spec.json                # OpenAPI 3.0 specification for all REST endpoints
+|
++-- index.html                       # Root application entrypoint (with Auth Guard)
++-- student-dashboard.html           # Root student dashboard entrypoint
++-- landing.html                     # Root landing page mirror
++-- signin.html                      # Root sign-in mirror
++-- vercel.json                      # Vercel SPA routing configuration
++-- LICENSE                          # MIT License
++-- README.md                        # Project documentation (this file)
 ```
 
 ---
 
-## 📊 Data Models & Schema
+## Data Models & Schema
 
-### 🍲 1. Menu Item Model
+### 1. Menu Item Model
 ```javascript
 {
-  id: 'item-1730000000-1',
-  name: 'Chicken Dum Biryani',
-  emoji: '🍲',
-  price: 180,
-  cat: 'Mains',
-  counter: 'Counter 1 (Hot Meals)',
-  stock: 24,
-  maxStock: 50,
-  threshold: 8,
-  restockTime: '15 min',
-  status: 'available' // 'available' | 'low' | 'out'
+  id: "item-1",
+  name: "Chicken Dum Biryani",
+  emoji: "restaurant",
+  price: 185,
+  cat: "Hot Meals",
+  counter: "Counter 1 (Hot Meals)",
+  stock: 25,
+  lowThreshold: 8,
+  restockTime: "15 min",
+  diet: "non-veg", // "veg" | "non-veg"
+  spice: "Medium", // "Mild" | "Medium" | "Hot"
+  isExpress: false
 }
 ```
 
-### 🎫 2. Order Ticket Model
+### 2. Order Item Schema (with Customization Note)
 ```javascript
 {
-  id: 'ord-1730000000-1',
-  token: '#A-042',
-  title: 'Chicken Dum Biryani + Artisan Cold Coffee',
-  icon: '🍲',
-  amt: 235,
-  when: 'Just now',
-  status: 'Preparing',
+  id: "item-1",
+  name: "Chicken Dum Biryani",
+  qty: 1,
+  price: 185,
+  note: "Extra spicy, less oil" // Optional 60-character cooking request
+}
+```
+
+### 3. Order Ticket Model
+```javascript
+{
+  id: "ord-1730000000",
+  token: "#A-042",
+  customerName: "Rohan Sharma",
+  role: "Student",
+  items: [
+    { id: "item-1", name: "Chicken Dum Biryani", qty: 1, price: 185, note: "Extra spicy, less oil" },
+    { id: "item-8", name: "Artisan Cold Coffee", qty: 1, price: 45, note: "Less ice" }
+  ],
+  subtotal: 230,
+  packing: 10,
+  total: 240,
+  paymentMethod: "Campus UPI",
+  pickupTime: "In 15 mins",
+  status: "Preparing",
   stageIndex: 1, // 0: Placed | 1: Preparing | 2: Ready | 3: Picked up
-  live: true,
-  customerName: 'Rohan Sharma',
-  counter: 'Counter 1 (Hot Meals)'
-}
-```
-
-### 💬 3. Feedback Model
-```javascript
-{
-  id: 'fb-101',
-  rating: 5,
-  category: 'Food Quality', // 'Food Quality' | 'Packaging' | 'Wait Time' | 'Hygiene'
-  text: 'Biryani was freshly served and piping hot!',
-  time: '2 mins ago',
-  student: 'Rohan Sharma (2503A52924)'
+  counter: "Counter 1 (Hot Meals)",
+  createdAt: "2026-11-01T11:00:00.000Z"
 }
 ```
 
 ---
 
-## 🚀 Quickstart & Installation
+## Quickstart & Installation
 
 You can run InvenTrack in either of two ways:
 
-### Option A: Running the React 18 Application
+### Option A: Running the Standalone Web Version (Recommended)
 
-1. **Navigate into the React project directory**:
+InvenTrack provides a self-contained, zero-dependency browser setup:
+
+1. Open `student-dashboard.html` or `index.html` directly in any modern web browser:
+   * **Windows**: Double-click `student-dashboard.html` or run `start student-dashboard.html` in PowerShell.
+   * **macOS / Linux**: Run `open student-dashboard.html` or `xdg-open student-dashboard.html`.
+   * **VS Code**: Right-click `student-dashboard.html` and select **"Open with Live Server"**.
+
+No Node.js or compiler required to run the client!
+
+---
+
+### Option B: Running the Node.js / TypeScript Backend
+
+To run the REST API microservice:
+
+1. **Navigate to the backend directory**:
    ```bash
-   cd react
+   cd backend
    ```
 
-2. **Install project dependencies**:
+2. **Install dependencies**:
    ```bash
    npm install
    ```
 
-3. **Start the local Vite development server**:
-   ```bash
-   npm run dev
-   ```
-
-4. **Open in browser**:
-   Navigate to the local address displayed in your terminal (typically `http://localhost:5173`).
-
-5. **Build for Production**:
+3. **Build TypeScript source**:
    ```bash
    npm run build
-   npm run preview
    ```
 
----
-
-### Option B: Running the Standalone Web Version
-
-InvenTrack also provides a 100% self-contained, zero-dependency version:
-
-1. Simply open `index.html` or `student-dashboard.html` directly in any modern browser:
-   * **Windows**: Double-click `index.html` or run `start index.html` in PowerShell.
-   * **macOS**: Run `open index.html` in Terminal.
-   * **VS Code**: Right click `index.html` and select **"Open with Live Server"**.
-
-No Node.js or compilation required!
+4. **Start the server**:
+   ```bash
+   npm start
+   ```
+   The backend service starts at `http://localhost:3000` with CORS enabled.
 
 ---
 
-## ☁️ Deployment
+## Deployment
 
 ### Deploying to Vercel
 
-InvenTrack includes ready-to-deploy `vercel.json` configurations for both the root directory and the `react/` directory:
+InvenTrack is pre-configured with `vercel.json` SPA rewrites:
 
 1. Push your repository to GitHub.
-2. Go to [Vercel](https://vercel.com/) and click **"Add New Project"**.
-3. Import this repository:
-   * **To deploy the React app**: Set the **Root Directory** to `react`. Vercel will auto-detect Vite and configure `npm run build` and `dist/`.
-   * **To deploy the standalone web app**: Leave Root Directory as `./`. Vercel will serve `index.html` statically with SPA rewrites.
-4. Click **Deploy**!
+2. Link the repository on [Vercel](https://vercel.com/).
+3. Set the Root Directory to `./` and deploy.
+4. Vercel automatically hosts the progressive web application with instant CDN edge caching.
 
 ---
 
-## 🛠️ Technology Stack
+## Technology Stack
 
 | Layer | Technology | Details |
 | :--- | :--- | :--- |
-| **Framework** | **React 18** & **Vanilla ES6** | Dual implementation (Component SPA + Zero-dependency ES6) |
-| **Tooling & Bundler** | **Vite 5** | Lightning-fast HMR and optimized asset bundling |
-| **Design System** | **Google Material Design 3 (M3)** | Dynamic tonal color roles, surface elevation, and shape tokens |
-| **Icons & Symbols** | **Google Material Symbols Outlined** | Crisp, scalable vector icon set |
-| **Typography** | **Google Fonts** | `Roboto`, `Roboto Flex`, and `IBM Plex Mono` |
-| **State Management** | **React Context API / ES6 Reactive Store** | Centralized uni-directional data flow |
-| **Hosting & Cloud** | **Vercel** | Pre-configured SPA rewrite rules for zero-config deployment |
+| **Frontend Platform** | **Vanilla ES6+ & HTML5 PWA** | Zero-dependency, ultra-fast client-side reactive store |
+| **Component SPA** | **React 18 & Vite 5** | High-performance modular component architecture |
+| **Design System** | **Google Material Design 3 (M3)** | Dynamic tonal palette, surface elevation, and typography |
+| **Icons & Visuals** | **Material Symbols Outlined** | Scalable, semantic vector iconography |
+| **Backend API** | **Node.js, Express & TypeScript** | Strict schema validation with Zod and concurrency locking |
+| **Payment Integration**| **Native UPI Intent & Dynamic QR** | Deep-links for GPay, PhonePe, Paytm, and BHIM |
+| **Hosting & Cloud** | **Vercel** | SPA rewrites, zero 404 routing, and instant edge CDN |
 
 ---
 
-## 🎯 Summary
-
-InvenTrack reimagines the campus cafeteria by replacing manual chaos with **real-time transparency, automated token workflows, and cross-functional operational tools**. From students wanting to grab a quick lunch without waiting in lines, to kitchen chefs coordinating busy lunch rushes, to managers auditing weekly food costs — InvenTrack delivers an intuitive, aesthetically stunning Material 3 experience.
-
----
-
-### 📄 License
+## License
 
 This project is licensed under the [MIT License](LICENSE).
