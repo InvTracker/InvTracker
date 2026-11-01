@@ -538,7 +538,7 @@ class InvenTrackStore {
   }
   adjustStock(itemId, delta) {
     if (!this.hasPermission('canAdjustStock')) {
-      toast('"' Permission Denied: Users cannot alter item stock levels or remaining quantities.', 'error');
+      toast('Permission Denied: Users cannot alter item stock levels or remaining quantities.', 'error');
       return;
     }
 
@@ -547,9 +547,9 @@ class InvenTrackStore {
     const oldStock = item.stock;
     item.stock = Math.max(0, item.stock + delta);
     if (item.stock === 0 && oldStock > 0) {
-      toast(` "${item.name}" is now OUT OF STOCK`, 'warning');
+      toast(`"${item.name}" is now OUT OF STOCK`, 'warning');
     } else if (item.stock > 0 && oldStock === 0) {
-      toast(` "${item.name}" is RESTOCKED (${item.stock} available)`, 'check_circle');
+      toast(`"${item.name}" is RESTOCKED (${item.stock} available)`, 'check_circle');
     } else {
       toast(`Stock updated: ${item.name} (${item.stock})`, 'inventory');
     }
@@ -558,19 +558,19 @@ class InvenTrackStore {
 
   setStockZero(itemId) {
     if (!this.hasPermission('canAdjustStock')) {
-      toast('"' Permission Denied: Only kitchen staff and admin can alter item availability.', 'error');
+      toast('Permission Denied: Only kitchen staff and admin can alter item availability.', 'error');
       return;
     }
 
     const item = this.state.menuItems.find((m) => m.id === itemId);
     if (!item) return;
     item.stock = 0;
-    toast(`" Marked "${item.name}" as Out of Stock`, 'cancel');
+    toast(`Marked "${item.name}" as Out of Stock`, 'cancel');
     this.save();
   }
   addMenuItem(itemData) {
     if (!this.hasPermission('canEditMenu')) {
-      toast('"' Permission Denied: Users cannot add or modify menu catalog items.', 'error');
+      toast('Permission Denied: Users cannot add or modify menu catalog items.', 'error');
       return false;
     }
 
@@ -748,7 +748,7 @@ class InvenTrackStore {
       date: 'Just now'
     };
     this.state.feedbacks.unshift(newFb);
-    toast('Thanks " feedback recorded!', 'thumb_up');
+    toast('Thanks - feedback recorded!', 'thumb_up');
     this.save();
   }
 }
@@ -813,6 +813,24 @@ function initials(name) {
   );
 }
 
+
+function isDevModeEnabled() {
+  try {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('debug') === 'true' || params.get('dev') === 'true') {
+      localStorage.setItem('invenTrack_debug', 'true');
+      return true;
+    }
+    if (params.get('debug') === 'false' || params.get('dev') === 'false') {
+      localStorage.removeItem('invenTrack_debug');
+      return false;
+    }
+    return localStorage.getItem('invenTrack_debug') === 'true';
+  } catch(e) {
+    return false;
+  }
+}
+
 const roleLabels = {
   user: 'User Portal',
   student: 'User Portal',
@@ -823,8 +841,17 @@ const roleLabels = {
 
 function renderShell(state) {
   const { activeRole, activePage, currentUser } = state;
-  const userRole = (currentUser && currentUser.role) || 'user';
+  const userRole = (currentUser && currentUser.role) || 'student';
   const isAdmin = userRole === 'admin';
+  const isKitchen = userRole === 'kitchen';
+  const isStudent = !isAdmin && !isKitchen;
+  const isDev = isDevModeEnabled();
+
+  const devPill = $('#devPersonaPill');
+  if (devPill) {
+    devPill.style.display = (isDev || isAdmin) ? 'block' : 'none';
+  }
+
   const roleSwitcher = $('#roleSwitcher');
   if (roleSwitcher) {
     if (isAdmin) {
@@ -906,15 +933,27 @@ function renderShell(state) {
   $$('.page').forEach((pg) => pg.classList.remove('active'));
   const targetPage = $(`#page-${activePage}`);
   if (targetPage) targetPage.classList.add('active');
+  const devBar = $('#devFixtureBar');
+  if (devBar) {
+    devBar.style.display = isDev ? 'flex' : 'none';
+  }
+
   const badge = $('#dataModeBadge');
   const stats = $('#dataStatsText');
-  if (badge && stats) {
-    const isDemoLoaded = state.menuItems.length > 0;
+  const isDemoLoaded = state.menuItems.length > 0;
+  const activeCount = state.orders.filter((o) => o.status !== 'Picked up').length;
+
+  if (badge) {
     badge.textContent = isDemoLoaded ? 'Active Live State' : 'Empty Schema []';
     badge.style.backgroundColor = isDemoLoaded ? 'var(--md-sys-color-primary-container)' : 'var(--md-sys-color-surface-container-highest)';
     badge.style.color = isDemoLoaded ? 'var(--md-sys-color-on-primary-container)' : 'var(--md-sys-color-on-surface)';
-    const activeCount = state.orders.filter((o) => o.status !== 'Picked up').length;
+  }
+  if (stats) {
     stats.textContent = `(${state.menuItems.length} items, ${activeCount} active orders)`;
+  }
+
+  if (isDev) {
+    console.debug('[InvenTrack State Engine]', isDemoLoaded ? 'Active Live State' : 'Empty Schema []', `(${state.menuItems.length} items, ${activeCount} active orders)`);
   }
 
   const clearTopBtn = $('#clearDataBtnTop');
@@ -966,7 +1005,7 @@ function renderShell(state) {
     if (sideRole) {
       if (isAdmin) sideRole.textContent = 'Administrator - Full Access';
       else if (userRole === 'kitchen') sideRole.textContent = 'Kitchen Staff - Back of House';
-      else sideRole.textContent = `${state.currentUser.year || 'Student'} - Dining & Store`;
+      else sideRole.textContent = `${state.currentUser.year || 'Student'} - Dining and Store`;
     }
     if ($('#accName')) $('#accName').textContent = state.currentUser.name;
     if ($('#accEmail')) $('#accEmail').textContent = state.currentUser.email || 'rohan@student.campus.edu';
@@ -1081,13 +1120,12 @@ function renderCounterStrip(state) {
 
   if (!state.menuItems.length) {
     container.innerHTML = `
-      <div class="empty-state" style="padding:24px; width:100%; grid-column:1 / -1;">
-        <div class="em"><span class="material-symbols-outlined" style="font-size:36px;">inventory_2</span></div>
-        <strong>No counter items available</strong>
-        <div style="font-size:12px; color:var(--md-sys-color-on-surface-variant); margin-top:4px;">
-          Inject records into <code>DATA_INJECTION_SLOT</code> or click 
-          <button class="dev-btn primary" style="margin-left:6px;" onclick="store.loadDemoFixture()">Load Sample Data</button>
+      <div class="empty-state-card" style="grid-column: 1 / -1; width: 100%; padding: 24px 16px;">
+        <div class="icon-bubble" style="width: 48px; height: 48px;">
+          <span class="material-symbols-outlined" style="font-size:24px;">soup_kitchen</span>
         </div>
+        <div class="empty-title" style="font-size:15px;">Live Stations Updating</div>
+        <div class="empty-subtitle" style="font-size:12.5px;">Live counter meal lines and hot stations will display availability here as service opens.</div>
       </div>
     `;
     return;
@@ -1143,22 +1181,19 @@ function renderStudentMenu(state, searchQuery = '') {
   });
 
   if (!items.length) {
+    const isCatalogEmpty = state.menuItems.length === 0;
     grid.innerHTML = `
-      <div class="empty-state" style="padding:48px 20px; grid-column:1 / -1; width:100%;">
-        <div class="em"><span class="material-symbols-outlined" style="font-size:40px;">search</span></div>
-        <strong>No menu items found</strong>
-        <div style="font-size:12.5px; color:var(--md-sys-color-on-surface-variant); margin-top:6px; max-width:420px; margin-left:auto; margin-right:auto;">
-          ${
-            state.menuItems.length === 0
-              ? 'Catalog is empty. Inject custom items into <code>DATA_INJECTION_SLOT</code> or load the live demo fixture.'
-              : 'Try clearing your category/counter filters or search keyword.'
-          }
+      <div class="empty-state-card" style="grid-column: 1 / -1; width: 100%; padding: 48px 24px;">
+        <div class="icon-bubble">
+          <span class="material-symbols-outlined" style="font-size:32px;">${isCatalogEmpty ? 'soup_kitchen' : 'search_off'}</span>
         </div>
-        ${
-          state.menuItems.length === 0
-            ? '<button class="dev-btn primary" style="margin-top:14px;" onclick="store.loadDemoFixture()"><span class="material-symbols-outlined" style="font-size:16px;">bolt</span><span>Load Campus Demo Fixture</span></button>'
-            : ''
-        }
+        <div class="empty-title">${isCatalogEmpty ? 'Menu being freshly prepared' : 'No menu items match your search'}</div>
+        <div class="empty-subtitle">
+          ${isCatalogEmpty
+            ? 'The kitchen is preparing fresh daily specials. Check back in a few moments to order.'
+            : 'Try selecting a different food category or clearing your search keywords above.'}
+        </div>
+        ${!isCatalogEmpty ? '<button class="mini-btn" style="margin-top:10px;" onclick="if($(\'#searchInput\')) $(\'#searchInput\').value=\'\'; store.state.activeCat=\'All\'; renderStudentMenu(store.state);">Reset Filters</button>' : ''}
       </div>
     `;
     return;
@@ -1938,7 +1973,7 @@ function renderAdminAudit(state) {
           <td>${sbHTML(status)}</td>
           <td>
             <span style="color:${isCritical ? 'var(--md-sys-color-low)' : 'var(--md-sys-color-avail)'}; font-weight:600; font-size:12px;">
-              ${isCritical ? ' Urgent Restock' : '" Normal'}
+              ${isCritical ? 'Urgent Restock' : 'Normal'}
             </span>
           </td>
           <td>
@@ -2018,6 +2053,27 @@ function hideReceiptModal() {
 }
 
 function setupEventHandlers() {
+  const devPillBtn = $('#devPillToggle');
+  const devPill = $('#devPersonaPill');
+  if (devPillBtn && devPill) {
+    devPillBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      devPill.classList.toggle('open');
+    });
+    document.addEventListener('click', (e) => {
+      if (!devPill.contains(e.target)) {
+        devPill.classList.remove('open');
+      }
+    });
+    $$('#devPillMenu .dev-pill-btn').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const targetRole = btn.dataset.role;
+        store.setRole(targetRole);
+        devPill.classList.remove('open');
+      });
+    });
+  }
+
   const roleSwitcher = $('#roleSwitcher');
   if (roleSwitcher) {
     roleSwitcher.addEventListener('click', (e) => {
@@ -2025,7 +2081,7 @@ function setupEventHandlers() {
       if (!btn) return;
       const userRole = (store.state.currentUser && store.state.currentUser.role) || 'user';
       if (userRole !== 'admin') {
-        toast('"' Access Restricted: The top bar role switcher is exclusively available for Administrators.', 'error');
+        toast('Access Restricted: The top bar role switcher is exclusively available for Administrators.', 'error');
         return;
       }
       const newRole = btn.dataset.role;
@@ -2375,7 +2431,7 @@ function setupEventHandlers() {
   if (enterTopBtn) {
     enterTopBtn.addEventListener('click', () => {
       store.generateRandomExampleData();
-      toast(' Random example campus data injected!', 'casino');
+      toast('Random example campus data injected!', 'casino');
     });
   }
 
@@ -2383,7 +2439,7 @@ function setupEventHandlers() {
   if (clearTopBtnEl) {
     clearTopBtnEl.addEventListener('click', () => {
       store.resetToEmptyState();
-      toast(' - ' All data cleared. Website is now empty [].', 'delete_sweep');
+      toast('All data cleared. Website is now empty [].', 'delete_sweep');
     });
   }
 
@@ -2391,7 +2447,7 @@ function setupEventHandlers() {
   if (loadFixtureBtn) {
     loadFixtureBtn.addEventListener('click', () => {
       store.generateRandomExampleData();
-      toast(' Random example campus data injected!', 'casino');
+      toast('Random example campus data injected!', 'casino');
     });
   }
 
@@ -2399,14 +2455,14 @@ function setupEventHandlers() {
   if (resetDataBtn) {
     resetDataBtn.addEventListener('click', () => {
       store.resetToEmptyState();
-      toast(' - ' State reset to empty schema []', 'restart_alt');
+      toast('State reset to empty schema []', 'restart_alt');
     });
   }
   const openItemBtn = $('#openAddItemModalBtn');
   if (openItemBtn) {
     openItemBtn.addEventListener('click', () => {
       if (!store.hasPermission('canEditMenu')) {
-        toast('"' Permission Denied: Users cannot alter menu details or add items.', 'error');
+        toast('Permission Denied: Users cannot alter menu details or add items.', 'error');
         return;
       }
       store.setRole('admin');
@@ -2418,7 +2474,7 @@ function setupEventHandlers() {
   if (openItemBtnStock) {
     openItemBtnStock.addEventListener('click', () => {
       if (!store.hasPermission('canEditMenu')) {
-        toast('"' Permission Denied: Users cannot alter menu details or add items.', 'error');
+        toast('Permission Denied: Users cannot alter menu details or add items.', 'error');
         return;
       }
       store.setRole('admin');
@@ -2430,7 +2486,7 @@ function setupEventHandlers() {
   if (openItemBtnAdmin) {
     openItemBtnAdmin.addEventListener('click', () => {
       if (!store.hasPermission('canEditMenu')) {
-        toast('"' Permission Denied: Users cannot alter menu details or add items.', 'error');
+        toast('Permission Denied: Users cannot alter menu details or add items.', 'error');
         return;
       }
       store.setPage('admin-items');
