@@ -27,17 +27,19 @@ const DATA_INJECTION_SLOT = {
  * Material Symbols and food catalog.
  */
 const CAMPUS_DEMO_FIXTURE = {
-  menuItems: [
-    { id: 'item-1', name: 'Chicken Dum Biryani', emoji: 'restaurant', price: 185, cat: 'Mains', counter: 'Counter 1 (Hot Meals)', stock: 25, lowThreshold: 8, restockTime: '15 min' },
-    { id: 'item-2', name: 'Hyderabadi Veg Biryani', emoji: 'rice_bowl', price: 150, cat: 'Mains', counter: 'Counter 1 (Hot Meals)', stock: 18, lowThreshold: 5, restockTime: '20 min' },
-    { id: 'item-3', name: 'Ghee Podi Masala Dosa', emoji: 'breakfast_dining', price: 90, cat: 'Mains', counter: 'Counter 1 (Hot Meals)', stock: 4, lowThreshold: 6, restockTime: '10 min' },
-    { id: 'item-4', name: 'Crispy Veg Patty Burger', emoji: 'lunch_dining', price: 70, cat: 'Snacks', counter: 'Counter 2 (Quick Bites)', stock: 22, lowThreshold: 5, restockTime: '12 min' },
-    { id: 'item-5', name: 'Grilled Cheese Sandwich', emoji: 'bakery_dining', price: 60, cat: 'Snacks', counter: 'Counter 2 (Quick Bites)', stock: 3, lowThreshold: 5, restockTime: '8 min' },
-    { id: 'item-6', name: 'Wood-Fired Pizza Slice', emoji: 'local_pizza', price: 120, cat: 'Snacks', counter: 'Counter 2 (Quick Bites)', stock: 0, lowThreshold: 4, restockTime: '25 min' },
-    { id: 'item-7', name: 'Peri-Peri Salted Fries', emoji: 'fastfood', price: 55, cat: 'Snacks', counter: 'Counter 2 (Quick Bites)', stock: 30, lowThreshold: 8, restockTime: '5 min' },
-    { id: 'item-8', name: 'Artisan Cold Coffee', emoji: 'local_cafe', price: 45, cat: 'Beverages', counter: 'Counter 3 (Cafe & Drinks)', stock: 35, lowThreshold: 10, restockTime: '5 min' },
-    { id: 'item-9', name: 'Spiced Masala Buttermilk', emoji: 'emoji_food_beverage', price: 25, cat: 'Beverages', counter: 'Counter 3 (Cafe & Drinks)', stock: 40, lowThreshold: 10, restockTime: '5 min' },
-    { id: 'item-10', name: 'Warm Gulab Jamun (2 pcs)', emoji: 'icecream', price: 30, cat: 'Desserts', counter: 'Counter 3 (Cafe & Drinks)', stock: 14, lowThreshold: 5, restockTime: '15 min' }
+    menuItems: [
+    { id: 'item-1', name: 'Chicken Dum Biryani', emoji: 'restaurant', price: 185, cat: 'Hot Meals', counter: 'Counter 1 (Hot Meals)', stock: 25, lowThreshold: 8, restockTime: '15 min', diet: 'non-veg', spice: 'Medium', isExpress: false },
+    { id: 'item-2', name: 'Hyderabadi Veg Biryani', emoji: 'rice_bowl', price: 150, cat: 'Hot Meals', counter: 'Counter 1 (Hot Meals)', stock: 18, lowThreshold: 5, restockTime: '20 min', diet: 'veg', spice: 'Medium', isExpress: false },
+    { id: 'item-3', name: 'Ghee Podi Masala Dosa', emoji: 'breakfast_dining', price: 90, cat: 'Hot Meals', counter: 'Counter 1 (Hot Meals)', stock: 4, lowThreshold: 6, restockTime: '10 min', diet: 'veg', spice: 'Mild', isExpress: false },
+    { id: 'item-4', name: 'Crispy Veg Patty Burger', emoji: 'lunch_dining', price: 70, cat: 'Quick Bites', counter: 'Counter 2 (Quick Bites)', stock: 22, lowThreshold: 5, restockTime: '12 min', diet: 'veg', spice: 'Mild', isExpress: true },
+    { id: 'item-5', name: 'Grilled Cheese Sandwich', emoji: 'bakery_dining', price: 60, cat: 'Quick Bites', counter: 'Counter 2 (Quick Bites)', stock: 3, lowThreshold: 5, restockTime: '8 min', diet: 'veg', spice: 'Mild', isExpress: true },
+    { id: 'item-6', name: 'Wood-Fired Pizza Slice', emoji: 'local_pizza', price: 120, cat: 'Quick Bites', counter: 'Counter 2 (Quick Bites)', stock: 0, lowThreshold: 4, restockTime: '25 min', diet: 'veg', spice: 'Medium', isExpress: false },
+    { id: 'item-7', name: 'Peri-Peri Salted Fries', emoji: 'fastfood', price: 55, cat: 'Quick Bites', counter: 'Counter 2 (Quick Bites)', stock: 30, lowThreshold: 8, restockTime: '5 min', diet: 'veg', spice: 'Hot', isExpress: true },
+    { id: 'item-8', name: 'Artisan Cold Coffee', emoji: 'local_cafe', price: 45, cat: 'Beverages', counter: 'Counter 3 (Cafe & Drinks)', stock: 35, lowThreshold: 10, restockTime: '5 min', diet: 'veg', spice: null, isExpress: true },
+    { id: 'item-9', name: 'Spiced Masala Buttermilk', emoji: 'emoji_food_beverage', price: 25, cat: 'Beverages', counter: 'Counter 3 (Cafe & Drinks)', stock: 5, lowThreshold: 10, restockTime: '5 min', diet: 'veg', spice: 'Mild', isExpress: true },
+    { id: 'item-10', name: 'Warm Gulab Jamun (2 pcs)', emoji: 'icecream', price: 30, cat: 'Desserts', counter: 'Counter 3 (Cafe & Drinks)', stock: 14, lowThreshold: 5, restockTime: '15 min', diet: 'veg', spice: null, isExpress: true },
+    { id: 'item-11', name: 'Belgian Chocolate Brownie', emoji: 'cookie', price: 65, cat: 'Desserts', counter: 'Counter 3 (Cafe & Drinks)', stock: 2, lowThreshold: 5, restockTime: '15 min', diet: 'veg', spice: null, isExpress: true },
+    { id: 'item-12', name: 'Paneer Butter Masala Combo', emoji: 'dinner_dining', price: 160, cat: 'Hot Meals', counter: 'Counter 1 (Hot Meals)', stock: 12, lowThreshold: 5, restockTime: '15 min', diet: 'veg', spice: 'Medium', isExpress: false }
   ],
   orders: [
     {
@@ -411,8 +413,8 @@ class InvenTrackStore {
       if (stockRand < 0.12) {
         stock = 0;
         restockTime = '25 min';
-      } else if (stockRand < 0.28) {
-        stock = Math.floor(2 + Math.random() * 4);
+      } else if (stockRand < 0.42) {
+        stock = Math.floor(1 + Math.random() * 5); // 1 to 5: triggers animated urgency tag
         restockTime = '15 min';
       }
       const priceOffset = (Math.floor(Math.random() * 5) - 2) * 5;
@@ -617,6 +619,7 @@ class InvenTrackStore {
       return;
     }
     this.state.cart[itemId] = currentQty + 1;
+    this.state.shopperCart = this.state.cart;
     toast(`Added ${item.name} to cart`, 'shopping_cart');
     this.save();
   }
@@ -644,25 +647,11 @@ class InvenTrackStore {
 
   // Cart operations (Shopper)
   addToShopperCart(itemId) {
-    const item = this.state.menuItems.find((m) => m.id === itemId);
-    if (!item || item.stock <= 0) {
-      toast('Item is out of stock', 'cancel');
-      return;
-    }
-    this.state.shopperCart[itemId] = (this.state.shopperCart[itemId] || 0) + 1;
-    toast(`Added ${item.name} to Express Cart`, 'shopping_bag');
-    this.save();
+    return this.addToCart(itemId);
   }
 
   changeShopperCartQty(itemId, delta) {
-    const current = this.state.shopperCart[itemId] || 0;
-    const next = current + delta;
-    if (next <= 0) {
-      delete this.state.shopperCart[itemId];
-    } else {
-      this.state.shopperCart[itemId] = next;
-    }
-    this.save();
+    return this.changeCartQty(itemId, delta);
   }
 
   // POS operations
@@ -938,18 +927,26 @@ function renderShell(state) {
     openItemBtn.style.display = store.hasPermission('canEditMenu') ? 'inline-flex' : 'none';
   }
 
-    const studentCartCount = Object.values(state.cart).reduce((a, b) => a + b, 0);
+    const unifiedCartCount = Object.values(state.cart).reduce((a, b) => a + b, 0);
   const cartBadge = $('#cartBadge');
   if (cartBadge) {
-    cartBadge.textContent = studentCartCount;
-    cartBadge.classList.toggle('hide', studentCartCount === 0);
+    cartBadge.textContent = unifiedCartCount;
+    cartBadge.classList.toggle('hide', unifiedCartCount === 0);
   }
-
-  const shopperCartCount = Object.values(state.shopperCart).reduce((a, b) => a + b, 0);
+  const bottomCartBadge = $('#bottomCartBadge');
+  if (bottomCartBadge) {
+    bottomCartBadge.textContent = unifiedCartCount;
+    bottomCartBadge.classList.toggle('hide', unifiedCartCount === 0);
+  }
+  const mobileCartBadge = $('#mobileCartBadge');
+  if (mobileCartBadge) {
+    mobileCartBadge.textContent = unifiedCartCount;
+    mobileCartBadge.classList.toggle('hide', unifiedCartCount === 0);
+  }
   const shopperBadge = $('#shopperCartBadge');
   if (shopperBadge) {
-    shopperBadge.textContent = shopperCartCount;
-    shopperBadge.classList.toggle('hide', shopperCartCount === 0);
+    shopperBadge.textContent = unifiedCartCount;
+    shopperBadge.classList.toggle('hide', unifiedCartCount === 0);
   }
 
   const inPrepCount = state.orders.filter((o) => o.status === 'Placed' || o.status === 'Preparing').length;
@@ -1125,6 +1122,39 @@ function renderCounterStrip(state) {
 }
 
 // M3 Student Menu Grid with M3 Filter Chips
+
+function getDietaryInfo(it) {
+  if (it.diet) {
+    const isNonVeg = it.diet.toLowerCase() === 'non-veg';
+    return {
+      type: isNonVeg ? 'non-veg' : 'veg',
+      label: isNonVeg ? 'Non-Veg' : 'Pure Veg'
+    };
+  }
+  const nameLower = (it.name || '').toLowerCase();
+  const isNonVeg = nameLower.includes('chicken') || nameLower.includes('egg') || nameLower.includes('fish') || nameLower.includes('meat') || nameLower.includes('mutton');
+  return {
+    type: isNonVeg ? 'non-veg' : 'veg',
+    label: isNonVeg ? 'Non-Veg' : 'Pure Veg'
+  };
+}
+
+function getSpiceLevel(it) {
+  if (it.spice) return it.spice;
+  const nameLower = (it.name || '').toLowerCase();
+  if (nameLower.includes('peri-peri') || nameLower.includes('spicy') || nameLower.includes('schezwan')) return 'Hot';
+  if (nameLower.includes('biryani') || nameLower.includes('tikka') || nameLower.includes('masala') || nameLower.includes('pizza') || nameLower.includes('chole')) return 'Medium';
+  if (nameLower.includes('dosa') || nameLower.includes('burger') || nameLower.includes('sandwich') || nameLower.includes('buttermilk')) return 'Mild';
+  return null;
+}
+
+function isExpressItem(it) {
+  if (it.isExpress !== undefined) return !!it.isExpress;
+  const cat = (it.cat || '').toLowerCase();
+  const nameLower = (it.name || '').toLowerCase();
+  return cat.includes('snack') || cat.includes('beverage') || cat.includes('dessert') || cat.includes('quick') || nameLower.includes('coffee') || nameLower.includes('fries') || nameLower.includes('burger') || nameLower.includes('sandwich') || nameLower.includes('jamun') || nameLower.includes('brownie') || nameLower.includes('tea') || nameLower.includes('lassi');
+}
+
 function renderStudentMenu(state, searchQuery = '') {
   const grid = $('#menuGrid');
   const filterRow = $('#filterRow');
