@@ -2767,6 +2767,195 @@ textarea {
   color: #ef4444;
 }
 
+
+/* ==========================================================
+   CART COOKING REQUEST NOTES & KITCHEN HIGHLIGHT CHIPS
+   ========================================================== */
+.cart-line-container {
+  border-bottom: 1px solid var(--md-sys-color-outline-variant, #e2e8f0);
+  padding: 4px 0 10px 0;
+}
+.cart-line-container .cart-line {
+  border-bottom: none;
+  padding: 8px 0 4px 0;
+}
+.cart-note-wrapper {
+  margin-top: 4px;
+  padding-left: 50px;
+}
+.cart-note-expand-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: none;
+  border: none;
+  padding: 3px 0;
+  color: var(--md-sys-color-primary, #006874);
+  font-size: 11.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+}
+.cart-note-expand-link:hover {
+  text-decoration: underline;
+  opacity: 0.85;
+}
+.cart-note-active-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  background: #fef3c7;
+  border: 1px solid #fde68a;
+  border-radius: 8px;
+  padding: 4px 10px;
+  font-size: 12px;
+  color: #92400e;
+  max-width: 100%;
+}
+.cart-note-active-left {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.cart-note-active-left .note-icon {
+  font-size: 15px;
+  color: #d97706;
+  flex-shrink: 0;
+}
+.cart-note-saved-text {
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.cart-note-pill-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+.cart-note-btn-link {
+  background: none;
+  border: none;
+  font-size: 11px;
+  font-weight: 700;
+  color: #b45309;
+  cursor: pointer;
+  padding: 0 2px;
+}
+.cart-note-btn-link:hover {
+  text-decoration: underline;
+}
+.cart-note-btn-link.remove {
+  color: #dc2626;
+  display: flex;
+  align-items: center;
+}
+.cart-note-input-row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  background: var(--md-sys-color-surface-container-low, #f8fafc);
+  border: 1px dashed var(--md-sys-color-outline-variant, #cbd5e1);
+  border-radius: 8px;
+  padding: 8px 10px;
+  margin-top: 4px;
+}
+.cart-note-input-field-wrap {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+.cart-note-input {
+  width: 100%;
+  border: 1px solid var(--md-sys-color-outline-variant, #cbd5e1);
+  border-radius: 6px;
+  padding: 6px 65px 6px 10px;
+  font-size: 12px;
+  color: var(--md-sys-color-on-surface, #1e293b);
+  background: var(--md-sys-color-surface, #ffffff);
+  outline: none;
+  transition: border-color 0.15s ease;
+}
+.cart-note-input:focus {
+  border-color: var(--md-sys-color-primary, #006874);
+  box-shadow: 0 0 0 2px rgba(0, 104, 116, 0.15);
+}
+.cart-note-counter {
+  position: absolute;
+  right: 8px;
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface-variant, #64748b);
+  pointer-events: none;
+}
+.cart-note-btn-group {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+.cart-note-cancel-btn {
+  background: none;
+  border: 1px solid var(--md-sys-color-outline-variant, #cbd5e1);
+  border-radius: 5px;
+  padding: 3px 10px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface-variant, #64748b);
+  cursor: pointer;
+}
+.cart-note-cancel-btn:hover {
+  background: var(--md-sys-color-surface-container, #e2e8f0);
+}
+.cart-note-save-btn {
+  background: var(--md-sys-color-primary, #006874);
+  border: none;
+  border-radius: 5px;
+  padding: 3px 12px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #ffffff;
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+}
+.cart-note-save-btn:hover {
+  opacity: 0.9;
+}
+
+/* KITCHEN KANBAN CUSTOMIZATION NOTE CHIP */
+.kanban-item-note-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 3px;
+  margin-bottom: 3px;
+  padding: 3px 8px;
+  background-color: #fef08a;
+  border: 1px solid #facc15;
+  border-radius: 6px;
+  font-size: 11.5px;
+  color: #854d0e;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+.kanban-item-note-chip .note-chip-icon {
+  font-size: 14px;
+  color: #ca8a04;
+  flex-shrink: 0;
+}
+.kanban-item-note-chip .note-chip-label {
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 10px;
+  letter-spacing: 0.3px;
+}
+.kanban-item-note-chip .note-chip-text {
+  font-weight: 700;
+  color: #713f12;
+}
 </style>
 </head>
 <body>
@@ -3862,8 +4051,8 @@ const CAMPUS_DEMO_FIXTURE = {
       customerName: 'Rohan Sharma',
       role: 'Student',
       items: [
-        { id: 'item-1', name: 'Chicken Dum Biryani', qty: 1, price: 185 },
-        { id: 'item-8', name: 'Artisan Cold Coffee', qty: 1, price: 45 }
+        { id: 'item-1', name: 'Chicken Dum Biryani', qty: 1, price: 185, note: 'Extra spicy, less oil' },
+        { id: 'item-8', name: 'Artisan Cold Coffee', qty: 1, price: 45, note: 'Less ice' }
       ],
       subtotal: 230,
       packing: 10,
@@ -3897,7 +4086,7 @@ const CAMPUS_DEMO_FIXTURE = {
       customerName: 'Walk-in Faculty',
       role: 'Shopper',
       items: [
-        { id: 'item-4', name: 'Crispy Veg Patty Burger', qty: 1, price: 70 },
+        { id: 'item-4', name: 'Crispy Veg Patty Burger', qty: 1, price: 70, note: 'No onion' },
         { id: 'item-7', name: 'Peri-Peri Salted Fries', qty: 1, price: 55 }
       ],
       subtotal: 125,
@@ -4078,6 +4267,12 @@ class InvenTrackStore {
       if (rawCart) cachedCart = JSON.parse(rawCart);
     } catch (e) {}
 
+    let cachedCartNotes = {};
+    try {
+      const rawNotes = localStorage.getItem('invenTrack_cart_notes');
+      if (rawNotes) cachedCartNotes = JSON.parse(rawNotes);
+    } catch (e) {}
+
     let cachedActiveOrder = null;
     try {
       const rawOrder = localStorage.getItem('invenTrack_active_order');
@@ -4103,7 +4298,8 @@ class InvenTrackStore {
         orders: [...DATA_INJECTION_SLOT.orders],
         users: [...DATA_INJECTION_SLOT.users],
         feedbacks: [...DATA_INJECTION_SLOT.feedbacks],
-        cart: {},
+        cart: cachedCart || {},
+        cartNotes: cachedCartNotes || {},
         shopperCart: {},
         posCart: {},
         currentUser: null,
@@ -4142,6 +4338,7 @@ class InvenTrackStore {
       users: (parsed && parsed.users) || [...DATA_INJECTION_SLOT.users],
       feedbacks: (parsed && parsed.feedbacks) || [...DATA_INJECTION_SLOT.feedbacks],
       cart: (parsed && parsed.cart && Object.keys(parsed.cart).length > 0) ? parsed.cart : cachedCart,
+      cartNotes: (parsed && parsed.cartNotes && typeof parsed.cartNotes === 'object') ? parsed.cartNotes : (cachedCartNotes || {}),
       shopperCart: (parsed && parsed.shopperCart) || {},
       posCart: (parsed && parsed.posCart) || {},
       currentUser,
@@ -4156,6 +4353,8 @@ class InvenTrackStore {
 
   save() {
     try {
+      localStorage.setItem('invenTrack_cart', JSON.stringify(this.state.cart || {}));
+      localStorage.setItem('invenTrack_cart_notes', JSON.stringify(this.state.cartNotes || {}));
       localStorage.setItem(
         STORAGE_KEY,
         JSON.stringify({
@@ -4164,6 +4363,7 @@ class InvenTrackStore {
           users: this.state.users,
           feedbacks: this.state.feedbacks,
           cart: this.state.cart,
+          cartNotes: this.state.cartNotes || {},
           shopperCart: this.state.shopperCart,
           currentUser: this.state.currentUser,
           loggedIn: this.state.loggedIn,
@@ -4444,6 +4644,7 @@ class InvenTrackStore {
     // 1. Optimistic Update: Immediately apply next quantity and re-render
     if (next <= 0) {
       delete this.state.cart[itemId];
+      if (this.state.cartNotes) delete this.state.cartNotes[itemId];
     } else {
       this.state.cart[itemId] = next;
     }
@@ -4478,8 +4679,20 @@ class InvenTrackStore {
     }
   }
 
+  setCartItemNote(itemId, noteText) {
+    if (!this.state.cartNotes) this.state.cartNotes = {};
+    const trimmed = (noteText || '').trim().slice(0, 60);
+    if (!trimmed) {
+      delete this.state.cartNotes[itemId];
+    } else {
+      this.state.cartNotes[itemId] = trimmed;
+    }
+    this.save();
+  }
+
   removeCartItem(itemId) {
     delete this.state.cart[itemId];
+    if (this.state.cartNotes) delete this.state.cartNotes[itemId];
     this.state.shopperCart = this.state.cart;
     this.save();
     toast('Item removed from cart', 'delete');
@@ -4505,7 +4718,7 @@ class InvenTrackStore {
     this.save();
   }
 
-  createOrder({ itemsMap, customerName, role, counter, paymentMethod, pickupTime = 'Instant', packagingFee = 10 }) {
+  createOrder({ itemsMap, customerName, role, counter, paymentMethod, pickupTime = 'Instant', packagingFee = 10, cartNotes }) {
     const itemEntries = Object.entries(itemsMap);
     if (!itemEntries.length) return null;
 
@@ -4524,12 +4737,17 @@ class InvenTrackStore {
 
     const orderItems = itemEntries.map(([id, qty]) => {
       const it = this.state.menuItems.find((m) => m.id === id);
-      return {
+      const note = (cartNotes && cartNotes[id]) || (this.state.cartNotes && this.state.cartNotes[id]) || '';
+      const itemObj = {
         id,
         name: it.name,
         qty,
         price: it.price
       };
+      if (note && note.trim()) {
+        itemObj.note = note.trim().slice(0, 60);
+      }
+      return itemObj;
     });
 
     const subtotal = orderItems.reduce((acc, curr) => acc + curr.price * curr.qty, 0);
@@ -4655,6 +4873,16 @@ function getGaugeColor(status) {
 function getGaugeWidth(item) {
   const maxRef = Math.max(40, (item.lowThreshold || 5) * 4);
   return Math.max(4, Math.min(100, Math.round((item.stock / maxRef) * 100)));
+}
+
+function escapeHtml(str) {
+  if (!str) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
 }
 
 function renderItemIcon(emoji) {
@@ -5827,22 +6055,67 @@ function renderStudentCart(state) {
       if (!it) return '';
       const lineTotal = it.price * qty;
       subtotal += lineTotal;
+      const currentNote = (state.cartNotes && state.cartNotes[id]) || '';
+      const hasNote = Boolean(currentNote && currentNote.trim());
 
       return `
-        <div class="cart-line">
-          <div class="menu-emoji" style="width:38px; height:38px; font-size:18px;">${renderItemIcon(it.emoji)}</div>
-          <div class="stub-info">
-            <div class="t">${it.name}</div>
-            <div class="s mono">${it.price} each - ${lineTotal}</div>
+        <div class="cart-line-container" data-item-id="${id}">
+          <div class="cart-line">
+            <div class="menu-emoji" style="width:38px; height:38px; font-size:18px;">${renderItemIcon(it.emoji)}</div>
+            <div class="stub-info">
+              <div class="t">${escapeHtml(it.name)}</div>
+              <div class="s mono">${it.price} each - ${lineTotal}</div>
+            </div>
+            <div class="qty-ctrl">
+              <button data-dec="${id}">-</button>
+              <span>${qty}</span>
+              <button data-inc="${id}">+</button>
+            </div>
+            <button class="remove-x" data-remove="${id}" title="Remove">
+              <span class="material-symbols-outlined" style="font-size:18px;">close</span>
+            </button>
           </div>
-          <div class="qty-ctrl">
-            <button data-dec="${id}">-</button>
-            <span>${qty}</span>
-            <button data-inc="${id}">+</button>
+          <div class="cart-note-wrapper">
+            ${hasNote ? `
+              <div class="cart-note-active-pill" id="cartNoteActive-${id}">
+                <div class="cart-note-active-left">
+                  <span class="material-symbols-outlined note-icon">edit_note</span>
+                  <span class="cart-note-saved-text">"${escapeHtml(currentNote)}"</span>
+                </div>
+                <div class="cart-note-pill-actions">
+                  <button type="button" class="cart-note-btn-link" data-edit-note="${id}" title="Edit note">Edit</button>
+                  <button type="button" class="cart-note-btn-link remove" data-clear-note="${id}" title="Remove note">
+                    <span class="material-symbols-outlined" style="font-size:14px;">close</span>
+                  </button>
+                </div>
+              </div>
+              <div class="cart-note-input-row" id="cartNoteInputRow-${id}" style="display:none;">
+                <div class="cart-note-input-field-wrap">
+                  <input type="text" class="cart-note-input" id="cartNoteInput-${id}" maxlength="60" value="${escapeHtml(currentNote)}" placeholder="e.g., Less ice, Extra spicy, No onion" data-note-input="${id}">
+                  <span class="cart-note-counter" id="cartNoteCounter-${id}">${currentNote.length}/60 max</span>
+                </div>
+                <div class="cart-note-btn-group">
+                  <button type="button" class="cart-note-cancel-btn" data-cancel-note="${id}">Cancel</button>
+                  <button type="button" class="cart-note-save-btn" data-save-note="${id}">Save</button>
+                </div>
+              </div>
+            ` : `
+              <button type="button" class="cart-note-expand-link" id="cartNoteExpandBtn-${id}" data-toggle-note="${id}">
+                <span class="material-symbols-outlined" style="font-size:15px;">note_add</span>
+                <span>Add cooking request / note</span>
+              </button>
+              <div class="cart-note-input-row" id="cartNoteInputRow-${id}" style="display:none;">
+                <div class="cart-note-input-field-wrap">
+                  <input type="text" class="cart-note-input" id="cartNoteInput-${id}" maxlength="60" placeholder="e.g., Less ice, Extra spicy, No onion" data-note-input="${id}">
+                  <span class="cart-note-counter" id="cartNoteCounter-${id}">0/60 max</span>
+                </div>
+                <div class="cart-note-btn-group">
+                  <button type="button" class="cart-note-cancel-btn" data-cancel-note="${id}">Cancel</button>
+                  <button type="button" class="cart-note-save-btn" data-save-note="${id}">Save</button>
+                </div>
+              </div>
+            `}
           </div>
-          <button class="remove-x" data-remove="${id}" title="Remove">
-            <span class="material-symbols-outlined" style="font-size:18px;">close</span>
-          </button>
         </div>
       `;
     })
@@ -6294,13 +6567,20 @@ function renderKitchenKanban(state) {
 
         const isNewPulse = recentNewOrderIds.has(o.id);
         const timeStr = new Date(orderTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-        const itemsList = o.items
+        const itemsList = (o.items || [])
           .map(
             (i) => `
               <div class="kanban-item-line">
-                <span><strong>${i.qty} - </strong> ${i.name}</span>
+                <span><strong>${i.qty} - </strong> ${escapeHtml(i.name)}</span>
                 <span class="mono">Rs ${i.price * i.qty}</span>
               </div>
+              ${i.note ? `
+                <div class="kanban-item-note-chip">
+                  <span class="material-symbols-outlined note-chip-icon">edit_note</span>
+                  <span class="note-chip-label">Note:</span>
+                  <strong class="note-chip-text">${escapeHtml(i.note)}</strong>
+                </div>
+              ` : ''}
             `
           )
           .join('');
@@ -6695,9 +6975,12 @@ function showReceiptModal(order) {
     lines.innerHTML = (order.items || [])
       .map(
         (it) => `
-          <div class="receipt-row">
-            <span>${it.qty} - ${it.name}</span>
-            <span class="mono">${it.price * it.qty}</span>
+          <div class="receipt-row" style="flex-direction:column; align-items:flex-start; gap:2px;">
+            <div style="display:flex; justify-content:space-between; width:100%;">
+              <span>${it.qty} - ${escapeHtml(it.name)}</span>
+              <span class="mono">${it.price * it.qty}</span>
+            </div>
+            ${it.note ? `<div style="font-size:11.5px; color:#b45309; font-weight:600; display:flex; align-items:center; gap:4px; padding-left:4px;"><span class="material-symbols-outlined" style="font-size:13px;">edit_note</span>Note: ${escapeHtml(it.note)}</div>` : ''}
           </div>
         `
       )
@@ -6907,6 +7190,98 @@ function setupEventHandlers() {
       store.removeCartItem(removeBtn.dataset.remove);
       return;
     }
+
+    // Expand cooking request input
+    const toggleNoteBtn = e.target.closest('[data-toggle-note]');
+    if (toggleNoteBtn) {
+      triggerHaptic(40);
+      const id = toggleNoteBtn.dataset.toggleNote;
+      const inputRow = document.getElementById(`cartNoteInputRow-${id}`);
+      if (inputRow) {
+        inputRow.style.display = 'flex';
+        toggleNoteBtn.style.display = 'none';
+        const input = document.getElementById(`cartNoteInput-${id}`);
+        if (input) input.focus();
+      }
+      return;
+    }
+
+    // Edit cooking request note
+    const editNoteBtn = e.target.closest('[data-edit-note]');
+    if (editNoteBtn) {
+      triggerHaptic(40);
+      const id = editNoteBtn.dataset.editNote;
+      const activePill = document.getElementById(`cartNoteActive-${id}`);
+      const inputRow = document.getElementById(`cartNoteInputRow-${id}`);
+      if (activePill) activePill.style.display = 'none';
+      if (inputRow) {
+        inputRow.style.display = 'flex';
+        const input = document.getElementById(`cartNoteInput-${id}`);
+        if (input) {
+          input.focus();
+          input.select();
+        }
+      }
+      return;
+    }
+
+    // Cancel cooking request edit
+    const cancelNoteBtn = e.target.closest('[data-cancel-note]');
+    if (cancelNoteBtn) {
+      triggerHaptic(30);
+      renderStudentCart(store.state);
+      return;
+    }
+
+    // Save cooking request note
+    const saveNoteBtn = e.target.closest('[data-save-note]');
+    if (saveNoteBtn) {
+      triggerHaptic(50);
+      const id = saveNoteBtn.dataset.saveNote;
+      const input = document.getElementById(`cartNoteInput-${id}`);
+      const noteVal = input ? input.value : '';
+      store.setCartItemNote(id, noteVal);
+      toast('Cooking request saved', 'check');
+      renderStudentCart(store.state);
+      return;
+    }
+
+    // Clear cooking request note
+    const clearNoteBtn = e.target.closest('[data-clear-note]');
+    if (clearNoteBtn) {
+      triggerHaptic(40);
+      const id = clearNoteBtn.dataset.clearNote;
+      store.setCartItemNote(id, '');
+      toast('Cooking note removed', 'delete');
+      renderStudentCart(store.state);
+      return;
+    }
+  });
+
+  // Note live character counter
+  document.addEventListener('input', (e) => {
+    const noteInput = e.target.closest('[data-note-input]');
+    if (noteInput) {
+      const id = noteInput.dataset.noteInput;
+      const counterEl = document.getElementById(`cartNoteCounter-${id}`);
+      if (counterEl) {
+        counterEl.textContent = `${noteInput.value.length}/60 max`;
+      }
+    }
+  });
+
+  // Save note on Enter key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      const noteInput = e.target.closest('[data-note-input]');
+      if (noteInput) {
+        e.preventDefault();
+        const id = noteInput.dataset.noteInput;
+        store.setCartItemNote(id, noteInput.value);
+        toast('Cooking request saved', 'check');
+        renderStudentCart(store.state);
+      }
+    }
   });
   const paymentGrid = $('#paymentOptions');
   if (paymentGrid) {
@@ -6943,11 +7318,17 @@ function setupEventHandlers() {
         role: 'User',
         counter,
         paymentMethod,
-        pickupTime
+        pickupTime,
+        cartNotes: store.state.cartNotes
       });
 
       if (order) {
         store.state.cart = {};
+        store.state.cartNotes = {};
+        try {
+          localStorage.removeItem('invenTrack_cart');
+          localStorage.removeItem('invenTrack_cart_notes');
+        } catch (e) {}
         store.save();
         toast(`Order ${order.token} placed successfully!`, 'check_circle');
         showReceiptModal(order);

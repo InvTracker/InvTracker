@@ -39,8 +39,8 @@ const CAMPUS_DEMO_FIXTURE = {
       customerName: 'Rohan Sharma',
       role: 'Student',
       items: [
-        { id: 'item-1', name: 'Chicken Dum Biryani', qty: 1, price: 185 },
-        { id: 'item-8', name: 'Artisan Cold Coffee', qty: 1, price: 45 }
+        { id: 'item-1', name: 'Chicken Dum Biryani', qty: 1, price: 185, note: 'Extra spicy, less oil' },
+        { id: 'item-8', name: 'Artisan Cold Coffee', qty: 1, price: 45, note: 'Less ice' }
       ],
       subtotal: 230,
       packing: 10,
@@ -74,7 +74,7 @@ const CAMPUS_DEMO_FIXTURE = {
       customerName: 'Walk-in Faculty',
       role: 'Shopper',
       items: [
-        { id: 'item-4', name: 'Crispy Veg Patty Burger', qty: 1, price: 70 },
+        { id: 'item-4', name: 'Crispy Veg Patty Burger', qty: 1, price: 70, note: 'No onion' },
         { id: 'item-7', name: 'Peri-Peri Salted Fries', qty: 1, price: 55 }
       ],
       subtotal: 125,
@@ -255,6 +255,12 @@ class InvenTrackStore {
       if (rawCart) cachedCart = JSON.parse(rawCart);
     } catch (e) {}
 
+    let cachedCartNotes = {};
+    try {
+      const rawNotes = localStorage.getItem('invenTrack_cart_notes');
+      if (rawNotes) cachedCartNotes = JSON.parse(rawNotes);
+    } catch (e) {}
+
     let cachedActiveOrder = null;
     try {
       const rawOrder = localStorage.getItem('invenTrack_active_order');
@@ -332,6 +338,7 @@ class InvenTrackStore {
         users: parsed.users || [...DATA_INJECTION_SLOT.users],
         feedbacks: parsed.feedbacks || [...DATA_INJECTION_SLOT.feedbacks],
         cart: (parsed.cart && Object.keys(parsed.cart).length > 0) ? parsed.cart : cachedCart,
+        cartNotes: (parsed.cartNotes && typeof parsed.cartNotes === 'object') ? parsed.cartNotes : (cachedCartNotes || {}),
         shopperCart: parsed.shopperCart || {},
         posCart: parsed.posCart || {},
         currentUser,
@@ -349,7 +356,8 @@ class InvenTrackStore {
       orders: [...DATA_INJECTION_SLOT.orders],
       users: [...DATA_INJECTION_SLOT.users],
       feedbacks: [...DATA_INJECTION_SLOT.feedbacks],
-      cart: {},
+      cart: cachedCart || {},
+      cartNotes: cachedCartNotes || {},
       shopperCart: {},
       posCart: {},
       currentUser,
@@ -364,6 +372,8 @@ class InvenTrackStore {
 
   save() {
     try {
+      localStorage.setItem('invenTrack_cart', JSON.stringify(this.state.cart || {}));
+      localStorage.setItem('invenTrack_cart_notes', JSON.stringify(this.state.cartNotes || {}));
       localStorage.setItem(
         STORAGE_KEY,
         JSON.stringify({
@@ -372,6 +382,7 @@ class InvenTrackStore {
           users: this.state.users,
           feedbacks: this.state.feedbacks,
           cart: this.state.cart,
+          cartNotes: this.state.cartNotes || {},
           shopperCart: this.state.shopperCart,
           currentUser: this.state.currentUser,
           loggedIn: this.state.loggedIn,
@@ -669,6 +680,7 @@ class InvenTrackStore {
     // 1. Optimistic Update: Immediately apply next quantity and re-render
     if (next <= 0) {
       delete this.state.cart[itemId];
+      if (this.state.cartNotes) delete this.state.cartNotes[itemId];
     } else {
       this.state.cart[itemId] = next;
     }
@@ -703,8 +715,20 @@ class InvenTrackStore {
     }
   }
 
+  setCartItemNote(itemId, noteText) {
+    if (!this.state.cartNotes) this.state.cartNotes = {};
+    const trimmed = (noteText || '').trim().slice(0, 60);
+    if (!trimmed) {
+      delete this.state.cartNotes[itemId];
+    } else {
+      this.state.cartNotes[itemId] = trimmed;
+    }
+    this.save();
+  }
+
   removeCartItem(itemId) {
     delete this.state.cart[itemId];
+    if (this.state.cartNotes) delete this.state.cartNotes[itemId];
     this.state.shopperCart = this.state.cart;
     this.save();
     toast('Item removed from cart', 'delete');
@@ -730,7 +754,7 @@ class InvenTrackStore {
     this.save();
   }
 
-  createOrder({ itemsMap, customerName, role, counter, paymentMethod, pickupTime = 'Instant', packagingFee = 10 }) {
+  createOrder({ itemsMap, customerName, role, counter, paymentMethod, pickupTime = 'Instant', packagingFee = 10, cartNotes }) {
     const itemEntries = Object.entries(itemsMap);
     if (!itemEntries.length) return null;
 
@@ -749,12 +773,17 @@ class InvenTrackStore {
 
     const orderItems = itemEntries.map(([id, qty]) => {
       const it = this.state.menuItems.find((m) => m.id === id);
-      return {
+      const note = (cartNotes && cartNotes[id]) || (this.state.cartNotes && this.state.cartNotes[id]) || '';
+      const itemObj = {
         id,
         name: it.name,
         qty,
         price: it.price
       };
+      if (note && note.trim()) {
+        itemObj.note = note.trim().slice(0, 60);
+      }
+      return itemObj;
     });
 
     const subtotal = orderItems.reduce((acc, curr) => acc + curr.price * curr.qty, 0);
@@ -880,6 +909,16 @@ function getGaugeColor(status) {
 function getGaugeWidth(item) {
   const maxRef = Math.max(40, (item.lowThreshold || 5) * 4);
   return Math.max(4, Math.min(100, Math.round((item.stock / maxRef) * 100)));
+}
+
+function escapeHtml(str) {
+  if (!str) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
 }
 
 function renderItemIcon(emoji) {
@@ -2083,22 +2122,67 @@ function renderStudentCart(state) {
       if (!it) return '';
       const lineTotal = it.price * qty;
       subtotal += lineTotal;
+      const currentNote = (state.cartNotes && state.cartNotes[id]) || '';
+      const hasNote = Boolean(currentNote && currentNote.trim());
 
       return `
-        <div class="cart-line">
-          <div class="menu-emoji" style="width:38px; height:38px; font-size:18px;">${renderItemIcon(it.emoji)}</div>
-          <div class="stub-info">
-            <div class="t">${it.name}</div>
-            <div class="s mono">${it.price} each - ${lineTotal}</div>
+        <div class="cart-line-container" data-item-id="${id}">
+          <div class="cart-line">
+            <div class="menu-emoji" style="width:38px; height:38px; font-size:18px;">${renderItemIcon(it.emoji)}</div>
+            <div class="stub-info">
+              <div class="t">${escapeHtml(it.name)}</div>
+              <div class="s mono">${it.price} each - ${lineTotal}</div>
+            </div>
+            <div class="qty-ctrl">
+              <button data-dec="${id}">-</button>
+              <span>${qty}</span>
+              <button data-inc="${id}">+</button>
+            </div>
+            <button class="remove-x" data-remove="${id}" title="Remove">
+              <span class="material-symbols-outlined" style="font-size:18px;">close</span>
+            </button>
           </div>
-          <div class="qty-ctrl">
-            <button data-dec="${id}">-</button>
-            <span>${qty}</span>
-            <button data-inc="${id}">+</button>
+          <div class="cart-note-wrapper">
+            ${hasNote ? `
+              <div class="cart-note-active-pill" id="cartNoteActive-${id}">
+                <div class="cart-note-active-left">
+                  <span class="material-symbols-outlined note-icon">edit_note</span>
+                  <span class="cart-note-saved-text">"${escapeHtml(currentNote)}"</span>
+                </div>
+                <div class="cart-note-pill-actions">
+                  <button type="button" class="cart-note-btn-link" data-edit-note="${id}" title="Edit note">Edit</button>
+                  <button type="button" class="cart-note-btn-link remove" data-clear-note="${id}" title="Remove note">
+                    <span class="material-symbols-outlined" style="font-size:14px;">close</span>
+                  </button>
+                </div>
+              </div>
+              <div class="cart-note-input-row" id="cartNoteInputRow-${id}" style="display:none;">
+                <div class="cart-note-input-field-wrap">
+                  <input type="text" class="cart-note-input" id="cartNoteInput-${id}" maxlength="60" value="${escapeHtml(currentNote)}" placeholder="e.g., Less ice, Extra spicy, No onion" data-note-input="${id}">
+                  <span class="cart-note-counter" id="cartNoteCounter-${id}">${currentNote.length}/60 max</span>
+                </div>
+                <div class="cart-note-btn-group">
+                  <button type="button" class="cart-note-cancel-btn" data-cancel-note="${id}">Cancel</button>
+                  <button type="button" class="cart-note-save-btn" data-save-note="${id}">Save</button>
+                </div>
+              </div>
+            ` : `
+              <button type="button" class="cart-note-expand-link" id="cartNoteExpandBtn-${id}" data-toggle-note="${id}">
+                <span class="material-symbols-outlined" style="font-size:15px;">note_add</span>
+                <span>Add cooking request / note</span>
+              </button>
+              <div class="cart-note-input-row" id="cartNoteInputRow-${id}" style="display:none;">
+                <div class="cart-note-input-field-wrap">
+                  <input type="text" class="cart-note-input" id="cartNoteInput-${id}" maxlength="60" placeholder="e.g., Less ice, Extra spicy, No onion" data-note-input="${id}">
+                  <span class="cart-note-counter" id="cartNoteCounter-${id}">0/60 max</span>
+                </div>
+                <div class="cart-note-btn-group">
+                  <button type="button" class="cart-note-cancel-btn" data-cancel-note="${id}">Cancel</button>
+                  <button type="button" class="cart-note-save-btn" data-save-note="${id}">Save</button>
+                </div>
+              </div>
+            `}
           </div>
-          <button class="remove-x" data-remove="${id}" title="Remove">
-            <span class="material-symbols-outlined" style="font-size:18px;">close</span>
-          </button>
         </div>
       `;
     })
@@ -2550,13 +2634,20 @@ function renderKitchenKanban(state) {
 
         const isNewPulse = recentNewOrderIds.has(o.id);
         const timeStr = new Date(orderTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-        const itemsList = o.items
+        const itemsList = (o.items || [])
           .map(
             (i) => `
               <div class="kanban-item-line">
-                <span><strong>${i.qty} - </strong> ${i.name}</span>
+                <span><strong>${i.qty} - </strong> ${escapeHtml(i.name)}</span>
                 <span class="mono">Rs ${i.price * i.qty}</span>
               </div>
+              ${i.note ? `
+                <div class="kanban-item-note-chip">
+                  <span class="material-symbols-outlined note-chip-icon">edit_note</span>
+                  <span class="note-chip-label">Note:</span>
+                  <strong class="note-chip-text">${escapeHtml(i.note)}</strong>
+                </div>
+              ` : ''}
             `
           )
           .join('');
@@ -2951,9 +3042,12 @@ function showReceiptModal(order) {
     lines.innerHTML = (order.items || [])
       .map(
         (it) => `
-          <div class="receipt-row">
-            <span>${it.qty} - ${it.name}</span>
-            <span class="mono">${it.price * it.qty}</span>
+          <div class="receipt-row" style="flex-direction:column; align-items:flex-start; gap:2px;">
+            <div style="display:flex; justify-content:space-between; width:100%;">
+              <span>${it.qty} - ${escapeHtml(it.name)}</span>
+              <span class="mono">${it.price * it.qty}</span>
+            </div>
+            ${it.note ? `<div style="font-size:11.5px; color:#b45309; font-weight:600; display:flex; align-items:center; gap:4px; padding-left:4px;"><span class="material-symbols-outlined" style="font-size:13px;">edit_note</span>Note: ${escapeHtml(it.note)}</div>` : ''}
           </div>
         `
       )
@@ -3226,6 +3320,98 @@ function setupEventHandlers() {
       store.removeCartItem(removeBtn.dataset.remove);
       return;
     }
+
+    // Expand cooking request input
+    const toggleNoteBtn = e.target.closest('[data-toggle-note]');
+    if (toggleNoteBtn) {
+      triggerHaptic(40);
+      const id = toggleNoteBtn.dataset.toggleNote;
+      const inputRow = document.getElementById(`cartNoteInputRow-${id}`);
+      if (inputRow) {
+        inputRow.style.display = 'flex';
+        toggleNoteBtn.style.display = 'none';
+        const input = document.getElementById(`cartNoteInput-${id}`);
+        if (input) input.focus();
+      }
+      return;
+    }
+
+    // Edit cooking request note
+    const editNoteBtn = e.target.closest('[data-edit-note]');
+    if (editNoteBtn) {
+      triggerHaptic(40);
+      const id = editNoteBtn.dataset.editNote;
+      const activePill = document.getElementById(`cartNoteActive-${id}`);
+      const inputRow = document.getElementById(`cartNoteInputRow-${id}`);
+      if (activePill) activePill.style.display = 'none';
+      if (inputRow) {
+        inputRow.style.display = 'flex';
+        const input = document.getElementById(`cartNoteInput-${id}`);
+        if (input) {
+          input.focus();
+          input.select();
+        }
+      }
+      return;
+    }
+
+    // Cancel cooking request edit
+    const cancelNoteBtn = e.target.closest('[data-cancel-note]');
+    if (cancelNoteBtn) {
+      triggerHaptic(30);
+      renderStudentCart(store.state);
+      return;
+    }
+
+    // Save cooking request note
+    const saveNoteBtn = e.target.closest('[data-save-note]');
+    if (saveNoteBtn) {
+      triggerHaptic(50);
+      const id = saveNoteBtn.dataset.saveNote;
+      const input = document.getElementById(`cartNoteInput-${id}`);
+      const noteVal = input ? input.value : '';
+      store.setCartItemNote(id, noteVal);
+      toast('Cooking request saved', 'check');
+      renderStudentCart(store.state);
+      return;
+    }
+
+    // Clear cooking request note
+    const clearNoteBtn = e.target.closest('[data-clear-note]');
+    if (clearNoteBtn) {
+      triggerHaptic(40);
+      const id = clearNoteBtn.dataset.clearNote;
+      store.setCartItemNote(id, '');
+      toast('Cooking note removed', 'delete');
+      renderStudentCart(store.state);
+      return;
+    }
+  });
+
+  // Note live character counter
+  document.addEventListener('input', (e) => {
+    const noteInput = e.target.closest('[data-note-input]');
+    if (noteInput) {
+      const id = noteInput.dataset.noteInput;
+      const counterEl = document.getElementById(`cartNoteCounter-${id}`);
+      if (counterEl) {
+        counterEl.textContent = `${noteInput.value.length}/60 max`;
+      }
+    }
+  });
+
+  // Save note on Enter key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      const noteInput = e.target.closest('[data-note-input]');
+      if (noteInput) {
+        e.preventDefault();
+        const id = noteInput.dataset.noteInput;
+        store.setCartItemNote(id, noteInput.value);
+        toast('Cooking request saved', 'check');
+        renderStudentCart(store.state);
+      }
+    }
   });
   const paymentGrid = $('#paymentOptions');
   if (paymentGrid) {
@@ -3263,11 +3449,17 @@ function setupEventHandlers() {
         role: 'User',
         counter,
         paymentMethod,
-        pickupTime
+        pickupTime,
+        cartNotes: store.state.cartNotes
       });
 
       if (order) {
         store.state.cart = {};
+        store.state.cartNotes = {};
+        try {
+          localStorage.removeItem('invenTrack_cart');
+          localStorage.removeItem('invenTrack_cart_notes');
+        } catch (e) {}
         store.save();
         toast(`Order ${order.token} placed successfully!`, 'check_circle');
         showReceiptModal(order);

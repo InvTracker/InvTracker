@@ -4348,3 +4348,193 @@ body.has-sticky-cart .floating-token-bar {
   border-color: rgba(239, 68, 68, 0.3);
   color: #ef4444;
 }
+
+
+/* ==========================================================
+   CART COOKING REQUEST NOTES & KITCHEN HIGHLIGHT CHIPS
+   ========================================================== */
+.cart-line-container {
+  border-bottom: 1px solid var(--md-sys-color-outline-variant, #e2e8f0);
+  padding: 4px 0 10px 0;
+}
+.cart-line-container .cart-line {
+  border-bottom: none;
+  padding: 8px 0 4px 0;
+}
+.cart-note-wrapper {
+  margin-top: 4px;
+  padding-left: 50px;
+}
+.cart-note-expand-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: none;
+  border: none;
+  padding: 3px 0;
+  color: var(--md-sys-color-primary, #006874);
+  font-size: 11.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+}
+.cart-note-expand-link:hover {
+  text-decoration: underline;
+  opacity: 0.85;
+}
+.cart-note-active-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  background: #fef3c7;
+  border: 1px solid #fde68a;
+  border-radius: 8px;
+  padding: 4px 10px;
+  font-size: 12px;
+  color: #92400e;
+  max-width: 100%;
+}
+.cart-note-active-left {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.cart-note-active-left .note-icon {
+  font-size: 15px;
+  color: #d97706;
+  flex-shrink: 0;
+}
+.cart-note-saved-text {
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.cart-note-pill-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+.cart-note-btn-link {
+  background: none;
+  border: none;
+  font-size: 11px;
+  font-weight: 700;
+  color: #b45309;
+  cursor: pointer;
+  padding: 0 2px;
+}
+.cart-note-btn-link:hover {
+  text-decoration: underline;
+}
+.cart-note-btn-link.remove {
+  color: #dc2626;
+  display: flex;
+  align-items: center;
+}
+.cart-note-input-row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  background: var(--md-sys-color-surface-container-low, #f8fafc);
+  border: 1px dashed var(--md-sys-color-outline-variant, #cbd5e1);
+  border-radius: 8px;
+  padding: 8px 10px;
+  margin-top: 4px;
+}
+.cart-note-input-field-wrap {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+.cart-note-input {
+  width: 100%;
+  border: 1px solid var(--md-sys-color-outline-variant, #cbd5e1);
+  border-radius: 6px;
+  padding: 6px 65px 6px 10px;
+  font-size: 12px;
+  color: var(--md-sys-color-on-surface, #1e293b);
+  background: var(--md-sys-color-surface, #ffffff);
+  outline: none;
+  transition: border-color 0.15s ease;
+}
+.cart-note-input:focus {
+  border-color: var(--md-sys-color-primary, #006874);
+  box-shadow: 0 0 0 2px rgba(0, 104, 116, 0.15);
+}
+.cart-note-counter {
+  position: absolute;
+  right: 8px;
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface-variant, #64748b);
+  pointer-events: none;
+}
+.cart-note-btn-group {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+.cart-note-cancel-btn {
+  background: none;
+  border: 1px solid var(--md-sys-color-outline-variant, #cbd5e1);
+  border-radius: 5px;
+  padding: 3px 10px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface-variant, #64748b);
+  cursor: pointer;
+}
+.cart-note-cancel-btn:hover {
+  background: var(--md-sys-color-surface-container, #e2e8f0);
+}
+.cart-note-save-btn {
+  background: var(--md-sys-color-primary, #006874);
+  border: none;
+  border-radius: 5px;
+  padding: 3px 12px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #ffffff;
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+}
+.cart-note-save-btn:hover {
+  opacity: 0.9;
+}
+
+/* KITCHEN KANBAN CUSTOMIZATION NOTE CHIP */
+.kanban-item-note-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 3px;
+  margin-bottom: 3px;
+  padding: 3px 8px;
+  background-color: #fef08a;
+  border: 1px solid #facc15;
+  border-radius: 6px;
+  font-size: 11.5px;
+  color: #854d0e;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+.kanban-item-note-chip .note-chip-icon {
+  font-size: 14px;
+  color: #ca8a04;
+  flex-shrink: 0;
+}
+.kanban-item-note-chip .note-chip-label {
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 10px;
+  letter-spacing: 0.3px;
+}
+.kanban-item-note-chip .note-chip-text {
+  font-weight: 700;
+  color: #713f12;
+}

@@ -4,7 +4,8 @@ export const orderItemSchema = z.object({
   id: z.string().min(1, 'Item ID is required'),
   name: z.string().min(1, 'Item name is required'),
   qty: z.number().int().positive('Quantity must be at least 1').max(50, 'Max 50 per item per order'),
-  price: z.number().nonnegative('Item price must be >= 0')
+  price: z.number().nonnegative('Item price must be >= 0'),
+  note: z.string().trim().max(60, 'Cooking request note must be at most 60 characters').optional()
 });
 
 export const placeOrderSchema = z.object({
