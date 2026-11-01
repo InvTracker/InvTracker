@@ -45,51 +45,7 @@ const Topbar = () => {
     <div className="topbar">
       <div className="page-title">{pageTitles[activePage] || ''}</div>
 
-      {/* Top action button: Enter Example Data */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
-        <button
-          id="enterExampleDataBtnTop"
-          className="dev-btn primary"
-          onClick={enterExampleData}
-          title="Inject a random set of campus items, stocks and orders"
-          style={{
-            cursor: 'pointer',
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '6px',
-            padding: '7px 16px',
-            borderRadius: '9999px',
-            fontSize: '13px',
-            fontWeight: 600,
-            boxShadow: 'var(--md-sys-elevation-1)'
-          }}
-        >
-          <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>casino</span>
-          <span>Enter Example Data</span>
-        </button>
-
-        {menuItems.length > 0 && (
-          <button
-            className="dev-btn"
-            onClick={clearData}
-            title="Clear all data to empty state"
-            style={{
-              cursor: 'pointer',
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '4px',
-              padding: '6px 12px',
-              borderRadius: '9999px',
-              fontSize: '12px',
-            }}
-          >
-            <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>delete_sweep</span>
-            <span>Clear Data</span>
-          </button>
-        )}
-      </div>
-
-      <div className="search">
+<div className="search">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
           <circle cx="11" cy="11" r="8" />
           <path d="M21 21l-4.3-4.3" />
@@ -103,21 +59,17 @@ const Topbar = () => {
       </div>
 
       <div className="topbar-actions">
-        <div className="theme-toggle">
-          <div className="slider"></div>
-          <button
-            className={theme === 'default' ? 'on' : ''}
-            onClick={() => setTheme('default')}
-          >
-            ☀️ Light
-          </button>
-          <button
-            className={theme === 'kitchen' ? 'on' : ''}
-            onClick={() => setTheme('kitchen')}
-          >
-            🌙 Dark
-          </button>
-        </div>
+        <button
+          className="theme-toggle-btn"
+          id="themeToggleBtn"
+          onClick={() => setTheme(theme === 'kitchen' ? 'default' : 'kitchen')}
+          title={theme === 'kitchen' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+          aria-label="Toggle Theme"
+        >
+          <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>
+            {theme === 'kitchen' ? 'light_mode' : 'dark_mode'}
+          </span>
+        </button>
 
         <div className="bell" onClick={toggleNotif} title="Notifications">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">

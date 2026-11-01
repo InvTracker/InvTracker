@@ -332,9 +332,9 @@ class InvenTrackStore {
     if (parsed) {
       return {
         menuItems: parsed.menuItems || [...DATA_INJECTION_SLOT.menuItems],
-        orders: parsed.orders || [...DATA_INJECTION_SLOT.orders],
-        users: parsed.users || [...DATA_INJECTION_SLOT.users],
-        feedbacks: parsed.feedbacks || [...DATA_INJECTION_SLOT.feedbacks],
+        orders: (parsed.orders && parsed.orders.length > 0) ? parsed.orders : [...CAMPUS_DEMO_FIXTURE.orders],
+        users: (parsed.users && parsed.users.length > 0) ? parsed.users : [...CAMPUS_DEMO_FIXTURE.users],
+        feedbacks: (parsed.feedbacks && parsed.feedbacks.length > 0) ? parsed.feedbacks : [...CAMPUS_DEMO_FIXTURE.feedbacks],
         cart: parsed.cart || {},
         shopperCart: parsed.shopperCart || {},
         posCart: parsed.posCart || {},
@@ -2195,6 +2195,17 @@ function setupEventHandlers() {
 
   // 7. Student Cart & Add Buttons
   document.addEventListener('click', (e) => {
+    const comboBtn = e.target.closest('#reorderComboBtn');
+    if (comboBtn) {
+      QUICK_REORDER_ITEMS.forEach((it) => {
+        store.state.cart[it.id] = (store.state.cart[it.id] || 0) + 1;
+      });
+      store.save();
+      store.notify();
+      toast('⚡ Frequent Combo re-ordered! (3 items added to cart)', 'restaurant');
+      return;
+    }
+
     const addBtn = e.target.closest('[data-add]');
     if (addBtn) {
       store.addToCart(addBtn.dataset.add);

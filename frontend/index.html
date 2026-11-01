@@ -37,6 +37,54 @@
       }
     })();
   </script>
+  <!-- Exact Landing Page Theme Toggle Design & Root Theming -->
+  <style>
+    .theme-toggle-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--md-sys-color-surface-container, rgba(0, 0, 0, 0.04));
+      border: 1px solid var(--card-border, rgba(0, 0, 0, 0.08));
+      color: var(--md-sys-color-on-surface, #191c1d);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
+      padding: 0;
+      outline: none;
+      box-sizing: border-box;
+      flex-shrink: 0;
+    }
+
+    .theme-toggle-btn:hover {
+      background: var(--md-sys-color-surface-container-high, rgba(0, 0, 0, 0.08));
+      transform: scale(1.05);
+    }
+
+    [data-theme="kitchen"] .theme-toggle-btn,
+    [data-theme="dark"] .theme-toggle-btn {
+      background: rgba(48, 54, 55, 0.85);
+      color: #82d3e0;
+      border-color: rgba(130, 211, 224, 0.35);
+      box-shadow: 0 0 14px rgba(130, 211, 224, 0.2);
+    }
+
+    [data-theme="kitchen"] .theme-toggle-btn:hover,
+    [data-theme="dark"] .theme-toggle-btn:hover {
+      background: rgba(60, 68, 70, 0.95);
+      color: #9eeffd;
+      box-shadow: 0 0 18px rgba(130, 211, 224, 0.4);
+    }
+
+    html[data-theme="kitchen"],
+    html[data-theme="dark"],
+    body[data-theme="kitchen"],
+    body[data-theme="dark"] {
+      background-color: #0e1415 !important;
+      color: #deebec !important;
+    }
+  </style>
 </head>
 <body>
   <div class="shell">
@@ -80,21 +128,6 @@
         <button class="nav-item" data-page="foryou">
           <span class="material-symbols-outlined">auto_awesome</span>
           <span>For you</span>
-        </button>
-
-        <div class="nav-label">Express Store</div>
-        <button class="nav-item" data-page="shopper-store">
-          <span class="material-symbols-outlined">storefront</span>
-          <span>Fast-Track Store</span>
-        </button>
-        <button class="nav-item" data-page="shopper-cart">
-          <span class="material-symbols-outlined">shopping_bag</span>
-          <span>Quick Checkout</span>
-          <span class="nav-badge hide" id="shopperCartBadge">0</span>
-        </button>
-        <button class="nav-item" data-page="shopper-receipts">
-          <span class="material-symbols-outlined">confirmation_number</span>
-          <span>Token Receipts</span>
         </button>
 
         <div class="nav-label">Preferences</div>
@@ -158,10 +191,6 @@
             </div>
           </div>
         </button>
-        <a href="landing.html" class="nav-item" style="text-decoration:none; margin-bottom:6px; color:inherit;">
-          <span class="material-symbols-outlined">explore</span>
-          <span>Landing Page</span>
-        </a>
         <button class="nav-item" id="logoutNavBtn">
           <span class="material-symbols-outlined">logout</span>
           <span>Log out</span>
@@ -191,18 +220,6 @@
           </button>
         </div>
 
-        <!-- Top Action: Enter Example Data Button -->
-        <div style="display:flex; align-items:center; gap:8px;">
-          <button class="dev-btn primary" id="enterExampleDataBtnTop" title="Inject a random set of campus items, stocks, and tickets">
-            <span class="material-symbols-outlined" style="font-size:18px;">casino</span>
-            <span>Enter Example Data</span>
-          </button>
-          <button class="dev-btn" id="clearDataBtnTop" title="Reset all data to empty state []" style="display:none;">
-            <span class="material-symbols-outlined" style="font-size:16px;">delete_sweep</span>
-            <span>Clear Data</span>
-          </button>
-        </div>
-
         <!-- M3 Search Bar -->
         <div class="search">
           <span class="material-symbols-outlined">search</span>
@@ -210,18 +227,10 @@
         </div>
 
         <div class="topbar-actions">
-          <!-- M3 Theme Switcher (Front of House vs Back of House) -->
-          <div class="theme-toggle" id="themeToggle" title="Toggle theme">
-            <div class="slider"></div>
-            <button class="on" data-mode="counter">
-              <span class="material-symbols-outlined" style="font-size:16px;">light_mode</span>
-              <span>Front of House</span>
-            </button>
-            <button data-mode="kitchen">
-              <span class="material-symbols-outlined" style="font-size:16px;">dark_mode</span>
-              <span>Back of House</span>
-            </button>
-          </div>
+          <!-- M3 Theme Switcher (Single Icon Button matching Landing Page) -->
+          <button id="themeToggleBtn" class="theme-toggle-btn" onclick="window.toggleInvenTrackTheme(event)" title="Toggle Kitchen Dark / Daylight Theme" aria-label="Toggle Theme">
+            <span class="material-symbols-outlined" style="font-size: 19px;" id="themeIcon">dark_mode</span>
+          </button>
 
           <!-- M3 Notifications Bell -->
           <div class="bell" id="bellBtn" title="Notifications">
@@ -238,36 +247,33 @@
         </div>
       </div>
 
-      <!-- M3 Dev & Data Injection Fixture Bar -->
-      <div class="dev-fixture-bar" id="devFixtureBar">
-        <div class="dev-fixture-info">
-          <span class="material-symbols-outlined" style="font-size:18px;">database</span>
-          <span>State Engine:</span>
-          <span class="dev-fixture-badge" id="dataModeBadge">Empty Schema []</span>
-          <span id="dataStatsText">(0 items, 0 active orders)</span>
-        </div>
-        <div class="dev-fixture-actions">
-          <button class="dev-btn primary" id="loadFixtureBtn">
-            <span class="material-symbols-outlined" style="font-size:16px;">casino</span>
-            <span>Enter Example Data</span>
-          </button>
-          <button class="dev-btn" id="resetDataBtn">
-            <span class="material-symbols-outlined" style="font-size:16px;">restart_alt</span>
-            <span>Clear / Empty []</span>
-          </button>
-          <button class="dev-btn" id="openAddItemModalBtn">
-            <span class="material-symbols-outlined" style="font-size:16px;">add</span>
-            <span>Add Item</span>
-          </button>
-        </div>
-      </div>
-
       <!-- ======================================================== -->
       <!-- SECTION 1: STUDENT PAGES                                 -->
       <!-- ======================================================== -->
 
-      <!-- PAGE: STUDENT HOME -->
+            <!-- PAGE: STUDENT HOME -->
       <section class="page active" id="page-home">
+        <!-- Home Welcome Hero Header -->
+        <div class="home-hero-banner" style="margin-bottom: 24px;">
+          <h1 class="welcome-heading display" id="homeWelcomeHeading" style="font-size: 26px; font-weight: 800; color: var(--md-sys-color-on-surface); margin: 0 0 6px 0; letter-spacing: -0.5px;">Welcome back, Rohan Sharma!</h1>
+          <p class="welcome-sub" style="font-size: 14.5px; color: var(--md-sys-color-on-surface-variant); margin: 0;">High-speed re-order for your frequent cafeteria favorites.</p>
+        </div>
+
+        <!-- Quick Re-Order Section -->
+        <div class="quick-reorder-section" style="margin-bottom: 32px;">
+          <div class="section-head" style="margin-bottom: 16px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;">
+            <div class="section-title" style="display: flex; align-items: center; gap: 8px; font-size: 18px; font-weight: 800; color: var(--md-sys-color-on-surface);">
+              <span class="material-symbols-outlined" style="color: #f59e0b; font-size: 24px; font-variation-settings: 'FILL' 1;">bolt</span>
+              <span>Quick Re-Order</span>
+            </div>
+            <button class="reorder-combo-btn" id="reorderComboBtn" type="button" style="display: inline-flex; align-items: center; gap: 8px; padding: 9px 20px; border-radius: 100px; background: var(--md-sys-color-primary, #006a6a); color: #ffffff; border: none; font-size: 13.5px; font-weight: 700; cursor: pointer; box-shadow: 0 4px 14px rgba(0, 106, 106, 0.28); transition: transform 0.15s ease, box-shadow 0.15s ease;">
+              <span class="material-symbols-outlined" style="font-size: 18px;">sync</span>
+              <span>Re-order Entire Combo (3 items)</span>
+            </button>
+          </div>
+          <!-- Real Food Cards Grid -->
+          <div class="menu-grid" id="quickReorderGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 16px;"></div>
+        </div>
         <!-- Live Order Ticket Tracker -->
         <section class="ticket">
           <div class="ticket-main">
@@ -360,7 +366,7 @@
           <div class="section-title">You may also like &middot; Frequent pairings</div>
           <button class="section-link" data-goto="foryou">See more &rarr;</button>
         </div>
-        <div class="rec-grid" id="homeRecGrid"></div>
+        <div class="menu-grid" id="homeRecGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 16px;"></div>
 
         <!-- Spending Summary & History -->
         <div class="section-head">
@@ -502,9 +508,14 @@
       <!-- PAGE: FOR YOU (RECOMMENDATIONS) -->
       <section class="page" id="page-foryou">
         <div class="section-head" style="margin-top:0">
-          <div class="section-title">Frequently Bought With &middot; Personalised recommendations</div>
+          <div>
+            <div class="section-title">Chef Recommendations &amp; Curated Combos &middot; For You</div>
+            <div style="font-size:12.5px; color:var(--md-sys-color-on-surface-variant); margin-top:4px;">
+              Hand-picked specials, dynamic meal pairings, and campus favorites tailored to your dining preferences
+            </div>
+          </div>
         </div>
-        <div class="rec-grid" id="foryouGrid"></div>
+        <div class="menu-grid" id="foryouGrid"></div>
       </section>
 
       <!-- PAGE: FEEDBACK & COMPLAINTS -->
@@ -1149,7 +1160,63 @@
   <!-- Global M3 Snackbar / Toast Wrap -->
   <div class="toast-wrap" id="toastWrap"></div>
 
+
   <!-- Core Schema & Application Script -->
-  <script src="js/app.js"></script>
+  <script src="js/app.js?v=8"></script>
+
+  <!-- Robust Landing Page Theme Controller -->
+  <script>
+    (function() {
+      window.applyInvenTrackTheme = function(dark) {
+        var isDark = Boolean(dark);
+        var btn = document.getElementById('themeToggleBtn');
+        var icon = document.getElementById('themeIcon');
+
+        if (isDark) {
+          document.documentElement.setAttribute('data-theme', 'kitchen');
+          document.body.setAttribute('data-theme', 'kitchen');
+          if (icon) icon.textContent = 'light_mode';
+          if (btn) btn.setAttribute('title', 'Switch to Daylight Light Mode');
+          try { localStorage.setItem('invenTrack_theme', 'kitchen'); } catch(e){}
+        } else {
+          document.documentElement.removeAttribute('data-theme');
+          document.body.removeAttribute('data-theme');
+          if (icon) icon.textContent = 'dark_mode';
+          if (btn) btn.setAttribute('title', 'Switch to Kitchen Dark Mode');
+          try { localStorage.setItem('invenTrack_theme', 'default'); } catch(e){}
+        }
+      };
+
+      window.toggleInvenTrackTheme = function(e) {
+        if (e && e.preventDefault) e.preventDefault();
+        var currentIsDark = document.body.getAttribute('data-theme') === 'kitchen' ||
+                              document.documentElement.getAttribute('data-theme') === 'kitchen';
+        window.applyInvenTrackTheme(!currentIsDark);
+      };
+
+      // Initial theme apply
+      var saved = localStorage.getItem('invenTrack_theme');
+      var initDark = saved === 'kitchen';
+      window.applyInvenTrackTheme(initDark);
+
+      // Wire DOM once ready
+      function bindBtn() {
+        var btn = document.getElementById('themeToggleBtn');
+        if (btn) {
+          btn.onclick = window.toggleInvenTrackTheme;
+        }
+        var icon = document.getElementById('themeIcon');
+        var currentIsDark = document.body.getAttribute('data-theme') === 'kitchen' ||
+                            document.documentElement.getAttribute('data-theme') === 'kitchen';
+        if (icon) icon.textContent = currentIsDark ? 'light_mode' : 'dark_mode';
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', bindBtn);
+      } else {
+        bindBtn();
+      }
+    })();
+  </script>
 </body>
 </html>

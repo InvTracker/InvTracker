@@ -2576,6 +2576,54 @@ textarea {
 }
 
 </style>
+  <!-- Exact Landing Page Theme Toggle Design & Root Theming -->
+  <style>
+    .theme-toggle-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--md-sys-color-surface-container, rgba(0, 0, 0, 0.04));
+      border: 1px solid var(--card-border, rgba(0, 0, 0, 0.08));
+      color: var(--md-sys-color-on-surface, #191c1d);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
+      padding: 0;
+      outline: none;
+      box-sizing: border-box;
+      flex-shrink: 0;
+    }
+
+    .theme-toggle-btn:hover {
+      background: var(--md-sys-color-surface-container-high, rgba(0, 0, 0, 0.08));
+      transform: scale(1.05);
+    }
+
+    [data-theme="kitchen"] .theme-toggle-btn,
+    [data-theme="dark"] .theme-toggle-btn {
+      background: rgba(48, 54, 55, 0.85);
+      color: #82d3e0;
+      border-color: rgba(130, 211, 224, 0.35);
+      box-shadow: 0 0 14px rgba(130, 211, 224, 0.2);
+    }
+
+    [data-theme="kitchen"] .theme-toggle-btn:hover,
+    [data-theme="dark"] .theme-toggle-btn:hover {
+      background: rgba(60, 68, 70, 0.95);
+      color: #9eeffd;
+      box-shadow: 0 0 18px rgba(130, 211, 224, 0.4);
+    }
+
+    html[data-theme="kitchen"],
+    html[data-theme="dark"],
+    body[data-theme="kitchen"],
+    body[data-theme="dark"] {
+      background-color: #0e1415 !important;
+      color: #deebec !important;
+    }
+  </style>
 </head>
 <body>
   <div class="shell">
@@ -2619,21 +2667,6 @@ textarea {
         <button class="nav-item" data-page="foryou">
           <span class="material-symbols-outlined">auto_awesome</span>
           <span>For you</span>
-        </button>
-
-        <div class="nav-label">Express Store</div>
-        <button class="nav-item" data-page="shopper-store">
-          <span class="material-symbols-outlined">storefront</span>
-          <span>Fast-Track Store</span>
-        </button>
-        <button class="nav-item" data-page="shopper-cart">
-          <span class="material-symbols-outlined">shopping_bag</span>
-          <span>Quick Checkout</span>
-          <span class="nav-badge hide" id="shopperCartBadge">0</span>
-        </button>
-        <button class="nav-item" data-page="shopper-receipts">
-          <span class="material-symbols-outlined">confirmation_number</span>
-          <span>Token Receipts</span>
         </button>
 
         <div class="nav-label">Preferences</div>
@@ -2726,18 +2759,6 @@ textarea {
           </button>
         </div>
 
-        <!-- Top Action: Enter Example Data Button -->
-        <div style="display:flex; align-items:center; gap:8px;">
-          <button class="dev-btn primary" id="enterExampleDataBtnTop" title="Inject a random set of campus items, stocks, and tickets">
-            <span class="material-symbols-outlined" style="font-size:18px;">casino</span>
-            <span>Enter Example Data</span>
-          </button>
-          <button class="dev-btn" id="clearDataBtnTop" title="Reset all data to empty state []" style="display:none;">
-            <span class="material-symbols-outlined" style="font-size:16px;">delete_sweep</span>
-            <span>Clear Data</span>
-          </button>
-        </div>
-
         <!-- M3 Search Bar -->
         <div class="search">
           <span class="material-symbols-outlined">search</span>
@@ -2745,18 +2766,10 @@ textarea {
         </div>
 
         <div class="topbar-actions">
-          <!-- M3 Theme Switcher (Front of House vs Back of House) -->
-          <div class="theme-toggle" id="themeToggle" title="Toggle theme">
-            <div class="slider"></div>
-            <button class="on" data-mode="counter">
-              <span class="material-symbols-outlined" style="font-size:16px;">light_mode</span>
-              <span>Front of House</span>
-            </button>
-            <button data-mode="kitchen">
-              <span class="material-symbols-outlined" style="font-size:16px;">dark_mode</span>
-              <span>Back of House</span>
-            </button>
-          </div>
+          <!-- M3 Theme Switcher (Single Icon Button matching Landing Page) -->
+          <button id="themeToggleBtn" class="theme-toggle-btn" onclick="window.toggleInvenTrackTheme(event)" title="Toggle Kitchen Dark / Daylight Theme" aria-label="Toggle Theme">
+            <span class="material-symbols-outlined" style="font-size: 19px;" id="themeIcon">dark_mode</span>
+          </button>
 
           <!-- M3 Notifications Bell -->
           <div class="bell" id="bellBtn" title="Notifications">
@@ -2773,36 +2786,33 @@ textarea {
         </div>
       </div>
 
-      <!-- M3 Dev & Data Injection Fixture Bar -->
-      <div class="dev-fixture-bar" id="devFixtureBar">
-        <div class="dev-fixture-info">
-          <span class="material-symbols-outlined" style="font-size:18px;">database</span>
-          <span>State Engine:</span>
-          <span class="dev-fixture-badge" id="dataModeBadge">Empty Schema []</span>
-          <span id="dataStatsText">(0 items, 0 active orders)</span>
-        </div>
-        <div class="dev-fixture-actions">
-          <button class="dev-btn primary" id="loadFixtureBtn">
-            <span class="material-symbols-outlined" style="font-size:16px;">casino</span>
-            <span>Enter Example Data</span>
-          </button>
-          <button class="dev-btn" id="resetDataBtn">
-            <span class="material-symbols-outlined" style="font-size:16px;">restart_alt</span>
-            <span>Clear / Empty []</span>
-          </button>
-          <button class="dev-btn" id="openAddItemModalBtn">
-            <span class="material-symbols-outlined" style="font-size:16px;">add</span>
-            <span>Add Item</span>
-          </button>
-        </div>
-      </div>
-
       <!-- ======================================================== -->
       <!-- SECTION 1: STUDENT PAGES                                 -->
       <!-- ======================================================== -->
 
-      <!-- PAGE: STUDENT HOME -->
+            <!-- PAGE: STUDENT HOME -->
       <section class="page active" id="page-home">
+        <!-- Home Welcome Hero Header -->
+        <div class="home-hero-banner" style="margin-bottom: 24px;">
+          <h1 class="welcome-heading display" id="homeWelcomeHeading" style="font-size: 26px; font-weight: 800; color: var(--md-sys-color-on-surface); margin: 0 0 6px 0; letter-spacing: -0.5px;">Welcome back, Rohan Sharma!</h1>
+          <p class="welcome-sub" style="font-size: 14.5px; color: var(--md-sys-color-on-surface-variant); margin: 0;">High-speed re-order for your frequent cafeteria favorites.</p>
+        </div>
+
+        <!-- Quick Re-Order Section -->
+        <div class="quick-reorder-section" style="margin-bottom: 32px;">
+          <div class="section-head" style="margin-bottom: 16px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;">
+            <div class="section-title" style="display: flex; align-items: center; gap: 8px; font-size: 18px; font-weight: 800; color: var(--md-sys-color-on-surface);">
+              <span class="material-symbols-outlined" style="color: #f59e0b; font-size: 24px; font-variation-settings: 'FILL' 1;">bolt</span>
+              <span>Quick Re-Order</span>
+            </div>
+            <button class="reorder-combo-btn" id="reorderComboBtn" type="button" style="display: inline-flex; align-items: center; gap: 8px; padding: 9px 20px; border-radius: 100px; background: var(--md-sys-color-primary, #006a6a); color: #ffffff; border: none; font-size: 13.5px; font-weight: 700; cursor: pointer; box-shadow: 0 4px 14px rgba(0, 106, 106, 0.28); transition: transform 0.15s ease, box-shadow 0.15s ease;">
+              <span class="material-symbols-outlined" style="font-size: 18px;">sync</span>
+              <span>Re-order Entire Combo (3 items)</span>
+            </button>
+          </div>
+          <!-- Real Food Cards Grid -->
+          <div class="menu-grid" id="quickReorderGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 16px;"></div>
+        </div>
         <!-- Live Order Ticket Tracker -->
         <section class="ticket">
           <div class="ticket-main">
@@ -2895,7 +2905,7 @@ textarea {
           <div class="section-title">You may also like &middot; Frequent pairings</div>
           <button class="section-link" data-goto="foryou">See more &rarr;</button>
         </div>
-        <div class="rec-grid" id="homeRecGrid"></div>
+        <div class="menu-grid" id="homeRecGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 16px;"></div>
 
         <!-- Spending Summary & History -->
         <div class="section-head">
@@ -3037,9 +3047,14 @@ textarea {
       <!-- PAGE: FOR YOU (RECOMMENDATIONS) -->
       <section class="page" id="page-foryou">
         <div class="section-head" style="margin-top:0">
-          <div class="section-title">Frequently Bought With &middot; Personalised recommendations</div>
+          <div>
+            <div class="section-title">Chef Recommendations &amp; Curated Combos &middot; For You</div>
+            <div style="font-size:12.5px; color:var(--md-sys-color-on-surface-variant); margin-top:4px;">
+              Hand-picked specials, dynamic meal pairings, and campus favorites tailored to your dining preferences
+            </div>
+          </div>
         </div>
-        <div class="rec-grid" id="foryouGrid"></div>
+        <div class="menu-grid" id="foryouGrid"></div>
       </section>
 
       <!-- PAGE: FEEDBACK & COMPLAINTS -->
@@ -4258,7 +4273,7 @@ class InvenTrackStore {
 
   // Cart operations (Student)
   addToCart(itemId) {
-    const item = this.state.menuItems.find((m) => m.id === itemId);
+    const item = findCatalogItem(this.state, itemId);
     if (!item || item.stock <= 0) {
       toast('Item is currently out of stock', 'cancel');
       return;
@@ -4274,7 +4289,7 @@ class InvenTrackStore {
   }
 
   changeCartQty(itemId, delta) {
-    const item = this.state.menuItems.find((m) => m.id === itemId);
+    const item = findCatalogItem(this.state, itemId);
     if (!item) return;
     const current = this.state.cart[itemId] || 0;
     const next = current + delta;
@@ -4793,6 +4808,414 @@ function renderCounterStrip(state) {
 }
 
 // M3 Student Menu Grid with M3 Filter Chips
+
+// =========================================================================
+// =========================================================================
+// QUICK RE-ORDER FREQUENT FAVORITES (Real Food Cards for Home Page)
+// =========================================================================
+
+const QUICK_REORDER_ITEMS = [
+  {
+    id: 'item-3',
+    name: 'Ghee Podi Masala Dosa',
+    emoji: 'breakfast_dining',
+    price: 80,
+    cat: 'Mains',
+    counter: 'Counter 1 (Hot Meals)',
+    stock: 14,
+    lowThreshold: 5,
+    restockTime: '10 min',
+    isVeg: true,
+    rating: 4.9,
+    ratingCount: 284,
+    badge: 'Ordered 2x',
+    recReason: '🕒 Ordered 2x this week · Counter 1',
+    cardSize: 'standard',
+    desc: 'Crisp golden crepe roasted in pure desi ghee and Gunpowder chutney podi, wrapped around spiced potato masala.',
+    image: 'https://images.unsplash.com/photo-1668236543090-82eba5ee5976?w=800&auto=format&fit=crop&q=80'
+  },
+  {
+    id: 'item-1',
+    name: 'Chicken Dum Biryani',
+    emoji: 'restaurant',
+    price: 180,
+    cat: 'Mains',
+    counter: 'Counter 1 (Hot Meals)',
+    stock: 22,
+    lowThreshold: 8,
+    restockTime: '15 min',
+    isVeg: false,
+    rating: 4.8,
+    ratingCount: 342,
+    badge: 'Recent order',
+    recReason: '🔥 Recent order · Counter 1 (Hot Meals)',
+    cardSize: 'standard',
+    desc: 'Slow-cooked fragrant basmati rice layered with spiced tender chicken, saffron, and caramelised onions. Served with spiced mint raita.',
+    image: 'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=800&auto=format&fit=crop&q=80'
+  },
+  {
+    id: 'item-8',
+    name: 'Artisan Cold Coffee',
+    emoji: 'local_cafe',
+    price: 50,
+    cat: 'Beverages',
+    counter: 'Counter 3 (Cafe & Drinks)',
+    stock: 28,
+    lowThreshold: 10,
+    restockTime: '5 min',
+    isVeg: true,
+    rating: 4.9,
+    ratingCount: 410,
+    badge: 'Recent order',
+    recReason: '❄️ Recent order · Counter 3 (Cafe & Drinks)',
+    cardSize: 'standard',
+    desc: 'Slow-steeped dark roast espresso blended with chilled creamy milk, turbinado brown sugar, and dark chocolate drizzle.',
+    image: 'https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?w=800&auto=format&fit=crop&q=80'
+  }
+];
+
+// =========================================================================
+// CURATED "FOR YOU" RECOMMENDATION CATALOG (Distinct items from Menu)
+// =========================================================================
+
+const FOR_YOU_ITEMS = [
+  {
+    id: 'foryou-1',
+    name: 'Smoky Paneer Tikka Roll',
+    emoji: 'lunch_dining',
+    price: 135,
+    cat: 'Wraps & Rolls',
+    counter: 'Counter 2 (Quick Bites)',
+    stock: 16,
+    lowThreshold: 5,
+    restockTime: '10 min',
+    isVeg: true,
+    rating: 4.8,
+    ratingCount: 312,
+    badge: 'Trending Combo',
+    recReason: '🎯 98% Match · Frequently paired with Cold Coffee',
+    cardSize: 'featured',
+    desc: 'Soft handmade rumali roti wrapped around clay-oven charred paneer tikka, crunchy bell peppers, pickled onions, and house mint-coriander mayonnaise.',
+    image: 'https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?w=800&auto=format&fit=crop&q=80'
+  },
+  {
+    id: 'foryou-2',
+    name: 'Spicy Schezwan Hakka Noodles',
+    emoji: 'ramen_dining',
+    price: 110,
+    cat: 'Asian Wok',
+    counter: 'Counter 1 (Hot Meals)',
+    stock: 20,
+    lowThreshold: 6,
+    restockTime: '12 min',
+    isVeg: true,
+    rating: 4.7,
+    ratingCount: 245,
+    badge: 'Chef Special',
+    recReason: '⚡ Evening Pick · Wok-tossed fresh on order',
+    cardSize: 'standard',
+    desc: 'Flame-tossed noodles with shredded cabbage, crunchy carrots, bell peppers, and fiery homemade Schezwan sauce topped with fresh scallions.',
+    image: 'https://images.unsplash.com/photo-1585032226651-759b368d7246?w=800&auto=format&fit=crop&q=80'
+  },
+  {
+    id: 'foryou-3',
+    name: 'Crispy Chicken Tenders & Cajun Fries',
+    emoji: 'dinner_dining',
+    price: 160,
+    cat: 'Snacks & Combos',
+    counter: 'Counter 2 (Quick Bites)',
+    stock: 12,
+    lowThreshold: 4,
+    restockTime: '15 min',
+    isVeg: false,
+    rating: 4.9,
+    ratingCount: 428,
+    badge: 'Student Favorite',
+    recReason: '🔥 #1 Campus Combo · High Reorder Velocity',
+    cardSize: 'tall',
+    desc: 'Crispy golden buttermilk-marinated chicken strips served with a generous portion of cajun dusted fries, creamy garlic mayo, and smoky BBQ dip.',
+    image: 'https://images.unsplash.com/photo-1562967914-608f82629710?w=800&auto=format&fit=crop&q=80'
+  },
+  {
+    id: 'foryou-4',
+    name: 'Royal North Indian Thali',
+    emoji: 'set_meal',
+    price: 195,
+    cat: 'Full Meals',
+    counter: 'Counter 1 (Hot Meals)',
+    stock: 14,
+    lowThreshold: 5,
+    restockTime: '20 min',
+    isVeg: true,
+    rating: 4.9,
+    ratingCount: 516,
+    badge: 'Value Feast',
+    recReason: '⭐ Complete Lunch · Balanced nutrition & fresh phulkas',
+    cardSize: 'featured',
+    desc: 'Executive campus lunch platter: creamy Dal Makhani, Paneer Butter Masala, 2 hot butter phulkas, fragrant Jeera Basmati rice, fresh salad, and sweet gulab jamun.',
+    image: 'https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=800&auto=format&fit=crop&q=80'
+  },
+  {
+    id: 'foryou-5',
+    name: 'Truffle Mushroom Melt Panini',
+    emoji: 'bakery_dining',
+    price: 125,
+    cat: 'Artisan Cafe',
+    counter: 'Counter 2 (Quick Bites)',
+    stock: 8,
+    lowThreshold: 3,
+    restockTime: '10 min',
+    isVeg: true,
+    rating: 4.6,
+    ratingCount: 164,
+    badge: 'Cafe Special',
+    recReason: '🧀 Gourmet Pick · 3-Cheese blend on sourdough',
+    cardSize: 'standard',
+    desc: 'Herb-crusted sourdough panini pressed with pan-seared garlic button mushrooms, caramelized balsamic onions, and melted Swiss mozzarella cheese.',
+    image: 'https://images.unsplash.com/photo-1528735602780-2552fd46c7af?w=800&auto=format&fit=crop&q=80'
+  },
+  {
+    id: 'foryou-6',
+    name: 'Steamed Himalayan Chicken Dimsums (6 pcs)',
+    emoji: 'kebab_dining',
+    price: 120,
+    cat: 'Street Bites',
+    counter: 'Counter 2 (Quick Bites)',
+    stock: 25,
+    lowThreshold: 6,
+    restockTime: '8 min',
+    isVeg: false,
+    rating: 4.8,
+    ratingCount: 380,
+    badge: 'Must Try',
+    recReason: '🕒 Quick Grab · Steaming hot & ready in 5 mins',
+    cardSize: 'standard',
+    desc: 'Delicate handmade steamed momos filled with seasoned ground chicken, spring onions, and ginger. Served with fiery Himalayan roasted red chili dip.',
+    image: 'https://images.unsplash.com/photo-1496116218417-1a781b1c416c?w=800&auto=format&fit=crop&q=80'
+  },
+  {
+    id: 'foryou-7',
+    name: 'Biscoff Caramel Frappe',
+    emoji: 'local_cafe',
+    price: 95,
+    cat: 'Beverages',
+    counter: 'Counter 3 (Cafe & Drinks)',
+    stock: 30,
+    lowThreshold: 8,
+    restockTime: '5 min',
+    isVeg: true,
+    rating: 4.9,
+    ratingCount: 680,
+    badge: 'Best Seller',
+    recReason: '☕ Energy Boost · Real Lotus Biscoff & double espresso',
+    cardSize: 'tall',
+    desc: 'Iced blended double shot Arabica espresso churned with rich Lotus Biscoff spread, salted caramel drizzle, whipped dairy cream, and crushed biscuit topping.',
+    image: 'https://images.unsplash.com/photo-1572490122747-3968b75cc699?w=800&auto=format&fit=crop&q=80'
+  },
+  {
+    id: 'foryou-8',
+    name: 'Berry Burst Belgian Waffle',
+    emoji: 'cake',
+    price: 85,
+    cat: 'Desserts',
+    counter: 'Counter 3 (Cafe & Drinks)',
+    stock: 15,
+    lowThreshold: 4,
+    restockTime: '10 min',
+    isVeg: true,
+    rating: 4.8,
+    ratingCount: 295,
+    badge: 'Sweet Treat',
+    recReason: '🍓 Dessert Pairing · Made fresh on Belgian iron',
+    cardSize: 'tall',
+    desc: 'Crisp malted Belgian waffle loaded with warm wild blueberry-strawberry compote, melted dark chocolate drizzle, and a dusting of powdered sugar.',
+    image: 'https://images.unsplash.com/photo-1562376552-0d160a2f238d?w=800&auto=format&fit=crop&q=80'
+  }
+];
+
+function findCatalogItem(state, id) {
+  if (!id) return null;
+  if (state && state.menuItems) {
+    const found = state.menuItems.find((m) => m.id === id);
+    if (found) return found;
+  }
+  const foryou = FOR_YOU_ITEMS.find((m) => m.id === id);
+  if (foryou) return foryou;
+  if (typeof QUICK_REORDER_ITEMS !== 'undefined') {
+    const quick = QUICK_REORDER_ITEMS.find((m) => m.id === id);
+    if (quick) return quick;
+  }
+  return null;
+}
+
+// =========================================================================
+// SHARED FOOD CARD RENDERER (Menu Page & For You Page)
+// =========================================================================
+
+function renderFoodCardHTML(it, state) {
+  const status = getItemStatus(it);
+  const isOut = status === 'out';
+  const inCart = (state.cart && state.cart[it.id]) || 0;
+  const imgUrl = getItemImage(it);
+  const isVeg = isVegItem(it);
+  const rating = it.rating || 4.6;
+  const ratingCount = it.ratingCount || (120 + (it.stock || 5) * 6);
+  const badge = it.badge || (isOut ? null : (status === 'low' ? 'Only Few Left' : null));
+  const cardSize = it.cardSize || getItemSize(it);
+  const desc = it.desc || getItemDesc(it);
+  const originalPrice = Math.round(it.price * 1.18);
+  const recBadge = it.recReason ? `<div class="rec-pill-badge">${it.recReason}</div>` : '';
+
+  // Render Add / Stepper control
+  let actionControl = '';
+  if (isOut) {
+    actionControl = `<button class="swiggy-add-btn" disabled title="Sold out">SOLD OUT</button>`;
+  } else if (inCart > 0) {
+    actionControl = `
+      <div class="swiggy-qty-controller">
+        <button class="swiggy-qty-btn" data-dec="${it.id}" title="Decrease quantity" aria-label="Decrease">&minus;</button>
+        <span class="swiggy-qty-val">${inCart}</span>
+        <button class="swiggy-qty-btn" data-inc="${it.id}" title="Increase quantity" aria-label="Increase">&plus;</button>
+      </div>
+    `;
+  } else {
+    actionControl = `
+      <button class="swiggy-add-btn" data-add="${it.id}" title="Add to Cart">
+        ADD <span style="font-size:14px; margin-left:2px;">+</span>
+      </button>
+    `;
+  }
+
+  // Veg / Non-Veg badge markup
+  const vegBadge = `<span class="food-type-icon ${isVeg ? 'veg' : 'non-veg'}" title="${isVeg ? 'Vegetarian' : 'Non-Vegetarian'}"></span>`;
+
+  // Rating badge markup
+  const ratingMarkup = `
+    <div style="display:inline-flex; align-items:center; gap:4px;">
+      <span class="swiggy-rating-pill"><span class="star">★</span> ${rating}</span>
+      <span class="swiggy-rating-count">(${ratingCount})</span>
+    </div>
+  `;
+
+  // Stock and Gauge HTML
+  const stockGaugeHTML = `
+    <div style="margin-top:8px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; font-size:11px; margin-bottom:4px;">
+        <span style="color:var(--md-sys-color-on-surface-variant); font-weight:600;">Stock: <strong>${it.stock}</strong> left</span>
+        <span style="color:${getGaugeColor(status)}; font-weight:700; text-transform:uppercase; font-size:10.5px;">${status}</span>
+      </div>
+      <div class="gauge" style="height:4px; margin:0;">
+        <span style="width:${getGaugeWidth(it)}%; background:${getGaugeColor(status)}"></span>
+      </div>
+    </div>
+  `;
+
+  // Template 1: FEATURED CARD (Hero Landscape)
+  if (cardSize === 'featured') {
+    return `
+      <div class="menu-card menu-card--featured ${isOut ? 'is-out-of-stock' : ''}">
+        <div class="card-main-content">
+          <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+            ${vegBadge}
+            ${badge ? `<span class="swiggy-ribbon bestseller"><span class="material-symbols-outlined" style="font-size:13px;">workspace_premium</span>${badge}</span>` : ''}
+            <span style="font-size:11px; font-weight:600; background:var(--md-sys-color-primary-container); color:var(--md-sys-color-on-primary-container); padding:2px 8px; border-radius:6px;">${it.counter || 'Counter 1'}</span>
+          </div>
+          ${recBadge}
+          <div class="card-item-title" style="font-size:17px; margin-top:4px;">${it.name}</div>
+          <div style="margin-top:2px; margin-bottom:6px;">${ratingMarkup}</div>
+          <div class="card-item-price-row">
+            <span class="card-item-price" style="font-size:16.5px;">₹${it.price}</span>
+            <span class="card-item-original-price">₹${originalPrice}</span>
+            <span style="font-size:11px; font-weight:700; color:#1ba672;">SAVE ₹${originalPrice - it.price}</span>
+          </div>
+          <div class="card-item-desc" style="-webkit-line-clamp:3;">${desc}</div>
+          <div style="margin-top:auto; padding-top:10px;">
+            ${stockGaugeHTML}
+          </div>
+        </div>
+        <div class="card-media-side">
+          <div class="food-img-box">
+            <img class="food-img" src="${imgUrl}" alt="${it.name}" loading="lazy" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=800&auto=format&fit=crop&q=80'">
+            ${isOut ? '<div style="position:absolute; inset:0; background:rgba(0,0,0,0.6); display:flex; align-items:center; justify-content:center; color:#fff; font-weight:800; font-size:12px; letter-spacing:1px;">SOLD OUT</div>' : ''}
+          </div>
+          <div class="card-action-wrap">
+            ${actionControl}
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  // Template 2: TALL CARD (Portrait Visual)
+  if (cardSize === 'tall') {
+    return `
+      <div class="menu-card menu-card--tall ${isOut ? 'is-out-of-stock' : ''}">
+        <div class="food-img-box">
+          <img class="food-img" src="${imgUrl}" alt="${it.name}" loading="lazy" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=800&auto=format&fit=crop&q=80'">
+          <div style="position:absolute; top:10px; left:10px; z-index:2; display:flex; gap:6px; align-items:center;">
+            <span style="background:rgba(255,255,255,0.92); backdrop-filter:blur(4px); padding:4px; border-radius:6px; display:inline-flex; align-items:center; justify-content:center; box-shadow:0 2px 6px rgba(0,0,0,0.15);">${vegBadge}</span>
+            ${badge ? `<span class="swiggy-ribbon chef" style="box-shadow:0 2px 6px rgba(0,0,0,0.2);">${badge}</span>` : ''}
+          </div>
+          <div style="position:absolute; top:10px; right:10px; z-index:2;">
+            ${ratingMarkup}
+          </div>
+          ${isOut ? '<div style="position:absolute; inset:0; background:rgba(0,0,0,0.6); display:flex; align-items:center; justify-content:center; color:#fff; font-weight:800; font-size:13px; letter-spacing:1px;">SOLD OUT</div>' : ''}
+          <div class="card-action-wrap">
+            ${actionControl}
+          </div>
+        </div>
+        <div class="card-main-content">
+          <div class="card-item-title">${it.name}</div>
+          ${recBadge}
+          <div style="font-size:11.5px; color:var(--md-sys-color-on-surface-variant); margin-bottom:4px;">
+            ${it.cat} &middot; <span style="font-weight:600;">${it.counter || 'Counter 1'}</span>
+          </div>
+          <div class="card-item-price-row">
+            <span class="card-item-price">₹${it.price}</span>
+            <span class="card-item-original-price">₹${originalPrice}</span>
+          </div>
+          <div class="card-item-desc">${desc}</div>
+          <div style="margin-top:auto; padding-top:10px;">
+            ${stockGaugeHTML}
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  // Template 3: STANDARD CARD (Signature Swiggy Split Layout)
+  return `
+    <div class="menu-card menu-card--standard ${isOut ? 'is-out-of-stock' : ''}">
+      <div class="card-main-content">
+        <div style="display:flex; align-items:center; gap:8px;">
+          ${vegBadge}
+          ${badge ? `<span class="swiggy-ribbon trending">${badge}</span>` : ''}
+        </div>
+        ${recBadge}
+        <div class="card-item-title">${it.name}</div>
+        <div class="card-item-price-row">
+          <span class="card-item-price">₹${it.price}</span>
+          <span class="card-item-original-price">₹${originalPrice}</span>
+        </div>
+        <div style="margin-bottom:6px;">${ratingMarkup}</div>
+        <div class="card-item-desc">${desc}</div>
+        <div style="margin-top:auto; padding-top:10px;">
+          ${stockGaugeHTML}
+        </div>
+      </div>
+      <div class="card-media-side">
+        <div class="food-img-box">
+          <img class="food-img" src="${imgUrl}" alt="${it.name}" loading="lazy" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=800&auto=format&fit=crop&q=80'">
+          ${isOut ? '<div style="position:absolute; inset:0; background:rgba(0,0,0,0.6); display:flex; align-items:center; justify-content:center; color:#fff; font-weight:800; font-size:11px; letter-spacing:0.5px;">SOLD OUT</div>' : ''}
+        </div>
+        <div class="card-action-wrap">
+          ${actionControl}
+        </div>
+      </div>
+    </div>
+  `;
+}
+
 function renderStudentMenu(state, searchQuery = '') {
   const grid = $('#menuGrid');
   const filterRow = $('#filterRow');
@@ -4845,75 +5268,37 @@ function renderStudentMenu(state, searchQuery = '') {
     return;
   }
 
-  grid.innerHTML = items
-    .map((it) => {
-      const status = getItemStatus(it);
-      const isOut = status === 'out';
-      const inCart = state.cart[it.id] || 0;
-
-      return `
-        <div class="menu-card">
-          <div class="menu-emoji">${renderItemIcon(it.emoji)}</div>
-          <div class="menu-info">
-            <div class="mn">${it.name}</div>
-            <div class="mc">${it.cat} &middot; <span>${it.counter || 'Counter 1'}</span></div>
-            <div style="font-size:11px; color:var(--md-sys-color-on-surface-variant); margin-top:4px;">
-              Stock: <strong>${it.stock}</strong> &middot; Gauge: 
-              <span style="color:${getGaugeColor(status)}; font-weight:700;">${status.toUpperCase()}</span>
-            </div>
-            <div class="gauge" style="margin:6px 0 8px;">
-              <span style="width:${getGaugeWidth(it)}%; background:${getGaugeColor(status)}"></span>
-            </div>
-            <div class="mrow">
-              <span class="rec-price mono">₹${it.price}</span>
-              <div style="display:flex; align-items:center; gap:8px;">
-                ${sbHTML(status)}
-                <button class="add-btn" data-add="${it.id}" ${isOut ? 'disabled title="Sold out"' : 'title="Add to Cart"'}>
-                  ${inCart > 0 ? inCart : '+'}
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      `;
-    })
-    .join('');
+  grid.innerHTML = items.map((it) => renderFoodCardHTML(it, state)).join('');
 }
 
-// Recommendations Section
+// Recommendations & Quick Re-Order Section (Home Page & For You Page)
 function renderRecommendations(state) {
+  // Update Welcome heading with current user's name
+  const welcomeHeading = $('#homeWelcomeHeading');
+  if (welcomeHeading) {
+    const userName = (state.currentUser && state.currentUser.name) || 'Rohan Sharma';
+    welcomeHeading.textContent = `Welcome back, ${userName}!`;
+  }
+
+  // Render Real Food Cards in Quick Re-Order Grid on Home Page
+  const quickReorderGrid = $('#quickReorderGrid');
+  if (quickReorderGrid) {
+    quickReorderGrid.innerHTML = QUICK_REORDER_ITEMS.map((it) => renderFoodCardHTML(it, state)).join('');
+  }
+
+  // Render Real Food Cards in Home Recommendations Grid ("You may also like")
   const homeRec = $('#homeRecGrid');
-  const foryouRec = $('#foryouGrid');
-
-  const recItems = state.menuItems.filter((m) => m.stock > 0).slice(0, 4);
-
-  const makeCardHTML = (it) => {
-    const status = getItemStatus(it);
-    return `
-      <div class="rec-card">
-        <div class="rec-img">${renderItemIcon(it.emoji)}</div>
-        <div class="rec-body">
-          <div class="rec-name">${it.name}</div>
-          <div class="rec-tag">${status === 'low' ? 'Only few remaining' : 'Pairs with your usual'}</div>
-          <div class="rec-row">
-            <span class="rec-price mono">₹${it.price}</span>
-            <button class="add-btn" data-add="${it.id}">+</button>
-          </div>
-        </div>
-      </div>
-    `;
-  };
-
   if (homeRec) {
+    const recItems = FOR_YOU_ITEMS.slice(0, 4);
     homeRec.innerHTML = recItems.length
-      ? recItems.map(makeCardHTML).join('')
+      ? recItems.map((it) => renderFoodCardHTML(it, state)).join('')
       : '<div class="empty-state" style="grid-column:1 / -1;"><div class="em"><span class="material-symbols-outlined">auto_awesome</span></div>No recommendations available.</div>';
   }
 
+  // Render Real Food Cards in For You Page
+  const foryouRec = $('#foryouGrid');
   if (foryouRec) {
-    foryouRec.innerHTML = state.menuItems.length
-      ? state.menuItems.slice(0, 8).map(makeCardHTML).join('')
-      : '<div class="empty-state" style="grid-column:1 / -1;"><div class="em"><span class="material-symbols-outlined">auto_awesome</span></div>Load items to view graph-inspired recommendations.</div>';
+    foryouRec.innerHTML = FOR_YOU_ITEMS.map((it) => renderFoodCardHTML(it, state)).join('');
   }
 }
 
@@ -4952,7 +5337,7 @@ function renderStudentCart(state) {
   let subtotal = 0;
   cartList.innerHTML = itemEntries
     .map(([id, qty]) => {
-      const it = state.menuItems.find((m) => m.id === id);
+      const it = findCatalogItem(state, id);
       if (!it) return '';
       const lineTotal = it.price * qty;
       subtotal += lineTotal;
@@ -5124,30 +5509,7 @@ function renderShopperStore(state) {
     return;
   }
 
-  grid.innerHTML = items
-    .map((it) => {
-      const status = getItemStatus(it);
-      const isOut = status === 'out';
-      return `
-        <div class="menu-card">
-          <div class="menu-emoji">${renderItemIcon(it.emoji)}</div>
-          <div class="menu-info">
-            <div class="mn">${it.name}</div>
-            <div class="mc">${it.cat} &middot; ${it.counter}</div>
-            <div class="mrow" style="margin-top:8px;">
-              <span class="rec-price mono">₹${it.price}</span>
-              <div style="display:flex; align-items:center; gap:8px;">
-                ${sbHTML(status)}
-                <button class="dev-btn ${isOut ? '' : 'primary'}" data-shopper-add="${it.id}" ${isOut ? 'disabled' : ''}>
-                  ${isOut ? 'Sold Out' : '+ Fast Add'}
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      `;
-    })
-    .join('');
+  grid.innerHTML = items.map((it) => renderFoodCardHTML(it, state)).join('');
 }
 
 function renderShopperCart(state) {
@@ -5182,7 +5544,7 @@ function renderShopperCart(state) {
   let subtotal = 0;
   list.innerHTML = entries
     .map(([id, qty]) => {
-      const it = state.menuItems.find((m) => m.id === id);
+      const it = findCatalogItem(state, id);
       if (!it) return '';
       const lineTotal = it.price * qty;
       subtotal += lineTotal;
@@ -5439,7 +5801,7 @@ function renderKitchenPos(state) {
     let subtotal = 0;
     lines.innerHTML = entries
       .map(([id, qty]) => {
-        const it = state.menuItems.find((m) => m.id === id);
+        const it = findCatalogItem(state, id);
         if (!it) return '';
         const lineTotal = it.price * qty;
         subtotal += lineTotal;
@@ -5763,21 +6125,7 @@ function setupEventHandlers() {
     }
   });
 
-  // 3. Theme toggle
-  const themeToggle = $('#themeToggle');
-  if (themeToggle) {
-    themeToggle.addEventListener('click', (e) => {
-      const btn = e.target.closest('button[data-mode]');
-      if (!btn) return;
-      if (btn.dataset.mode === 'kitchen') {
-        document.body.setAttribute('data-theme', 'kitchen');
-      } else {
-        document.body.removeAttribute('data-theme');
-      }
-      $$('#themeToggle button[data-mode]').forEach((b) => b.classList.toggle('on', b === btn));
-    });
-  }
-
+  // 3. Theme toggle: Managed globally by window.toggleInvenTrackTheme
   // 4. Notification Drawer Toggle
   const bellBtn = $('#bellBtn');
   if (bellBtn) {
@@ -5837,9 +6185,19 @@ function setupEventHandlers() {
       renderKitchenKanban(store.state);
     });
   }
-
   // 7. Student Cart & Add Buttons
   document.addEventListener('click', (e) => {
+    const comboBtn = e.target.closest('#reorderComboBtn');
+    if (comboBtn) {
+      QUICK_REORDER_ITEMS.forEach((it) => {
+        store.state.cart[it.id] = (store.state.cart[it.id] || 0) + 1;
+      });
+      store.save();
+      store.notify();
+      toast('⚡ Frequent Combo re-ordered! (3 items added to cart)', 'restaurant');
+      return;
+    }
+
     const addBtn = e.target.closest('[data-add]');
     if (addBtn) {
       store.addToCart(addBtn.dataset.add);
@@ -6307,5 +6665,60 @@ setupEventHandlers();
 renderApp(store.state);
 
 </script>
+
+  <!-- Robust Landing Page Theme Controller -->
+  <script>
+    (function() {
+      window.applyInvenTrackTheme = function(dark) {
+        var isDark = Boolean(dark);
+        var btn = document.getElementById('themeToggleBtn');
+        var icon = document.getElementById('themeIcon');
+
+        if (isDark) {
+          document.documentElement.setAttribute('data-theme', 'kitchen');
+          document.body.setAttribute('data-theme', 'kitchen');
+          if (icon) icon.textContent = 'light_mode';
+          if (btn) btn.setAttribute('title', 'Switch to Daylight Light Mode');
+          try { localStorage.setItem('invenTrack_theme', 'kitchen'); } catch(e){}
+        } else {
+          document.documentElement.removeAttribute('data-theme');
+          document.body.removeAttribute('data-theme');
+          if (icon) icon.textContent = 'dark_mode';
+          if (btn) btn.setAttribute('title', 'Switch to Kitchen Dark Mode');
+          try { localStorage.setItem('invenTrack_theme', 'default'); } catch(e){}
+        }
+      };
+
+      window.toggleInvenTrackTheme = function(e) {
+        if (e && e.preventDefault) e.preventDefault();
+        var currentIsDark = document.body.getAttribute('data-theme') === 'kitchen' ||
+                              document.documentElement.getAttribute('data-theme') === 'kitchen';
+        window.applyInvenTrackTheme(!currentIsDark);
+      };
+
+      // Initial theme apply
+      var saved = localStorage.getItem('invenTrack_theme');
+      var initDark = saved === 'kitchen';
+      window.applyInvenTrackTheme(initDark);
+
+      // Wire DOM once ready
+      function bindBtn() {
+        var btn = document.getElementById('themeToggleBtn');
+        if (btn) {
+          btn.onclick = window.toggleInvenTrackTheme;
+        }
+        var icon = document.getElementById('themeIcon');
+        var currentIsDark = document.body.getAttribute('data-theme') === 'kitchen' ||
+                            document.documentElement.getAttribute('data-theme') === 'kitchen';
+        if (icon) icon.textContent = currentIsDark ? 'light_mode' : 'dark_mode';
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', bindBtn);
+      } else {
+        bindBtn();
+      }
+    })();
+  </script>
 </body>
 </html>
