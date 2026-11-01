@@ -837,10 +837,12 @@
             <div style="font-size:12px; color:var(--md-sys-color-on-surface-variant); margin-top:2px;">Real-time order
               progression: Placed &rarr; Preparing &rarr; Ready &rarr; Picked up</div>
           </div>
-          <div style="display:flex; align-items:center; gap:8px;">
-            <label
-              style="font-size:12px; font-weight:600; text-transform:uppercase; color:var(--md-sys-color-on-surface-variant);">Filter
-              Counter:</label>
+                    <div style="display:flex; align-items:center; gap:8px;">
+            <button type="button" class="kitchen-mute-btn" id="kitchenAlertMuteBtn" title="Toggle sound alerts for incoming orders">
+              <span class="material-symbols-outlined" id="kitchenMuteIcon" style="font-size:18px;">volume_up</span>
+              <span id="kitchenMuteLabel">Alerts On</span>
+            </button>
+            <label style="font-size:12px; font-weight:600; text-transform:uppercase; color:var(--md-sys-color-on-surface-variant);">Filter Counter:</label>
             <select id="kitchenCounterSelect"
               style="padding:6px 12px; border-radius:var(--md-sys-shape-corner-small); border:1px solid var(--md-sys-color-outline); background:transparent; color:var(--md-sys-color-on-surface); font-size:12px;">
               <option value="All">All Counters</option>

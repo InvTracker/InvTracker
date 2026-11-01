@@ -809,6 +809,10 @@ class InvenTrackStore {
     this.state.pendingUpiOrderRef = null;
 
     this.state.orders.unshift(newOrder);
+    try {
+      if (typeof playKitchenOrderDing === 'function') playKitchenOrderDing();
+      if (typeof recentNewOrderIds !== 'undefined') recentNewOrderIds.add(newOrder.id);
+    } catch(e) {}
     this.save();
     return newOrder;
   }
@@ -2300,7 +2304,81 @@ function renderShopperReceipts(state) {
 }
 
 
+
+let kitchenAlertsMuted = typeof localStorage !== 'undefined' && localStorage.getItem('invenTrack_kitchen_muted') === 'true';
+let knownPlacedOrderIds = new Set();
+let recentNewOrderIds = new Set();
+
+function playKitchenOrderDing() {
+  if (kitchenAlertsMuted) return;
+  try {
+    const audio = new Audio('/notification.mp3');
+    const playPromise = audio.play();
+    if (playPromise) {
+      playPromise.catch(() => {
+        playWebAudioDing();
+      });
+    }
+  } catch (e) {
+    playWebAudioDing();
+  }
+}
+
+function playWebAudioDing() {
+  if (kitchenAlertsMuted) return;
+  try {
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    if (!AudioContext) return;
+    const ctx = new AudioContext();
+    if (ctx.state === 'suspended') ctx.resume();
+    const now = ctx.currentTime;
+    
+    // Distinct chime: 880Hz (A5) to 1320Hz (E6) harmonic
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(880, now);
+    osc.frequency.exponentialRampToValueAtTime(1320, now + 0.1);
+    
+    gain.gain.setValueAtTime(0, now);
+    gain.gain.linearRampToValueAtTime(0.35, now + 0.03);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.55);
+    
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.55);
+  } catch (err) {}
+}
+
+function toggleKitchenMute() {
+  kitchenAlertsMuted = !kitchenAlertsMuted;
+  try {
+    localStorage.setItem('invenTrack_kitchen_muted', String(kitchenAlertsMuted));
+  } catch (e) {}
+  updateKitchenMuteUI();
+  toast(kitchenAlertsMuted ? 'Kitchen alerts muted' : 'Kitchen alerts active', kitchenAlertsMuted ? 'volume_off' : 'volume_up');
+}
+
+function updateKitchenMuteUI() {
+  const muteBtn = $('#kitchenAlertMuteBtn');
+  const muteIcon = $('#kitchenMuteIcon');
+  const muteLabel = $('#kitchenMuteLabel');
+  if (muteBtn) {
+    muteBtn.classList.toggle('muted', kitchenAlertsMuted);
+    muteBtn.title = kitchenAlertsMuted ? 'Unmute Kitchen Alerts' : 'Mute Kitchen Alerts';
+  }
+  if (muteIcon) {
+    muteIcon.textContent = kitchenAlertsMuted ? 'volume_off' : 'volume_up';
+  }
+  if (muteLabel) {
+    muteLabel.textContent = kitchenAlertsMuted ? 'Muted' : 'Alerts On';
+  }
+}
+
 function renderKitchenKanban(state) {
+  updateKitchenMuteUI();
+
   const lists = {
     0: $('#kanbanListPlaced'),
     1: $('#kanbanListPreparing'),
@@ -2325,10 +2403,28 @@ function renderKitchenKanban(state) {
     if (colOrders[stage]) colOrders[stage].push(o);
   });
 
+  // Check for new arrivals in "Placed" column (Stage 0)
+  const currentPlacedOrders = colOrders[0];
+  const newPlacedArrivals = currentPlacedOrders.filter((o) => !knownPlacedOrderIds.has(o.id));
+  if (knownPlacedOrderIds.size > 0 && newPlacedArrivals.length > 0) {
+    playKitchenOrderDing();
+    newPlacedArrivals.forEach((o) => {
+      recentNewOrderIds.add(o.id);
+      setTimeout(() => {
+        recentNewOrderIds.delete(o.id);
+        const card = document.getElementById(`kanban-ticket-${o.id}`);
+        if (card) card.classList.remove('new-order-pulse');
+      }, 5000);
+    });
+  }
+  knownPlacedOrderIds = new Set(currentPlacedOrders.map((o) => o.id));
+
   if (countPlaced) countPlaced.textContent = colOrders[0].length;
   if (countPreparing) countPreparing.textContent = colOrders[1].length;
   if (countReady) countReady.textContent = colOrders[2].length;
   if (countPicked) countPicked.textContent = colOrders[3].length;
+
+  const now = Date.now();
 
   Object.entries(lists).forEach(([stageIdx, listEl]) => {
     if (!listEl) return;
@@ -2346,13 +2442,55 @@ function renderKitchenKanban(state) {
 
     listEl.innerHTML = items
       .map((o) => {
-        const timeStr = new Date(o.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        const orderTime = o.createdAt ? new Date(o.createdAt).getTime() : now;
+        const elapsedMs = Math.max(0, now - orderTime);
+        const elapsedMins = Math.floor(elapsedMs / 60000);
+
+        // Elapsed time formatting
+        let elapsedText = 'Placed just now';
+        if (elapsedMins === 1) elapsedText = 'Placed 1m ago';
+        else if (elapsedMins > 1 && elapsedMins < 60) elapsedText = `Placed ${elapsedMins}m ago`;
+        else if (elapsedMins >= 60) {
+          const hrs = Math.floor(elapsedMins / 60);
+          const rem = elapsedMins % 60;
+          elapsedText = `Placed ${hrs}h ${rem}m ago`;
+        }
+
+        // Visual aging for active kitchen orders (stages 0, 1, 2)
+        let agingClass = 'aging-normal';
+        let elapsedClass = '';
+        let agingBadgeHTML = '';
+
+        if (sIndex < 3) {
+          if (elapsedMins >= 10) {
+            agingClass = 'aging-urgent';
+            elapsedClass = 'urgent';
+            agingBadgeHTML = `
+              <span class="ticket-aging-badge urgent">
+                <span class="material-symbols-outlined" style="font-size:12px;">priority_high</span>
+                <span>Priority pickup needed</span>
+              </span>
+            `;
+          } else if (elapsedMins >= 5) {
+            agingClass = 'aging-warning';
+            elapsedClass = 'warning';
+            agingBadgeHTML = `
+              <span class="ticket-aging-badge warning">
+                <span class="material-symbols-outlined" style="font-size:12px;">warning</span>
+                <span>Prep delay</span>
+              </span>
+            `;
+          }
+        }
+
+        const isNewPulse = recentNewOrderIds.has(o.id);
+        const timeStr = new Date(orderTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
         const itemsList = o.items
           .map(
             (i) => `
               <div class="kanban-item-line">
-                <span><strong>${i.qty}</strong> ${i.name}</span>
-                <span class="mono">Rs. ${i.price * i.qty}</span>
+                <span><strong>${i.qty} - </strong> ${i.name}</span>
+                <span class="mono">Rs ${i.price * i.qty}</span>
               </div>
             `
           )
@@ -2362,18 +2500,28 @@ function renderKitchenKanban(state) {
         const isCompleted = sIndex >= stages.length - 1;
 
         return `
-          <div class="kanban-card">
+          <div class="kanban-card ${agingClass} ${isNewPulse ? 'new-order-pulse' : ''}" id="kanban-ticket-${o.id}">
             <div class="kanban-card-header">
               <span class="kanban-token">${o.token}</span>
-              <span class="kanban-time">${timeStr}</span>
+              <div style="text-align:right;">
+                <span class="kanban-time">${timeStr}</span>
+                <div class="kanban-elapsed-time ${elapsedClass}">
+                  <span class="material-symbols-outlined" style="font-size:12px;">schedule</span>
+                  <span>${elapsedText}</span>
+                </div>
+              </div>
             </div>
-            <div class="kanban-cust"> ${o.customerName} - <span style="font-weight:400; color:var(--md-sys-color-on-surface-variant);">${o.counter}</span></div>
+            ${agingBadgeHTML ? `<div style="margin:4px 0 6px 0;">${agingBadgeHTML}</div>` : ''}
+            <div class="kanban-cust">
+              <span class="material-symbols-outlined" style="font-size:14px; vertical-align:middle; margin-right:2px;">person</span>
+              <strong>${o.customerName}</strong> - <span style="font-weight:400; color:var(--md-sys-color-on-surface-variant);">${o.counter}</span>
+            </div>
             <div class="kanban-items">${itemsList}</div>
             <div class="kanban-card-footer">
-              <span class="kanban-total">Rs. ${o.total}</span>
+              <span class="kanban-total mono">Rs ${o.total}</span>
               <button class="kanban-advance-btn" data-kitchen-advance="${o.id}" ${isCompleted ? 'disabled' : ''}>
                 <span class="material-symbols-outlined" style="font-size:15px;">${isCompleted ? 'check' : 'arrow_forward'}</span>
-                <span>${isCompleted ? 'Picked up ' : `Mark "${nextStageName}"`}</span>
+                <span>${isCompleted ? 'Picked up (Done)' : `Mark "${nextStageName}"`}</span>
               </button>
             </div>
           </div>
@@ -3467,3 +3615,14 @@ window.addEventListener('storage', (e) => {
     }
   }
 });
+
+
+// Live Aging Ticker for Kitchen Kanban
+setInterval(() => {
+  if (typeof store !== 'undefined' && store.state) {
+    const kitchenBoard = $('#page-kitchen-kanban');
+    if (kitchenBoard && (kitchenBoard.classList.contains('active') || store.state.activePage === 'kitchen-kanban')) {
+      renderKitchenKanban(store.state);
+    }
+  }
+}, 10000);
