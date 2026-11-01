@@ -338,10 +338,18 @@ class InvenTrackStore {
     if (parsed) {
       return {
         menuItems: parsed.menuItems || [...DATA_INJECTION_SLOT.menuItems],
-        orders: parsed.orders || [...DATA_INJECTION_SLOT.orders],
+        orders: (() => {
+          let list = parsed.orders || [...DATA_INJECTION_SLOT.orders];
+          if (cachedActiveOrder && cachedActiveOrder.status !== 'Picked up') {
+            const idx = list.findIndex((o) => o.id === cachedActiveOrder.id || o.token === cachedActiveOrder.token);
+            if (idx !== -1) list[idx] = { ...list[idx], ...cachedActiveOrder };
+            else list.unshift(cachedActiveOrder);
+          }
+          return list;
+        })(),
         users: parsed.users || [...DATA_INJECTION_SLOT.users],
         feedbacks: parsed.feedbacks || [...DATA_INJECTION_SLOT.feedbacks],
-        cart: parsed.cart || {},
+        cart: (parsed.cart && Object.keys(parsed.cart).length > 0) ? parsed.cart : cachedCart,
         shopperCart: parsed.shopperCart || {},
         posCart: parsed.posCart || {},
         currentUser,
@@ -392,7 +400,19 @@ class InvenTrackStore {
     } catch (e) {
       console.warn('Failed to persist state', e);
     }
-    this.notify();
+          // Dedicated Cart & Active Token Sync Cache
+      try {
+        localStorage.setItem('invenTrack_cart', JSON.stringify(this.state.cart || {}));
+        const activeOrder = (this.state.orders || []).find((o) => o.status !== 'Picked up' && (o.role === 'Student' || !o.role || this.state.activeRole === 'user'));
+        if (activeOrder) {
+          localStorage.setItem('invenTrack_active_token', activeOrder.token);
+          localStorage.setItem('invenTrack_active_order', JSON.stringify(activeOrder));
+        } else {
+          localStorage.removeItem('invenTrack_active_token');
+          localStorage.removeItem('invenTrack_active_order');
+        }
+      } catch (e) {}
+      this.notify();
   }
 
   subscribe(listener) {
@@ -618,62 +638,93 @@ class InvenTrackStore {
   }
 
   // Cart operations (Student)
-  addToCart(itemId) {
-    const item = this.state.menuItems.find((m) => m.id === itemId);
-    if (!item || item.stock <= 0) {
-      toast('Item is currently out of stock', 'cancel');
-      return;
-    }
+  async addToCart(itemId) {
+    const prevCart = { ...(this.state.cart || {}) };
     const currentQty = this.state.cart[itemId] || 0;
-    if (currentQty >= item.stock) {
-      toast(`Only ${item.stock} servings available in kitchen`, 'schedule');
-      return;
-    }
+
+    // 1. Optimistic Update: Immediately increment and update UI state, counters & totals
     this.state.cart[itemId] = currentQty + 1;
     this.state.shopperCart = this.state.cart;
-    toast(`Added ${item.name} to cart`, 'shopping_cart');
     this.save();
+    toast('Added item to cart', 'shopping_cart');
+
+    // 2. Inventory & Network Verification
+    try {
+      const item = this.state.menuItems.find((m) => m.id === itemId);
+      if (!item || item.stock <= 0 || (currentQty + 1) > item.stock) {
+        throw new Error('OUT_OF_STOCK');
+      }
+
+      if (typeof window !== 'undefined' && window.INVENTRACK_API_URL && navigator.onLine) {
+        const res = await fetch(`${window.INVENTRACK_API_URL}/inventory/${itemId}`).catch(() => null);
+        if (res && res.ok) {
+          const remoteData = await res.json().catch(() => null);
+          if (remoteData && typeof remoteData.stock === 'number' && remoteData.stock < (currentQty + 1)) {
+            throw new Error('OUT_OF_STOCK');
+          }
+        }
+      }
+    } catch (err) {
+      // Rollback gracefully on inventory failure
+      this.state.cart = prevCart;
+      this.state.shopperCart = prevCart;
+      this.save();
+      triggerHaptic(100);
+      toast('Item currently out of stock', 'cancel');
+    }
   }
 
-  changeCartQty(itemId, delta) {
-    const item = this.state.menuItems.find((m) => m.id === itemId);
-    if (!item) return;
+  async changeCartQty(itemId, delta) {
+    const prevCart = { ...(this.state.cart || {}) };
     const current = this.state.cart[itemId] || 0;
     const next = current + delta;
+
+    // 1. Optimistic Update: Immediately apply next quantity and re-render
     if (next <= 0) {
       delete this.state.cart[itemId];
-    } else if (next > item.stock) {
-      toast(`Only ${item.stock} available in stock`, 'schedule');
-      return;
     } else {
       this.state.cart[itemId] = next;
     }
+    this.state.shopperCart = this.state.cart;
     this.save();
+
+    // 2. Inventory verification if increasing quantity
+    if (delta > 0) {
+      try {
+        const item = this.state.menuItems.find((m) => m.id === itemId);
+        if (!item || item.stock <= 0 || next > item.stock) {
+          throw new Error('OUT_OF_STOCK');
+        }
+
+        if (typeof window !== 'undefined' && window.INVENTRACK_API_URL && navigator.onLine) {
+          const res = await fetch(`${window.INVENTRACK_API_URL}/inventory/${itemId}`).catch(() => null);
+          if (res && res.ok) {
+            const remoteData = await res.json().catch(() => null);
+            if (remoteData && typeof remoteData.stock === 'number' && remoteData.stock < next) {
+              throw new Error('OUT_OF_STOCK');
+            }
+          }
+        }
+      } catch (err) {
+        // Rollback gracefully
+        this.state.cart = prevCart;
+        this.state.shopperCart = prevCart;
+        this.save();
+        triggerHaptic(100);
+        toast('Item currently out of stock', 'cancel');
+      }
+    }
   }
 
   removeCartItem(itemId) {
     delete this.state.cart[itemId];
+    this.state.shopperCart = this.state.cart;
     this.save();
+    toast('Item removed from cart', 'delete');
   }
 
-  // Cart operations (Shopper)
   addToShopperCart(itemId) {
     return this.addToCart(itemId);
-  }
-
-  changeShopperCartQty(itemId, delta) {
-    return this.changeCartQty(itemId, delta);
-  }
-
-  // POS operations
-  addToPosCart(itemId) {
-    const item = this.state.menuItems.find((m) => m.id === itemId);
-    if (!item || item.stock <= 0) {
-      toast('Item out of stock in kitchen', 'cancel');
-      return;
-    }
-    this.state.posCart[itemId] = (this.state.posCart[itemId] || 0) + 1;
-    this.save();
   }
 
   changePosCartQty(itemId, delta) {
@@ -692,7 +743,6 @@ class InvenTrackStore {
     this.save();
   }
 
-  // Order Placement
   createOrder({ itemsMap, customerName, role, counter, paymentMethod, pickupTime = 'Instant', packagingFee = 10 }) {
     const itemEntries = Object.entries(itemsMap);
     if (!itemEntries.length) return null;
@@ -3217,6 +3267,13 @@ window.addEventListener('resize', () => {
   if (typeof store !== 'undefined' && store.state && store.state.activePage === 'cart') {
     renderPaymentMethodDetails(store.state);
   }
+});
+
+window.addEventListener('offline', () => {
+  toast('Campus network offline - Using cached cart and active token', 'cloud_off');
+});
+window.addEventListener('online', () => {
+  toast('Campus network reconnected', 'cloud_done');
 });
 
 window.addEventListener('storage', (e) => {

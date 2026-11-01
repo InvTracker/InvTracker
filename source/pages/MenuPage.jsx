@@ -48,7 +48,7 @@ const MenuPage = () => {
                   <div className="mn">{it.name}</div>
                   <div className="mc">{it.cat}</div>
                   <div className="mrow">
-                    <span className="rec-price mono">₹{it.price}</span>
+                    <span className="rec-price mono">Rs {it.price}</span>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                       <StatusBadge status={it.status} />
                       <button
@@ -56,7 +56,7 @@ const MenuPage = () => {
                         onClick={() => handleAdd(it.id)}
                         disabled={disabled}
                       >
-                        {isAdded ? '✓' : '+'}
+                        {isAdded ? 'Added' : '+'}
                       </button>
                     </div>
                   </div>
@@ -67,7 +67,7 @@ const MenuPage = () => {
         ) : (
           menuItems.length === 0 ? (
             <div className="empty-state" style={{ gridColumn: '1 / -1', padding: '48px 16px', textAlign: 'center' }}>
-              <div className="em">🍽️</div>
+              <div className="em"></div>
               <div style={{ fontSize: '16px', fontWeight: 600, marginTop: '8px' }}>No menu items available</div>
               <p style={{ marginTop: '6px', color: 'var(--md-sys-color-on-surface-variant)', fontSize: '13px' }}>
                 The catalog is currently empty. Click "Enter Example Data" at the top to populate random campus food items.
@@ -75,7 +75,7 @@ const MenuPage = () => {
             </div>
           ) : (
             <div className="empty-state" style={{ gridColumn: '1 / -1', padding: '36px 16px', textAlign: 'center' }}>
-              <div className="em">🔍</div>
+              <div className="em"></div>
               No items match your search or filter.
             </div>
           )

@@ -26,13 +26,13 @@ const RecCard = ({ item }) => {
         <div className="rec-name">{item.name}</div>
         <div className="rec-tag">{tagText}</div>
         <div className="rec-row">
-          <span className="rec-price mono">₹{item.price}</span>
+          <span className="rec-price mono">Rs {item.price}</span>
           <button
             className={`add-btn ${added ? 'added' : ''}`}
             onClick={handleAdd}
             disabled={disabled}
           >
-            {added ? '✓' : '+'}
+            {added ? 'Added' : '+'}
           </button>
         </div>
       </div>

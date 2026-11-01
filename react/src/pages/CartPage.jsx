@@ -29,7 +29,7 @@ const CartPage = () => {
         <div className="panel">
           {cartItemIds.length === 0 ? (
             <div className="empty-state">
-              <div className="em">🛒</div>
+              <div className="em"></div>
               Your cart is empty.
               <br />
               <button
@@ -51,15 +51,15 @@ const CartPage = () => {
                     <div className="menu-emoji">{item.emoji}</div>
                     <div className="stub-info">
                       <div className="t">{item.name}</div>
-                      <div className="s mono">₹{item.price} each</div>
+                      <div className="s mono">Rs {item.price} each</div>
                     </div>
                     <div className="qty-ctrl">
-                      <button onClick={() => changeQty(id, -1)}>−</button>
+                      <button onClick={() => changeQty(id, -1)}>-</button>
                       <span>{qty}</span>
                       <button onClick={() => changeQty(id, 1)}>+</button>
                     </div>
                     <button className="remove-x" onClick={() => removeFromCart(id)}>
-                      ✕
+                      X
                     </button>
                   </div>
                 );
@@ -74,15 +74,15 @@ const CartPage = () => {
 
           <div className="summary-row">
             <span>Subtotal</span>
-            <span className="mono">₹{cartTotal}</span>
+            <span className="mono">Rs {cartTotal}</span>
           </div>
           <div className="summary-row">
             <span>Packaging & Container Fee</span>
-            <span className="mono">₹{packingFee}</span>
+            <span className="mono">Rs {packingFee}</span>
           </div>
           <div className="summary-row total">
             <span>Total Payable</span>
-            <span className="mono">₹{finalTotal}</span>
+            <span className="mono">Rs {finalTotal}</span>
           </div>
 
           <button
@@ -90,7 +90,7 @@ const CartPage = () => {
             disabled={cartCount === 0}
             onClick={placeOrder}
           >
-            Place Order & Get Token →
+            Place Order & Get Token ->
           </button>
         </div>
       </div>

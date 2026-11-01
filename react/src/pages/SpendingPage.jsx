@@ -23,11 +23,11 @@ const SpendingPage = () => {
         </div>
 
         <div className="spend-total" style={{ marginTop: '24px' }}>
-          <span className="amt">₹{totalSpend}</span>
+          <span className="amt">Rs {totalSpend}</span>
           <span className="lbl">
             {totalSpend > 0
               ? `Total spent this week across ${orderCount} canteen order${orderCount > 1 ? 's' : ''}`
-              : 'spent this week · No orders placed yet'}
+              : 'spent this week  -  No orders placed yet'}
           </span>
         </div>
       </div>

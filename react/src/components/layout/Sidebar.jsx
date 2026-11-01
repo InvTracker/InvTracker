@@ -71,10 +71,10 @@ const Sidebar = () => {
             <div className="who-role">
               {loggedIn && currentUser
                 ? currentUser.role === 'admin'
-                  ? 'Administrator · Full Access'
+                  ? 'Administrator'
                   : currentUser.role === 'kitchen'
-                  ? 'Kitchen Staff · Back of House'
-                  : `${currentUser.year || '2nd year'} · Dining & Store`
+                  ? 'Kitchen Staff'
+                  : 'Student'
                 : 'Log in / Sign up'}
             </div>
           </div>
@@ -94,7 +94,7 @@ const Sidebar = () => {
                 fontSize: '12px',
               }}
             >
-              ✕
+              X
             </button>
           )}
         </div>

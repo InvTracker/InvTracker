@@ -68,7 +68,7 @@ export const AppProvider = ({ children }) => {
       setStageIndex(data.orders[0].stageIndex);
       setQueueNo(data.orders[0].token);
     }
-    addToast('🎲 Random example campus data injected!');
+    addToast(' Random example campus data injected!');
   };
 
   // Clear data back to empty state
@@ -79,7 +79,7 @@ export const AppProvider = ({ children }) => {
     setCart({});
     setStageIndex(-1);
     setQueueNo('#---');
-    addToast('🗑️ Cleared all data. Catalog is now empty.');
+    addToast(' Cleared all data. Catalog is now empty.');
   };
 
   // Cart operations
@@ -128,7 +128,7 @@ export const AppProvider = ({ children }) => {
     const total = subtotal + packing;
 
     const names = cartItemIds.map((id) => menuItems.find((m) => m.id === id)?.name).filter(Boolean).join(' + ');
-    const emoji = menuItems.find((m) => m.id === cartItemIds[0])?.emoji || '🍲';
+    const emoji = menuItems.find((m) => m.id === cartItemIds[0])?.emoji || '';
 
     // Mark current active orders as delivered
     setOrders((prev) =>

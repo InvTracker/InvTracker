@@ -8,7 +8,7 @@ import { spendingData } from '../data/initialData';
 const etaMessages = [
   '~12 min to ready',
   '~7 min to ready',
-  'Ready — head to Counter 2',
+  'Ready - head to Counter 2',
   'Order complete',
 ];
 
@@ -28,7 +28,7 @@ const HomePage = () => {
   const done = stageIndex >= stages.length - 1;
 
   const activeTicketTitle = currentLiveOrder ? currentLiveOrder.title : 'No active order';
-  const activeTicketDesc = currentLiveOrder ? 'Placed just now · Counter 2' : 'Browse the menu and place an order to get a live token';
+  const activeTicketDesc = currentLiveOrder ? 'Placed just now  -  Counter 2' : 'Browse the menu and place an order to get a live token';
   const activeTicketAmt = currentLiveOrder ? currentLiveOrder.amt : 0;
 
   return (
@@ -36,7 +36,7 @@ const HomePage = () => {
       {/* Hero Ticket */}
       <div className="ticket">
         <div className="ticket-main">
-          <div className="ticket-eyebrow">Active Order · Digital Token</div>
+          <div className="ticket-eyebrow">Active Order  -  Digital Token</div>
           <div className="ticket-title">{activeTicketTitle}</div>
           <div className="ticket-desc">{activeTicketDesc}</div>
 
@@ -71,7 +71,7 @@ const HomePage = () => {
 
           <div className="stub-row">
             <span className="stub-label">Paid</span>
-            <span className="stub-value mono">₹{activeTicketAmt}</span>
+            <span className="stub-value mono">Rs {activeTicketAmt}</span>
           </div>
 
           <div className="eta-pill">{stageIndex >= 0 ? etaMessages[stageIndex] : 'No active order'}</div>
@@ -81,7 +81,7 @@ const HomePage = () => {
             onClick={advanceStage}
             disabled={stageIndex < 0 || done}
           >
-            {stageIndex < 0 ? 'No active order' : done ? 'Picked up ✓' : `Mark "${stages[stageIndex + 1]}" →`}
+            {stageIndex < 0 ? 'No active order' : done ? 'Picked up (Done)' : `Mark "${stages[stageIndex + 1]}" ->`}
           </button>
         </div>
       </div>
@@ -89,22 +89,22 @@ const HomePage = () => {
       {/* Quick Grid Shortcuts */}
       <div className="quick-grid">
         <div className="quick-card" onClick={() => switchPage('menu')}>
-          <div className="quick-icon">📋</div>
+          <div className="quick-icon"></div>
           <div className="quick-title">Browse Menu</div>
           <div className="quick-sub">Filter by Mains, Snacks & Drinks</div>
         </div>
         <div className="quick-card" onClick={() => switchPage('cart')}>
-          <div className="quick-icon">🛒</div>
+          <div className="quick-icon"></div>
           <div className="quick-title">View Cart</div>
           <div className="quick-sub">Review items & checkout</div>
         </div>
         <div className="quick-card" onClick={() => switchPage('orders')}>
-          <div className="quick-icon">🎫</div>
+          <div className="quick-icon"></div>
           <div className="quick-title">Order History</div>
           <div className="quick-sub">Track active & past tokens</div>
         </div>
         <div className="quick-card" onClick={() => switchPage('spending')}>
-          <div className="quick-icon">📊</div>
+          <div className="quick-icon"></div>
           <div className="quick-title">Spending Log</div>
           <div className="quick-sub">Weekly canteen expense overview</div>
         </div>
@@ -114,14 +114,14 @@ const HomePage = () => {
       <div className="section-head">
         <div className="section-title">Live Canteen Stock Gauges</div>
         <button className="section-link" onClick={() => switchPage('menu')}>
-          View all menu →
+          View all menu ->
         </button>
       </div>
 
       <div className="counter-strip">
         {menuItems.length === 0 ? (
           <div className="empty-state" style={{ width: '100%', padding: '24px', textAlign: 'center', gridColumn: '1 / -1' }}>
-            <div className="em">🍽️</div>
+            <div className="em"></div>
             No live inventory loaded yet. Click <strong>"Enter Example Data"</strong> at the top to load sample menu items.
           </div>
         ) : (
@@ -142,14 +142,14 @@ const HomePage = () => {
       <div className="section-head">
         <div className="section-title">Recommended Meal Pairs</div>
         <button className="section-link" onClick={() => switchPage('foryou')}>
-          See personalized picks →
+          See personalized picks ->
         </button>
       </div>
 
       <div className="rec-grid">
         {menuItems.length === 0 ? (
           <div className="empty-state" style={{ width: '100%', padding: '24px', textAlign: 'center', gridColumn: '1 / -1' }}>
-            <div className="em">✨</div>
+            <div className="em"></div>
             No recommended pairings yet. Load example data to explore combos.
           </div>
         ) : (
@@ -178,7 +178,7 @@ const HomePage = () => {
           </div>
 
           <div className="spend-total">
-            <span className="amt">₹{orders.reduce((sum, o) => sum + (o.amt || 0), 0)}</span>
+            <span className="amt">Rs {orders.reduce((sum, o) => sum + (o.amt || 0), 0)}</span>
             <span className="lbl">spent across {orders.length} orders</span>
           </div>
         </div>
@@ -190,7 +190,7 @@ const HomePage = () => {
           <div className="stub-list">
             {orders.length === 0 ? (
               <div className="empty-state" style={{ padding: '24px', textAlign: 'center' }}>
-                <div className="em">🎫</div>
+                <div className="em"></div>
                 No recent tickets found.
               </div>
             ) : (
@@ -202,7 +202,7 @@ const HomePage = () => {
                     <div className="s">{o.when}</div>
                   </div>
                   <div>
-                    <div className="stub-amt mono">₹{o.amt}</div>
+                    <div className="stub-amt mono">Rs {o.amt}</div>
                     <div className={`stub-status ${o.status === 'Delivered' ? 'done' : 'progress'}`}>
                       {o.status}
                     </div>
@@ -221,7 +221,7 @@ const HomePage = () => {
           <div className="fs">Rate your experience to help cafeteria staff restock better.</div>
         </div>
         <button className="fb-btn" onClick={() => switchPage('feedback')}>
-          Give Feedback ★
+          Give Feedback
         </button>
       </div>
     </div>

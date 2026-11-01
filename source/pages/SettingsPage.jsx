@@ -94,7 +94,7 @@ const SettingsPage = () => {
                   <div style={{ fontSize: '11px', color: 'var(--md-sys-color-on-surface-variant)' }}>Live menu, food ordering, spending, express store</div>
                 </div>
                 <span className={`perm-pill ${!isKitchen ? 'granted' : 'restricted'}`}>
-                  <span>{!isKitchen ? '✓ Permitted' : '🔒 Restricted'}</span>
+                  <span>{!isKitchen ? 'Permitted' : 'Restricted'}</span>
                 </span>
               </div>
 
@@ -104,7 +104,7 @@ const SettingsPage = () => {
                   <div style={{ fontSize: '11px', color: 'var(--md-sys-color-on-surface-variant)' }}>Kanban ticket queue, counter POS billing, complaints</div>
                 </div>
                 <span className={`perm-pill ${isAdmin || isKitchen ? 'granted' : 'restricted'}`}>
-                  <span>{isAdmin || isKitchen ? '✓ Permitted' : '🔒 Restricted'}</span>
+                  <span>{isAdmin || isKitchen ? 'Permitted' : 'Restricted'}</span>
                 </span>
               </div>
 
@@ -114,7 +114,7 @@ const SettingsPage = () => {
                   <div style={{ fontSize: '11px', color: 'var(--md-sys-color-on-surface-variant)' }}>Update what item has how much stock left</div>
                 </div>
                 <span className={`perm-pill ${isAdmin || isKitchen ? 'granted' : 'restricted'}`}>
-                  <span>{isAdmin || isKitchen ? '✓ Permitted' : '🔒 Restricted'}</span>
+                  <span>{isAdmin || isKitchen ? 'Permitted' : 'Restricted'}</span>
                 </span>
               </div>
 
@@ -124,7 +124,7 @@ const SettingsPage = () => {
                   <div style={{ fontSize: '11px', color: 'var(--md-sys-color-on-surface-variant)' }}>Executive overview, audit CSV, add/edit items</div>
                 </div>
                 <span className={`perm-pill ${isAdmin ? 'granted' : 'restricted'}`}>
-                  <span>{isAdmin ? '✓ Permitted' : '🔒 Admin Only'}</span>
+                  <span>{isAdmin ? 'Permitted' : 'Admin Only'}</span>
                 </span>
               </div>
 
@@ -134,7 +134,7 @@ const SettingsPage = () => {
                   <div style={{ fontSize: '11px', color: 'var(--md-sys-color-on-surface-variant)' }}>Toggle role views directly in top bar</div>
                 </div>
                 <span className={`perm-pill ${isAdmin ? 'granted' : 'restricted'}`}>
-                  <span>{isAdmin ? '✓ Visible (Admin)' : '🔒 Hidden'}</span>
+                  <span>{isAdmin ? 'Visible (Admin)' : 'Hidden'}</span>
                 </span>
               </div>
             </div>
@@ -168,7 +168,7 @@ const SettingsPage = () => {
                 <span className="material-symbols-outlined" style={{ color: 'var(--md-sys-color-primary)' }}>school</span>
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
                   <strong style={{ fontSize: '12.5px' }}>Sign In as User / Student</strong>
-                  <span style={{ fontSize: '11px', color: 'var(--md-sys-color-on-surface-variant)' }}>user@student.campus.edu · Access: User features only</span>
+                  <span style={{ fontSize: '11px', color: 'var(--md-sys-color-on-surface-variant)' }}>user@student.campus.edu  -  Access: User features only</span>
                 </div>
               </button>
 
@@ -188,7 +188,7 @@ const SettingsPage = () => {
                 <span className="material-symbols-outlined" style={{ color: 'var(--md-sys-color-secondary)' }}>skillet</span>
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
                   <strong style={{ fontSize: '12.5px' }}>Sign In as Kitchen Staff</strong>
-                  <span style={{ fontSize: '11px', color: 'var(--md-sys-color-on-surface-variant)' }}>kitchen@campus.edu · Access: Kitchen features only</span>
+                  <span style={{ fontSize: '11px', color: 'var(--md-sys-color-on-surface-variant)' }}>kitchen@campus.edu  -  Access: Kitchen features only</span>
                 </div>
               </button>
 
@@ -208,7 +208,7 @@ const SettingsPage = () => {
                 <span className="material-symbols-outlined" style={{ color: 'var(--md-sys-color-primary)' }}>admin_panel_settings</span>
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
                   <strong style={{ fontSize: '12.5px', color: 'var(--md-sys-color-primary)' }}>Sign In as Administrator</strong>
-                  <span style={{ fontSize: '11px', color: 'var(--md-sys-color-on-surface-variant)' }}>admin@campus.edu · Access: User + Kitchen + Admin + Switcher</span>
+                  <span style={{ fontSize: '11px', color: 'var(--md-sys-color-on-surface-variant)' }}>admin@campus.edu  -  Access: User + Kitchen + Admin + Switcher</span>
                 </div>
               </button>
             </div>
@@ -228,7 +228,7 @@ const SettingsPage = () => {
                 onChange={(e) => setEmailInput(e.target.value)}
               />
               <div style={{ fontSize: '11px', color: 'var(--md-sys-color-on-surface-variant)', marginTop: '4px' }}>
-                💡 Emails containing &quot;admin&quot; get Admin access; &quot;kitchen&quot; gets Kitchen only; student emails get User store only.
+                Note: Emails containing &quot;admin&quot; get Admin access; &quot;kitchen&quot; gets Kitchen only; student emails get User store only.
               </div>
             </div>
             <div className="field">

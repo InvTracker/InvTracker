@@ -109,13 +109,13 @@ const Topbar = () => {
             className={theme === 'default' ? 'on' : ''}
             onClick={() => setTheme('default')}
           >
-            ☀️ Light
+            Light
           </button>
           <button
             className={theme === 'kitchen' ? 'on' : ''}
             onClick={() => setTheme('kitchen')}
           >
-            🌙 Dark
+            Dark
           </button>
         </div>
 
