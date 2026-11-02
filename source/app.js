@@ -3225,6 +3225,24 @@ function setupEventHandlers() {
       return;
     }
   });
+    const themeToggleBtn = $('#themeToggleBtn');
+  if (themeToggleBtn) {
+    themeToggleBtn.addEventListener('click', (e) => {
+      if (typeof window.toggleInvenTrackTheme === 'function') {
+        window.toggleInvenTrackTheme(e);
+      } else {
+        const isDark = document.body.getAttribute('data-theme') === 'kitchen';
+        if (isDark) {
+          document.body.removeAttribute('data-theme');
+          document.documentElement.removeAttribute('data-theme');
+        } else {
+          document.body.setAttribute('data-theme', 'kitchen');
+          document.documentElement.setAttribute('data-theme', 'kitchen');
+        }
+      }
+    });
+  }
+
   const themeToggle = $('#themeToggle');
   if (themeToggle) {
     themeToggle.addEventListener('click', (e) => {

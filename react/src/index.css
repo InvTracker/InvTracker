@@ -4538,3 +4538,76 @@ body.has-sticky-cart .floating-token-bar {
   font-weight: 700;
   color: #713f12;
 }
+
+
+/* ================= THEME TOGGLE BUTTON (LANDING PAGE DESIGN) ================= */
+.theme-toggle-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--md-sys-color-surface-container, rgba(0, 0, 0, 0.04));
+  border: 1px solid var(--card-border, var(--md-sys-color-outline-variant, rgba(0, 0, 0, 0.08)));
+  color: var(--md-sys-color-on-surface, #191c1d);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
+  padding: 0;
+  outline: none;
+  box-sizing: border-box;
+  flex-shrink: 0;
+}
+
+.theme-toggle-btn:hover {
+  background: var(--md-sys-color-surface-container-high, rgba(0, 0, 0, 0.08));
+  color: var(--md-sys-color-primary, #006874);
+  transform: scale(1.05);
+}
+
+.theme-toggle-btn:active {
+  transform: scale(0.95);
+}
+
+.theme-toggle-btn .material-symbols-outlined {
+  font-size: 19px;
+  line-height: 1;
+  user-select: none;
+}
+
+[data-theme="kitchen"] .theme-toggle-btn,
+[data-theme="dark"] .theme-toggle-btn {
+  background: rgba(48, 54, 55, 0.85);
+  color: #82d3e0;
+  border-color: rgba(130, 211, 224, 0.35);
+  box-shadow: 0 0 14px rgba(130, 211, 224, 0.2);
+}
+
+[data-theme="kitchen"] .theme-toggle-btn:hover,
+[data-theme="dark"] .theme-toggle-btn:hover {
+  background: rgba(60, 68, 70, 0.95);
+  color: #9eeffd;
+  box-shadow: 0 0 18px rgba(130, 211, 224, 0.4);
+  transform: scale(1.05);
+}
+
+/* Personalized Recommendation Badge */
+.rec-pill-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--md-sys-color-primary, #006874);
+  background: rgba(0, 104, 116, 0.1);
+  border-radius: 6px;
+  padding: 3px 8px;
+  margin-top: 5px;
+  margin-bottom: 4px;
+}
+
+[data-theme="kitchen"] .rec-pill-badge,
+[data-theme="dark"] .rec-pill-badge {
+  background: rgba(130, 211, 224, 0.15);
+  color: #82d3e0;
+}
