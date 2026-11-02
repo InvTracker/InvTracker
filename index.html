@@ -273,26 +273,29 @@
         </div>
       </div>
             <section class="page active" id="page-home">
-        
-        <!-- Student Greeting Banner -->
-        <div class="home-greeting-bar" id="homeGreetingBar">
-          <h2 class="greeting-heading" id="homeGreetingName">Welcome back!</h2>
-          <p class="greeting-sub">High-speed re-order for your frequent cafeteria favorites.</p>
+
+        <!-- Home Welcome Hero Header -->
+        <div class="home-hero-banner" style="margin-bottom: 24px;">
+          <h1 class="welcome-heading display" id="homeWelcomeHeading" style="font-size: 26px; font-weight: 800; color: var(--md-sys-color-on-surface); margin: 0 0 6px 0; letter-spacing: -0.5px;">Welcome back, Rohan Sharma!</h1>
+          <p class="welcome-sub" style="font-size: 14.5px; color: var(--md-sys-color-on-surface-variant); margin: 0;">High-speed re-order for your frequent cafeteria favorites.</p>
         </div>
 
-        <!-- High-Speed Quick Re-Order / Recent Favorites Shelf -->
-        <section class="quick-reorder-section" id="quickReorderSection">
-          <div class="section-head" style="margin-top: 4px; margin-bottom: 8px;">
-            <div class="section-title" style="display:flex; align-items:center; gap:6px;">
-              <span class="material-symbols-outlined" style="font-size:20px; color:#f59e0b;">bolt</span>
+        <!-- Quick Re-Order Section -->
+        <div class="quick-reorder-section" style="margin-bottom: 32px;">
+          <div class="section-head" style="margin-bottom: 16px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;">
+            <div class="section-title" style="display: flex; align-items: center; gap: 8px; font-size: 18px; font-weight: 800; color: var(--md-sys-color-on-surface);">
+              <span class="material-symbols-outlined" style="color: #f59e0b; font-size: 24px; font-variation-settings: 'FILL' 1;">bolt</span>
               <span>Quick Re-Order</span>
             </div>
-            <div id="reorderComboCtaContainer"></div>
+            <button class="reorder-combo-btn" id="reorderComboBtn" type="button" style="display: inline-flex; align-items: center; gap: 8px; padding: 9px 20px; border-radius: 100px; background: var(--md-sys-color-primary, #006a6a); color: #ffffff; border: none; font-size: 13.5px; font-weight: 700; cursor: pointer; box-shadow: 0 4px 14px rgba(0, 106, 106, 0.28); transition: transform 0.15s ease, box-shadow 0.15s ease;">
+              <span class="material-symbols-outlined" style="font-size: 18px;">sync</span>
+              <span>Re-order Entire Combo (3 items)</span>
+            </button>
           </div>
-          <div class="quick-reorder-scroll-row" id="quickReorderRow">
-            <!-- Dynamically populated re-order cards -->
-          </div>
-        </section>
+          <!-- Real Food Cards Grid -->
+          <div class="menu-grid" id="quickReorderGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 16px;"></div>
+        </div>
+
         <section class="ticket">
           <div class="ticket-main">
             <div class="ticket-eyebrow">
@@ -389,7 +392,7 @@
           <div class="section-title">You may also like - Frequent pairings</div>
           <button class="section-link" data-goto="foryou">See more &rarr;</button>
         </div>
-        <div class="rec-grid" id="homeRecGrid"></div>
+        <div class="menu-grid" id="homeRecGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 16px;"></div>
         <div class="section-head">
           <div class="section-title">This week's spending</div>
           <button class="section-link" data-goto="spending">View details &rarr;</button>
@@ -535,11 +538,17 @@
           </div>
         </div>
       </section>
+            <!-- PAGE: FOR YOU (RECOMMENDATIONS) -->
       <section class="page" id="page-foryou">
         <div class="section-head" style="margin-top:0">
-          <div class="section-title">Frequently Bought With - Personalised recommendations</div>
+          <div>
+            <div class="section-title">Chef Recommendations &amp; Curated Combos - For You</div>
+            <div style="font-size:12.5px; color:var(--md-sys-color-on-surface-variant); margin-top:4px;">
+              Hand-picked specials, dynamic meal pairings, and campus favorites tailored to your dining preferences
+            </div>
+          </div>
         </div>
-        <div class="rec-grid" id="foryouGrid"></div>
+        <div class="menu-grid" id="foryouGrid"></div>
       </section>
       <section class="page" id="page-feedback">
         <div class="panel" style="max-width:540px;">
@@ -1328,6 +1337,61 @@
       </div>
     </div>
   </div>
+
+  <!-- Robust Landing Page Theme Controller -->
+  <script>
+    (function() {
+      window.applyInvenTrackTheme = function(dark) {
+        var isDark = Boolean(dark);
+        var btn = document.getElementById('themeToggleBtn');
+        var icon = document.getElementById('themeIcon');
+
+        if (isDark) {
+          document.documentElement.setAttribute('data-theme', 'kitchen');
+          document.body.setAttribute('data-theme', 'kitchen');
+          if (icon) icon.textContent = 'light_mode';
+          if (btn) btn.setAttribute('title', 'Switch to Daylight Light Mode');
+          try { localStorage.setItem('invenTrack_theme', 'kitchen'); } catch(e){}
+        } else {
+          document.documentElement.removeAttribute('data-theme');
+          document.body.removeAttribute('data-theme');
+          if (icon) icon.textContent = 'dark_mode';
+          if (btn) btn.setAttribute('title', 'Switch to Kitchen Dark Mode');
+          try { localStorage.setItem('invenTrack_theme', 'default'); } catch(e){}
+        }
+      };
+
+      window.toggleInvenTrackTheme = function(e) {
+        if (e && e.preventDefault) e.preventDefault();
+        var currentIsDark = document.body.getAttribute('data-theme') === 'kitchen' ||
+                              document.documentElement.getAttribute('data-theme') === 'kitchen';
+        window.applyInvenTrackTheme(!currentIsDark);
+      };
+
+      // Initial theme apply
+      var saved = localStorage.getItem('invenTrack_theme');
+      var initDark = saved === 'kitchen';
+      window.applyInvenTrackTheme(initDark);
+
+      // Wire DOM once ready
+      function bindBtn() {
+        var btn = document.getElementById('themeToggleBtn');
+        if (btn) {
+          btn.onclick = window.toggleInvenTrackTheme;
+        }
+        var icon = document.getElementById('themeIcon');
+        var currentIsDark = document.body.getAttribute('data-theme') === 'kitchen' ||
+                            document.documentElement.getAttribute('data-theme') === 'kitchen';
+        if (icon) icon.textContent = currentIsDark ? 'light_mode' : 'dark_mode';
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', bindBtn);
+      } else {
+        bindBtn();
+      }
+    })();
+  </script>
 
 </body>
 

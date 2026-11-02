@@ -293,7 +293,7 @@ class InvenTrackStore {
       } catch (e) {}
 
       return {
-        menuItems: [...DATA_INJECTION_SLOT.menuItems],
+        menuItems: (DATA_INJECTION_SLOT.menuItems && DATA_INJECTION_SLOT.menuItems.length > 0) ? [...DATA_INJECTION_SLOT.menuItems] : [...CAMPUS_DEMO_FIXTURE.menuItems],
         orders: [...DATA_INJECTION_SLOT.orders],
         users: [...DATA_INJECTION_SLOT.users],
         feedbacks: [...DATA_INJECTION_SLOT.feedbacks],
@@ -352,7 +352,7 @@ class InvenTrackStore {
     }
 
     return {
-      menuItems: [...DATA_INJECTION_SLOT.menuItems],
+      menuItems: (DATA_INJECTION_SLOT.menuItems && DATA_INJECTION_SLOT.menuItems.length > 0) ? [...DATA_INJECTION_SLOT.menuItems] : [...CAMPUS_DEMO_FIXTURE.menuItems],
       orders: [...DATA_INJECTION_SLOT.orders],
       users: [...DATA_INJECTION_SLOT.users],
       feedbacks: [...DATA_INJECTION_SLOT.feedbacks],
@@ -587,7 +587,7 @@ class InvenTrackStore {
       return;
     }
 
-    const item = this.state.menuItems.find((m) => m.id === itemId);
+    const item = findCatalogItem(this.state, itemId);
     if (!item) return;
     const oldStock = item.stock;
     item.stock = Math.max(0, item.stock + delta);
@@ -607,7 +607,7 @@ class InvenTrackStore {
       return;
     }
 
-    const item = this.state.menuItems.find((m) => m.id === itemId);
+    const item = findCatalogItem(this.state, itemId);
     if (!item) return;
     item.stock = 0;
     toast(`Marked "${item.name}" as Out of Stock`, 'cancel');
@@ -648,7 +648,7 @@ class InvenTrackStore {
 
     // 2. Inventory & Network Verification
     try {
-      const item = this.state.menuItems.find((m) => m.id === itemId);
+      const item = findCatalogItem(this.state, itemId);
       if (!item || item.stock <= 0 || (currentQty + 1) > item.stock) {
         throw new Error('OUT_OF_STOCK');
       }
@@ -690,7 +690,7 @@ class InvenTrackStore {
     // 2. Inventory verification if increasing quantity
     if (delta > 0) {
       try {
-        const item = this.state.menuItems.find((m) => m.id === itemId);
+        const item = findCatalogItem(this.state, itemId);
         if (!item || item.stock <= 0 || next > item.stock) {
           throw new Error('OUT_OF_STOCK');
         }
@@ -1664,6 +1664,496 @@ function isExpressItem(it) {
   return cat.includes('snack') || cat.includes('beverage') || cat.includes('dessert') || cat.includes('quick') || nameLower.includes('coffee') || nameLower.includes('fries') || nameLower.includes('burger') || nameLower.includes('sandwich') || nameLower.includes('jamun') || nameLower.includes('brownie') || nameLower.includes('tea') || nameLower.includes('lassi');
 }
 
+// =========================================================================
+// ZOMATO & SWIGGY STYLE FOOD METADATA & ASSET RESOLVERS
+// =========================================================================
+
+const FOOD_REAL_IMAGES = {
+  'chicken dum biryani': 'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=800&auto=format&fit=crop&q=80',
+  'hyderabadi veg biryani': 'https://images.unsplash.com/photo-1633945274405-b6c8069047b0?w=800&auto=format&fit=crop&q=80',
+  'ghee podi masala dosa': 'https://images.unsplash.com/photo-1668236543090-82eba5ee5976?w=800&auto=format&fit=crop&q=80',
+  'crispy veg patty burger': 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=800&auto=format&fit=crop&q=80',
+  'grilled cheese sandwich': 'https://images.unsplash.com/photo-1528735602780-2552fd46c7af?w=800&auto=format&fit=crop&q=80',
+  'wood-fired pizza slice': 'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=800&auto=format&fit=crop&q=80',
+  'peri-peri salted fries': 'https://images.unsplash.com/photo-1576107232684-1279f3908594?w=800&auto=format&fit=crop&q=80',
+  'artisan cold coffee': 'https://images.unsplash.com/photo-1517256064527-09c73fc73e38?w=800&auto=format&fit=crop&q=80',
+  'spiced masala buttermilk': 'https://images.unsplash.com/photo-1556881286-fc6915169721?w=800&auto=format&fit=crop&q=80',
+  'warm gulab jamun (2 pcs)': 'https://images.unsplash.com/photo-1601050690597-df0568f70950?w=800&auto=format&fit=crop&q=80'
+};
+
+const CATEGORY_FALLBACK_IMAGES = {
+  mains: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=800&auto=format&fit=crop&q=80',
+  snacks: 'https://images.unsplash.com/photo-1606755962773-d324e0a13086?w=800&auto=format&fit=crop&q=80',
+  beverages: 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=800&auto=format&fit=crop&q=80',
+  desserts: 'https://images.unsplash.com/photo-1551024601-bec78aea704b?w=800&auto=format&fit=crop&q=80'
+};
+
+function getItemImage(it) {
+  if (it.image && typeof it.image === 'string' && it.image.startsWith('http')) return it.image;
+  const key = (it.name || '').toLowerCase().trim();
+  if (FOOD_REAL_IMAGES[key]) return FOOD_REAL_IMAGES[key];
+  for (const [nameKey, url] of Object.entries(FOOD_REAL_IMAGES)) {
+    if (key.includes(nameKey) || nameKey.includes(key)) return url;
+  }
+  const catKey = (it.cat || '').toLowerCase().trim();
+  return CATEGORY_FALLBACK_IMAGES[catKey] || 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=800&auto=format&fit=crop&q=80';
+}
+
+function isVegItem(it) {
+  if (typeof it.isVeg === 'boolean') return it.isVeg;
+  const name = (it.name || '').toLowerCase();
+  if (name.includes('chicken') || name.includes('mutton') || name.includes('fish') || name.includes('egg') || name.includes('prawn') || name.includes('meat')) {
+    return false;
+  }
+  return true;
+}
+
+function getItemSize(it) {
+  if (it.cardSize) return it.cardSize;
+  const name = (it.name || '').toLowerCase();
+  if (name.includes('dum biryani') || name.includes('pizza') || name.includes('platter') || name.includes('combo')) {
+    return 'featured';
+  }
+  if (name.includes('burger') || name.includes('coffee') || name.includes('fries') || name.includes('jamun') || name.includes('lassi')) {
+    return 'tall';
+  }
+  return 'standard';
+}
+
+const ITEM_DESCRIPTIONS = {
+  'chicken dum biryani': 'Slow-cooked fragrant basmati rice layered with spiced tender chicken, saffron, and caramelised onions. Served with spiced mint raita.',
+  'hyderabadi veg biryani': 'Fragrant long-grain basmati layered with garden-fresh vegetables, paneer cubes, and aromatic Nizam spices.',
+  'ghee podi masala dosa': 'Crisp golden crepe roasted in pure desi ghee and Gunpowder chutney podi, wrapped around spiced potato masala.',
+  'crispy veg patty burger': 'Crispy herb-crumbed vegetable patty with fresh lettuce, sliced tomatoes, gherkins and smoky tandoori mayo in a toasted bun.',
+  'grilled cheese sandwich': 'Thick sourdough toast grilled with a three-cheese blend of mozzarella, cheddar, and processed cheese with herb butter.',
+  'wood-fired pizza slice': 'Authentic stone-oven baked slice with san marzano tomato reduction, fresh basil leaves, and stringy fior di latte mozzarella.',
+  'peri-peri salted fries': 'Skin-on golden potato fries tossed in fiery African peri-peri spice dust. Served with creamy garlic dip.',
+  'artisan cold coffee': 'Slow-brewed dark roast espresso whipped with chilled creamy whole milk, chocolate drizzle, and vanilla bean froth.',
+  'spiced masala buttermilk': 'Traditional desi chaas churned with fresh coriander, ginger, crushed green chillies, and roasted cumin.',
+  'warm gulab jamun (2 pcs)': 'Handmade khoya dumplings fried golden and immersed in simmering rosewater, saffron, and green cardamom nectar.'
+};
+
+function getItemDesc(it) {
+  if (it.desc) return it.desc;
+  const key = (it.name || '').toLowerCase().trim();
+  if (ITEM_DESCRIPTIONS[key]) return ITEM_DESCRIPTIONS[key];
+  for (const [nameKey, val] of Object.entries(ITEM_DESCRIPTIONS)) {
+    if (key.includes(nameKey) || nameKey.includes(key)) return val;
+  }
+  return `${it.name} freshly prepared at ${it.counter || 'Counter 1'} with authentic campus cafeteria ingredients.`;
+}
+
+// M3 Student Menu Grid with Zomato & Swiggy Style Multi-Sized Interactive Cards
+
+// =========================================================================
+// =========================================================================
+// QUICK RE-ORDER FREQUENT FAVORITES (Real Food Cards for Home Page)
+// =========================================================================
+
+const QUICK_REORDER_ITEMS = [
+  {
+    id: 'item-3',
+    name: 'Ghee Podi Masala Dosa',
+    emoji: 'breakfast_dining',
+    price: 80,
+    cat: 'Mains',
+    counter: 'Counter 1 (Hot Meals)',
+    stock: 14,
+    lowThreshold: 5,
+    restockTime: '10 min',
+    isVeg: true,
+    rating: 4.9,
+    ratingCount: 284,
+    badge: 'Ordered 2x',
+    recReason: 'Ordered 2x this week - Counter 1',
+    cardSize: 'standard',
+    desc: 'Crisp golden crepe roasted in pure desi ghee and Gunpowder chutney podi, wrapped around spiced potato masala.',
+    image: 'https://images.unsplash.com/photo-1668236543090-82eba5ee5976?w=800&auto=format&fit=crop&q=80'
+  },
+  {
+    id: 'item-1',
+    name: 'Chicken Dum Biryani',
+    emoji: 'restaurant',
+    price: 180,
+    cat: 'Mains',
+    counter: 'Counter 1 (Hot Meals)',
+    stock: 22,
+    lowThreshold: 8,
+    restockTime: '15 min',
+    isVeg: false,
+    rating: 4.8,
+    ratingCount: 342,
+    badge: 'Recent order',
+    recReason: 'Recent order - Counter 1 (Hot Meals)',
+    cardSize: 'standard',
+    desc: 'Slow-cooked fragrant basmati rice layered with spiced tender chicken, saffron, and caramelised onions. Served with spiced mint raita.',
+    image: 'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=800&auto=format&fit=crop&q=80'
+  },
+  {
+    id: 'item-8',
+    name: 'Artisan Cold Coffee',
+    emoji: 'local_cafe',
+    price: 50,
+    cat: 'Beverages',
+    counter: 'Counter 3 (Cafe & Drinks)',
+    stock: 28,
+    lowThreshold: 10,
+    restockTime: '5 min',
+    isVeg: true,
+    rating: 4.9,
+    ratingCount: 410,
+    badge: 'Recent order',
+    recReason: 'Recent order - Counter 3 (Cafe & Drinks)',
+    cardSize: 'standard',
+    desc: 'Slow-steeped dark roast espresso blended with chilled creamy milk, turbinado brown sugar, and dark chocolate drizzle.',
+    image: 'https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?w=800&auto=format&fit=crop&q=80'
+  }
+];
+
+// =========================================================================
+// CURATED "FOR YOU" RECOMMENDATION CATALOG (Distinct items from Menu)
+// =========================================================================
+
+const FOR_YOU_ITEMS = [
+  {
+    id: 'foryou-1',
+    name: 'Smoky Paneer Tikka Roll',
+    emoji: 'lunch_dining',
+    price: 135,
+    cat: 'Wraps & Rolls',
+    counter: 'Counter 2 (Quick Bites)',
+    stock: 16,
+    lowThreshold: 5,
+    restockTime: '10 min',
+    isVeg: true,
+    rating: 4.8,
+    ratingCount: 312,
+    badge: 'Trending Combo',
+    recReason: '98% Match - Frequently paired with Cold Coffee',
+    cardSize: 'featured',
+    desc: 'Soft handmade rumali roti wrapped around clay-oven charred paneer tikka, crunchy bell peppers, pickled onions, and house mint-coriander mayonnaise.',
+    image: 'https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?w=800&auto=format&fit=crop&q=80'
+  },
+  {
+    id: 'foryou-2',
+    name: 'Spicy Schezwan Hakka Noodles',
+    emoji: 'ramen_dining',
+    price: 110,
+    cat: 'Asian Wok',
+    counter: 'Counter 1 (Hot Meals)',
+    stock: 20,
+    lowThreshold: 6,
+    restockTime: '12 min',
+    isVeg: true,
+    rating: 4.7,
+    ratingCount: 245,
+    badge: 'Chef Special',
+    recReason: 'Evening Pick - Wok-tossed fresh on order',
+    cardSize: 'standard',
+    desc: 'Flame-tossed noodles with shredded cabbage, crunchy carrots, bell peppers, and fiery homemade Schezwan sauce topped with fresh scallions.',
+    image: 'https://images.unsplash.com/photo-1585032226651-759b368d7246?w=800&auto=format&fit=crop&q=80'
+  },
+  {
+    id: 'foryou-3',
+    name: 'Crispy Chicken Tenders & Cajun Fries',
+    emoji: 'dinner_dining',
+    price: 160,
+    cat: 'Snacks & Combos',
+    counter: 'Counter 2 (Quick Bites)',
+    stock: 12,
+    lowThreshold: 4,
+    restockTime: '15 min',
+    isVeg: false,
+    rating: 4.9,
+    ratingCount: 428,
+    badge: 'Student Favorite',
+    recReason: '#1 Campus Combo - High Reorder Velocity',
+    cardSize: 'tall',
+    desc: 'Crispy golden buttermilk-marinated chicken strips served with a generous portion of cajun dusted fries, creamy garlic mayo, and smoky BBQ dip.',
+    image: 'https://images.unsplash.com/photo-1562967914-608f82629710?w=800&auto=format&fit=crop&q=80'
+  },
+  {
+    id: 'foryou-4',
+    name: 'Royal North Indian Thali',
+    emoji: 'set_meal',
+    price: 195,
+    cat: 'Full Meals',
+    counter: 'Counter 1 (Hot Meals)',
+    stock: 14,
+    lowThreshold: 5,
+    restockTime: '20 min',
+    isVeg: true,
+    rating: 4.9,
+    ratingCount: 516,
+    badge: 'Value Feast',
+    recReason: 'Complete Lunch - Balanced nutrition & fresh phulkas',
+    cardSize: 'featured',
+    desc: 'Executive campus lunch platter: creamy Dal Makhani, Paneer Butter Masala, 2 hot butter phulkas, fragrant Jeera Basmati rice, fresh salad, and sweet gulab jamun.',
+    image: 'https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=800&auto=format&fit=crop&q=80'
+  },
+  {
+    id: 'foryou-5',
+    name: 'Truffle Mushroom Melt Panini',
+    emoji: 'bakery_dining',
+    price: 125,
+    cat: 'Artisan Cafe',
+    counter: 'Counter 2 (Quick Bites)',
+    stock: 8,
+    lowThreshold: 3,
+    restockTime: '10 min',
+    isVeg: true,
+    rating: 4.6,
+    ratingCount: 164,
+    badge: 'Cafe Special',
+    recReason: 'Gourmet Pick - 3-Cheese blend on sourdough',
+    cardSize: 'standard',
+    desc: 'Herb-crusted sourdough panini pressed with pan-seared garlic button mushrooms, caramelized balsamic onions, and melted Swiss mozzarella cheese.',
+    image: 'https://images.unsplash.com/photo-1528735602780-2552fd46c7af?w=800&auto=format&fit=crop&q=80'
+  },
+  {
+    id: 'foryou-6',
+    name: 'Steamed Himalayan Chicken Dimsums (6 pcs)',
+    emoji: 'kebab_dining',
+    price: 120,
+    cat: 'Street Bites',
+    counter: 'Counter 2 (Quick Bites)',
+    stock: 25,
+    lowThreshold: 6,
+    restockTime: '8 min',
+    isVeg: false,
+    rating: 4.8,
+    ratingCount: 380,
+    badge: 'Must Try',
+    recReason: 'Quick Grab - Steaming hot & ready in 5 mins',
+    cardSize: 'standard',
+    desc: 'Delicate handmade steamed momos filled with seasoned ground chicken, spring onions, and ginger. Served with fiery Himalayan roasted red chili dip.',
+    image: 'https://images.unsplash.com/photo-1496116218417-1a781b1c416c?w=800&auto=format&fit=crop&q=80'
+  },
+  {
+    id: 'foryou-7',
+    name: 'Biscoff Caramel Frappe',
+    emoji: 'local_cafe',
+    price: 95,
+    cat: 'Beverages',
+    counter: 'Counter 3 (Cafe & Drinks)',
+    stock: 30,
+    lowThreshold: 8,
+    restockTime: '5 min',
+    isVeg: true,
+    rating: 4.9,
+    ratingCount: 680,
+    badge: 'Best Seller',
+    recReason: 'Energy Boost - Real Lotus Biscoff & double espresso',
+    cardSize: 'tall',
+    desc: 'Iced blended double shot Arabica espresso churned with rich Lotus Biscoff spread, salted caramel drizzle, whipped dairy cream, and crushed biscuit topping.',
+    image: 'https://images.unsplash.com/photo-1572490122747-3968b75cc699?w=800&auto=format&fit=crop&q=80'
+  },
+  {
+    id: 'foryou-8',
+    name: 'Berry Burst Belgian Waffle',
+    emoji: 'cake',
+    price: 85,
+    cat: 'Desserts',
+    counter: 'Counter 3 (Cafe & Drinks)',
+    stock: 15,
+    lowThreshold: 4,
+    restockTime: '10 min',
+    isVeg: true,
+    rating: 4.8,
+    ratingCount: 295,
+    badge: 'Sweet Treat',
+    recReason: 'Dessert Pairing - Made fresh on Belgian iron',
+    cardSize: 'tall',
+    desc: 'Crisp malted Belgian waffle loaded with warm wild blueberry-strawberry compote, melted dark chocolate drizzle, and a dusting of powdered sugar.',
+    image: 'https://images.unsplash.com/photo-1562376552-0d160a2f238d?w=800&auto=format&fit=crop&q=80'
+  }
+];
+
+function findCatalogItem(state, id) {
+  if (!id) return null;
+  if (state && state.menuItems) {
+    const found = state.menuItems.find((m) => m.id === id);
+    if (found) return found;
+  }
+  const foryou = FOR_YOU_ITEMS.find((m) => m.id === id);
+  if (foryou) return foryou;
+  if (typeof QUICK_REORDER_ITEMS !== 'undefined') {
+    const quick = QUICK_REORDER_ITEMS.find((m) => m.id === id);
+    if (quick) return quick;
+  }
+  return null;
+}
+
+// =========================================================================
+// SHARED FOOD CARD RENDERER (Menu Page & For You Page)
+// =========================================================================
+
+function renderFoodCardHTML(it, state) {
+  const status = getItemStatus(it);
+  const isOut = status === 'out';
+  const inCart = (state.cart && state.cart[it.id]) || 0;
+  const imgUrl = getItemImage(it);
+  const isVeg = isVegItem(it);
+  const rating = it.rating || 4.6;
+  const ratingCount = it.ratingCount || (120 + (it.stock || 5) * 6);
+  const badge = it.badge || (isOut ? null : (status === 'low' ? 'Only Few Left' : null));
+  const cardSize = it.cardSize || getItemSize(it);
+  const desc = it.desc || getItemDesc(it);
+  const originalPrice = Math.round(it.price * 1.18);
+  const recBadge = it.recReason ? `<div class="rec-pill-badge">${it.recReason}</div>` : '';
+
+  // Render Add / Stepper control
+  let actionControl = '';
+  if (isOut) {
+    actionControl = `<button class="swiggy-add-btn" disabled title="Sold out">SOLD OUT</button>`;
+  } else if (inCart > 0) {
+    actionControl = `
+      <div class="swiggy-qty-controller">
+        <button class="swiggy-qty-btn" data-dec="${it.id}" title="Decrease quantity" aria-label="Decrease">&minus;</button>
+        <span class="swiggy-qty-val">${inCart}</span>
+        <button class="swiggy-qty-btn" data-inc="${it.id}" title="Increase quantity" aria-label="Increase">&plus;</button>
+      </div>
+    `;
+  } else {
+    actionControl = `
+      <button class="swiggy-add-btn" data-add="${it.id}" title="Add to Cart">
+        ADD <span style="font-size:14px; margin-left:2px;">+</span>
+      </button>
+    `;
+  }
+
+  // Veg / Non-Veg badge markup
+  const vegBadge = `<span class="food-type-icon ${isVeg ? 'veg' : 'non-veg'}" title="${isVeg ? 'Vegetarian' : 'Non-Vegetarian'}"></span>`;
+
+  // Rating badge markup
+  const ratingMarkup = `
+    <div style="display:inline-flex; align-items:center; gap:4px;">
+      <span class="swiggy-rating-pill"><span class="star">*</span> ${rating}</span>
+      <span class="swiggy-rating-count">(${ratingCount})</span>
+    </div>
+  `;
+
+  // Stock and Gauge HTML
+  const stockGaugeHTML = `
+    <div style="margin-top:8px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; font-size:11px; margin-bottom:4px;">
+        <span style="color:var(--md-sys-color-on-surface-variant); font-weight:600;">Stock: <strong>${it.stock}</strong> left</span>
+        <span style="color:${getGaugeColor(status)}; font-weight:700; text-transform:uppercase; font-size:10.5px;">${status}</span>
+      </div>
+      <div class="gauge" style="height:4px; margin:0;">
+        <span style="width:${getGaugeWidth(it)}%; background:${getGaugeColor(status)}"></span>
+      </div>
+    </div>
+  `;
+
+  // Template 1: FEATURED CARD (Hero Landscape)
+  if (cardSize === 'featured') {
+    return `
+      <div class="menu-card menu-card--featured ${isOut ? 'is-out-of-stock' : ''}">
+        <div class="card-main-content">
+          <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+            ${vegBadge}
+            ${badge ? `<span class="swiggy-ribbon bestseller"><span class="material-symbols-outlined" style="font-size:13px;">workspace_premium</span>${badge}</span>` : ''}
+            <span style="font-size:11px; font-weight:600; background:var(--md-sys-color-primary-container); color:var(--md-sys-color-on-primary-container); padding:2px 8px; border-radius:6px;">${it.counter || 'Counter 1'}</span>
+          </div>
+          ${recBadge}
+          <div class="card-item-title" style="font-size:17px; margin-top:4px;">${it.name}</div>
+          <div style="margin-top:2px; margin-bottom:6px;">${ratingMarkup}</div>
+          <div class="card-item-price-row">
+            <span class="card-item-price" style="font-size:16.5px;">Rs ${it.price}</span>
+            <span class="card-item-original-price">Rs ${originalPrice}</span>
+            <span style="font-size:11px; font-weight:700; color:#1ba672;">SAVE Rs ${originalPrice - it.price}</span>
+          </div>
+          <div class="card-item-desc" style="-webkit-line-clamp:3;">${desc}</div>
+          <div style="margin-top:auto; padding-top:10px;">
+            ${stockGaugeHTML}
+          </div>
+        </div>
+        <div class="card-media-side">
+          <div class="food-img-box">
+            <img class="food-img" src="${imgUrl}" alt="${it.name}" loading="lazy" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=800&auto=format&fit=crop&q=80'">
+            ${isOut ? '<div style="position:absolute; inset:0; background:rgba(0,0,0,0.6); display:flex; align-items:center; justify-content:center; color:#fff; font-weight:800; font-size:12px; letter-spacing:1px;">SOLD OUT</div>' : ''}
+          </div>
+          <div class="card-action-wrap">
+            ${actionControl}
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  // Template 2: TALL CARD (Portrait Visual)
+  if (cardSize === 'tall') {
+    return `
+      <div class="menu-card menu-card--tall ${isOut ? 'is-out-of-stock' : ''}">
+        <div class="food-img-box">
+          <img class="food-img" src="${imgUrl}" alt="${it.name}" loading="lazy" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=800&auto=format&fit=crop&q=80'">
+          <div style="position:absolute; top:10px; left:10px; z-index:2; display:flex; gap:6px; align-items:center;">
+            <span style="background:rgba(255,255,255,0.92); backdrop-filter:blur(4px); padding:4px; border-radius:6px; display:inline-flex; align-items:center; justify-content:center; box-shadow:0 2px 6px rgba(0,0,0,0.15);">${vegBadge}</span>
+            ${badge ? `<span class="swiggy-ribbon chef" style="box-shadow:0 2px 6px rgba(0,0,0,0.2);">${badge}</span>` : ''}
+          </div>
+          <div style="position:absolute; top:10px; right:10px; z-index:2;">
+            ${ratingMarkup}
+          </div>
+          ${isOut ? '<div style="position:absolute; inset:0; background:rgba(0,0,0,0.6); display:flex; align-items:center; justify-content:center; color:#fff; font-weight:800; font-size:13px; letter-spacing:1px;">SOLD OUT</div>' : ''}
+          <div class="card-action-wrap">
+            ${actionControl}
+          </div>
+        </div>
+        <div class="card-main-content">
+          <div class="card-item-title">${it.name}</div>
+          ${recBadge}
+          <div style="font-size:11.5px; color:var(--md-sys-color-on-surface-variant); margin-bottom:4px;">
+            ${it.cat} &middot; <span style="font-weight:600;">${it.counter || 'Counter 1'}</span>
+          </div>
+          <div class="card-item-price-row">
+            <span class="card-item-price">Rs ${it.price}</span>
+            <span class="card-item-original-price">Rs ${originalPrice}</span>
+          </div>
+          <div class="card-item-desc">${desc}</div>
+          <div style="margin-top:auto; padding-top:10px;">
+            ${stockGaugeHTML}
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  // Template 3: STANDARD CARD (Signature Swiggy Split Layout)
+  return `
+    <div class="menu-card menu-card--standard ${isOut ? 'is-out-of-stock' : ''}">
+      <div class="card-main-content">
+        <div style="display:flex; align-items:center; gap:8px;">
+          ${vegBadge}
+          ${badge ? `<span class="swiggy-ribbon trending">${badge}</span>` : ''}
+        </div>
+        ${recBadge}
+        <div class="card-item-title">${it.name}</div>
+        <div class="card-item-price-row">
+          <span class="card-item-price">Rs ${it.price}</span>
+          <span class="card-item-original-price">Rs ${originalPrice}</span>
+        </div>
+        <div style="margin-bottom:6px;">${ratingMarkup}</div>
+        <div class="card-item-desc">${desc}</div>
+        <div style="margin-top:auto; padding-top:10px;">
+          ${stockGaugeHTML}
+        </div>
+      </div>
+      <div class="card-media-side">
+        <div class="food-img-box">
+          <img class="food-img" src="${imgUrl}" alt="${it.name}" loading="lazy" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=800&auto=format&fit=crop&q=80'">
+          ${isOut ? '<div style="position:absolute; inset:0; background:rgba(0,0,0,0.6); display:flex; align-items:center; justify-content:center; color:#fff; font-weight:800; font-size:11px; letter-spacing:0.5px;">SOLD OUT</div>' : ''}
+        </div>
+        <div class="card-action-wrap">
+          ${actionControl}
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+
+
 function renderStudentMenu(state, searchQuery = '') {
   const grid = $('#menuGrid');
   const filterRow = $('#filterRow');
@@ -1728,106 +2218,35 @@ function renderStudentMenu(state, searchQuery = '') {
     return;
   }
 
-  grid.innerHTML = items
-    .map((it) => {
-      const status = getItemStatus(it);
-      const isOut = status === 'out';
-      const inCart = state.cart[it.id] || 0;
-      const diet = getDietaryInfo(it);
-      const spice = getSpiceLevel(it);
-      const isExp = isExpressItem(it);
-
-      return `
-        <div class="menu-card">
-          <div class="menu-emoji">${renderItemIcon(it.emoji)}</div>
-          <div class="menu-info">
-            <div style="display:flex; align-items:center; justify-content:space-between; gap:6px; margin-bottom:4px;">
-              <div class="mn">${it.name}</div>
-              <span class="diet-symbol ${diet.type}" title="${diet.label}">
-                <span class="diet-box">
-                  <span class="diet-mark"></span>
-                </span>
-                <span class="diet-text">${diet.label}</span>
-              </span>
-            </div>
-
-            <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap; margin-bottom:4px;">
-              <span class="mc">${it.cat} - <span>${it.counter || 'Counter 1'}</span></span>
-              ${spice ? `
-                <span class="spice-pill ${spice.toLowerCase()}">
-                  <span class="material-symbols-outlined" style="font-size:12px;">local_fire_department</span>
-                  <span>${spice}</span>
-                </span>
-              ` : ''}
-              ${isExp ? `
-                <span class="express-chip-tag" title="Grab & Go Express">
-                  Express
-                </span>
-              ` : ''}
-            </div>
-
-            ${it.stock > 0 && it.stock <= 5 ? `
-              <div class="stock-urgency-tag pulse">
-                <span class="material-symbols-outlined" style="font-size:13px;">local_fire_department</span>
-                <span>Only ${it.stock} left!</span>
-              </div>
-            ` : ''}
-
-            <div style="font-size:11px; color:var(--md-sys-color-on-surface-variant); margin-top:4px;">
-              Stock: <strong>${it.stock}</strong> - Gauge: 
-              <span style="color:${getGaugeColor(status)}; font-weight:700;">${status.toUpperCase()}</span>
-            </div>
-            <div class="gauge" style="margin:6px 0 8px;">
-              <span style="width:${getGaugeWidth(it)}%; background:${getGaugeColor(status)}"></span>
-            </div>
-            <div class="mrow">
-              <span class="rec-price mono">${it.price}</span>
-              <div style="display:flex; align-items:center; gap:8px;">
-                ${sbHTML(status)}
-                <button class="add-btn" data-add="${it.id}" ${isOut ? 'disabled title="Sold out"' : 'title="Add to Cart"'}>
-                  ${inCart > 0 ? inCart : '+'}
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      `;
-    })
-    .join('');
+  grid.innerHTML = items.map((it) => renderFoodCardHTML(it, state)).join('');
 }
 function renderRecommendations(state) {
+  // Update Welcome heading with current user's name
+  const welcomeHeading = $('#homeWelcomeHeading');
+  if (welcomeHeading) {
+    const userName = (state.currentUser && state.currentUser.name) || 'Rohan Sharma';
+    welcomeHeading.textContent = `Welcome back, ${userName}!`;
+  }
+
+  // Render Real Food Cards in Quick Re-Order Grid on Home Page
+  const quickReorderGrid = $('#quickReorderGrid');
+  if (quickReorderGrid) {
+    quickReorderGrid.innerHTML = QUICK_REORDER_ITEMS.map((it) => renderFoodCardHTML(it, state)).join('');
+  }
+
+  // Render Real Food Cards in Home Recommendations Grid ("You may also like")
   const homeRec = $('#homeRecGrid');
-  const foryouRec = $('#foryouGrid');
-
-  const recItems = state.menuItems.filter((m) => m.stock > 0).slice(0, 4);
-
-  const makeCardHTML = (it) => {
-    const status = getItemStatus(it);
-    return `
-      <div class="rec-card">
-        <div class="rec-img">${renderItemIcon(it.emoji)}</div>
-        <div class="rec-body">
-          <div class="rec-name">${it.name}</div>
-          <div class="rec-tag">${status === 'low' ? 'Only few remaining' : 'Pairs with your usual'}</div>
-          <div class="rec-row">
-            <span class="rec-price mono">${it.price}</span>
-            <button class="add-btn" data-add="${it.id}">+</button>
-          </div>
-        </div>
-      </div>
-    `;
-  };
-
   if (homeRec) {
+    const recItems = FOR_YOU_ITEMS.slice(0, 4);
     homeRec.innerHTML = recItems.length
-      ? recItems.map(makeCardHTML).join('')
+      ? recItems.map((it) => renderFoodCardHTML(it, state)).join('')
       : '<div class="empty-state" style="grid-column:1 / -1;"><div class="em"><span class="material-symbols-outlined">auto_awesome</span></div>No recommendations available.</div>';
   }
 
+  // Render Real Food Cards in For You Page
+  const foryouRec = $('#foryouGrid');
   if (foryouRec) {
-    foryouRec.innerHTML = state.menuItems.length
-      ? state.menuItems.slice(0, 8).map(makeCardHTML).join('')
-      : '<div class="empty-state" style="grid-column:1 / -1;"><div class="em"><span class="material-symbols-outlined">auto_awesome</span></div>Load items to view graph-inspired recommendations.</div>';
+    foryouRec.innerHTML = FOR_YOU_ITEMS.map((it) => renderFoodCardHTML(it, state)).join('');
   }
 }
 
@@ -2118,7 +2537,7 @@ function renderStudentCart(state) {
   let subtotal = 0;
   cartList.innerHTML = itemEntries
     .map(([id, qty]) => {
-      const it = state.menuItems.find((m) => m.id === id);
+      const it = findCatalogItem(state, id);
       if (!it) return '';
       const lineTotal = it.price * qty;
       subtotal += lineTotal;
@@ -2386,7 +2805,7 @@ function renderShopperCart(state) {
   let subtotal = 0;
   list.innerHTML = entries
     .map(([id, qty]) => {
-      const it = state.menuItems.find((m) => m.id === id);
+      const it = findCatalogItem(state, id);
       if (!it) return '';
       const lineTotal = it.price * qty;
       subtotal += lineTotal;
@@ -2790,7 +3209,7 @@ function renderKitchenPos(state) {
     let subtotal = 0;
     lines.innerHTML = entries
       .map(([id, qty]) => {
-        const it = state.menuItems.find((m) => m.id === id);
+        const it = findCatalogItem(state, id);
         if (!it) return '';
         const lineTotal = it.price * qty;
         subtotal += lineTotal;
