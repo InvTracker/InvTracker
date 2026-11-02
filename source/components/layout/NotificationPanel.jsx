@@ -18,16 +18,16 @@ const NotificationPanel = ({ open, onClose }) => {
   return (
     <div ref={panelRef} className={`notif-panel ${open ? 'open' : ''}`}>
       <div className="notif-item">
-        <div className="n-t">🔥 Chicken Biryani restocked</div>
-        <div className="n-s">25 fresh portions added · Counter 2</div>
+        <div className="n-t"> Chicken Biryani restocked</div>
+        <div className="n-s">25 fresh portions added  -  Counter 2</div>
       </div>
       <div className="notif-item">
-        <div className="n-t">⚠️ Pizza Slices sold out</div>
+        <div className="n-t"> Pizza Slices sold out</div>
         <div className="n-s">Next batch ready around 2:30 PM</div>
       </div>
       <div className="notif-item">
-        <div className="n-t">🎉 Combo Offer active</div>
-        <div className="n-s">Sandwich + Cold Coffee @ ₹95 only</div>
+        <div className="n-t"> Combo Offer active</div>
+        <div className="n-s">Sandwich + Cold Coffee @ Rs 95 only</div>
       </div>
     </div>
   );

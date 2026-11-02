@@ -11,7 +11,7 @@ const FeedbackPage = () => {
       addToast('Pick a star rating first');
       return;
     }
-    addToast('Thanks — feedback submitted!');
+    addToast('Thanks - feedback submitted!');
     setStars(0);
     setText('');
   };
@@ -29,7 +29,7 @@ const FeedbackPage = () => {
               className={`star ${val <= stars ? 'on' : ''}`}
               onClick={() => setStars(val)}
             >
-              ★
+              *
             </button>
           ))}
         </div>

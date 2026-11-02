@@ -45,7 +45,7 @@ const Topbar = () => {
     <div className="topbar">
       <div className="page-title">{pageTitles[activePage] || ''}</div>
 
-<div className="search">
+      <div className="search">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
           <circle cx="11" cy="11" r="8" />
           <path d="M21 21l-4.3-4.3" />

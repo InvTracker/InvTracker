@@ -29,21 +29,21 @@ export const spendingData = [
 
 // Diverse catalog of potential campus food items to sample randomly from
 const ITEM_POOL = [
-  { name: 'Chicken Dum Biryani', emoji: '🍲', basePrice: 180, cat: 'Mains', counter: 'Counter 1 (Hot Meals)' },
-  { name: 'Hyderabadi Veg Biryani', emoji: '🍚', basePrice: 150, cat: 'Mains', counter: 'Counter 1 (Hot Meals)' },
-  { name: 'Ghee Podi Masala Dosa', emoji: '🧇', basePrice: 90, cat: 'Mains', counter: 'Counter 1 (Hot Meals)' },
-  { name: 'Crispy Veg Patty Burger', emoji: '🍔', basePrice: 70, cat: 'Snacks', counter: 'Counter 2 (Quick Bites)' },
-  { name: 'Grilled Cheese Sandwich', emoji: '🥪', basePrice: 60, cat: 'Snacks', counter: 'Counter 2 (Quick Bites)' },
-  { name: 'Wood-Fired Pizza Slice', emoji: '🍕', basePrice: 120, cat: 'Snacks', counter: 'Counter 2 (Quick Bites)' },
-  { name: 'Peri-Peri Salted Fries', emoji: '🍟', basePrice: 55, cat: 'Snacks', counter: 'Counter 2 (Quick Bites)' },
-  { name: 'Artisan Cold Coffee', emoji: '🥤', basePrice: 45, cat: 'Beverages', counter: 'Counter 3 (Cafe & Drinks)' },
-  { name: 'Spiced Masala Buttermilk', emoji: '🥛', basePrice: 25, cat: 'Beverages', counter: 'Counter 3 (Cafe & Drinks)' },
-  { name: 'Chilled Mango Lassi', emoji: '🥭', basePrice: 50, cat: 'Beverages', counter: 'Counter 3 (Cafe & Drinks)' },
-  { name: 'Warm Gulab Jamun (2 pcs)', emoji: '🍮', basePrice: 30, cat: 'Desserts', counter: 'Counter 3 (Cafe & Drinks)' },
-  { name: 'Belgian Chocolate Brownie', emoji: '🍫', basePrice: 65, cat: 'Desserts', counter: 'Counter 3 (Cafe & Drinks)' },
-  { name: 'Paneer Tikka Roll', emoji: '🌯', basePrice: 95, cat: 'Snacks', counter: 'Counter 2 (Quick Bites)' },
-  { name: 'Chole Bhature Platter', emoji: '🥘', basePrice: 110, cat: 'Mains', counter: 'Counter 1 (Hot Meals)' },
-  { name: 'Iced Lemon Mint Tea', emoji: '🍹', basePrice: 35, cat: 'Beverages', counter: 'Counter 3 (Cafe & Drinks)' }
+  { name: 'Chicken Dum Biryani', emoji: '', basePrice: 180, cat: 'Hot Meals', counter: 'Counter 1 (Hot Meals)', diet: 'non-veg', spice: 'Medium', isExpress: false },
+  { name: 'Hyderabadi Veg Biryani', emoji: '', basePrice: 150, cat: 'Hot Meals', counter: 'Counter 1 (Hot Meals)', diet: 'veg', spice: 'Medium', isExpress: false },
+  { name: 'Ghee Podi Masala Dosa', emoji: '', basePrice: 90, cat: 'Hot Meals', counter: 'Counter 1 (Hot Meals)', diet: 'veg', spice: 'Mild', isExpress: false },
+  { name: 'Crispy Veg Patty Burger', emoji: '', basePrice: 70, cat: 'Quick Bites', counter: 'Counter 2 (Quick Bites)', diet: 'veg', spice: 'Mild', isExpress: true },
+  { name: 'Grilled Cheese Sandwich', emoji: '', basePrice: 60, cat: 'Quick Bites', counter: 'Counter 2 (Quick Bites)', diet: 'veg', spice: 'Mild', isExpress: true },
+  { name: 'Wood-Fired Pizza Slice', emoji: '', basePrice: 120, cat: 'Quick Bites', counter: 'Counter 2 (Quick Bites)', diet: 'veg', spice: 'Medium', isExpress: false },
+  { name: 'Peri-Peri Salted Fries', emoji: '', basePrice: 55, cat: 'Quick Bites', counter: 'Counter 2 (Quick Bites)', diet: 'veg', spice: 'Hot', isExpress: true },
+  { name: 'Artisan Cold Coffee', emoji: '', basePrice: 45, cat: 'Beverages', counter: 'Counter 3 (Cafe & Drinks)', diet: 'veg', spice: null, isExpress: true },
+  { name: 'Spiced Masala Buttermilk', emoji: '', basePrice: 25, cat: 'Beverages', counter: 'Counter 3 (Cafe & Drinks)', diet: 'veg', spice: 'Mild', isExpress: true },
+  { name: 'Chilled Mango Lassi', emoji: '', basePrice: 50, cat: 'Beverages', counter: 'Counter 3 (Cafe & Drinks)', diet: 'veg', spice: null, isExpress: true },
+  { name: 'Warm Gulab Jamun (2 pcs)', emoji: '', basePrice: 30, cat: 'Desserts', counter: 'Counter 3 (Cafe & Drinks)', diet: 'veg', spice: null, isExpress: true },
+  { name: 'Belgian Chocolate Brownie', emoji: '', basePrice: 65, cat: 'Desserts', counter: 'Counter 3 (Cafe & Drinks)', diet: 'veg', spice: null, isExpress: true },
+  { name: 'Paneer Tikka Roll', emoji: '', basePrice: 95, cat: 'Quick Bites', counter: 'Counter 2 (Quick Bites)', diet: 'veg', spice: 'Medium', isExpress: false },
+  { name: 'Chole Bhature Platter', emoji: '', basePrice: 110, cat: 'Hot Meals', counter: 'Counter 1 (Hot Meals)', diet: 'veg', spice: 'Medium', isExpress: false },
+  { name: 'Iced Lemon Mint Tea', emoji: '', basePrice: 35, cat: 'Beverages', counter: 'Counter 3 (Cafe & Drinks)', diet: 'veg', spice: null, isExpress: true }
 ];
 
 /**
@@ -80,6 +80,9 @@ export function generateRandomExampleData() {
       price,
       cat: template.cat,
       counter: template.counter,
+      diet: template.diet,
+      spice: template.spice,
+      isExpress: template.isExpress,
       stock,
       status
     };

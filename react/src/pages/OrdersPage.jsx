@@ -13,7 +13,7 @@ const OrdersPage = () => {
         <div className="stub-list">
           {orders.length === 0 ? (
             <div className="empty-state" style={{ padding: '40px 0' }}>
-              <div className="em">📋</div>
+              <div className="em"></div>
               No orders placed yet.
               <br />
               <button className="mini-btn" style={{ marginTop: '12px' }} onClick={() => switchPage('menu')}>
@@ -29,7 +29,7 @@ const OrdersPage = () => {
                   <div className="s">{o.when}</div>
                 </div>
                 <div>
-                  <div className="stub-amt mono">₹{o.amt}</div>
+                  <div className="stub-amt mono">Rs {o.amt}</div>
                   <div className={`stub-status ${o.status === 'Delivered' ? 'done' : 'progress'}`}>
                     {o.status}
                   </div>

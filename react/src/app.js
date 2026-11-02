@@ -1,5 +1,16 @@
+try {
+  ['invenTrack_user', 'inventrack_m3_state'].forEach((k) => {
+    const raw = localStorage.getItem(k);
+    if (raw && (raw.includes('\u00C2') || raw.includes('\u00B7') || raw.includes('\\u00C2') || raw.includes('\\u00B7') || raw.includes('\\u2022') || raw.includes('&middot;'))) {
+      const sanitized = raw.replace(/[\u00C2\u00A0\u00B7\u2022\u26a1]/g, '').replace(/\\u00C2\\u00B7/g, '').replace(/\\u00C2/g, '').replace(/\\u00B7/g, '').replace(/\\u2022/g, '').replace(/&middot;/g, '');
+      localStorage.setItem(k, sanitized);
+    }
+  });
+} catch(e) {}
+
+// storage_sanitizer_added
 /**
- * InvenTrack — Campus Food & Cafe Inventory Platform
+ * InvenTrack - Campus Food & Cafe Inventory Platform
  * Material Design 3 (Material You / M3) Architecture
  * 
  * Supports 4 Unified Roles:
@@ -9,9 +20,6 @@
  * 4. Admin Management (Revenue metrics, demand matrix, audit table, CSV export)
  */
 
-// =========================================================================
-// 1. DATA INJECTION SLOT & DEMO FIXTURE
-// =========================================================================
 
 /**
  * CRITICAL DATA REQUIREMENT:
@@ -30,17 +38,19 @@ const DATA_INJECTION_SLOT = {
  * Material Symbols and food catalog.
  */
 const CAMPUS_DEMO_FIXTURE = {
-  menuItems: [
-    { id: 'item-1', name: 'Chicken Dum Biryani', emoji: 'restaurant', price: 185, cat: 'Mains', counter: 'Counter 1 (Hot Meals)', stock: 25, lowThreshold: 8, restockTime: '15 min' },
-    { id: 'item-2', name: 'Hyderabadi Veg Biryani', emoji: 'rice_bowl', price: 150, cat: 'Mains', counter: 'Counter 1 (Hot Meals)', stock: 18, lowThreshold: 5, restockTime: '20 min' },
-    { id: 'item-3', name: 'Ghee Podi Masala Dosa', emoji: 'breakfast_dining', price: 90, cat: 'Mains', counter: 'Counter 1 (Hot Meals)', stock: 4, lowThreshold: 6, restockTime: '10 min' },
-    { id: 'item-4', name: 'Crispy Veg Patty Burger', emoji: 'lunch_dining', price: 70, cat: 'Snacks', counter: 'Counter 2 (Quick Bites)', stock: 22, lowThreshold: 5, restockTime: '12 min' },
-    { id: 'item-5', name: 'Grilled Cheese Sandwich', emoji: 'bakery_dining', price: 60, cat: 'Snacks', counter: 'Counter 2 (Quick Bites)', stock: 3, lowThreshold: 5, restockTime: '8 min' },
-    { id: 'item-6', name: 'Wood-Fired Pizza Slice', emoji: 'local_pizza', price: 120, cat: 'Snacks', counter: 'Counter 2 (Quick Bites)', stock: 0, lowThreshold: 4, restockTime: '25 min' },
-    { id: 'item-7', name: 'Peri-Peri Salted Fries', emoji: 'fastfood', price: 55, cat: 'Snacks', counter: 'Counter 2 (Quick Bites)', stock: 30, lowThreshold: 8, restockTime: '5 min' },
-    { id: 'item-8', name: 'Artisan Cold Coffee', emoji: 'local_cafe', price: 45, cat: 'Beverages', counter: 'Counter 3 (Cafe & Drinks)', stock: 35, lowThreshold: 10, restockTime: '5 min' },
-    { id: 'item-9', name: 'Spiced Masala Buttermilk', emoji: 'emoji_food_beverage', price: 25, cat: 'Beverages', counter: 'Counter 3 (Cafe & Drinks)', stock: 40, lowThreshold: 10, restockTime: '5 min' },
-    { id: 'item-10', name: 'Warm Gulab Jamun (2 pcs)', emoji: 'icecream', price: 30, cat: 'Desserts', counter: 'Counter 3 (Cafe & Drinks)', stock: 14, lowThreshold: 5, restockTime: '15 min' }
+    menuItems: [
+    { id: 'item-1', name: 'Chicken Dum Biryani', emoji: 'restaurant', price: 185, cat: 'Hot Meals', counter: 'Counter 1 (Hot Meals)', stock: 25, lowThreshold: 8, restockTime: '15 min', diet: 'non-veg', spice: 'Medium', isExpress: false },
+    { id: 'item-2', name: 'Hyderabadi Veg Biryani', emoji: 'rice_bowl', price: 150, cat: 'Hot Meals', counter: 'Counter 1 (Hot Meals)', stock: 18, lowThreshold: 5, restockTime: '20 min', diet: 'veg', spice: 'Medium', isExpress: false },
+    { id: 'item-3', name: 'Ghee Podi Masala Dosa', emoji: 'breakfast_dining', price: 90, cat: 'Hot Meals', counter: 'Counter 1 (Hot Meals)', stock: 4, lowThreshold: 6, restockTime: '10 min', diet: 'veg', spice: 'Mild', isExpress: false },
+    { id: 'item-4', name: 'Crispy Veg Patty Burger', emoji: 'lunch_dining', price: 70, cat: 'Quick Bites', counter: 'Counter 2 (Quick Bites)', stock: 22, lowThreshold: 5, restockTime: '12 min', diet: 'veg', spice: 'Mild', isExpress: true },
+    { id: 'item-5', name: 'Grilled Cheese Sandwich', emoji: 'bakery_dining', price: 60, cat: 'Quick Bites', counter: 'Counter 2 (Quick Bites)', stock: 3, lowThreshold: 5, restockTime: '8 min', diet: 'veg', spice: 'Mild', isExpress: true },
+    { id: 'item-6', name: 'Wood-Fired Pizza Slice', emoji: 'local_pizza', price: 120, cat: 'Quick Bites', counter: 'Counter 2 (Quick Bites)', stock: 0, lowThreshold: 4, restockTime: '25 min', diet: 'veg', spice: 'Medium', isExpress: false },
+    { id: 'item-7', name: 'Peri-Peri Salted Fries', emoji: 'fastfood', price: 55, cat: 'Quick Bites', counter: 'Counter 2 (Quick Bites)', stock: 30, lowThreshold: 8, restockTime: '5 min', diet: 'veg', spice: 'Hot', isExpress: true },
+    { id: 'item-8', name: 'Artisan Cold Coffee', emoji: 'local_cafe', price: 45, cat: 'Beverages', counter: 'Counter 3 (Cafe & Drinks)', stock: 35, lowThreshold: 10, restockTime: '5 min', diet: 'veg', spice: null, isExpress: true },
+    { id: 'item-9', name: 'Spiced Masala Buttermilk', emoji: 'emoji_food_beverage', price: 25, cat: 'Beverages', counter: 'Counter 3 (Cafe & Drinks)', stock: 5, lowThreshold: 10, restockTime: '5 min', diet: 'veg', spice: 'Mild', isExpress: true },
+    { id: 'item-10', name: 'Warm Gulab Jamun (2 pcs)', emoji: 'icecream', price: 30, cat: 'Desserts', counter: 'Counter 3 (Cafe & Drinks)', stock: 14, lowThreshold: 5, restockTime: '15 min', diet: 'veg', spice: null, isExpress: true },
+    { id: 'item-11', name: 'Belgian Chocolate Brownie', emoji: 'cookie', price: 65, cat: 'Desserts', counter: 'Counter 3 (Cafe & Drinks)', stock: 2, lowThreshold: 5, restockTime: '15 min', diet: 'veg', spice: null, isExpress: true },
+    { id: 'item-12', name: 'Paneer Butter Masala Combo', emoji: 'dinner_dining', price: 160, cat: 'Hot Meals', counter: 'Counter 1 (Hot Meals)', stock: 12, lowThreshold: 5, restockTime: '15 min', diet: 'veg', spice: 'Medium', isExpress: false }
   ],
   orders: [
     {
@@ -128,9 +138,6 @@ const CAMPUS_DEMO_FIXTURE = {
   ]
 };
 
-// =========================================================================
-// 2. REACTIVE STATE ENGINE & LOCAL STORAGE ADAPTER
-// =========================================================================
 
 const STORAGE_KEY = 'inventrack_m3_state';
 const stages = ['Placed', 'Preparing', 'Ready', 'Picked up'];
@@ -265,8 +272,7 @@ class InvenTrackStore {
   }
 
   loadInitialState() {
-    // 1. Check for authenticated user from signin / login
-    let authUser = null;
+        let authUser = null;
     try {
       const stored = localStorage.getItem('invenTrack_user');
       if (stored) authUser = JSON.parse(stored);
@@ -291,7 +297,7 @@ class InvenTrackStore {
     if (!isLoggedIn) {
       // Unauthenticated: Redirect directly to Landing Page
       try {
-        window.location.replace('landing.html');
+        window.location.replace(window.location.protocol === 'file:' ? 'landing.html' : '/landing');
       } catch (e) {}
 
       return {
@@ -332,10 +338,18 @@ class InvenTrackStore {
     if (parsed) {
       return {
         menuItems: parsed.menuItems || [...DATA_INJECTION_SLOT.menuItems],
-        orders: parsed.orders || [...DATA_INJECTION_SLOT.orders],
+        orders: (() => {
+          let list = parsed.orders || [...DATA_INJECTION_SLOT.orders];
+          if (cachedActiveOrder && cachedActiveOrder.status !== 'Picked up') {
+            const idx = list.findIndex((o) => o.id === cachedActiveOrder.id || o.token === cachedActiveOrder.token);
+            if (idx !== -1) list[idx] = { ...list[idx], ...cachedActiveOrder };
+            else list.unshift(cachedActiveOrder);
+          }
+          return list;
+        })(),
         users: parsed.users || [...DATA_INJECTION_SLOT.users],
         feedbacks: parsed.feedbacks || [...DATA_INJECTION_SLOT.feedbacks],
-        cart: parsed.cart || {},
+        cart: (parsed.cart && Object.keys(parsed.cart).length > 0) ? parsed.cart : cachedCart,
         shopperCart: parsed.shopperCart || {},
         posCart: parsed.posCart || {},
         currentUser,
@@ -386,7 +400,19 @@ class InvenTrackStore {
     } catch (e) {
       console.warn('Failed to persist state', e);
     }
-    this.notify();
+          // Dedicated Cart & Active Token Sync Cache
+      try {
+        localStorage.setItem('invenTrack_cart', JSON.stringify(this.state.cart || {}));
+        const activeOrder = (this.state.orders || []).find((o) => o.status !== 'Picked up' && (o.role === 'Student' || !o.role || this.state.activeRole === 'user'));
+        if (activeOrder) {
+          localStorage.setItem('invenTrack_active_token', activeOrder.token);
+          localStorage.setItem('invenTrack_active_order', JSON.stringify(activeOrder));
+        } else {
+          localStorage.removeItem('invenTrack_active_token');
+          localStorage.removeItem('invenTrack_active_order');
+        }
+      } catch (e) {}
+      this.notify();
   }
 
   subscribe(listener) {
@@ -418,8 +444,8 @@ class InvenTrackStore {
       if (stockRand < 0.12) {
         stock = 0;
         restockTime = '25 min';
-      } else if (stockRand < 0.28) {
-        stock = Math.floor(2 + Math.random() * 4);
+      } else if (stockRand < 0.42) {
+        stock = Math.floor(1 + Math.random() * 5); // 1 to 5: triggers animated urgency tag
         restockTime = '15 min';
       }
       const priceOffset = (Math.floor(Math.random() * 5) - 2) * 5;
@@ -480,7 +506,7 @@ class InvenTrackStore {
     
     // Top bar switcher is for Admin only
     if (userRole !== 'admin') {
-      toast('🔒 Role switching is only permitted for Administrators.', 'error');
+      toast(' Role switching is only permitted for Administrators.', 'error');
       return;
     }
 
@@ -499,10 +525,10 @@ class InvenTrackStore {
     // Admin can navigate to any permitted page; Kitchen and User are strictly bounded
     if (userRole !== 'admin' && config.allowedPages && !config.allowedPages.includes(page)) {
       if (userRole === 'kitchen') {
-        toast('🔒 Access Restricted: Kitchen accounts can only access kitchen features.', 'error');
+        toast(' Access Restricted: Kitchen accounts can only access kitchen features.', 'error');
         this.state.activePage = 'kitchen-kanban';
       } else {
-        toast('🔒 Access Restricted: Users can only access dining & store features.', 'error');
+        toast(' Access Restricted: Users can only access dining & store features.', 'error');
         this.state.activePage = 'home';
       }
       this.save();
@@ -548,14 +574,14 @@ class InvenTrackStore {
     this.save();
     toast('Logged out successfully. Redirecting to landing page...', 'logout');
     setTimeout(() => {
-      window.location.replace('landing.html');
+      window.location.replace(window.location.protocol === 'file:' ? 'landing.html' : '/landing');
     }, 600);
   }
 
   // Stock Adjustment - Protected by canAdjustStock permission
   adjustStock(itemId, delta) {
     if (!this.hasPermission('canAdjustStock')) {
-      toast('🔒 Permission Denied: Users cannot alter item stock levels or remaining quantities.', 'error');
+      toast(' Permission Denied: Users cannot alter item stock levels or remaining quantities.', 'error');
       return;
     }
 
@@ -564,9 +590,9 @@ class InvenTrackStore {
     const oldStock = item.stock;
     item.stock = Math.max(0, item.stock + delta);
     if (item.stock === 0 && oldStock > 0) {
-      toast(`⚠️ "${item.name}" is now OUT OF STOCK`, 'warning');
+      toast(` "${item.name}" is now OUT OF STOCK`, 'warning');
     } else if (item.stock > 0 && oldStock === 0) {
-      toast(`🟢 "${item.name}" is RESTOCKED (${item.stock} available)`, 'check_circle');
+      toast(` "${item.name}" is RESTOCKED (${item.stock} available)`, 'check_circle');
     } else {
       toast(`Stock updated: ${item.name} (${item.stock})`, 'inventory');
     }
@@ -575,21 +601,21 @@ class InvenTrackStore {
 
   setStockZero(itemId) {
     if (!this.hasPermission('canAdjustStock')) {
-      toast('🔒 Permission Denied: Only kitchen staff and admin can alter item availability.', 'error');
+      toast(' Permission Denied: Only kitchen staff and admin can alter item availability.', 'error');
       return;
     }
 
     const item = this.state.menuItems.find((m) => m.id === itemId);
     if (!item) return;
     item.stock = 0;
-    toast(`🔴 Marked "${item.name}" as Out of Stock`, 'cancel');
+    toast(` Marked "${item.name}" as Out of Stock`, 'cancel');
     this.save();
   }
 
   // Menu Catalog Modification - Protected by canEditMenu permission
   addMenuItem(itemData) {
     if (!this.hasPermission('canEditMenu')) {
-      toast('🔒 Permission Denied: Users cannot add or modify menu catalog items.', 'error');
+      toast(' Permission Denied: Users cannot add or modify menu catalog items.', 'error');
       return false;
     }
 
@@ -612,75 +638,93 @@ class InvenTrackStore {
   }
 
   // Cart operations (Student)
-  addToCart(itemId) {
-    const item = this.state.menuItems.find((m) => m.id === itemId);
-    if (!item || item.stock <= 0) {
-      toast('Item is currently out of stock', 'cancel');
-      return;
-    }
+  async addToCart(itemId) {
+    const prevCart = { ...(this.state.cart || {}) };
     const currentQty = this.state.cart[itemId] || 0;
-    if (currentQty >= item.stock) {
-      toast(`Only ${item.stock} servings available in kitchen`, 'schedule');
-      return;
-    }
+
+    // 1. Optimistic Update: Immediately increment and update UI state, counters & totals
     this.state.cart[itemId] = currentQty + 1;
-    toast(`Added ${item.name} to cart`, 'shopping_cart');
+    this.state.shopperCart = this.state.cart;
     this.save();
+    toast('Added item to cart', 'shopping_cart');
+
+    // 2. Inventory & Network Verification
+    try {
+      const item = this.state.menuItems.find((m) => m.id === itemId);
+      if (!item || item.stock <= 0 || (currentQty + 1) > item.stock) {
+        throw new Error('OUT_OF_STOCK');
+      }
+
+      if (typeof window !== 'undefined' && window.INVENTRACK_API_URL && navigator.onLine) {
+        const res = await fetch(`${window.INVENTRACK_API_URL}/inventory/${itemId}`).catch(() => null);
+        if (res && res.ok) {
+          const remoteData = await res.json().catch(() => null);
+          if (remoteData && typeof remoteData.stock === 'number' && remoteData.stock < (currentQty + 1)) {
+            throw new Error('OUT_OF_STOCK');
+          }
+        }
+      }
+    } catch (err) {
+      // Rollback gracefully on inventory failure
+      this.state.cart = prevCart;
+      this.state.shopperCart = prevCart;
+      this.save();
+      triggerHaptic(100);
+      toast('Item currently out of stock', 'cancel');
+    }
   }
 
-  changeCartQty(itemId, delta) {
-    const item = this.state.menuItems.find((m) => m.id === itemId);
-    if (!item) return;
+  async changeCartQty(itemId, delta) {
+    const prevCart = { ...(this.state.cart || {}) };
     const current = this.state.cart[itemId] || 0;
     const next = current + delta;
+
+    // 1. Optimistic Update: Immediately apply next quantity and re-render
     if (next <= 0) {
       delete this.state.cart[itemId];
-    } else if (next > item.stock) {
-      toast(`Only ${item.stock} available in stock`, 'schedule');
-      return;
     } else {
       this.state.cart[itemId] = next;
     }
+    this.state.shopperCart = this.state.cart;
     this.save();
+
+    // 2. Inventory verification if increasing quantity
+    if (delta > 0) {
+      try {
+        const item = this.state.menuItems.find((m) => m.id === itemId);
+        if (!item || item.stock <= 0 || next > item.stock) {
+          throw new Error('OUT_OF_STOCK');
+        }
+
+        if (typeof window !== 'undefined' && window.INVENTRACK_API_URL && navigator.onLine) {
+          const res = await fetch(`${window.INVENTRACK_API_URL}/inventory/${itemId}`).catch(() => null);
+          if (res && res.ok) {
+            const remoteData = await res.json().catch(() => null);
+            if (remoteData && typeof remoteData.stock === 'number' && remoteData.stock < next) {
+              throw new Error('OUT_OF_STOCK');
+            }
+          }
+        }
+      } catch (err) {
+        // Rollback gracefully
+        this.state.cart = prevCart;
+        this.state.shopperCart = prevCart;
+        this.save();
+        triggerHaptic(100);
+        toast('Item currently out of stock', 'cancel');
+      }
+    }
   }
 
   removeCartItem(itemId) {
     delete this.state.cart[itemId];
+    this.state.shopperCart = this.state.cart;
     this.save();
+    toast('Item removed from cart', 'delete');
   }
 
-  // Cart operations (Shopper)
   addToShopperCart(itemId) {
-    const item = this.state.menuItems.find((m) => m.id === itemId);
-    if (!item || item.stock <= 0) {
-      toast('Item is out of stock', 'cancel');
-      return;
-    }
-    this.state.shopperCart[itemId] = (this.state.shopperCart[itemId] || 0) + 1;
-    toast(`Added ${item.name} to Express Cart`, 'shopping_bag');
-    this.save();
-  }
-
-  changeShopperCartQty(itemId, delta) {
-    const current = this.state.shopperCart[itemId] || 0;
-    const next = current + delta;
-    if (next <= 0) {
-      delete this.state.shopperCart[itemId];
-    } else {
-      this.state.shopperCart[itemId] = next;
-    }
-    this.save();
-  }
-
-  // POS operations
-  addToPosCart(itemId) {
-    const item = this.state.menuItems.find((m) => m.id === itemId);
-    if (!item || item.stock <= 0) {
-      toast('Item out of stock in kitchen', 'cancel');
-      return;
-    }
-    this.state.posCart[itemId] = (this.state.posCart[itemId] || 0) + 1;
-    this.save();
+    return this.addToCart(itemId);
   }
 
   changePosCartQty(itemId, delta) {
@@ -699,8 +743,7 @@ class InvenTrackStore {
     this.save();
   }
 
-  // Order Placement
-  createOrder({ itemsMap, customerName, role, counter, paymentMethod, packagingFee = 10 }) {
+  createOrder({ itemsMap, customerName, role, counter, paymentMethod, pickupTime = 'Instant', packagingFee = 10 }) {
     const itemEntries = Object.entries(itemsMap);
     if (!itemEntries.length) return null;
 
@@ -744,13 +787,32 @@ class InvenTrackStore {
       packing: packagingFee,
       total,
       paymentMethod: paymentMethod || 'Campus UPI',
+      pickupTime: pickupTime || 'Instant',
       status: 'Placed',
       stageIndex: 0,
       counter: counter || 'Counter 2 (Quick Bites)',
       createdAt: new Date().toISOString()
     };
 
+    if (paymentMethod === 'Meal Pass' && this.state.currentUser) {
+      const curBal = typeof this.state.currentUser.balance === 'number' ? this.state.currentUser.balance : 450;
+      this.state.currentUser.balance = Math.max(0, curBal - total);
+      try {
+        localStorage.setItem('invenTrack_user', JSON.stringify(this.state.currentUser));
+      } catch (e) {}
+      const mealChip = $('#mealPassBalanceText');
+      if (mealChip) {
+        mealChip.textContent = `Bal: Rs ${this.state.currentUser.balance}`;
+      }
+    }
+    stopUpiCountdownTimer();
+    this.state.pendingUpiOrderRef = null;
+
     this.state.orders.unshift(newOrder);
+    try {
+      if (typeof playKitchenOrderDing === 'function') playKitchenOrderDing();
+      if (typeof recentNewOrderIds !== 'undefined') recentNewOrderIds.add(newOrder.id);
+    } catch(e) {}
     this.save();
     return newOrder;
   }
@@ -762,6 +824,10 @@ class InvenTrackStore {
     if (order.stageIndex < stages.length - 1) {
       order.stageIndex++;
       order.status = stages[order.stageIndex];
+      if (order.status === 'Ready' || order.status === 'Ready for Pickup') {
+        playPickupChime();
+        triggerHaptic(80);
+      }
       toast(`Order ${order.token} advanced to "${order.status}"`, 'check_circle');
       this.save();
     }
@@ -779,7 +845,7 @@ class InvenTrackStore {
       date: 'Just now'
     };
     this.state.feedbacks.unshift(newFb);
-    toast('Thanks — feedback recorded!', 'thumb_up');
+    toast('Thanks - feedback recorded!', 'thumb_up');
     this.save();
   }
 }
@@ -787,9 +853,6 @@ class InvenTrackStore {
 // Global Store Instance
 const store = new InvenTrackStore();
 
-// =========================================================================
-// 3. DOM UTILITIES & HELPERS
-// =========================================================================
 
 const $ = (sel, el = document) => el.querySelector(sel);
 const $$ = (sel, el = document) => Array.from(el.querySelectorAll(sel));
@@ -853,9 +916,6 @@ function initials(name) {
   );
 }
 
-// =========================================================================
-// 4. ROLE SWITCHING & SHELL ADAPTATION
-// =========================================================================
 
 const roleLabels = {
   user: 'User Portal',
@@ -864,6 +924,115 @@ const roleLabels = {
   kitchen: 'Kitchen & Staff',
   admin: 'Admin Portal'
 };
+
+
+function triggerHaptic(duration = 50) {
+  try {
+    if (typeof navigator !== 'undefined' && 'vibrate' in navigator) {
+      navigator.vibrate(duration);
+    }
+  } catch (e) {}
+}
+
+let audioCtx = null;
+function playPickupChime() {
+  try {
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    if (!AudioContext) return;
+    if (!audioCtx) audioCtx = new AudioContext();
+    if (audioCtx.state === 'suspended') {
+      audioCtx.resume();
+    }
+    const now = audioCtx.currentTime;
+    
+    const osc1 = audioCtx.createOscillator();
+    const gain1 = audioCtx.createGain();
+    osc1.type = 'sine';
+    osc1.frequency.setValueAtTime(587.33, now);
+    gain1.gain.setValueAtTime(0, now);
+    gain1.gain.linearRampToValueAtTime(0.18, now + 0.04);
+    gain1.gain.exponentialRampToValueAtTime(0.001, now + 0.38);
+    osc1.connect(gain1);
+    gain1.connect(audioCtx.destination);
+    osc1.start(now);
+    osc1.stop(now + 0.38);
+
+    const osc2 = audioCtx.createOscillator();
+    const gain2 = audioCtx.createGain();
+    osc2.type = 'sine';
+    osc2.frequency.setValueAtTime(880, now + 0.12);
+    gain2.gain.setValueAtTime(0, now + 0.12);
+    gain2.gain.linearRampToValueAtTime(0.22, now + 0.16);
+    gain2.gain.exponentialRampToValueAtTime(0.001, now + 0.65);
+    osc2.connect(gain2);
+    gain2.connect(audioCtx.destination);
+    osc2.start(now + 0.12);
+    osc2.stop(now + 0.65);
+  } catch (e) {}
+}
+
+function openTokenSheet(state) {
+  const overlay = $('#tokenSheetOverlay');
+  const content = $('#tokenSheetContent');
+  if (!overlay || !content) return;
+  const activeOrder = (state.orders || []).find((o) => o.status !== 'Picked up' && (o.role === 'Student' || !o.role || state.activeRole === 'user'));
+  if (!activeOrder) {
+    toast('No active order currently in queue', 'info');
+    return;
+  }
+  
+  const statusColor = activeOrder.status === 'Ready' ? '#10b981' : (activeOrder.status === 'Preparing' ? '#f59e0b' : '#3b82f6');
+  const itemsHtml = Object.entries(activeOrder.itemsMap || {}).map(([id, qty]) => {
+    const item = (state.catalog || []).find((c) => c.id === id);
+    const title = item ? item.name : id;
+    const price = item ? item.price * qty : 0;
+    return `
+      <div style="display:flex; justify-content:space-between; padding:6px 0; border-bottom:1px solid rgba(0,0,0,0.06); font-size:13.5px;">
+        <span>${qty}x ${title}</span>
+        <span style="font-weight:600;">Rs ${price}</span>
+      </div>
+    `;
+  }).join('');
+
+  content.innerHTML = `
+    <div style="text-align:center; padding:12px 0 18px 0;">
+      <div style="font-size:12px; font-weight:600; text-transform:uppercase; letter-spacing:0.8px; color:var(--md-sys-color-on-surface-variant,#666);">Pickup Token</div>
+      <div style="font-size:38px; font-weight:800; color:var(--md-sys-color-primary,#00639b); margin:4px 0 8px 0; letter-spacing:1px;">#${activeOrder.token}</div>
+      <div style="display:inline-flex; align-items:center; gap:6px; padding:4px 12px; border-radius:9999px; background:${statusColor}18; color:${statusColor}; font-weight:700; font-size:13px;">
+        <span style="width:8px; height:8px; border-radius:50%; background:${statusColor};"></span>
+        <span>${activeOrder.status || 'Placed'}</span>
+      </div>
+    </div>
+
+    <div style="background:var(--md-sys-color-surface,#ffffff); border:1px solid var(--md-sys-color-outline-variant,#e0e0e0); border-radius:14px; padding:14px; margin-bottom:16px;">
+      <div style="display:flex; justify-content:space-between; margin-bottom:8px; font-size:13px;">
+        <span style="color:var(--md-sys-color-on-surface-variant,#666);">Assigned Counter</span>
+        <span style="font-weight:600;">${activeOrder.counter || 'Counter 2 (Dining Hall)'}</span>
+      </div>
+      <div style="display:flex; justify-content:space-between; margin-bottom:8px; font-size:13px;">
+        <span style="color:var(--md-sys-color-on-surface-variant,#666);">Estimated Ready In</span>
+        <span style="font-weight:600; color:#10b981;">${activeOrder.status === 'Ready' ? 'Ready Now!' : '4 - 7 mins'}</span>
+      </div>
+      <div style="display:flex; justify-content:space-between; font-size:13px;">
+        <span style="color:var(--md-sys-color-on-surface-variant,#666);">Payment</span>
+        <span style="font-weight:600;">${activeOrder.paymentMethod || 'Campus UPI'} (Paid)</span>
+      </div>
+    </div>
+
+    <div style="margin-bottom:16px;">
+      <div style="font-size:13px; font-weight:700; margin-bottom:8px; color:var(--md-sys-color-on-surface,#333);">Order Items</div>
+      <div style="background:var(--md-sys-color-surface,#ffffff); border:1px solid var(--md-sys-color-outline-variant,#e0e0e0); border-radius:14px; padding:10px 14px;">
+        ${itemsHtml || '<div style="font-size:13px; color:#888;">Items details recorded</div>'}
+        <div style="display:flex; justify-content:space-between; padding-top:10px; margin-top:6px; font-size:14px; font-weight:700;">
+          <span>Total Paid</span>
+          <span style="color:var(--md-sys-color-primary,#00639b);">Rs ${activeOrder.total || 0}</span>
+        </div>
+      </div>
+    </div>
+  `;
+
+  overlay.classList.add('open');
+}
 
 function renderShell(state) {
   const { activeRole, activePage, currentUser } = state;
@@ -888,8 +1057,7 @@ function renderShell(state) {
     }
   }
 
-  // 2. Sidebar Brand Subtitle
-  const brandSub = $('#brandSubRole');
+    const brandSub = $('#brandSubRole');
   if (brandSub) {
     if (isAdmin) {
       const viewName = activeRole === 'user' ? 'User Store View' : activeRole === 'kitchen' ? 'Kitchen Staff View' : 'Executive Overview';
@@ -901,8 +1069,7 @@ function renderShell(state) {
     }
   }
 
-  // 3. Toggle Sidebar Nav Groups with strict role-based dashboard permissions
-  const navUser = $('#navGroupUser');
+    const navUser = $('#navGroupUser');
   const navKitchen = $('#navGroupKitchen');
   const navAdmin = $('#navGroupAdmin');
 
@@ -923,18 +1090,15 @@ function renderShell(state) {
     if (navAdmin) navAdmin.style.display = 'none';
   }
 
-  // 4. Update Nav Active Item
-  $$('.nav-item[data-page]').forEach((item) => {
+    $$('.nav-item[data-page]').forEach((item) => {
     item.classList.toggle('active', item.dataset.page === activePage);
   });
 
-  // 5. Update Active Page Section
-  $$('.page').forEach((pg) => pg.classList.remove('active'));
+    $$('.page').forEach((pg) => pg.classList.remove('active'));
   const targetPage = $(`#page-${activePage}`);
   if (targetPage) targetPage.classList.add('active');
 
-  // 6. Update Dev Fixture Bar Status & Controls
-  const badge = $('#dataModeBadge');
+    const badge = $('#dataModeBadge');
   const stats = $('#dataStatsText');
   if (badge && stats) {
     const isDemoLoaded = state.menuItems.length > 0;
@@ -956,19 +1120,26 @@ function renderShell(state) {
     openItemBtn.style.display = store.hasPermission('canEditMenu') ? 'inline-flex' : 'none';
   }
 
-  // 7. Badges
-  const studentCartCount = Object.values(state.cart).reduce((a, b) => a + b, 0);
+    const unifiedCartCount = Object.values(state.cart).reduce((a, b) => a + b, 0);
   const cartBadge = $('#cartBadge');
   if (cartBadge) {
-    cartBadge.textContent = studentCartCount;
-    cartBadge.classList.toggle('hide', studentCartCount === 0);
+    cartBadge.textContent = unifiedCartCount;
+    cartBadge.classList.toggle('hide', unifiedCartCount === 0);
   }
-
-  const shopperCartCount = Object.values(state.shopperCart).reduce((a, b) => a + b, 0);
+  const bottomCartBadge = $('#bottomCartBadge');
+  if (bottomCartBadge) {
+    bottomCartBadge.textContent = unifiedCartCount;
+    bottomCartBadge.classList.toggle('hide', unifiedCartCount === 0);
+  }
+  const mobileCartBadge = $('#mobileCartBadge');
+  if (mobileCartBadge) {
+    mobileCartBadge.textContent = unifiedCartCount;
+    mobileCartBadge.classList.toggle('hide', unifiedCartCount === 0);
+  }
   const shopperBadge = $('#shopperCartBadge');
   if (shopperBadge) {
-    shopperBadge.textContent = shopperCartCount;
-    shopperBadge.classList.toggle('hide', shopperCartCount === 0);
+    shopperBadge.textContent = unifiedCartCount;
+    shopperBadge.classList.toggle('hide', unifiedCartCount === 0);
   }
 
   const inPrepCount = state.orders.filter((o) => o.status === 'Placed' || o.status === 'Preparing').length;
@@ -978,17 +1149,16 @@ function renderShell(state) {
     kitchenBadge.classList.toggle('hide', inPrepCount === 0);
   }
 
-  // 8. User Profile in Sidebar & Account Details
-  const sideAvatar = $('#sideAvatar');
+    const sideAvatar = $('#sideAvatar');
   const sideName = $('#sideName');
   const sideRole = $('#sideRole');
   if (state.currentUser) {
     if (sideAvatar) sideAvatar.textContent = initials(state.currentUser.name);
     if (sideName) sideName.textContent = state.currentUser.name;
     if (sideRole) {
-      if (isAdmin) sideRole.textContent = 'Administrator · Full Access';
-      else if (userRole === 'kitchen') sideRole.textContent = 'Kitchen Staff · Back of House';
-      else sideRole.textContent = `${state.currentUser.year || 'Student'} · Dining & Store`;
+      if (isAdmin) sideRole.textContent = 'Administrator';
+      else if (userRole === 'kitchen') sideRole.textContent = 'Kitchen Staff';
+      else sideRole.textContent = 'Student';
     }
 
     // Populate Settings Account Panel
@@ -1048,13 +1218,254 @@ function renderShell(state) {
     if (sideName) sideName.textContent = 'Guest User';
     if (sideRole) sideRole.textContent = 'Sign In to Access';
   }
+
+  // Sticky Mobile Cart Bar
+  const stickyCartBar = $('#stickyCartBar');
+  const stickyCartCount = $('#stickyCartCount');
+  const stickyCartTotal = $('#stickyCartTotal');
+  const cartItemCount = Object.values(state.cart || {}).reduce((s, q) => s + q, 0);
+  if (stickyCartBar) {
+    if (cartItemCount > 0 && state.activePage !== 'cart') {
+      stickyCartBar.classList.remove('hide');
+      document.body.classList.add('has-sticky-cart');
+      if (stickyCartCount) stickyCartCount.textContent = `${cartItemCount} ${cartItemCount === 1 ? 'item' : 'items'}`;
+      if (stickyCartTotal) {
+        const total = Object.entries(state.cart || {}).reduce((sum, [id, qty]) => {
+          const item = (state.catalog || []).find((c) => c.id === id);
+          return sum + (item ? item.price * qty : 0);
+        }, 0);
+        stickyCartTotal.textContent = `Rs ${total}`;
+      }
+    } else {
+      stickyCartBar.classList.add('hide');
+      document.body.classList.remove('has-sticky-cart');
+    }
+  }
+
+  // Persistent Floating Active Token Bar
+  const floatingTokenBar = $('#floatingTokenBar');
+  const tokenPulseDot = $('#tokenPulseDot');
+  const tokenPillText = $('#tokenPillText');
+  const activeTokenOrder = (state.orders || []).find((o) => o.status !== 'Picked up' && (o.role === 'Student' || !o.role || state.activeRole === 'user'));
+  if (floatingTokenBar) {
+    if (activeTokenOrder) {
+      floatingTokenBar.classList.remove('hide');
+      const st = activeTokenOrder.status || 'Placed';
+      if (tokenPulseDot) {
+        tokenPulseDot.className = 'token-pulse-dot ' + (st === 'Ready' ? 'ready' : (st === 'Preparing' ? 'preparing' : 'placed'));
+      }
+      if (tokenPillText) {
+        tokenPillText.textContent = `Token #${activeTokenOrder.token} - ${st} - Counter ${activeTokenOrder.counter || 1}`;
+      }
+    } else {
+      floatingTokenBar.classList.add('hide');
+    }
+  }
+
 }
 
-// =========================================================================
-// 5. STUDENT MODULE RENDERING
-// =========================================================================
 
 // Live Order Ticket (Home)
+
+function renderCanteenRushMeter(state) {
+  const inPrepCount = (state.orders || []).filter((o) => o.status === 'Placed' || o.status === 'Preparing').length;
+  
+  let rushLevel = 'quiet';
+  let rushDotClass = 'quiet';
+  let rushTitle = 'Canteen Quiet - Est. Wait: 3 - 5 mins';
+
+  if (inPrepCount < 5) {
+    rushLevel = 'quiet';
+    rushDotClass = 'quiet';
+    rushTitle = 'Canteen Quiet - Est. Wait: 3 - 5 mins';
+  } else if (inPrepCount <= 15) {
+    rushLevel = 'moderate';
+    rushDotClass = 'moderate';
+    rushTitle = 'Moderate Rush - Est. Wait: 8 - 12 mins';
+  } else {
+    rushLevel = 'peak';
+    rushDotClass = 'peak';
+    rushTitle = 'Peak Rush Hour - Est. Wait: 15 - 20 mins';
+  }
+
+  const menuBanner = $('#canteenRushBanner');
+  if (menuBanner) {
+    menuBanner.className = `canteen-rush-banner ${rushLevel}`;
+    menuBanner.innerHTML = `
+      <div class="rush-banner-content">
+        <span class="rush-indicator-dot ${rushDotClass}"></span>
+        <span class="rush-title-text">${rushTitle}</span>
+      </div>
+      <div class="rush-badge-meta">
+        <span class="material-symbols-outlined" style="font-size:14px;">soup_kitchen</span>
+        <span>${inPrepCount} ${inPrepCount === 1 ? 'ticket' : 'tickets'} in prep</span>
+      </div>
+    `;
+  }
+
+  const homeRush = $('#homeRushMeter');
+  if (homeRush) {
+    homeRush.className = `canteen-rush-card ${rushLevel}`;
+    homeRush.innerHTML = `
+      <div class="rush-card-header">
+        <div class="rush-card-title-group">
+          <span class="rush-indicator-dot ${rushDotClass}"></span>
+          <span class="rush-card-title">${rushTitle}</span>
+        </div>
+        <span class="rush-card-badge">${inPrepCount} active</span>
+      </div>
+      <div class="rush-card-sub">
+        ${rushLevel === 'quiet' 
+          ? 'Counter lines are fast. Ideal time to order instant meals.' 
+          : (rushLevel === 'moderate' 
+              ? 'Moderate counter queue. Pre-order recommended for short breaks.' 
+              : 'Kitchen is at peak capacity. Pre-order for upcoming breaks to skip queue.')
+        }
+      </div>
+    `;
+  }
+}
+
+
+function renderQuickReorder(state) {
+  const greetingName = $('#homeGreetingName');
+  if (greetingName) {
+    const rawName = state.currentUser ? state.currentUser.name : 'Student';
+    const cleanName = rawName.replace(/[^\x20-\x7E]/g, '').trim() || 'Student';
+    greetingName.textContent = `Welcome back, ${cleanName}!`;
+  }
+
+  const container = $('#quickReorderRow');
+  const ctaContainer = $('#reorderComboCtaContainer');
+  if (!container) return;
+
+  const userOrders = (state.orders || []).filter((o) =>
+    o.role === 'Student' || !o.role || state.activeRole === 'user' || (state.currentUser && o.customerName === state.currentUser.name)
+  );
+
+  // 1. Identify 3 most frequently ordered items
+  const frequencyMap = {};
+  userOrders.forEach((order) => {
+    (order.items || []).forEach((it) => {
+      const key = it.id || it.name;
+      if (!frequencyMap[key]) {
+        frequencyMap[key] = {
+          id: it.id,
+          name: it.name,
+          price: it.price,
+          count: 0
+        };
+      }
+      frequencyMap[key].count += (it.qty || 1);
+    });
+  });
+
+  const sortedFreq = Object.values(frequencyMap).sort((a, b) => b.count - a.count);
+
+  let favoriteItems = [];
+  if (sortedFreq.length > 0) {
+    favoriteItems = sortedFreq.slice(0, 3).map((entry) => {
+      const catalogItem = (state.menuItems || []).find((m) => m.id === entry.id || m.name.toLowerCase() === entry.name.toLowerCase());
+      return {
+        id: catalogItem ? catalogItem.id : entry.id,
+        name: catalogItem ? catalogItem.name : entry.name,
+        emoji: catalogItem ? catalogItem.emoji : 'restaurant',
+        price: catalogItem ? catalogItem.price : entry.price,
+        counter: catalogItem ? catalogItem.counter : 'Counter 2 (Quick Bites)',
+        stock: catalogItem ? catalogItem.stock : 10,
+        orderCount: entry.count,
+        isHistory: true
+      };
+    });
+  } else if ((state.menuItems || []).length > 0) {
+    favoriteItems = (state.menuItems || []).filter((m) => m.stock > 0).slice(0, 3).map((m) => ({
+      id: m.id,
+      name: m.name,
+      emoji: m.emoji,
+      price: m.price,
+      counter: m.counter || 'Counter 1 (Hot Meals)',
+      stock: m.stock,
+      orderCount: 0,
+      isHistory: false
+    }));
+  }
+
+  // 2. Identify if last placed order was a combo (>= 2 paired items)
+  let lastOrder = null;
+  if (userOrders.length > 0) {
+    lastOrder = [...userOrders].sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0))[0] || userOrders[0];
+  }
+  const lastOrderItems = (lastOrder && Array.isArray(lastOrder.items)) ? lastOrder.items : [];
+  const hasCombo = lastOrderItems.length >= 2;
+
+  // Render "Re-order Entire Combo" CTA button if previous order consisted of 2 or more paired items
+  if (ctaContainer) {
+    if (hasCombo) {
+      const comboIds = lastOrderItems.map((it) => {
+        const catItem = (state.menuItems || []).find((m) => m.id === it.id || m.name.toLowerCase() === it.name.toLowerCase());
+        return catItem ? catItem.id : it.id;
+      });
+      const idsAttr = JSON.stringify(comboIds).replace(/"/g, '&quot;');
+      ctaContainer.innerHTML = `
+        <button type="button" class="reorder-combo-cta-btn" id="reorderComboBtn" data-combo-ids="${idsAttr}" title="Re-order all ${lastOrderItems.length} items from your previous meal">
+          <span class="material-symbols-outlined" style="font-size:16px;">autorenew</span>
+          <span>Re-order Entire Combo (${lastOrderItems.length} items)</span>
+        </button>
+      `;
+    } else {
+      ctaContainer.innerHTML = '';
+    }
+  }
+
+  // Render cards
+  if (favoriteItems.length === 0) {
+    container.innerHTML = `
+      <div class="empty-state" style="padding: 18px; width: 100%; text-align: left; background: var(--md-sys-color-surface-container-low, #f8fafc); border-radius: 12px; border: 1px dashed var(--md-sys-color-outline-variant, #cbd5e1);">
+        <div style="font-size: 13.5px; font-weight: 600; color: var(--md-sys-color-on-surface);">Your frequent favorites will appear here</div>
+        <div style="font-size: 12px; color: var(--md-sys-color-on-surface-variant); margin-top: 2px;">Load menu items or place your first order to enable high-speed 1-tap re-ordering.</div>
+      </div>
+    `;
+    return;
+  }
+
+  container.innerHTML = favoriteItems.map((it) => {
+    const isOut = it.stock <= 0;
+    const isLow = it.stock > 0 && it.stock <= 5;
+    const badgeText = it.isHistory && it.orderCount > 1 
+      ? `Ordered ${it.orderCount}x` 
+      : (it.isHistory ? 'Recent order' : 'Campus staple');
+    const badgeIcon = it.isHistory ? 'history' : 'star';
+    const safeName = String(it.name).replace(/"/g, '&quot;');
+    const safeCounter = String(it.counter).replace(/"/g, '&quot;');
+
+    return `
+      <div class="reorder-card">
+        <div class="reorder-card-top">
+          <div class="reorder-card-icon">
+            ${renderItemIcon(it.emoji)}
+          </div>
+          <div class="reorder-card-info">
+            <div class="reorder-card-title" title="${safeName}">${it.name}</div>
+            <span class="reorder-card-counter" title="${safeCounter}">${it.counter}</span>
+            <div class="reorder-card-frequency">
+              <span class="material-symbols-outlined" style="font-size:12px;">${badgeIcon}</span>
+              <span>${badgeText}</span>
+            </div>
+            ${isLow ? '<div style="font-size:10px; color:#ef4444; font-weight:700; margin-top:3px;">Only ' + it.stock + ' left!</div>' : ''}
+          </div>
+        </div>
+        <div class="reorder-card-bottom">
+          <span class="reorder-card-price mono">Rs ${it.price}</span>
+          <button type="button" class="reorder-add-btn" data-add="${it.id}" ${isOut ? 'disabled title="Out of stock"' : 'title="Add to tray"'}>
+            <span class="material-symbols-outlined" style="font-size:16px;">add</span>
+            <span>${isOut ? 'Sold Out' : 'Add'}</span>
+          </button>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
 function renderStudentTicket(state) {
   const activeOrder = state.orders.find((o) => o.status !== 'Picked up' && (o.role === 'Student' || !o.role));
   const advanceBtn = $('#advanceBtn');
@@ -1069,7 +1480,7 @@ function renderStudentTicket(state) {
     if (ticketDesc) ticketDesc.textContent = 'Browse the menu to place an order and track your live token.';
     if (queueNo) queueNo.textContent = '#---';
     if (etaPill) etaPill.textContent = 'No active order';
-    if (ticketPaid) ticketPaid.textContent = '₹0';
+    if (ticketPaid) ticketPaid.textContent = 'Rs. 0';
     if (advanceBtn) {
       advanceBtn.disabled = true;
       advanceBtn.innerHTML = '<span>No active order</span>';
@@ -1078,17 +1489,20 @@ function renderStudentTicket(state) {
     return;
   }
 
-  const itemsSummary = activeOrder.items.map((i) => `${i.qty}× ${i.name}`).join(' + ');
+  const itemsSummary = activeOrder.items.map((i) => `${i.qty} ${i.name}`).join(' + ');
   if (ticketTitle) ticketTitle.textContent = itemsSummary;
-  if (ticketDesc) ticketDesc.textContent = `Order placed · ${activeOrder.counter} · ${activeOrder.paymentMethod}`;
+  if (ticketDesc) {
+    const sched = (activeOrder.pickupTime && activeOrder.pickupTime !== 'Instant') ? ` - Scheduled: ${activeOrder.pickupTime}` : '';
+    ticketDesc.textContent = `Order placed - ${activeOrder.counter} - ${activeOrder.paymentMethod}${sched}`;
+  }
   if (queueNo) queueNo.textContent = activeOrder.token;
-  if (ticketPaid) ticketPaid.textContent = `₹${activeOrder.total}`;
+  if (ticketPaid) ticketPaid.textContent = `Rs. ${activeOrder.total}`;
 
   const etaMap = [
     '~12 min to ready',
     '~7 min to ready',
-    'Ready — collect at counter!',
-    'Order complete ✓'
+    'Ready - collect at counter!',
+    'Order complete '
   ];
   if (etaPill) etaPill.textContent = etaMap[activeOrder.stageIndex] || 'In progress';
 
@@ -1102,7 +1516,7 @@ function renderStudentTicket(state) {
     const isDone = activeOrder.stageIndex >= stages.length - 1;
     advanceBtn.disabled = isDone;
     advanceBtn.innerHTML = isDone 
-      ? '<span class="material-symbols-outlined">check_circle</span><span>Picked up ✓</span>' 
+      ? '<span class="material-symbols-outlined">check_circle</span><span>Picked up </span>' 
       : `<span class="material-symbols-outlined">arrow_forward</span><span>Advance "${stages[activeOrder.stageIndex + 1]}"</span>`;
     advanceBtn.dataset.orderId = activeOrder.id;
   }
@@ -1137,7 +1551,7 @@ function renderCounterStrip(state) {
             <span class="counter-name">${it.name}</span>
             ${sbHTML(status)}
           </div>
-          <div class="stock-count">${it.stock} servings left &middot; <span style="color:var(--md-sys-color-on-surface-variant); font-size:11px;">${it.restockTime || '15 min'}</span></div>
+          <div class="stock-count">${it.stock} servings left - <span style="color:var(--md-sys-color-on-surface-variant); font-size:11px;">${it.restockTime || '15 min'}</span></div>
           <div class="gauge">
             <span style="width:${getGaugeWidth(it)}%; background:${getGaugeColor(status)}"></span>
           </div>
@@ -1148,6 +1562,39 @@ function renderCounterStrip(state) {
 }
 
 // M3 Student Menu Grid with M3 Filter Chips
+
+function getDietaryInfo(it) {
+  if (it.diet) {
+    const isNonVeg = it.diet.toLowerCase() === 'non-veg';
+    return {
+      type: isNonVeg ? 'non-veg' : 'veg',
+      label: isNonVeg ? 'Non-Veg' : 'Pure Veg'
+    };
+  }
+  const nameLower = (it.name || '').toLowerCase();
+  const isNonVeg = nameLower.includes('chicken') || nameLower.includes('egg') || nameLower.includes('fish') || nameLower.includes('meat') || nameLower.includes('mutton');
+  return {
+    type: isNonVeg ? 'non-veg' : 'veg',
+    label: isNonVeg ? 'Non-Veg' : 'Pure Veg'
+  };
+}
+
+function getSpiceLevel(it) {
+  if (it.spice) return it.spice;
+  const nameLower = (it.name || '').toLowerCase();
+  if (nameLower.includes('peri-peri') || nameLower.includes('spicy') || nameLower.includes('schezwan')) return 'Hot';
+  if (nameLower.includes('biryani') || nameLower.includes('tikka') || nameLower.includes('masala') || nameLower.includes('pizza') || nameLower.includes('chole')) return 'Medium';
+  if (nameLower.includes('dosa') || nameLower.includes('burger') || nameLower.includes('sandwich') || nameLower.includes('buttermilk')) return 'Mild';
+  return null;
+}
+
+function isExpressItem(it) {
+  if (it.isExpress !== undefined) return !!it.isExpress;
+  const cat = (it.cat || '').toLowerCase();
+  const nameLower = (it.name || '').toLowerCase();
+  return cat.includes('snack') || cat.includes('beverage') || cat.includes('dessert') || cat.includes('quick') || nameLower.includes('coffee') || nameLower.includes('fries') || nameLower.includes('burger') || nameLower.includes('sandwich') || nameLower.includes('jamun') || nameLower.includes('brownie') || nameLower.includes('tea') || nameLower.includes('lassi');
+}
+
 function renderStudentMenu(state, searchQuery = '') {
   const grid = $('#menuGrid');
   const filterRow = $('#filterRow');
@@ -1211,16 +1658,16 @@ function renderStudentMenu(state, searchQuery = '') {
           <div class="menu-emoji">${renderItemIcon(it.emoji)}</div>
           <div class="menu-info">
             <div class="mn">${it.name}</div>
-            <div class="mc">${it.cat} &middot; <span>${it.counter || 'Counter 1'}</span></div>
+            <div class="mc">${it.cat} - <span>${it.counter || 'Counter 1'}</span></div>
             <div style="font-size:11px; color:var(--md-sys-color-on-surface-variant); margin-top:4px;">
-              Stock: <strong>${it.stock}</strong> &middot; Gauge: 
+              Stock: <strong>${it.stock}</strong> - Gauge: 
               <span style="color:${getGaugeColor(status)}; font-weight:700;">${status.toUpperCase()}</span>
             </div>
             <div class="gauge" style="margin:6px 0 8px;">
               <span style="width:${getGaugeWidth(it)}%; background:${getGaugeColor(status)}"></span>
             </div>
             <div class="mrow">
-              <span class="rec-price mono">₹${it.price}</span>
+              <span class="rec-price mono">Rs. ${it.price}</span>
               <div style="display:flex; align-items:center; gap:8px;">
                 ${sbHTML(status)}
                 <button class="add-btn" data-add="${it.id}" ${isOut ? 'disabled title="Sold out"' : 'title="Add to Cart"'}>
@@ -1251,7 +1698,7 @@ function renderRecommendations(state) {
           <div class="rec-name">${it.name}</div>
           <div class="rec-tag">${status === 'low' ? 'Only few remaining' : 'Pairs with your usual'}</div>
           <div class="rec-row">
-            <span class="rec-price mono">₹${it.price}</span>
+            <span class="rec-price mono">Rs. ${it.price}</span>
             <button class="add-btn" data-add="${it.id}">+</button>
           </div>
         </div>
@@ -1273,6 +1720,259 @@ function renderRecommendations(state) {
 }
 
 // Student Cart Page
+
+let upiCountdownInterval = null;
+let upiCountdownRemainingSecs = 300;
+
+function isMobileDevice() {
+  try {
+    const ua = navigator.userAgent || '';
+    const mobileRegex = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile/i;
+    const isSmallScreen = window.innerWidth <= 768;
+    return mobileRegex.test(ua) || isSmallScreen;
+  } catch (e) {
+    return false;
+  }
+}
+
+function startUpiCountdownTimer(onTick, onExpire) {
+  if (upiCountdownInterval) {
+    clearInterval(upiCountdownInterval);
+    upiCountdownInterval = null;
+  }
+  upiCountdownRemainingSecs = 300;
+  
+  const updateTimer = () => {
+    const mins = Math.floor(upiCountdownRemainingSecs / 60);
+    const secs = upiCountdownRemainingSecs % 60;
+    const timeFormatted = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+    if (onTick) onTick(timeFormatted, upiCountdownRemainingSecs);
+
+    if (upiCountdownRemainingSecs <= 0) {
+      clearInterval(upiCountdownInterval);
+      upiCountdownInterval = null;
+      if (onExpire) onExpire();
+    } else {
+      upiCountdownRemainingSecs--;
+    }
+  };
+
+  updateTimer();
+  upiCountdownInterval = setInterval(updateTimer, 1000);
+}
+
+function stopUpiCountdownTimer() {
+  if (upiCountdownInterval) {
+    clearInterval(upiCountdownInterval);
+    upiCountdownInterval = null;
+  }
+}
+
+function renderPaymentMethodDetails(state) {
+  const container = $('#paymentMethodDetails');
+  if (!container) return;
+
+  const itemEntries = Object.entries(state.cart || {});
+  const subtotal = itemEntries.reduce((acc, [id, qty]) => {
+    const it = (state.menuItems || []).find((m) => m.id === id);
+    return acc + (it ? it.price * qty : 0);
+  }, 0);
+  const totalAmount = itemEntries.length > 0 ? (subtotal + 10) : 0;
+  
+  const selectedMethod = state.selectedPaymentMethod || 'Campus UPI';
+  const isMobile = isMobileDevice();
+
+  if (totalAmount <= 0) {
+    container.innerHTML = '';
+    stopUpiCountdownTimer();
+    return;
+  }
+
+  if (selectedMethod === 'Campus UPI') {
+    if (!state.pendingUpiOrderRef) {
+      state.pendingUpiOrderRef = 'CP' + Math.floor(1000 + Math.random() * 9000);
+    }
+    const orderRef = state.pendingUpiOrderRef;
+    const upiUri = `upi://pay?pa=canteenupi@bank&pn=CampusCanteen&am=${totalAmount}&cu=INR&tn=Order_${orderRef}`;
+
+    if (isMobile) {
+      stopUpiCountdownTimer();
+      container.innerHTML = `
+        <div class="upi-mobile-card">
+          <div class="upi-card-top">
+            <div class="upi-badge-row">
+              <span class="material-symbols-outlined upi-lightning-icon">bolt</span>
+              <strong>Instant UPI Intent</strong>
+            </div>
+            <div class="upi-amount-pill">Rs ${totalAmount}</div>
+          </div>
+          <div class="upi-card-sub">Tap below to trigger payment directly in your installed UPI app.</div>
+          <a href="${upiUri}" class="upi-intent-primary-btn" id="upiIntentBtn">
+            <span class="material-symbols-outlined">send_to_mobile</span>
+            <span>Pay via any UPI App (GPay / PhonePe / Paytm)</span>
+          </a>
+          <div class="upi-apps-row">
+            <span class="upi-app-pill">GPay</span>
+            <span class="upi-app-pill">PhonePe</span>
+            <span class="upi-app-pill">Paytm</span>
+            <span class="upi-app-pill">BHIM</span>
+            <span class="upi-app-pill">CRED</span>
+          </div>
+          <div class="upi-intent-note">
+            <span class="material-symbols-outlined" style="font-size:14px;">info</span>
+            <span>After authorizing in your UPI app, return and tap "Place order &amp; Generate Token" below.</span>
+          </div>
+        </div>
+      `;
+      const upiBtn = $('#upiIntentBtn');
+      if (upiBtn) {
+        upiBtn.addEventListener('click', () => {
+          triggerHaptic(50);
+          toast('Opening UPI checkout intent...', 'payments');
+        });
+      }
+    } else {
+      container.innerHTML = `
+        <div class="upi-desktop-card">
+          <div class="upi-qr-wrapper">
+            <div id="upiQrCodeContainer" class="upi-qr-box"></div>
+            <div class="upi-countdown-timer" id="upiCountdownTimer">
+              <span class="material-symbols-outlined" style="font-size:14px;">timer</span>
+              <span id="upiTimerDisplay">05:00</span>
+            </div>
+          </div>
+          <div class="upi-desktop-details">
+            <div class="upi-desktop-header">
+              <strong>Scan &amp; Pay via UPI</strong>
+              <span class="upi-desktop-amt">Rs ${totalAmount}</span>
+            </div>
+            <div class="upi-desktop-desc">Open any UPI app on your mobile and scan this dynamic QR code to pay.</div>
+            <div class="upi-meta-box">
+              <div class="upi-meta-row"><span>Payee:</span> <strong>Campus Canteen</strong></div>
+              <div class="upi-meta-row"><span>VPA:</span> <strong>canteenupi@bank</strong></div>
+              <div class="upi-meta-row"><span>Order Ref:</span> <strong>Order_${orderRef}</strong></div>
+            </div>
+            <div class="upi-expiry-text" id="upiExpiryNotice">QR code expires in 5 minutes.</div>
+          </div>
+        </div>
+      `;
+
+      const qrContainer = $('#upiQrCodeContainer');
+      if (qrContainer) {
+        qrContainer.innerHTML = '';
+        if (typeof QRCode !== 'undefined') {
+          try {
+            new QRCode(qrContainer, {
+              text: upiUri,
+              width: 124,
+              height: 124,
+              colorDark: '#000000',
+              colorLight: '#ffffff',
+              correctLevel: QRCode.CorrectLevel.M
+            });
+          } catch (e) {
+            qrContainer.innerHTML = `<img src="https://api.qrserver.com/v1/create-qr-code/?size=124x124&data=${encodeURIComponent(upiUri)}" alt="UPI QR" width="124" height="124" />`;
+          }
+        } else {
+          qrContainer.innerHTML = `<img src="https://api.qrserver.com/v1/create-qr-code/?size=124x124&data=${encodeURIComponent(upiUri)}" alt="UPI QR" width="124" height="124" />`;
+        }
+      }
+
+      startUpiCountdownTimer(
+        (timeFormatted) => {
+          const display = $('#upiTimerDisplay');
+          if (display) display.textContent = timeFormatted;
+        },
+        () => {
+          const timerBadge = $('#upiCountdownTimer');
+          const notice = $('#upiExpiryNotice');
+          if (timerBadge) {
+            timerBadge.classList.add('expired');
+            timerBadge.innerHTML = `<span class="material-symbols-outlined" style="font-size:14px;">error</span><span>Expired</span>`;
+          }
+          if (notice) {
+            notice.innerHTML = `<button type="button" class="mini-btn" id="refreshUpiQrBtn" style="padding:4px 10px; font-size:11px;">Refresh QR Code</button>`;
+            const refBtn = $('#refreshUpiQrBtn');
+            if (refBtn) {
+              refBtn.addEventListener('click', () => {
+                state.pendingUpiOrderRef = 'CP' + Math.floor(1000 + Math.random() * 9000);
+                renderPaymentMethodDetails(state);
+              });
+            }
+          }
+        }
+      );
+    }
+  } else if (selectedMethod === 'Meal Pass') {
+    stopUpiCountdownTimer();
+    const currentBal = (state.currentUser && typeof state.currentUser.balance === 'number') ? state.currentUser.balance : 450;
+    const remBalance = currentBal - totalAmount;
+    
+    const mealChipText = $('#mealPassBalanceText');
+    if (mealChipText) mealChipText.textContent = `Bal: Rs ${currentBal}`;
+
+    container.innerHTML = `
+      <div class="meal-pass-card">
+        <div class="meal-pass-header">
+          <div class="meal-pass-title">
+            <span class="material-symbols-outlined" style="color:#00897b; font-size:20px;">badge</span>
+            <strong>Meal Pass Instant Deduction</strong>
+          </div>
+          <span class="meal-pass-tag">Live Balance</span>
+        </div>
+        <div class="meal-pass-stats-grid">
+          <div class="meal-pass-stat">
+            <span class="lbl">Current Balance</span>
+            <span class="val">Rs ${currentBal}</span>
+          </div>
+          <div class="meal-pass-stat">
+            <span class="lbl">Order Total</span>
+            <span class="val deduct">- Rs ${totalAmount}</span>
+          </div>
+          <div class="meal-pass-stat">
+            <span class="lbl">Remaining Balance</span>
+            <span class="val ${remBalance < 0 ? 'insufficient' : 'remaining'}">Rs ${Math.max(0, remBalance)}</span>
+          </div>
+        </div>
+        ${remBalance < 0 
+          ? '<div class="meal-pass-alert-box error"><span class="material-symbols-outlined">error</span><span>Insufficient meal pass balance. Please top up or choose UPI / Cash.</span></div>' 
+          : '<div class="meal-pass-alert-box success"><span class="material-symbols-outlined">check_circle</span><span>Instant balance deduction upon placing order.</span></div>'
+        }
+      </div>
+    `;
+
+    const checkoutBtn = $('#checkoutBtn');
+    if (checkoutBtn && remBalance < 0) {
+      checkoutBtn.disabled = true;
+    }
+  } else if (selectedMethod === 'Cash') {
+    stopUpiCountdownTimer();
+    container.innerHTML = `
+      <div class="cash-card">
+        <div class="cash-card-header">
+          <span class="material-symbols-outlined" style="color:#f59e0b; font-size:20px;">payments</span>
+          <strong>Cash at Counter</strong>
+        </div>
+        <div class="cash-notice-box">
+          <div class="cash-notice-title">Pay when collecting token</div>
+          <div class="cash-notice-sub">Please present exact cash of Rs ${totalAmount} at your selected pickup counter when collecting your meal token.</div>
+        </div>
+      </div>
+    `;
+  } else if (selectedMethod === 'Card') {
+    stopUpiCountdownTimer();
+    container.innerHTML = `
+      <div class="card-payment-card">
+        <div class="card-header">
+          <span class="material-symbols-outlined" style="color:#3b82f6; font-size:20px;">credit_card</span>
+          <strong>Debit / Credit Card</strong>
+        </div>
+        <div class="card-sub">Tap or swipe your card at the POS terminal at Counter upon token collection.</div>
+      </div>
+    `;
+  }
+}
+
 function renderStudentCart(state) {
   const cartList = $('#cartList');
   const cartSub = $('#cartSub');
@@ -1297,10 +1997,11 @@ function renderStudentCart(state) {
         <button class="mini-btn" style="margin-top:14px;" data-goto="menu">Browse Live Menu</button>
       </div>
     `;
-    if (subtotalEl) subtotalEl.textContent = '₹0';
-    if (packingEl) packingEl.textContent = '₹0';
-    if (totalEl) totalEl.textContent = '₹0';
+    if (subtotalEl) subtotalEl.textContent = 'Rs. 0';
+    if (packingEl) packingEl.textContent = 'Rs. 0';
+    if (totalEl) totalEl.textContent = 'Rs. 0';
     if (checkoutBtn) checkoutBtn.disabled = true;
+    renderPaymentMethodDetails(state);
     return;
   }
 
@@ -1317,10 +2018,10 @@ function renderStudentCart(state) {
           <div class="menu-emoji" style="width:38px; height:38px; font-size:18px;">${renderItemIcon(it.emoji)}</div>
           <div class="stub-info">
             <div class="t">${it.name}</div>
-            <div class="s mono">₹${it.price} each &middot; ₹${lineTotal}</div>
+            <div class="s mono">Rs. ${it.price} each - Rs. ${lineTotal}</div>
           </div>
           <div class="qty-ctrl">
-            <button data-dec="${id}">−</button>
+            <button data-dec="${id}"></button>
             <span>${qty}</span>
             <button data-inc="${id}">+</button>
           </div>
@@ -1335,10 +2036,11 @@ function renderStudentCart(state) {
   const packing = 10;
   const total = subtotal + packing;
 
-  if (subtotalEl) subtotalEl.textContent = `₹${subtotal}`;
-  if (packingEl) packingEl.textContent = `₹${packing}`;
-  if (totalEl) totalEl.textContent = `₹${total}`;
+  if (subtotalEl) subtotalEl.textContent = `Rs. ${subtotal}`;
+  if (packingEl) packingEl.textContent = `Rs. ${packing}`;
+  if (totalEl) totalEl.textContent = `Rs. ${total}`;
   if (checkoutBtn) checkoutBtn.disabled = false;
+  renderPaymentMethodDetails(state);
 }
 
 // Student Orders Page
@@ -1348,7 +2050,7 @@ function renderOrdersList(state) {
 
   const makeRowHTML = (o, isFull = false) => {
     const isDone = o.status === 'Picked up';
-    const summary = o.items ? o.items.map((i) => `${i.qty}× ${i.name}`).join(', ') : 'Campus Meal';
+    const summary = o.items ? o.items.map((i) => `${i.qty} ${i.name}`).join(', ') : 'Campus Meal';
 
     return `
       <div class="stub-list-item">
@@ -1357,10 +2059,10 @@ function renderOrdersList(state) {
         </div>
         <div class="stub-info">
           <div class="t">${summary}</div>
-          <div class="s">${o.token} &middot; ${o.counter || 'Counter'} &middot; ${new Date(o.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
+          <div class="s">${o.token} - ${o.counter || 'Counter'} - ${new Date(o.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
         </div>
         <div>
-          <div class="stub-amt mono">₹${o.total}</div>
+          <div class="stub-amt mono">Rs. ${o.total}</div>
           <div class="stub-status ${isDone ? 'done' : 'progress'}">${o.status}</div>
         </div>
         ${
@@ -1409,7 +2111,7 @@ function renderSpendingBars(state) {
         const pct = Math.round((val / maxSpend) * 100);
         const isPeak = val > 0 && val === maxSpend;
         return `
-          <div class="bar-col ${isPeak ? 'peak' : ''}" title="${day}: ₹${val}">
+          <div class="bar-col ${isPeak ? 'peak' : ''}" title="${day}: Rs. ${val}">
             <div class="bar" style="height:100%"><span style="height:${pct}%"></span></div>
             <div class="bar-label">${day}</div>
           </div>
@@ -1426,22 +2128,19 @@ function renderSpendingBars(state) {
 
   const homeAmt = $('#homeSpendTotalAmt');
   const homeLbl = $('#homeSpendTotalLbl');
-  if (homeAmt) homeAmt.textContent = `₹${totalSpent}`;
+  if (homeAmt) homeAmt.textContent = `Rs. ${totalSpent}`;
   if (homeLbl) {
-    homeLbl.textContent = totalSpent > 0 ? `spent this week across ${state.orders.length} orders` : 'spent this week · No orders placed yet';
+    homeLbl.textContent = totalSpent > 0 ? `spent this week across ${state.orders.length} orders` : 'spent this week - No orders placed yet';
   }
 
   const spAmt = $('#spendingPageTotalAmt');
   const spLbl = $('#spendingPageTotalLbl');
-  if (spAmt) spAmt.textContent = `₹${totalSpent}`;
+  if (spAmt) spAmt.textContent = `Rs. ${totalSpent}`;
   if (spLbl) {
-    spLbl.textContent = totalSpent > 0 ? `total recorded spend across campus counters` : 'total recorded spend · No orders placed yet';
+    spLbl.textContent = totalSpent > 0 ? `total recorded spend across campus counters` : 'total recorded spend - No orders placed yet';
   }
 }
 
-// =========================================================================
-// 6. SHOPPER MODULE RENDERING
-// =========================================================================
 
 function renderShopperStore(state) {
   const grid = $('#shopperGrid');
@@ -1488,9 +2187,9 @@ function renderShopperStore(state) {
           <div class="menu-emoji">${renderItemIcon(it.emoji)}</div>
           <div class="menu-info">
             <div class="mn">${it.name}</div>
-            <div class="mc">${it.cat} &middot; ${it.counter}</div>
+            <div class="mc">${it.cat} - ${it.counter}</div>
             <div class="mrow" style="margin-top:8px;">
-              <span class="rec-price mono">₹${it.price}</span>
+              <span class="rec-price mono">Rs. ${it.price}</span>
               <div style="display:flex; align-items:center; gap:8px;">
                 ${sbHTML(status)}
                 <button class="dev-btn ${isOut ? '' : 'primary'}" data-shopper-add="${it.id}" ${isOut ? 'disabled' : ''}>
@@ -1527,9 +2226,9 @@ function renderShopperCart(state) {
         <div style="font-size:12px; color:var(--md-sys-color-on-surface-variant); margin-top:4px;">Tap "+ Fast Add" on any item in the store.</div>
       </div>
     `;
-    if (sumSub) sumSub.textContent = '₹0';
-    if (sumPack) sumPack.textContent = '₹0';
-    if (sumTot) sumTot.textContent = '₹0';
+    if (sumSub) sumSub.textContent = 'Rs. 0';
+    if (sumPack) sumPack.textContent = 'Rs. 0';
+    if (sumTot) sumTot.textContent = 'Rs. 0';
     if (btn) btn.disabled = true;
     return;
   }
@@ -1546,10 +2245,10 @@ function renderShopperCart(state) {
           <div class="menu-emoji" style="width:36px; height:36px;">${renderItemIcon(it.emoji)}</div>
           <div class="stub-info">
             <div class="t">${it.name}</div>
-            <div class="s mono">₹${it.price} each</div>
+            <div class="s mono">Rs. ${it.price} each</div>
           </div>
           <div class="qty-ctrl">
-            <button data-shopper-dec="${id}">−</button>
+            <button data-shopper-dec="${id}"></button>
             <span>${qty}</span>
             <button data-shopper-inc="${id}">+</button>
           </div>
@@ -1560,9 +2259,9 @@ function renderShopperCart(state) {
 
   const packing = 10;
   const total = subtotal + packing;
-  if (sumSub) sumSub.textContent = `₹${subtotal}`;
-  if (sumPack) sumPack.textContent = `₹${packing}`;
-  if (sumTot) sumTot.textContent = `₹${total}`;
+  if (sumSub) sumSub.textContent = `Rs. ${subtotal}`;
+  if (sumPack) sumPack.textContent = `Rs. ${packing}`;
+  if (sumTot) sumTot.textContent = `Rs. ${total}`;
   if (btn) btn.disabled = false;
 }
 
@@ -1589,11 +2288,11 @@ function renderShopperReceipts(state) {
           <span class="material-symbols-outlined">confirmation_number</span>
         </div>
         <div class="stub-info">
-          <div class="t">${o.token} &middot; ${o.customerName}</div>
-          <div class="s">${o.items.map((i) => `${i.qty}× ${i.name}`).join(', ')}</div>
+          <div class="t">${o.token} - ${o.customerName}</div>
+          <div class="s">${o.items.map((i) => `${i.qty} ${i.name}`).join(', ')}</div>
         </div>
         <div>
-          <div class="stub-amt mono">₹${o.total}</div>
+          <div class="stub-amt mono">Rs. ${o.total}</div>
           <div class="stub-status ${o.status === 'Picked up' ? 'done' : 'progress'}">${o.status}</div>
         </div>
         <div class="stub-actions">
@@ -1604,11 +2303,82 @@ function renderShopperReceipts(state) {
     .join('');
 }
 
-// =========================================================================
-// 7. KITCHEN & STAFF MODULE RENDERING
-// =========================================================================
+
+
+let kitchenAlertsMuted = typeof localStorage !== 'undefined' && localStorage.getItem('invenTrack_kitchen_muted') === 'true';
+let knownPlacedOrderIds = new Set();
+let recentNewOrderIds = new Set();
+
+function playKitchenOrderDing() {
+  if (kitchenAlertsMuted) return;
+  try {
+    const audio = new Audio('/notification.mp3');
+    const playPromise = audio.play();
+    if (playPromise) {
+      playPromise.catch(() => {
+        playWebAudioDing();
+      });
+    }
+  } catch (e) {
+    playWebAudioDing();
+  }
+}
+
+function playWebAudioDing() {
+  if (kitchenAlertsMuted) return;
+  try {
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    if (!AudioContext) return;
+    const ctx = new AudioContext();
+    if (ctx.state === 'suspended') ctx.resume();
+    const now = ctx.currentTime;
+    
+    // Distinct chime: 880Hz (A5) to 1320Hz (E6) harmonic
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(880, now);
+    osc.frequency.exponentialRampToValueAtTime(1320, now + 0.1);
+    
+    gain.gain.setValueAtTime(0, now);
+    gain.gain.linearRampToValueAtTime(0.35, now + 0.03);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.55);
+    
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.55);
+  } catch (err) {}
+}
+
+function toggleKitchenMute() {
+  kitchenAlertsMuted = !kitchenAlertsMuted;
+  try {
+    localStorage.setItem('invenTrack_kitchen_muted', String(kitchenAlertsMuted));
+  } catch (e) {}
+  updateKitchenMuteUI();
+  toast(kitchenAlertsMuted ? 'Kitchen alerts muted' : 'Kitchen alerts active', kitchenAlertsMuted ? 'volume_off' : 'volume_up');
+}
+
+function updateKitchenMuteUI() {
+  const muteBtn = $('#kitchenAlertMuteBtn');
+  const muteIcon = $('#kitchenMuteIcon');
+  const muteLabel = $('#kitchenMuteLabel');
+  if (muteBtn) {
+    muteBtn.classList.toggle('muted', kitchenAlertsMuted);
+    muteBtn.title = kitchenAlertsMuted ? 'Unmute Kitchen Alerts' : 'Mute Kitchen Alerts';
+  }
+  if (muteIcon) {
+    muteIcon.textContent = kitchenAlertsMuted ? 'volume_off' : 'volume_up';
+  }
+  if (muteLabel) {
+    muteLabel.textContent = kitchenAlertsMuted ? 'Muted' : 'Alerts On';
+  }
+}
 
 function renderKitchenKanban(state) {
+  updateKitchenMuteUI();
+
   const lists = {
     0: $('#kanbanListPlaced'),
     1: $('#kanbanListPreparing'),
@@ -1633,10 +2403,28 @@ function renderKitchenKanban(state) {
     if (colOrders[stage]) colOrders[stage].push(o);
   });
 
+  // Check for new arrivals in "Placed" column (Stage 0)
+  const currentPlacedOrders = colOrders[0];
+  const newPlacedArrivals = currentPlacedOrders.filter((o) => !knownPlacedOrderIds.has(o.id));
+  if (knownPlacedOrderIds.size > 0 && newPlacedArrivals.length > 0) {
+    playKitchenOrderDing();
+    newPlacedArrivals.forEach((o) => {
+      recentNewOrderIds.add(o.id);
+      setTimeout(() => {
+        recentNewOrderIds.delete(o.id);
+        const card = document.getElementById(`kanban-ticket-${o.id}`);
+        if (card) card.classList.remove('new-order-pulse');
+      }, 5000);
+    });
+  }
+  knownPlacedOrderIds = new Set(currentPlacedOrders.map((o) => o.id));
+
   if (countPlaced) countPlaced.textContent = colOrders[0].length;
   if (countPreparing) countPreparing.textContent = colOrders[1].length;
   if (countReady) countReady.textContent = colOrders[2].length;
   if (countPicked) countPicked.textContent = colOrders[3].length;
+
+  const now = Date.now();
 
   Object.entries(lists).forEach(([stageIdx, listEl]) => {
     if (!listEl) return;
@@ -1654,13 +2442,55 @@ function renderKitchenKanban(state) {
 
     listEl.innerHTML = items
       .map((o) => {
-        const timeStr = new Date(o.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        const orderTime = o.createdAt ? new Date(o.createdAt).getTime() : now;
+        const elapsedMs = Math.max(0, now - orderTime);
+        const elapsedMins = Math.floor(elapsedMs / 60000);
+
+        // Elapsed time formatting
+        let elapsedText = 'Placed just now';
+        if (elapsedMins === 1) elapsedText = 'Placed 1m ago';
+        else if (elapsedMins > 1 && elapsedMins < 60) elapsedText = `Placed ${elapsedMins}m ago`;
+        else if (elapsedMins >= 60) {
+          const hrs = Math.floor(elapsedMins / 60);
+          const rem = elapsedMins % 60;
+          elapsedText = `Placed ${hrs}h ${rem}m ago`;
+        }
+
+        // Visual aging for active kitchen orders (stages 0, 1, 2)
+        let agingClass = 'aging-normal';
+        let elapsedClass = '';
+        let agingBadgeHTML = '';
+
+        if (sIndex < 3) {
+          if (elapsedMins >= 10) {
+            agingClass = 'aging-urgent';
+            elapsedClass = 'urgent';
+            agingBadgeHTML = `
+              <span class="ticket-aging-badge urgent">
+                <span class="material-symbols-outlined" style="font-size:12px;">priority_high</span>
+                <span>Priority pickup needed</span>
+              </span>
+            `;
+          } else if (elapsedMins >= 5) {
+            agingClass = 'aging-warning';
+            elapsedClass = 'warning';
+            agingBadgeHTML = `
+              <span class="ticket-aging-badge warning">
+                <span class="material-symbols-outlined" style="font-size:12px;">warning</span>
+                <span>Prep delay</span>
+              </span>
+            `;
+          }
+        }
+
+        const isNewPulse = recentNewOrderIds.has(o.id);
+        const timeStr = new Date(orderTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
         const itemsList = o.items
           .map(
             (i) => `
               <div class="kanban-item-line">
-                <span><strong>${i.qty}×</strong> ${i.name}</span>
-                <span class="mono">₹${i.price * i.qty}</span>
+                <span><strong>${i.qty} - </strong> ${i.name}</span>
+                <span class="mono">Rs ${i.price * i.qty}</span>
               </div>
             `
           )
@@ -1670,18 +2500,28 @@ function renderKitchenKanban(state) {
         const isCompleted = sIndex >= stages.length - 1;
 
         return `
-          <div class="kanban-card">
+          <div class="kanban-card ${agingClass} ${isNewPulse ? 'new-order-pulse' : ''}" id="kanban-ticket-${o.id}">
             <div class="kanban-card-header">
               <span class="kanban-token">${o.token}</span>
-              <span class="kanban-time">${timeStr}</span>
+              <div style="text-align:right;">
+                <span class="kanban-time">${timeStr}</span>
+                <div class="kanban-elapsed-time ${elapsedClass}">
+                  <span class="material-symbols-outlined" style="font-size:12px;">schedule</span>
+                  <span>${elapsedText}</span>
+                </div>
+              </div>
             </div>
-            <div class="kanban-cust">👤 ${o.customerName} &middot; <span style="font-weight:400; color:var(--md-sys-color-on-surface-variant);">${o.counter}</span></div>
+            ${agingBadgeHTML ? `<div style="margin:4px 0 6px 0;">${agingBadgeHTML}</div>` : ''}
+            <div class="kanban-cust">
+              <span class="material-symbols-outlined" style="font-size:14px; vertical-align:middle; margin-right:2px;">person</span>
+              <strong>${o.customerName}</strong> - <span style="font-weight:400; color:var(--md-sys-color-on-surface-variant);">${o.counter}</span>
+            </div>
             <div class="kanban-items">${itemsList}</div>
             <div class="kanban-card-footer">
-              <span class="kanban-total">₹${o.total}</span>
+              <span class="kanban-total mono">Rs ${o.total}</span>
               <button class="kanban-advance-btn" data-kitchen-advance="${o.id}" ${isCompleted ? 'disabled' : ''}>
                 <span class="material-symbols-outlined" style="font-size:15px;">${isCompleted ? 'check' : 'arrow_forward'}</span>
-                <span>${isCompleted ? 'Picked up ✓' : `Mark "${nextStageName}"`}</span>
+                <span>${isCompleted ? 'Picked up (Done)' : `Mark "${nextStageName}"`}</span>
               </button>
             </div>
           </div>
@@ -1719,7 +2559,7 @@ function renderKitchenStock(state) {
               </div>
               <div>
                 <strong>${it.name}</strong>
-                <div style="font-size:11px; color:var(--md-sys-color-on-surface-variant);">${it.cat} &middot; ₹${it.price}</div>
+                <div style="font-size:11px; color:var(--md-sys-color-on-surface-variant);">${it.cat} - Rs. ${it.price}</div>
               </div>
             </div>
           </td>
@@ -1733,7 +2573,7 @@ function renderKitchenStock(state) {
           <td class="mono" style="font-weight:700;">${it.stock}</td>
           <td>
             <div class="inline-stock-ctrl">
-              <button data-stock-dec="${it.id}" title="Decrease stock">−</button>
+              <button data-stock-dec="${it.id}" title="Decrease stock"></button>
               <span>${it.stock}</span>
               <button data-stock-inc="${it.id}" title="Increase stock">+</button>
             </div>
@@ -1772,7 +2612,7 @@ function renderKitchenPos(state) {
               <button class="pos-item-btn" data-pos-add="${it.id}" ${isOut ? 'disabled' : ''}>
                 <span class="pos-item-emoji">${renderItemIcon(it.emoji)}</span>
                 <span class="pos-item-name">${it.name}</span>
-                <span class="pos-item-price">₹${it.price} (${it.stock} left)</span>
+                <span class="pos-item-price">Rs. ${it.price} (${it.stock} left)</span>
               </button>
             `;
           })
@@ -1784,9 +2624,9 @@ function renderKitchenPos(state) {
     const entries = Object.entries(state.posCart);
     if (!entries.length) {
       lines.innerHTML = '<div style="padding:16px 0; text-align:center; color:var(--md-sys-color-on-surface-variant); font-size:12px;">Register bill empty. Tap items to add.</div>';
-      if (subEl) subEl.textContent = '₹0';
-      if (packEl) packEl.textContent = '₹0';
-      if (totEl) totEl.textContent = '₹0';
+      if (subEl) subEl.textContent = 'Rs. 0';
+      if (packEl) packEl.textContent = 'Rs. 0';
+      if (totEl) totEl.textContent = 'Rs. 0';
       if (submitBtn) submitBtn.disabled = true;
       return;
     }
@@ -1802,12 +2642,12 @@ function renderKitchenPos(state) {
           <div style="display:flex; justify-content:space-between; align-items:center; padding:6px 0; font-size:12.5px;">
             <div>
               <strong>${it.name}</strong>
-              <div style="font-size:11px; color:var(--md-sys-color-on-surface-variant);">₹${it.price} × ${qty}</div>
+              <div style="font-size:11px; color:var(--md-sys-color-on-surface-variant);">Rs. ${it.price}  ${qty}</div>
             </div>
             <div style="display:flex; align-items:center; gap:8px;">
-              <span class="mono" style="font-weight:700;">₹${lineTotal}</span>
+              <span class="mono" style="font-weight:700;">Rs. ${lineTotal}</span>
               <div class="inline-stock-ctrl">
-                <button data-pos-dec="${id}">−</button>
+                <button data-pos-dec="${id}"></button>
                 <span>${qty}</span>
                 <button data-pos-inc="${id}">+</button>
               </div>
@@ -1819,9 +2659,9 @@ function renderKitchenPos(state) {
 
     const packing = entries.length ? 10 : 0;
     const total = subtotal + packing;
-    if (subEl) subEl.textContent = `₹${subtotal}`;
-    if (packEl) packEl.textContent = `₹${packing}`;
-    if (totEl) totEl.textContent = `₹${total}`;
+    if (subEl) subEl.textContent = `Rs. ${subtotal}`;
+    if (packEl) packEl.textContent = `Rs. ${packing}`;
+    if (totEl) totEl.textContent = `Rs. ${total}`;
     if (submitBtn) submitBtn.disabled = false;
   }
 }
@@ -1849,8 +2689,8 @@ function renderKitchenFeedback(state) {
         </div>
         <div class="stub-info">
           <div class="t">
-            <strong>${fb.studentName}</strong> &middot; 
-            <span style="color:var(--md-sys-color-primary); font-weight:700;">${'★'.repeat(fb.rating)}</span> 
+            <strong>${fb.studentName}</strong> - 
+            <span style="color:var(--md-sys-color-primary); font-weight:700;">${''.repeat(fb.rating)}</span> 
             <span class="dev-fixture-badge" style="margin-left:6px;">${fb.category}</span>
           </div>
           <div class="s" style="margin-top:4px; font-size:12.5px; color:var(--md-sys-color-on-surface);">${fb.comment}</div>
@@ -1861,15 +2701,12 @@ function renderKitchenFeedback(state) {
     .join('');
 }
 
-// =========================================================================
-// 8. ADMIN / MANAGEMENT MODULE RENDERING
-// =========================================================================
 
 function renderAdminOverview(state) {
   const rev = state.orders.reduce((sum, o) => sum + (o.total || 0), 0);
   const revEl = $('#metricTotalRevenue');
   const revSub = $('#metricTotalRevenueSub');
-  if (revEl) revEl.textContent = `₹${rev}`;
+  if (revEl) revEl.textContent = `Rs. ${rev}`;
   if (revSub) revSub.textContent = `Across ${state.orders.length} total orders`;
 
   const volEl = $('#metricOrderVolume');
@@ -1994,7 +2831,7 @@ function renderAdminAudit(state) {
           <td>${sbHTML(status)}</td>
           <td>
             <span style="color:${isCritical ? 'var(--md-sys-color-low)' : 'var(--md-sys-color-avail)'}; font-weight:600; font-size:12px;">
-              ${isCritical ? '⚠️ Urgent Restock' : '✓ Normal'}
+              ${isCritical ? ' Urgent Restock' : ' Normal'}
             </span>
           </td>
           <td>
@@ -2036,9 +2873,6 @@ function exportAuditCsv(state) {
   toast('Audit CSV exported successfully!', 'download');
 }
 
-// =========================================================================
-// 9. DIGITAL RECEIPT MODAL
-// =========================================================================
 
 function showReceiptModal(order) {
   const modal = $('#receiptModal');
@@ -2046,7 +2880,7 @@ function showReceiptModal(order) {
 
   $('#modalTokenNum').textContent = order.token;
   $('#modalCounterName').textContent = order.counter || 'Campus Dining Counter';
-  $('#modalTotalPaid').textContent = `₹${order.total}`;
+  $('#modalTotalPaid').textContent = `Rs. ${order.total}`;
   $('#modalReceiptStatus').textContent = order.status;
 
   const lines = $('#modalReceiptLines');
@@ -2055,16 +2889,20 @@ function showReceiptModal(order) {
       .map(
         (it) => `
           <div class="receipt-row">
-            <span>${it.qty}× ${it.name}</span>
-            <span class="mono">₹${it.price * it.qty}</span>
+            <span>${it.qty} ${it.name}</span>
+            <span class="mono">Rs. ${it.price * it.qty}</span>
           </div>
         `
       )
       .join('') +
       `
+        <div class="receipt-row" style="color:var(--md-sys-color-primary); font-size:12px; font-weight:600;">
+          <span>Pickup Time</span>
+          <span class="mono">${order.pickupTime || 'Instant'}</span>
+        </div>
         <div class="receipt-row" style="color:var(--md-sys-color-on-surface-variant); font-size:12px;">
           <span>Packaging Fee</span>
-          <span class="mono">₹${order.packing || 10}</span>
+          <span class="mono">Rs. ${order.packing || 10}</span>
         </div>
       `;
   }
@@ -2077,11 +2915,65 @@ function hideReceiptModal() {
   if (modal) modal.classList.add('hide');
 }
 
-// =========================================================================
-// 10. COMPREHENSIVE EVENT DELEGATION & LISTENERS
-// =========================================================================
 
 function setupEventHandlers() {
+
+  
+  document.addEventListener('click', (e) => {
+    const comboBtn = e.target.closest('#reorderComboBtn');
+    if (comboBtn && comboBtn.dataset.comboIds) {
+      triggerHaptic(60);
+      try {
+        const ids = JSON.parse(comboBtn.dataset.comboIds.replace(/&quot;/g, '"'));
+        let addedCount = 0;
+        ids.forEach((id) => {
+          const item = store.state.menuItems.find((m) => m.id === id);
+          if (item && item.stock > 0) {
+            store.addToCart(id);
+            addedCount++;
+          }
+        });
+        if (addedCount > 0) {
+          toast(`Re-ordered combo (${addedCount} items) added to cart!`, 'shopping_cart');
+        } else {
+          toast('Previous combo items are out of stock.', 'cancel');
+        }
+      } catch (err) {
+        console.warn('Reorder combo error', err);
+      }
+    }
+  });
+
+  const stickyCartBtn = $('#stickyCartBtn');
+  if (stickyCartBtn) {
+    stickyCartBtn.addEventListener('click', () => {
+      triggerHaptic(50);
+      store.setPage('cart');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
+
+  const floatingTokenBar = $('#floatingTokenBar');
+  if (floatingTokenBar) {
+    floatingTokenBar.addEventListener('click', () => {
+      triggerHaptic(50);
+      openTokenSheet(store.state);
+    });
+  }
+
+  const closeTokenSheetBtn = $('#closeTokenSheetBtn');
+  const tokenSheetOverlay = $('#tokenSheetOverlay');
+  if (closeTokenSheetBtn && tokenSheetOverlay) {
+    closeTokenSheetBtn.addEventListener('click', () => {
+      tokenSheetOverlay.classList.remove('open');
+    });
+    tokenSheetOverlay.addEventListener('click', (e) => {
+      if (e.target === tokenSheetOverlay) {
+        tokenSheetOverlay.classList.remove('open');
+      }
+    });
+  }
+
   // 1. Role Switcher (Admin Only)
   const roleSwitcher = $('#roleSwitcher');
   if (roleSwitcher) {
@@ -2090,7 +2982,7 @@ function setupEventHandlers() {
       if (!btn) return;
       const userRole = (store.state.currentUser && store.state.currentUser.role) || 'user';
       if (userRole !== 'admin') {
-        toast('🔒 Access Restricted: The top bar role switcher is exclusively available for Administrators.', 'error');
+        toast(' Access Restricted: The top bar role switcher is exclusively available for Administrators.', 'error');
         return;
       }
       const newRole = btn.dataset.role;
@@ -2099,9 +2991,8 @@ function setupEventHandlers() {
     });
   }
 
-  // 2. Navigation items
-  document.addEventListener('click', (e) => {
-    const navBtn = e.target.closest('.nav-item[data-page]');
+    document.addEventListener('click', (e) => {
+    const navBtn = e.target.closest('.nav-item[data-page], .m3-bottom-nav-item[data-page]');
     if (navBtn) {
       const pageKey = navBtn.dataset.page;
       store.setPage(pageKey);
@@ -2118,8 +3009,7 @@ function setupEventHandlers() {
     }
   });
 
-  // 3. Theme toggle
-  const themeToggle = $('#themeToggle');
+    const themeToggle = $('#themeToggle');
   if (themeToggle) {
     themeToggle.addEventListener('click', (e) => {
       const btn = e.target.closest('button[data-mode]');
@@ -2133,8 +3023,7 @@ function setupEventHandlers() {
     });
   }
 
-  // 4. Notification Drawer Toggle
-  const bellBtn = $('#bellBtn');
+    const bellBtn = $('#bellBtn');
   if (bellBtn) {
     bellBtn.addEventListener('click', (e) => {
       e.stopPropagation();
@@ -2149,8 +3038,7 @@ function setupEventHandlers() {
     }
   });
 
-  // 5. Global Search Input
-  const searchInput = $('#searchInput');
+    const searchInput = $('#searchInput');
   if (searchInput) {
     searchInput.addEventListener('input', (e) => {
       if (store.state.activeRole === 'user' || store.state.activeRole === 'student') {
@@ -2160,8 +3048,7 @@ function setupEventHandlers() {
     });
   }
 
-  // 6. Category & Counter Filters
-  document.addEventListener('click', (e) => {
+    document.addEventListener('click', (e) => {
     const chip = e.target.closest('.filter-chip[data-cat]');
     if (chip) {
       store.state.activeCat = chip.dataset.cat;
@@ -2193,35 +3080,37 @@ function setupEventHandlers() {
     });
   }
 
-  // 7. Student Cart & Add Buttons
-  document.addEventListener('click', (e) => {
+    document.addEventListener('click', (e) => {
     const addBtn = e.target.closest('[data-add]');
     if (addBtn) {
+      triggerHaptic(50);
       store.addToCart(addBtn.dataset.add);
       return;
     }
 
     const incBtn = e.target.closest('[data-inc]');
     if (incBtn) {
+      triggerHaptic(50);
       store.changeCartQty(incBtn.dataset.inc, 1);
       return;
     }
 
     const decBtn = e.target.closest('[data-dec]');
     if (decBtn) {
+      triggerHaptic(50);
       store.changeCartQty(decBtn.dataset.dec, -1);
       return;
     }
 
     const removeBtn = e.target.closest('[data-remove]');
     if (removeBtn) {
+      triggerHaptic(50);
       store.removeCartItem(removeBtn.dataset.remove);
       return;
     }
   });
 
-  // 8. Payment Selector in Checkout
-  const paymentGrid = $('#paymentOptions');
+    const paymentGrid = $('#paymentOptions');
   if (paymentGrid) {
     paymentGrid.addEventListener('click', (e) => {
       const chip = e.target.closest('.payment-chip');
@@ -2229,21 +3118,36 @@ function setupEventHandlers() {
       $$('.payment-chip').forEach((c) => c.classList.remove('selected'));
       chip.classList.add('selected');
       store.state.selectedPaymentMethod = chip.dataset.method;
+      renderPaymentMethodDetails(store.state);
+      triggerHaptic(40);
     });
   }
 
-  // 9. Student Checkout Order Placement
-  const checkoutBtn = $('#checkoutBtn');
+    const checkoutBtn = $('#checkoutBtn');
   if (checkoutBtn) {
     checkoutBtn.addEventListener('click', () => {
+      triggerHaptic(60);
       const counter = $('#checkoutCounterSelect') ? $('#checkoutCounterSelect').value : 'Counter 2 (Quick Bites)';
+      const pickupTime = $('#checkoutPickupTimeSelect') ? $('#checkoutPickupTimeSelect').value : 'Instant';
       const paymentMethod = store.state.selectedPaymentMethod || 'Campus UPI';
+      if (paymentMethod === 'Meal Pass') {
+        const curBal = (store.state.currentUser && typeof store.state.currentUser.balance === 'number') ? store.state.currentUser.balance : 450;
+        const totalAmount = Object.entries(store.state.cart).reduce((sum, [id, qty]) => {
+          const it = store.state.menuItems.find((m) => m.id === id);
+          return sum + (it ? it.price * qty : 0);
+        }, 0) + 10;
+        if (curBal < totalAmount) {
+          toast('Insufficient Meal Pass balance. Please top up or choose UPI / Cash.', 'error');
+          return;
+        }
+      }
       const order = store.createOrder({
         itemsMap: store.state.cart,
         customerName: store.state.currentUser ? store.state.currentUser.name : 'Campus User',
         role: 'User',
         counter,
-        paymentMethod
+        paymentMethod,
+        pickupTime
       });
 
       if (order) {
@@ -2256,8 +3160,7 @@ function setupEventHandlers() {
     });
   }
 
-  // 10. Student Advance Order Stepper
-  const advanceBtn = $('#advanceBtn');
+    const advanceBtn = $('#advanceBtn');
   if (advanceBtn) {
     advanceBtn.addEventListener('click', () => {
       const orderId = advanceBtn.dataset.orderId;
@@ -2265,8 +3168,7 @@ function setupEventHandlers() {
     });
   }
 
-  // 11. Shopper Fast Add & Cart
-  document.addEventListener('click', (e) => {
+    document.addEventListener('click', (e) => {
     const shopperAdd = e.target.closest('[data-shopper-add]');
     if (shopperAdd) {
       store.addToShopperCart(shopperAdd.dataset.shopperAdd);
@@ -2308,8 +3210,7 @@ function setupEventHandlers() {
     });
   }
 
-  // 12. Kitchen Kanban Advance
-  document.addEventListener('click', (e) => {
+    document.addEventListener('click', (e) => {
     const kAdvance = e.target.closest('[data-kitchen-advance]');
     if (kAdvance) {
       store.advanceOrderStatus(kAdvance.dataset.kitchenAdvance);
@@ -2317,8 +3218,7 @@ function setupEventHandlers() {
     }
   });
 
-  // 13. Kitchen Stock Adjuster Controls
-  document.addEventListener('click', (e) => {
+    document.addEventListener('click', (e) => {
     const stockInc = e.target.closest('[data-stock-inc]');
     if (stockInc) {
       store.adjustStock(stockInc.dataset.stockInc, 1);
@@ -2350,8 +3250,7 @@ function setupEventHandlers() {
     }
   });
 
-  // 14. Counter POS Billing Interactions
-  document.addEventListener('click', (e) => {
+    document.addEventListener('click', (e) => {
     const posAdd = e.target.closest('[data-pos-add]');
     if (posAdd) {
       store.addToPosCart(posAdd.dataset.posAdd);
@@ -2390,7 +3289,8 @@ function setupEventHandlers() {
         customerName: custName,
         role: 'Counter POS',
         counter,
-        paymentMethod
+        paymentMethod,
+        pickupTime
       });
 
       if (order) {
@@ -2401,8 +3301,7 @@ function setupEventHandlers() {
     });
   }
 
-  // 15. View Receipt Modal Trigger
-  document.addEventListener('click', (e) => {
+    document.addEventListener('click', (e) => {
     const viewBtn = e.target.closest('[data-view-receipt]');
     if (viewBtn) {
       const order = store.state.orders.find((o) => o.id === viewBtn.dataset.viewReceipt);
@@ -2423,12 +3322,11 @@ function setupEventHandlers() {
     });
   }
 
-  // 16. Enter Example Data & Dev Fixture Controls
-  const enterTopBtn = $('#enterExampleDataBtnTop');
+    const enterTopBtn = $('#enterExampleDataBtnTop');
   if (enterTopBtn) {
     enterTopBtn.addEventListener('click', () => {
       store.generateRandomExampleData();
-      toast('🎲 Random example campus data injected!', 'casino');
+      toast(' Random example campus data injected!', 'casino');
     });
   }
 
@@ -2436,7 +3334,7 @@ function setupEventHandlers() {
   if (clearTopBtnEl) {
     clearTopBtnEl.addEventListener('click', () => {
       store.resetToEmptyState();
-      toast('🗑️ All data cleared. Website is now empty [].', 'delete_sweep');
+      toast(' All data cleared. Website is now empty [].', 'delete_sweep');
     });
   }
 
@@ -2444,7 +3342,7 @@ function setupEventHandlers() {
   if (loadFixtureBtn) {
     loadFixtureBtn.addEventListener('click', () => {
       store.generateRandomExampleData();
-      toast('🎲 Random example campus data injected!', 'casino');
+      toast(' Random example campus data injected!', 'casino');
     });
   }
 
@@ -2452,16 +3350,15 @@ function setupEventHandlers() {
   if (resetDataBtn) {
     resetDataBtn.addEventListener('click', () => {
       store.resetToEmptyState();
-      toast('🗑️ State reset to empty schema []', 'restart_alt');
+      toast(' State reset to empty schema []', 'restart_alt');
     });
   }
 
-  // 17. Add Item Modal / Page Form - Protected by canEditMenu permission
-  const openItemBtn = $('#openAddItemModalBtn');
+    const openItemBtn = $('#openAddItemModalBtn');
   if (openItemBtn) {
     openItemBtn.addEventListener('click', () => {
       if (!store.hasPermission('canEditMenu')) {
-        toast('🔒 Permission Denied: Users cannot alter menu details or add items.', 'error');
+        toast(' Permission Denied: Users cannot alter menu details or add items.', 'error');
         return;
       }
       store.setRole('admin');
@@ -2473,7 +3370,7 @@ function setupEventHandlers() {
   if (openItemBtnStock) {
     openItemBtnStock.addEventListener('click', () => {
       if (!store.hasPermission('canEditMenu')) {
-        toast('🔒 Permission Denied: Users cannot alter menu details or add items.', 'error');
+        toast(' Permission Denied: Users cannot alter menu details or add items.', 'error');
         return;
       }
       store.setRole('admin');
@@ -2485,7 +3382,7 @@ function setupEventHandlers() {
   if (openItemBtnAdmin) {
     openItemBtnAdmin.addEventListener('click', () => {
       if (!store.hasPermission('canEditMenu')) {
-        toast('🔒 Permission Denied: Users cannot alter menu details or add items.', 'error');
+        toast(' Permission Denied: Users cannot alter menu details or add items.', 'error');
         return;
       }
       store.setPage('admin-items');
@@ -2524,14 +3421,12 @@ function setupEventHandlers() {
     });
   }
 
-  // 18. Export Audit CSV
-  const exportCsvBtn = $('#exportCsvBtn');
+    const exportCsvBtn = $('#exportCsvBtn');
   if (exportCsvBtn) {
     exportCsvBtn.addEventListener('click', () => exportAuditCsv(store.state));
   }
 
-  // 19. Feedback Submission
-  let selectedStars = 0;
+    let selectedStars = 0;
   let selectedFeedbackCat = 'Food Quality';
 
   const starRow = $('#starRow');
@@ -2572,8 +3467,7 @@ function setupEventHandlers() {
     });
   }
 
-  // 20. Campus Role-Based Authentication
-  const qUser = $('#quickLoginUser');
+    const qUser = $('#quickLoginUser');
   if (qUser) {
     qUser.addEventListener('click', () => {
       store.login('user@student.campus.edu', 'Rohan Sharma');
@@ -2624,12 +3518,11 @@ function setupEventHandlers() {
   }
 }
 
-// =========================================================================
-// 11. CENTRAL RENDER DISPATCHER
-// =========================================================================
 
 function renderApp(state) {
   renderShell(state);
+  renderCanteenRushMeter(state);
+  renderQuickReorder(state);
 
   renderStudentTicket(state);
   renderCounterStrip(state);
@@ -2661,9 +3554,6 @@ store.subscribe((state) => {
 setupEventHandlers();
 renderApp(store.state);
 
-// =========================================================================
-// 12. CROSS-TAB & GLOBAL SESSION SYNCHRONIZATION
-// =========================================================================
 try {
   if ('BroadcastChannel' in window) {
     const authChannel = new BroadcastChannel('inventrack_auth');
@@ -2688,10 +3578,23 @@ try {
   }
 } catch (e) {}
 
+window.addEventListener('resize', () => {
+  if (typeof store !== 'undefined' && store.state && store.state.activePage === 'cart') {
+    renderPaymentMethodDetails(store.state);
+  }
+});
+
+window.addEventListener('offline', () => {
+  toast('Campus network offline - Using cached cart and active token', 'cloud_off');
+});
+window.addEventListener('online', () => {
+  toast('Campus network reconnected', 'cloud_done');
+});
+
 window.addEventListener('storage', (e) => {
   if (e.key === 'invenTrack_user') {
     if (!e.newValue) {
-      window.location.replace('landing.html');
+      window.location.replace(window.location.protocol === 'file:' ? 'landing.html' : '/landing');
     } else {
       try {
         const user = JSON.parse(e.newValue);
@@ -2712,3 +3615,14 @@ window.addEventListener('storage', (e) => {
     }
   }
 });
+
+
+// Live Aging Ticker for Kitchen Kanban
+setInterval(() => {
+  if (typeof store !== 'undefined' && store.state) {
+    const kitchenBoard = $('#page-kitchen-kanban');
+    if (kitchenBoard && (kitchenBoard.classList.contains('active') || store.state.activePage === 'kitchen-kanban')) {
+      renderKitchenKanban(store.state);
+    }
+  }
+}, 10000);
