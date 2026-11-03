@@ -250,7 +250,7 @@ InvenTrack/
 |   +-- auditApi.js                  # Executive overview & CSV audit exports
 |   +-- api-spec.json                # OpenAPI 3.0 specification for all REST endpoints
 |
-+-- index.html                       # Root application entrypoint (with Auth Guard)
++-- index.html                       # Root landing page (introduces InvenTrack & Auth entry)
 +-- student-dashboard.html           # Root student dashboard entrypoint
 +-- landing.html                     # Root landing page mirror
 +-- signin.html                      # Root sign-in mirror

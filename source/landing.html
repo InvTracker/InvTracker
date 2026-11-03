@@ -2452,7 +2452,7 @@
             <span id="authUserName">User</span>
             <span class="auth-role-tag" id="authUserRole">USER</span>
           </div>
-          <a href="index.html" class="btn-signin-nav" style="padding:7px 16px;">
+          <a href="student-dashboard.html" class="btn-signin-nav" style="padding:7px 16px;">
             <span>Open Dashboard &rarr;</span>
           </a>
           <button type="button" id="navLogoutBtn" class="theme-toggle-btn" title="Sign Out / Switch Persona" style="border-radius:10px; width:auto; padding:0 10px; gap:4px; font-size:12px;">
@@ -3957,7 +3957,7 @@
         if (authUserRole) authUserRole.textContent = (user.role || 'user').toUpperCase();
 
         launchButtons.forEach(btn => {
-          btn.setAttribute('href', 'index.html');
+          btn.setAttribute('href', 'student-dashboard.html');
           const span = btn.querySelector('span:not(.material-symbols-outlined)');
           if (span && !span.textContent.includes('Dashboard')) {
             span.textContent = `Open Dashboard (${user.role.toUpperCase()}) \u2192`;
@@ -3996,7 +3996,7 @@
         authChannel.onmessage = (event) => {
           if (event.data && event.data.type === 'AUTH_SUCCESS') {
             checkLandingAuth();
-            window.location.href = 'index.html';
+            window.location.href = 'student-dashboard.html';
           }
         };
       }
@@ -4005,7 +4005,7 @@
       if (e.key === 'invenTrack_user') {
         checkLandingAuth();
         if (e.newValue) {
-          window.location.href = 'index.html';
+          window.location.href = 'student-dashboard.html';
         }
       }
     });

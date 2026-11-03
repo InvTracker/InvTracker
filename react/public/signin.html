@@ -1121,7 +1121,7 @@
         <span>Back</span>
       </a>
 
-      <a href="index.html" class="topbar-btn-app">
+      <a href="student-dashboard.html" class="topbar-btn-app">
         <span>Open App &rarr;</span>
       </a>
     </div>
@@ -1162,7 +1162,7 @@
             </div>
           </div>
           <div class="auth-user-actions">
-            <a href="index.html" class="btn-continue-app" id="continueToAppBtn">
+            <a href="student-dashboard.html" class="btn-continue-app" id="continueToAppBtn">
               <span>Continue to App &rarr;</span>
             </a>
             <button type="button" class="btn-signout" id="googleSignOutBtn">
@@ -1246,7 +1246,7 @@
             Session authorized. Welcome back!
           </p>
           <div class="auth-success-actions">
-            <a href="index.html" class="btn-launch-app">
+            <a href="student-dashboard.html" class="btn-launch-app">
               <span>Launch App Dashboard &rarr;</span>
             </a>
             <button type="button" onclick="document.getElementById('authSuccessBox').classList.remove('show')" class="btn-dismiss-success">
@@ -1645,9 +1645,9 @@
       userData.role = userRole;
       let targetDest = '/student-dashboard.html';
       if (userRole === 'admin') {
-        targetDest = window.location.protocol === 'file:' ? 'index.html#admin-overview' : '/#admin-overview';
+        targetDest = window.location.protocol === 'file:' ? 'student-dashboard.html#admin-overview' : '/student-dashboard.html#admin-overview';
       } else if (userRole === 'kitchen') {
-        targetDest = window.location.protocol === 'file:' ? 'index.html#kitchen-kanban' : '/#kitchen-kanban';
+        targetDest = window.location.protocol === 'file:' ? 'student-dashboard.html#kitchen-kanban' : '/student-dashboard.html#kitchen-kanban';
       } else {
         targetDest = window.location.protocol === 'file:' ? 'student-dashboard.html' : '/student-dashboard.html';
       }
@@ -1788,10 +1788,10 @@
             const continueBtn = document.getElementById('continueToAppBtn');
             if (continueBtn) {
               if (assignedRole === 'admin') {
-                continueBtn.href = window.location.protocol === 'file:' ? 'index.html#admin-overview' : '/#admin-overview';
+                continueBtn.href = window.location.protocol === 'file:' ? 'student-dashboard.html#admin-overview' : '/student-dashboard.html#admin-overview';
                 continueBtn.innerHTML = '<span>Go to Admin Dashboard &rarr;</span>';
               } else if (assignedRole === 'kitchen') {
-                continueBtn.href = window.location.protocol === 'file:' ? 'index.html#kitchen-kanban' : '/#kitchen-kanban';
+                continueBtn.href = window.location.protocol === 'file:' ? 'student-dashboard.html#kitchen-kanban' : '/student-dashboard.html#kitchen-kanban';
                 continueBtn.innerHTML = '<span>Go to Kitchen Dashboard &rarr;</span>';
               } else {
                 continueBtn.href = window.location.protocol === 'file:' ? 'student-dashboard.html' : '/student-dashboard.html';
