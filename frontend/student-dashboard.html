@@ -6898,10 +6898,28 @@ body[data-theme="dark"] {
   <script>
 try {
   ['invenTrack_user', 'inventrack_m3_state'].forEach((k) => {
-    const raw = localStorage.getItem(k);
-    if (raw && (raw.includes('\u00C2') || raw.includes('\u00B7') || raw.includes('\\u00C2') || raw.includes('\\u00B7') || raw.includes('\\u2022') || raw.includes('&middot;'))) {
-      const sanitized = raw.replace(/[\u00C2\u00A0\u00B7\u2022\u26a1]/g, '').replace(/\\u00C2\\u00B7/g, '').replace(/\\u00C2/g, '').replace(/\\u00B7/g, '').replace(/\\u2022/g, '').replace(/&middot;/g, '');
-      localStorage.setItem(k, sanitized);
+    let raw = localStorage.getItem(k);
+    if (raw) {
+      let changed = false;
+      if (raw.includes('\u00C2') || raw.includes('\u00B7') || raw.includes('\\u00C2') || raw.includes('\\u00B7') || raw.includes('\\u2022') || raw.includes('&middot;')) {
+        raw = raw.replace(/[\u00C2\u00A0\u00B7\u2022\u26a1]/g, '').replace(/\\u00C2\\u00B7/g, '').replace(/\\u00C2/g, '').replace(/\\u00B7/g, '').replace(/\\u2022/g, '').replace(/&middot;/g, '');
+        changed = true;
+      }
+      if (raw.includes('photo-1601050690597-df0568f70950')) {
+        raw = raw.split('photo-1601050690597-df0568f70950').join('photo-1666190092159-3171cf0fbb12');
+        changed = true;
+      }
+      if (raw.includes('photo-1556881286-fc6915169721')) {
+        raw = raw.split('photo-1556881286-fc6915169721').join('photo-1637792357005-c3ba175df533');
+        changed = true;
+      }
+      if (raw.includes('photo-1626777552726-4a6b54c97e46')) {
+        raw = raw.split('photo-1626777552726-4a6b54c97e46').join('photo-1626700051175-6818013e1d4f');
+        changed = true;
+      }
+      if (changed) {
+        localStorage.setItem(k, raw);
+      }
     }
   });
 } catch(e) {}
@@ -6925,8 +6943,8 @@ const CAMPUS_DEMO_FIXTURE = {
     { id: 'item-6', name: 'Wood-Fired Pizza Slice', emoji: 'local_pizza', price: 120, cat: 'Quick Bites', counter: 'Counter 2 (Quick Bites)', stock: 0, lowThreshold: 4, restockTime: '25 min', diet: 'veg', spice: 'Medium', isExpress: false, image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=800&auto=format&fit=crop&q=80' },
     { id: 'item-7', name: 'Peri-Peri Salted Fries', emoji: 'fastfood', price: 55, cat: 'Quick Bites', counter: 'Counter 2 (Quick Bites)', stock: 30, lowThreshold: 8, restockTime: '5 min', diet: 'veg', spice: 'Hot', isExpress: true, image: 'https://images.unsplash.com/photo-1576107232684-1279f3908594?w=800&auto=format&fit=crop&q=80' },
     { id: 'item-8', name: 'Artisan Cold Coffee', emoji: 'local_cafe', price: 45, cat: 'Beverages', counter: 'Counter 3 (Cafe & Drinks)', stock: 35, lowThreshold: 10, restockTime: '5 min', diet: 'veg', spice: null, isExpress: true, image: 'https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?w=800&auto=format&fit=crop&q=80' },
-    { id: 'item-9', name: 'Spiced Masala Buttermilk', emoji: 'emoji_food_beverage', price: 25, cat: 'Beverages', counter: 'Counter 3 (Cafe & Drinks)', stock: 5, lowThreshold: 10, restockTime: '5 min', diet: 'veg', spice: 'Mild', isExpress: true, image: 'https://images.unsplash.com/photo-1556881286-fc6915169721?w=800&auto=format&fit=crop&q=80' },
-    { id: 'item-10', name: 'Warm Gulab Jamun (2 pcs)', emoji: 'icecream', price: 30, cat: 'Desserts', counter: 'Counter 3 (Cafe & Drinks)', stock: 14, lowThreshold: 5, restockTime: '15 min', diet: 'veg', spice: null, isExpress: true, image: 'https://images.unsplash.com/photo-1601050690597-df0568f70950?w=800&auto=format&fit=crop&q=80' },
+    { id: 'item-9', name: 'Spiced Masala Buttermilk', emoji: 'emoji_food_beverage', price: 25, cat: 'Beverages', counter: 'Counter 3 (Cafe & Drinks)', stock: 5, lowThreshold: 10, restockTime: '5 min', diet: 'veg', spice: 'Mild', isExpress: true, image: 'https://images.unsplash.com/photo-1637792357005-c3ba175df533?w=800&auto=format&fit=crop&q=80' },
+    { id: 'item-10', name: 'Warm Gulab Jamun (2 pcs)', emoji: 'icecream', price: 30, cat: 'Desserts', counter: 'Counter 3 (Cafe & Drinks)', stock: 14, lowThreshold: 5, restockTime: '15 min', diet: 'veg', spice: null, isExpress: true, image: 'https://images.unsplash.com/photo-1666190092159-3171cf0fbb12?w=800&auto=format&fit=crop&q=80' },
     { id: 'item-11', name: 'Belgian Chocolate Brownie', emoji: 'cookie', price: 65, cat: 'Desserts', counter: 'Counter 3 (Cafe & Drinks)', stock: 2, lowThreshold: 5, restockTime: '15 min', diet: 'veg', spice: null, isExpress: true, image: 'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=800&auto=format&fit=crop&q=80' },
     { id: 'item-12', name: 'Paneer Butter Masala Combo', emoji: 'dinner_dining', price: 160, cat: 'Hot Meals', counter: 'Counter 1 (Hot Meals)', stock: 12, lowThreshold: 5, restockTime: '15 min', diet: 'veg', spice: 'Medium', isExpress: false, image: 'https://images.unsplash.com/photo-1631452180519-c014fe946bc7?w=800&auto=format&fit=crop&q=80' }
   ],
@@ -8561,13 +8579,29 @@ const FOOD_REAL_IMAGES = {
   'wood-fired pizza slice': 'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=800&auto=format&fit=crop&q=80',
   'peri-peri salted fries': 'https://images.unsplash.com/photo-1576107232684-1279f3908594?w=800&auto=format&fit=crop&q=80',
   'artisan cold coffee': 'https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?w=800&auto=format&fit=crop&q=80',
-  'spiced masala buttermilk': 'https://images.unsplash.com/photo-1556881286-fc6915169721?w=800&auto=format&fit=crop&q=80',
-  'warm gulab jamun (2 pcs)': 'https://images.unsplash.com/photo-1601050690597-df0568f70950?w=800&auto=format&fit=crop&q=80',
-  'warm gulab jamun': 'https://images.unsplash.com/photo-1601050690597-df0568f70950?w=800&auto=format&fit=crop&q=80',
+  'spiced masala buttermilk': 'https://images.unsplash.com/photo-1637792357005-c3ba175df533?w=800&auto=format&fit=crop&q=80',
+  'masala buttermilk': 'https://images.unsplash.com/photo-1637792357005-c3ba175df533?w=800&auto=format&fit=crop&q=80',
+  'buttermilk': 'https://images.unsplash.com/photo-1637792357005-c3ba175df533?w=800&auto=format&fit=crop&q=80',
+  'chaas': 'https://images.unsplash.com/photo-1637792357005-c3ba175df533?w=800&auto=format&fit=crop&q=80',
+  'warm gulab jamun (2 pcs)': 'https://images.unsplash.com/photo-1666190092159-3171cf0fbb12?w=800&auto=format&fit=crop&q=80',
+  'warm gulab jamun': 'https://images.unsplash.com/photo-1666190092159-3171cf0fbb12?w=800&auto=format&fit=crop&q=80',
+  'gulab jamun': 'https://images.unsplash.com/photo-1666190092159-3171cf0fbb12?w=800&auto=format&fit=crop&q=80',
   'belgian chocolate brownie': 'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=800&auto=format&fit=crop&q=80',
   'paneer butter masala combo': 'https://images.unsplash.com/photo-1631452180519-c014fe946bc7?w=800&auto=format&fit=crop&q=80',
   'paneer butter masala': 'https://images.unsplash.com/photo-1631452180519-c014fe946bc7?w=800&auto=format&fit=crop&q=80',
-  'smoky paneer tikka roll': 'https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?w=800&auto=format&fit=crop&q=80',
+  'smoky paneer tikka roll': 'https://images.unsplash.com/photo-1626700051175-6818013e1d4f?w=800&auto=format&fit=crop&q=80',
+  'paneer tikka roll': 'https://images.unsplash.com/photo-1626700051175-6818013e1d4f?w=800&auto=format&fit=crop&q=80',
+  'kathi roll': 'https://images.unsplash.com/photo-1626700051175-6818013e1d4f?w=800&auto=format&fit=crop&q=80',
+  'paneer roll': 'https://images.unsplash.com/photo-1626700051175-6818013e1d4f?w=800&auto=format&fit=crop&q=80',
+  'crispy vegetable samosa': 'https://images.unsplash.com/photo-1601050690597-df0568f70950?w=800&auto=format&fit=crop&q=80',
+  'crispy samosa': 'https://images.unsplash.com/photo-1601050690597-df0568f70950?w=800&auto=format&fit=crop&q=80',
+  'samosa': 'https://images.unsplash.com/photo-1601050690597-df0568f70950?w=800&auto=format&fit=crop&q=80',
+  'samosas': 'https://images.unsplash.com/photo-1601050690597-df0568f70950?w=800&auto=format&fit=crop&q=80',
+  'chilled mango lassi': 'https://images.unsplash.com/photo-1546173159-315724a31696?w=800&auto=format&fit=crop&q=80',
+  'mango lassi': 'https://images.unsplash.com/photo-1546173159-315724a31696?w=800&auto=format&fit=crop&q=80',
+  'chole bhature platter': 'https://images.unsplash.com/photo-1643892467625-65df6a500524?w=800&auto=format&fit=crop&q=80',
+  'chole bhature': 'https://images.unsplash.com/photo-1643892467625-65df6a500524?w=800&auto=format&fit=crop&q=80',
+  'iced lemon mint tea': 'https://images.unsplash.com/photo-1681974913878-1c446bac7cf5?w=800&auto=format&fit=crop&q=80',
   'spicy schezwan hakka noodles': 'https://images.unsplash.com/photo-1585032226651-759b368d7246?w=800&auto=format&fit=crop&q=80',
   'crispy chicken tenders & cajun fries': 'https://images.unsplash.com/photo-1562967914-608f82629710?w=800&auto=format&fit=crop&q=80',
   'royal north indian thali': 'https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=800&auto=format&fit=crop&q=80',
@@ -8586,11 +8620,18 @@ const CATEGORY_FALLBACK_IMAGES = {
 
 function getItemImage(it) {
   if (!it) return 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=800&auto=format&fit=crop&q=80';
-  if (it.image && typeof it.image === 'string' && it.image.startsWith('http')) return it.image;
   const key = (it.name || '').toLowerCase().trim();
   if (FOOD_REAL_IMAGES[key]) return FOOD_REAL_IMAGES[key];
   for (const [nameKey, url] of Object.entries(FOOD_REAL_IMAGES)) {
     if (key.includes(nameKey) || nameKey.includes(key)) return url;
+  }
+  if (it.image && typeof it.image === 'string' && it.image.startsWith('http')) {
+    // If the image is not one of the old mismatched placeholder photos, use it
+    if (!it.image.includes('photo-1601050690597-df0568f70950') &&
+        !it.image.includes('photo-1556881286-fc6915169721') &&
+        !it.image.includes('photo-1626777552726-4a6b54c97e46')) {
+      return it.image;
+    }
   }
   const catKey = (it.cat || '').toLowerCase().trim();
   if (CATEGORY_FALLBACK_IMAGES[catKey]) return CATEGORY_FALLBACK_IMAGES[catKey];
@@ -8736,7 +8777,7 @@ const FOR_YOU_ITEMS = [
     recReason: '98% Match - Frequently paired with Cold Coffee',
     cardSize: 'featured',
     desc: 'Soft handmade rumali roti wrapped around clay-oven charred paneer tikka, crunchy bell peppers, pickled onions, and house mint-coriander mayonnaise.',
-    image: 'https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?w=800&auto=format&fit=crop&q=80'
+    image: 'https://images.unsplash.com/photo-1626700051175-6818013e1d4f?w=800&auto=format&fit=crop&q=80'
   },
   {
     id: 'foryou-2',
