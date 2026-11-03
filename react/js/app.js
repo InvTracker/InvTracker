@@ -2226,6 +2226,37 @@ function renderStudentMenu(state, searchQuery = '') {
 
   grid.innerHTML = items.map((it) => renderFoodCardHTML(it, state)).join('');
 }
+let activeQuickReorderItems = [...QUICK_REORDER_ITEMS];
+
+function getRandomComboItems(state, count = 3) {
+  const pool = (state.menuItems || []).filter((m) => m.stock > 0);
+  const candidates = pool.length >= count ? pool : (state.menuItems || []);
+  if (!candidates.length) return [...QUICK_REORDER_ITEMS];
+  
+  const shuffled = [...candidates].sort(() => 0.5 - Math.random());
+  return shuffled.slice(0, count).map((it, idx) => {
+    return {
+      id: it.id,
+      name: it.name,
+      emoji: it.emoji,
+      price: it.price,
+      cat: it.cat,
+      counter: it.counter || 'Counter 1 (Hot Meals)',
+      stock: it.stock,
+      lowThreshold: it.lowThreshold || 5,
+      restockTime: it.restockTime || '10 min',
+      isVeg: isVegItem(it),
+      rating: it.rating || (4.6 + (idx * 0.1)).toFixed(1),
+      ratingCount: it.ratingCount || (180 + ((it.price * 7) % 250)),
+      badge: idx === 0 ? 'Combo Pick' : (idx === 1 ? 'Chef Choice' : 'Value Pair'),
+      recReason: `Curated Campus Combo (${idx + 1}/3)`,
+      cardSize: 'standard',
+      desc: getItemDesc(it),
+      image: getItemImage(it)
+    };
+  });
+}
+
 function renderRecommendations(state) {
   // Update Welcome heading with current user's name
   const welcomeHeading = $('#homeWelcomeHeading');
@@ -2237,7 +2268,10 @@ function renderRecommendations(state) {
   // Render Real Food Cards in Quick Re-Order Grid on Home Page
   const quickReorderGrid = $('#quickReorderGrid');
   if (quickReorderGrid) {
-    quickReorderGrid.innerHTML = QUICK_REORDER_ITEMS.map((it) => renderFoodCardHTML(it, state)).join('');
+    if (!activeQuickReorderItems || !activeQuickReorderItems.length) {
+      activeQuickReorderItems = [...QUICK_REORDER_ITEMS];
+    }
+    quickReorderGrid.innerHTML = activeQuickReorderItems.map((it) => renderFoodCardHTML(it, state)).join('');
   }
 
   // Render Real Food Cards in Home Recommendations Grid ("You may also like")
@@ -3516,25 +3550,47 @@ function setupEventHandlers() {
   
   document.addEventListener('click', (e) => {
     const comboBtn = e.target.closest('#reorderComboBtn');
-    if (comboBtn && comboBtn.dataset.comboIds) {
+    if (comboBtn) {
       triggerHaptic(60);
-      try {
-        const ids = JSON.parse(comboBtn.dataset.comboIds.replace(/&quot;/g, '"'));
-        let addedCount = 0;
-        ids.forEach((id) => {
-          const item = store.state.menuItems.find((m) => m.id === id);
-          if (item && item.stock > 0) {
-            store.addToCart(id);
-            addedCount++;
-          }
-        });
-        if (addedCount > 0) {
-          toast(`Re-ordered combo (${addedCount} items) added to cart!`, 'shopping_cart');
-        } else {
-          toast('Previous combo items are out of stock.', 'cancel');
+
+      // Animate the sync icon inside button
+      const icon = comboBtn.querySelector('.material-symbols-outlined');
+      if (icon) {
+        icon.style.transition = 'transform 0.5s cubic-bezier(0.4, 0, 0.2, 1)';
+        icon.style.transform = 'rotate(360deg)';
+        setTimeout(() => {
+          icon.style.transition = 'none';
+          icon.style.transform = 'rotate(0deg)';
+        }, 500);
+      }
+
+      // Pick 3 random in-stock items
+      const newCombo = getRandomComboItems(store.state, 3);
+      if (newCombo && newCombo.length) {
+        activeQuickReorderItems = newCombo;
+
+        // Re-render Quick Re-Order Grid with the 3 fresh items
+        const quickReorderGrid = $('#quickReorderGrid');
+        if (quickReorderGrid) {
+          quickReorderGrid.innerHTML = activeQuickReorderItems.map((it) => renderFoodCardHTML(it, store.state)).join('');
         }
-      } catch (err) {
-        console.warn('Reorder combo error', err);
+
+        // Add all 3 items to cart as combo
+        let addedCount = 0;
+        const itemNames = [];
+        newCombo.forEach((it) => {
+          const curQty = store.state.cart[it.id] || 0;
+          store.state.cart[it.id] = curQty + 1;
+          itemNames.push(it.name);
+          addedCount++;
+        });
+
+        store.state.shopperCart = store.state.cart;
+        store.save();
+
+        toast(`Added combo (3 items) to cart: ${itemNames.join(', ')}`, 'shopping_cart');
+      } else {
+        toast('No combo items available to order.', 'cancel');
       }
     }
   });

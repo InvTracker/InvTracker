@@ -64,6 +64,7 @@ const HomePage = () => {
     addToCart,
   } = useApp();
 
+  const [reorderItems, setReorderItems] = useState(QUICK_REORDER_ITEMS);
   const [addedIds, setAddedIds] = useState({});
 
   const handleAdd = (id) => {
@@ -75,7 +76,16 @@ const HomePage = () => {
   };
 
   const handleReorderCombo = () => {
-    QUICK_REORDER_ITEMS.forEach((it) => {
+    const pool = (menuItems || []).filter((m) => m.stock > 0);
+    const candidates = pool.length >= 3 ? pool : (menuItems.length ? menuItems : QUICK_REORDER_ITEMS);
+    const shuffled = [...candidates].sort(() => 0.5 - Math.random());
+    const picked = shuffled.slice(0, 3).map((it, idx) => ({
+      ...it,
+      badge: idx === 0 ? 'Combo Pick' : (idx === 1 ? 'Chef Choice' : 'Value Pair'),
+      counter: it.counter || 'Counter 1 (Hot Meals)'
+    }));
+    setReorderItems(picked);
+    picked.forEach((it) => {
       addToCart(it.id);
     });
   };
@@ -135,7 +145,7 @@ const HomePage = () => {
 
         {/* Real Food Cards Grid */}
         <div className="menu-grid" id="quickReorderGrid">
-          {QUICK_REORDER_ITEMS.map((it) => {
+          {reorderItems.map((it) => {
             const isAdded = addedIds[it.id];
             return (
               <div key={it.id} className="menu-card">
