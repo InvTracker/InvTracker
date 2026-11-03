@@ -355,6 +355,15 @@ class InvenTrackStore {
         document.body.setAttribute('data-theme', 'kitchen');
         localStorage.setItem('invenTrack_theme', 'kitchen');
       } catch(e){}
+    } else {
+      try {
+        var curTheme = localStorage.getItem('invenTrack_theme');
+        if (curTheme === 'kitchen') {
+          document.documentElement.removeAttribute('data-theme');
+          document.body.removeAttribute('data-theme');
+          localStorage.setItem('invenTrack_theme', 'light');
+        }
+      } catch(e){}
     }
 
     if (parsed) {
@@ -3748,18 +3757,25 @@ function setupEventHandlers() {
   });
   const mobileThemeToggleBtn = $('#mobileThemeToggleBtn');
   if (mobileThemeToggleBtn) {
-    mobileThemeToggleBtn.addEventListener('click', () => {
-      const isKitchen = document.body.getAttribute('data-theme') === 'kitchen';
-      if (isKitchen) {
-        document.body.removeAttribute('data-theme');
-        const icon = $('#mobileThemeIcon');
-        if (icon) icon.textContent = 'dark_mode';
+    mobileThemeToggleBtn.onclick = (e) => {
+      if (typeof window.toggleInvenTrackTheme === 'function') {
+        window.toggleInvenTrackTheme(e);
       } else {
-        document.body.setAttribute('data-theme', 'kitchen');
-        const icon = $('#mobileThemeIcon');
-        if (icon) icon.textContent = 'light_mode';
+        const isDark = document.body.getAttribute('data-theme') === 'kitchen' ||
+                       document.body.getAttribute('data-theme') === 'dark' ||
+                       document.documentElement.getAttribute('data-theme') === 'kitchen' ||
+                       document.documentElement.getAttribute('data-theme') === 'dark';
+        if (isDark) {
+          document.body.removeAttribute('data-theme');
+          document.documentElement.removeAttribute('data-theme');
+          try { localStorage.setItem('invenTrack_theme', 'light'); } catch(err){}
+        } else {
+          document.body.setAttribute('data-theme', 'kitchen');
+          document.documentElement.setAttribute('data-theme', 'kitchen');
+          try { localStorage.setItem('invenTrack_theme', 'dark'); } catch(err){}
+        }
       }
-    });
+    };
   }
   document.addEventListener('click', (e) => {
     const navBtn = e.target.closest('.nav-item[data-page], .m3-bottom-nav-item[data-page]');
@@ -3780,36 +3796,47 @@ function setupEventHandlers() {
       return;
     }
   });
-    const themeToggleBtn = $('#themeToggleBtn');
+  const themeToggleBtn = $('#themeToggleBtn');
   if (themeToggleBtn) {
-    themeToggleBtn.addEventListener('click', (e) => {
+    themeToggleBtn.onclick = (e) => {
       if (typeof window.toggleInvenTrackTheme === 'function') {
         window.toggleInvenTrackTheme(e);
       } else {
-        const isDark = document.body.getAttribute('data-theme') === 'kitchen';
+        const isDark = document.body.getAttribute('data-theme') === 'kitchen' ||
+                       document.body.getAttribute('data-theme') === 'dark' ||
+                       document.documentElement.getAttribute('data-theme') === 'kitchen' ||
+                       document.documentElement.getAttribute('data-theme') === 'dark';
         if (isDark) {
           document.body.removeAttribute('data-theme');
           document.documentElement.removeAttribute('data-theme');
+          try { localStorage.setItem('invenTrack_theme', 'light'); } catch(err){}
         } else {
           document.body.setAttribute('data-theme', 'kitchen');
           document.documentElement.setAttribute('data-theme', 'kitchen');
+          try { localStorage.setItem('invenTrack_theme', 'dark'); } catch(err){}
         }
       }
-    });
+    };
   }
 
   const themeToggle = $('#themeToggle');
   if (themeToggle) {
-    themeToggle.addEventListener('click', (e) => {
+    themeToggle.onclick = (e) => {
       const btn = e.target.closest('button[data-mode]');
       if (!btn) return;
-      if (btn.dataset.mode === 'kitchen') {
-        document.body.setAttribute('data-theme', 'kitchen');
+      if (typeof window.applyInvenTrackTheme === 'function') {
+        window.applyInvenTrackTheme(btn.dataset.mode === 'kitchen');
       } else {
-        document.body.removeAttribute('data-theme');
+        if (btn.dataset.mode === 'kitchen') {
+          document.body.setAttribute('data-theme', 'kitchen');
+          document.documentElement.setAttribute('data-theme', 'kitchen');
+        } else {
+          document.body.removeAttribute('data-theme');
+          document.documentElement.removeAttribute('data-theme');
+        }
       }
       $$('#themeToggle button[data-mode]').forEach((b) => b.classList.toggle('on', b === btn));
-    });
+    };
   }
   const bellBtn = $('#bellBtn');
   if (bellBtn) {

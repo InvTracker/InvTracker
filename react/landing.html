@@ -3046,7 +3046,7 @@
     const themeToggleBtn = document.getElementById('themeToggleBtn');
     const themeIcon = document.getElementById('themeIcon');
     const savedTheme = localStorage.getItem('invenTrack_theme') || (document.body.getAttribute('data-theme') === 'kitchen' ? 'kitchen' : 'default');
-    let isDark = savedTheme === 'kitchen';
+    let isDark = (savedTheme === 'kitchen' || savedTheme === 'dark');
 
     function applyTheme(dark) {
       isDark = Boolean(dark);
@@ -3055,21 +3055,21 @@
         document.body.setAttribute('data-theme', 'kitchen');
         if (themeIcon) themeIcon.textContent = 'light_mode';
         if (themeToggleBtn) themeToggleBtn.setAttribute('title', 'Switch to Daylight Light Mode');
-        try { localStorage.setItem('invenTrack_theme', 'kitchen'); } catch(e){}
+        try { localStorage.setItem('invenTrack_theme', 'dark'); } catch(e){}
       } else {
         document.documentElement.removeAttribute('data-theme');
         document.body.removeAttribute('data-theme');
         if (themeIcon) themeIcon.textContent = 'dark_mode';
         if (themeToggleBtn) themeToggleBtn.setAttribute('title', 'Switch to Kitchen Dark Mode');
-        try { localStorage.setItem('invenTrack_theme', 'default'); } catch(e){}
+        try { localStorage.setItem('invenTrack_theme', 'light'); } catch(e){}
       }
     }
     applyTheme(isDark);
 
     if (themeToggleBtn) {
-      themeToggleBtn.addEventListener('click', () => {
+      themeToggleBtn.onclick = () => {
         applyTheme(!isDark);
-      });
+      };
     }
     const stages = ['Placed', 'Preparing', 'Ready', 'Picked up'];
     const etaMsgs = [

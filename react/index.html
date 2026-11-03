@@ -223,7 +223,7 @@
 
         <div class="topbar-actions">
           <!-- M3 Theme Switcher (Single Icon Button matching Landing Page) -->
-          <button id="themeToggleBtn" class="theme-toggle-btn" onclick="window.toggleInvenTrackTheme(event)" title="Toggle Kitchen Dark / Daylight Theme" aria-label="Toggle Theme">
+          <button id="themeToggleBtn" class="theme-toggle-btn" title="Toggle Kitchen Dark / Daylight Theme" aria-label="Toggle Theme">
             <span class="material-symbols-outlined" style="font-size: 19px;" id="themeIcon">dark_mode</span>
           </button>
           <div class="theme-toggle" id="themeToggle" title="Toggle theme" style="display:none;">
@@ -1314,39 +1314,61 @@
     </div>
   </div>
 
-  <!-- Robust Landing Page Theme Controller -->
+  <!-- Robust Theme Controller (Light/Dark Toggle) -->
   <script>
     (function() {
       window.applyInvenTrackTheme = function(dark) {
         var isDark = Boolean(dark);
         var btn = document.getElementById('themeToggleBtn');
         var icon = document.getElementById('themeIcon');
+        var mobileBtn = document.getElementById('mobileThemeToggleBtn');
+        var mobileIcon = document.getElementById('mobileThemeIcon');
 
         if (isDark) {
           document.documentElement.setAttribute('data-theme', 'kitchen');
           document.body.setAttribute('data-theme', 'kitchen');
           if (icon) icon.textContent = 'light_mode';
+          if (mobileIcon) mobileIcon.textContent = 'light_mode';
           if (btn) btn.setAttribute('title', 'Switch to Daylight Light Mode');
-          try { localStorage.setItem('invenTrack_theme', 'kitchen'); } catch(e){}
+          if (mobileBtn) mobileBtn.setAttribute('title', 'Switch to Daylight Light Mode');
+          try { localStorage.setItem('invenTrack_theme', 'dark'); } catch(e){}
         } else {
           document.documentElement.removeAttribute('data-theme');
           document.body.removeAttribute('data-theme');
           if (icon) icon.textContent = 'dark_mode';
+          if (mobileIcon) mobileIcon.textContent = 'dark_mode';
           if (btn) btn.setAttribute('title', 'Switch to Kitchen Dark Mode');
-          try { localStorage.setItem('invenTrack_theme', 'default'); } catch(e){}
+          if (mobileBtn) mobileBtn.setAttribute('title', 'Switch to Kitchen Dark Mode');
+          try { localStorage.setItem('invenTrack_theme', 'light'); } catch(e){}
         }
       };
 
       window.toggleInvenTrackTheme = function(e) {
         if (e && e.preventDefault) e.preventDefault();
+        if (e && e.stopPropagation) e.stopPropagation();
         var currentIsDark = document.body.getAttribute('data-theme') === 'kitchen' ||
-                              document.documentElement.getAttribute('data-theme') === 'kitchen';
+                            document.body.getAttribute('data-theme') === 'dark' ||
+                            document.documentElement.getAttribute('data-theme') === 'kitchen' ||
+                            document.documentElement.getAttribute('data-theme') === 'dark';
         window.applyInvenTrackTheme(!currentIsDark);
       };
 
       // Initial theme apply
-      var saved = localStorage.getItem('invenTrack_theme');
-      var initDark = saved === 'kitchen';
+      var saved = null;
+      try { saved = localStorage.getItem('invenTrack_theme'); } catch(e){}
+      var initDark = false;
+      if (saved === 'dark') {
+        initDark = true;
+      } else if (saved === 'kitchen') {
+        var isKitchenUser = false;
+        try {
+          var u = JSON.parse(localStorage.getItem('invenTrack_user') || '{}');
+          if (u && (u.role === 'kitchen')) isKitchenUser = true;
+        } catch(e){}
+        initDark = isKitchenUser;
+      } else {
+        initDark = false;
+      }
       window.applyInvenTrackTheme(initDark);
 
       // Wire DOM once ready
@@ -1355,10 +1377,18 @@
         if (btn) {
           btn.onclick = window.toggleInvenTrackTheme;
         }
+        var mobileBtn = document.getElementById('mobileThemeToggleBtn');
+        if (mobileBtn) {
+          mobileBtn.onclick = window.toggleInvenTrackTheme;
+        }
         var icon = document.getElementById('themeIcon');
+        var mobileIcon = document.getElementById('mobileThemeIcon');
         var currentIsDark = document.body.getAttribute('data-theme') === 'kitchen' ||
-                            document.documentElement.getAttribute('data-theme') === 'kitchen';
+                            document.body.getAttribute('data-theme') === 'dark' ||
+                            document.documentElement.getAttribute('data-theme') === 'kitchen' ||
+                            document.documentElement.getAttribute('data-theme') === 'dark';
         if (icon) icon.textContent = currentIsDark ? 'light_mode' : 'dark_mode';
+        if (mobileIcon) mobileIcon.textContent = currentIsDark ? 'light_mode' : 'dark_mode';
       }
 
       if (document.readyState === 'loading') {
@@ -1368,7 +1398,5 @@
       }
     })();
   </script>
-
 </body>
-
 </html>
