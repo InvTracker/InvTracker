@@ -48,7 +48,15 @@ const CartPage = () => {
                 const qty = cart[id];
                 return (
                   <div key={id} className="cart-line">
-                    <div className="menu-emoji">{item.emoji}</div>
+                    <div className="cart-food-thumb">
+                      <img
+                        src={item.image || 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&auto=format&fit=crop&q=80'}
+                        alt={item.name}
+                        className="cart-item-img"
+                        onError={(e) => { e.target.src = 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&auto=format&fit=crop&q=80'; }}
+                      />
+                      <span className={`food-type-icon ${item.diet === 'non-veg' ? 'non-veg' : 'veg'} cart-food-dot`} />
+                    </div>
                     <div className="stub-info">
                       <div className="t">{item.name}</div>
                       <div className="s mono">Rs {item.price} each</div>

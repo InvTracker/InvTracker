@@ -106,7 +106,15 @@ const ForYouPage = () => {
           const isAdded = addedIds[it.id];
           return (
             <div key={it.id} className="menu-card">
-              <div className="menu-emoji"><span className="material-symbols-outlined">{it.emoji}</span></div>
+              <div className="cart-food-thumb" style={{ width: '56px', height: '56px', minWidth: '56px' }}>
+                <img
+                  src={it.image || 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&auto=format&fit=crop&q=80'}
+                  alt={it.name}
+                  className="cart-item-img"
+                  onError={(e) => { e.target.src = 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&auto=format&fit=crop&q=80'; }}
+                />
+                <span className={`food-type-icon ${it.isVeg ? 'veg' : 'non-veg'} cart-food-dot`} />
+              </div>
               <div className="menu-info">
                 <div className="mn">{it.name}</div>
                 {it.recReason && <div className="rec-pill-badge">{it.recReason}</div>}

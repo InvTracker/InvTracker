@@ -43,7 +43,15 @@ const MenuPage = () => {
             const isAdded = addedIds[it.id];
             return (
               <div key={it.id} className="menu-card">
-                <div className="menu-emoji">{it.emoji}</div>
+                <div className="cart-food-thumb" style={{ width: '56px', height: '56px', minWidth: '56px' }}>
+                  <img
+                    src={it.image || 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&auto=format&fit=crop&q=80'}
+                    alt={it.name}
+                    className="cart-item-img"
+                    onError={(e) => { e.target.src = 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&auto=format&fit=crop&q=80'; }}
+                  />
+                  <span className={`food-type-icon ${it.diet === 'non-veg' ? 'non-veg' : 'veg'} cart-food-dot`} />
+                </div>
                 <div className="menu-info">
                   <div className="mn">{it.name}</div>
                   <div className="mc">{it.cat}</div>

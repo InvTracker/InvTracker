@@ -19,18 +19,18 @@ const DATA_INJECTION_SLOT = {
 
 const CAMPUS_DEMO_FIXTURE = {
       menuItems: [
-    { id: 'item-1', name: 'Chicken Dum Biryani', emoji: 'restaurant', price: 185, cat: 'Hot Meals', counter: 'Counter 1 (Hot Meals)', stock: 25, lowThreshold: 8, restockTime: '15 min', diet: 'non-veg', spice: 'Medium', isExpress: false },
-    { id: 'item-2', name: 'Hyderabadi Veg Biryani', emoji: 'rice_bowl', price: 150, cat: 'Hot Meals', counter: 'Counter 1 (Hot Meals)', stock: 18, lowThreshold: 5, restockTime: '20 min', diet: 'veg', spice: 'Medium', isExpress: false },
-    { id: 'item-3', name: 'Ghee Podi Masala Dosa', emoji: 'breakfast_dining', price: 90, cat: 'Hot Meals', counter: 'Counter 1 (Hot Meals)', stock: 4, lowThreshold: 6, restockTime: '10 min', diet: 'veg', spice: 'Mild', isExpress: false },
-    { id: 'item-4', name: 'Crispy Veg Patty Burger', emoji: 'lunch_dining', price: 70, cat: 'Quick Bites', counter: 'Counter 2 (Quick Bites)', stock: 22, lowThreshold: 5, restockTime: '12 min', diet: 'veg', spice: 'Mild', isExpress: true },
-    { id: 'item-5', name: 'Grilled Cheese Sandwich', emoji: 'bakery_dining', price: 60, cat: 'Quick Bites', counter: 'Counter 2 (Quick Bites)', stock: 3, lowThreshold: 5, restockTime: '8 min', diet: 'veg', spice: 'Mild', isExpress: true },
-    { id: 'item-6', name: 'Wood-Fired Pizza Slice', emoji: 'local_pizza', price: 120, cat: 'Quick Bites', counter: 'Counter 2 (Quick Bites)', stock: 0, lowThreshold: 4, restockTime: '25 min', diet: 'veg', spice: 'Medium', isExpress: false },
-    { id: 'item-7', name: 'Peri-Peri Salted Fries', emoji: 'fastfood', price: 55, cat: 'Quick Bites', counter: 'Counter 2 (Quick Bites)', stock: 30, lowThreshold: 8, restockTime: '5 min', diet: 'veg', spice: 'Hot', isExpress: true },
-    { id: 'item-8', name: 'Artisan Cold Coffee', emoji: 'local_cafe', price: 45, cat: 'Beverages', counter: 'Counter 3 (Cafe & Drinks)', stock: 35, lowThreshold: 10, restockTime: '5 min', diet: 'veg', spice: null, isExpress: true },
-    { id: 'item-9', name: 'Spiced Masala Buttermilk', emoji: 'emoji_food_beverage', price: 25, cat: 'Beverages', counter: 'Counter 3 (Cafe & Drinks)', stock: 5, lowThreshold: 10, restockTime: '5 min', diet: 'veg', spice: 'Mild', isExpress: true },
-    { id: 'item-10', name: 'Warm Gulab Jamun (2 pcs)', emoji: 'icecream', price: 30, cat: 'Desserts', counter: 'Counter 3 (Cafe & Drinks)', stock: 14, lowThreshold: 5, restockTime: '15 min', diet: 'veg', spice: null, isExpress: true },
-    { id: 'item-11', name: 'Belgian Chocolate Brownie', emoji: 'cookie', price: 65, cat: 'Desserts', counter: 'Counter 3 (Cafe & Drinks)', stock: 2, lowThreshold: 5, restockTime: '15 min', diet: 'veg', spice: null, isExpress: true },
-    { id: 'item-12', name: 'Paneer Butter Masala Combo', emoji: 'dinner_dining', price: 160, cat: 'Hot Meals', counter: 'Counter 1 (Hot Meals)', stock: 12, lowThreshold: 5, restockTime: '15 min', diet: 'veg', spice: 'Medium', isExpress: false }
+    { id: 'item-1', name: 'Chicken Dum Biryani', emoji: 'restaurant', price: 185, cat: 'Hot Meals', counter: 'Counter 1 (Hot Meals)', stock: 25, lowThreshold: 8, restockTime: '15 min', diet: 'non-veg', spice: 'Medium', isExpress: false, image: 'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=800&auto=format&fit=crop&q=80' },
+    { id: 'item-2', name: 'Hyderabadi Veg Biryani', emoji: 'rice_bowl', price: 150, cat: 'Hot Meals', counter: 'Counter 1 (Hot Meals)', stock: 18, lowThreshold: 5, restockTime: '20 min', diet: 'veg', spice: 'Medium', isExpress: false, image: 'https://images.unsplash.com/photo-1633945274405-b6c8069047b0?w=800&auto=format&fit=crop&q=80' },
+    { id: 'item-3', name: 'Ghee Podi Masala Dosa', emoji: 'breakfast_dining', price: 90, cat: 'Hot Meals', counter: 'Counter 1 (Hot Meals)', stock: 4, lowThreshold: 6, restockTime: '10 min', diet: 'veg', spice: 'Mild', isExpress: false, image: 'https://images.unsplash.com/photo-1668236543090-82eba5ee5976?w=800&auto=format&fit=crop&q=80' },
+    { id: 'item-4', name: 'Crispy Veg Patty Burger', emoji: 'lunch_dining', price: 70, cat: 'Quick Bites', counter: 'Counter 2 (Quick Bites)', stock: 22, lowThreshold: 5, restockTime: '12 min', diet: 'veg', spice: 'Mild', isExpress: true, image: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=800&auto=format&fit=crop&q=80' },
+    { id: 'item-5', name: 'Grilled Cheese Sandwich', emoji: 'bakery_dining', price: 60, cat: 'Quick Bites', counter: 'Counter 2 (Quick Bites)', stock: 3, lowThreshold: 5, restockTime: '8 min', diet: 'veg', spice: 'Mild', isExpress: true, image: 'https://images.unsplash.com/photo-1528735602780-2552fd46c7af?w=800&auto=format&fit=crop&q=80' },
+    { id: 'item-6', name: 'Wood-Fired Pizza Slice', emoji: 'local_pizza', price: 120, cat: 'Quick Bites', counter: 'Counter 2 (Quick Bites)', stock: 0, lowThreshold: 4, restockTime: '25 min', diet: 'veg', spice: 'Medium', isExpress: false, image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=800&auto=format&fit=crop&q=80' },
+    { id: 'item-7', name: 'Peri-Peri Salted Fries', emoji: 'fastfood', price: 55, cat: 'Quick Bites', counter: 'Counter 2 (Quick Bites)', stock: 30, lowThreshold: 8, restockTime: '5 min', diet: 'veg', spice: 'Hot', isExpress: true, image: 'https://images.unsplash.com/photo-1576107232684-1279f3908594?w=800&auto=format&fit=crop&q=80' },
+    { id: 'item-8', name: 'Artisan Cold Coffee', emoji: 'local_cafe', price: 45, cat: 'Beverages', counter: 'Counter 3 (Cafe & Drinks)', stock: 35, lowThreshold: 10, restockTime: '5 min', diet: 'veg', spice: null, isExpress: true, image: 'https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?w=800&auto=format&fit=crop&q=80' },
+    { id: 'item-9', name: 'Spiced Masala Buttermilk', emoji: 'emoji_food_beverage', price: 25, cat: 'Beverages', counter: 'Counter 3 (Cafe & Drinks)', stock: 5, lowThreshold: 10, restockTime: '5 min', diet: 'veg', spice: 'Mild', isExpress: true, image: 'https://images.unsplash.com/photo-1556881286-fc6915169721?w=800&auto=format&fit=crop&q=80' },
+    { id: 'item-10', name: 'Warm Gulab Jamun (2 pcs)', emoji: 'icecream', price: 30, cat: 'Desserts', counter: 'Counter 3 (Cafe & Drinks)', stock: 14, lowThreshold: 5, restockTime: '15 min', diet: 'veg', spice: null, isExpress: true, image: 'https://images.unsplash.com/photo-1601050690597-df0568f70950?w=800&auto=format&fit=crop&q=80' },
+    { id: 'item-11', name: 'Belgian Chocolate Brownie', emoji: 'cookie', price: 65, cat: 'Desserts', counter: 'Counter 3 (Cafe & Drinks)', stock: 2, lowThreshold: 5, restockTime: '15 min', diet: 'veg', spice: null, isExpress: true, image: 'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=800&auto=format&fit=crop&q=80' },
+    { id: 'item-12', name: 'Paneer Butter Masala Combo', emoji: 'dinner_dining', price: 160, cat: 'Hot Meals', counter: 'Counter 1 (Hot Meals)', stock: 12, lowThreshold: 5, restockTime: '15 min', diet: 'veg', spice: 'Medium', isExpress: false, image: 'https://images.unsplash.com/photo-1631452180519-c014fe946bc7?w=800&auto=format&fit=crop&q=80' }
   ],
   orders: [
     {
@@ -293,7 +293,7 @@ class InvenTrackStore {
       } catch (e) {}
 
       return {
-        menuItems: [...DATA_INJECTION_SLOT.menuItems],
+        menuItems: (DATA_INJECTION_SLOT.menuItems && DATA_INJECTION_SLOT.menuItems.length > 0) ? [...DATA_INJECTION_SLOT.menuItems] : [...CAMPUS_DEMO_FIXTURE.menuItems],
         orders: [...DATA_INJECTION_SLOT.orders],
         users: [...DATA_INJECTION_SLOT.users],
         feedbacks: [...DATA_INJECTION_SLOT.feedbacks],
@@ -352,7 +352,7 @@ class InvenTrackStore {
     }
 
     return {
-      menuItems: [...DATA_INJECTION_SLOT.menuItems],
+      menuItems: (DATA_INJECTION_SLOT.menuItems && DATA_INJECTION_SLOT.menuItems.length > 0) ? [...DATA_INJECTION_SLOT.menuItems] : [...CAMPUS_DEMO_FIXTURE.menuItems],
       orders: [...DATA_INJECTION_SLOT.orders],
       users: [...DATA_INJECTION_SLOT.users],
       feedbacks: [...DATA_INJECTION_SLOT.feedbacks],
@@ -1515,8 +1515,9 @@ function renderQuickReorder(state) {
     return `
       <div class="reorder-card">
         <div class="reorder-card-top">
-          <div class="reorder-card-icon">
-            ${renderItemIcon(it.emoji)}
+          <div class="reorder-card-thumb">
+            <img src="${getItemImage(it)}" alt="${safeName}" class="reorder-card-img" onerror="this.src='https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&auto=format&fit=crop&q=80'">
+            <span class="food-type-icon ${isVegItem(it) ? 'veg' : 'non-veg'} reorder-veg-badge"></span>
           </div>
           <div class="reorder-card-info">
             <div class="reorder-card-title" title="${safeName}">${it.name}</div>
@@ -1617,14 +1618,20 @@ function renderCounterStrip(state) {
     .map((it) => {
       const status = getItemStatus(it);
       return `
-        <div class="counter-item">
-          <div class="counter-meta">
-            <span class="counter-name">${it.name}</span>
-            ${sbHTML(status)}
+        <div class="counter-item counter-item--with-img">
+          <div class="counter-thumb-wrap">
+            <img class="counter-item-img" src="${getItemImage(it)}" alt="${escapeHtml(it.name)}" onerror="this.src='https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&auto=format&fit=crop&q=80'">
+            <span class="food-type-icon ${isVegItem(it) ? 'veg' : 'non-veg'} counter-veg-dot"></span>
           </div>
-          <div class="stock-count">${it.stock} servings left - <span style="color:var(--md-sys-color-on-surface-variant); font-size:11px;">${it.restockTime || '15 min'}</span></div>
-          <div class="gauge">
-            <span style="width:${getGaugeWidth(it)}%; background:${getGaugeColor(status)}"></span>
+          <div class="counter-content">
+            <div class="counter-meta">
+              <span class="counter-name">${it.name}</span>
+              ${sbHTML(status)}
+            </div>
+            <div class="stock-count">${it.stock} servings left &bull; <span style="color:var(--md-sys-color-on-surface-variant); font-size:11px;">${it.restockTime || '15 min'}</span></div>
+            <div class="gauge">
+              <span style="width:${getGaugeWidth(it)}%; background:${getGaugeColor(status)}"></span>
+            </div>
           </div>
         </div>
       `;
@@ -1676,9 +1683,21 @@ const FOOD_REAL_IMAGES = {
   'grilled cheese sandwich': 'https://images.unsplash.com/photo-1528735602780-2552fd46c7af?w=800&auto=format&fit=crop&q=80',
   'wood-fired pizza slice': 'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=800&auto=format&fit=crop&q=80',
   'peri-peri salted fries': 'https://images.unsplash.com/photo-1576107232684-1279f3908594?w=800&auto=format&fit=crop&q=80',
-  'artisan cold coffee': 'https://images.unsplash.com/photo-1517256064527-09c73fc73e38?w=800&auto=format&fit=crop&q=80',
+  'artisan cold coffee': 'https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?w=800&auto=format&fit=crop&q=80',
   'spiced masala buttermilk': 'https://images.unsplash.com/photo-1556881286-fc6915169721?w=800&auto=format&fit=crop&q=80',
-  'warm gulab jamun (2 pcs)': 'https://images.unsplash.com/photo-1601050690597-df0568f70950?w=800&auto=format&fit=crop&q=80'
+  'warm gulab jamun (2 pcs)': 'https://images.unsplash.com/photo-1601050690597-df0568f70950?w=800&auto=format&fit=crop&q=80',
+  'warm gulab jamun': 'https://images.unsplash.com/photo-1601050690597-df0568f70950?w=800&auto=format&fit=crop&q=80',
+  'belgian chocolate brownie': 'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=800&auto=format&fit=crop&q=80',
+  'paneer butter masala combo': 'https://images.unsplash.com/photo-1631452180519-c014fe946bc7?w=800&auto=format&fit=crop&q=80',
+  'paneer butter masala': 'https://images.unsplash.com/photo-1631452180519-c014fe946bc7?w=800&auto=format&fit=crop&q=80',
+  'smoky paneer tikka roll': 'https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?w=800&auto=format&fit=crop&q=80',
+  'spicy schezwan hakka noodles': 'https://images.unsplash.com/photo-1585032226651-759b368d7246?w=800&auto=format&fit=crop&q=80',
+  'crispy chicken tenders & cajun fries': 'https://images.unsplash.com/photo-1562967914-608f82629710?w=800&auto=format&fit=crop&q=80',
+  'royal north indian thali': 'https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=800&auto=format&fit=crop&q=80',
+  'truffle mushroom melt panini': 'https://images.unsplash.com/photo-1528735602780-2552fd46c7af?w=800&auto=format&fit=crop&q=80',
+  'steamed himalayan chicken dimsums (6 pcs)': 'https://images.unsplash.com/photo-1496116218417-1a781b1c416c?w=800&auto=format&fit=crop&q=80',
+  'biscoff caramel frappe': 'https://images.unsplash.com/photo-1572490122747-3968b75cc699?w=800&auto=format&fit=crop&q=80',
+  'berry burst belgian waffle': 'https://images.unsplash.com/photo-1562376552-0d160a2f238d?w=800&auto=format&fit=crop&q=80'
 };
 
 const CATEGORY_FALLBACK_IMAGES = {
@@ -1689,6 +1708,7 @@ const CATEGORY_FALLBACK_IMAGES = {
 };
 
 function getItemImage(it) {
+  if (!it) return 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=800&auto=format&fit=crop&q=80';
   if (it.image && typeof it.image === 'string' && it.image.startsWith('http')) return it.image;
   const key = (it.name || '').toLowerCase().trim();
   if (FOOD_REAL_IMAGES[key]) return FOOD_REAL_IMAGES[key];
@@ -1696,7 +1716,12 @@ function getItemImage(it) {
     if (key.includes(nameKey) || nameKey.includes(key)) return url;
   }
   const catKey = (it.cat || '').toLowerCase().trim();
-  return CATEGORY_FALLBACK_IMAGES[catKey] || 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=800&auto=format&fit=crop&q=80';
+  if (CATEGORY_FALLBACK_IMAGES[catKey]) return CATEGORY_FALLBACK_IMAGES[catKey];
+  if (catKey.includes('snack') || catKey.includes('quick')) return CATEGORY_FALLBACK_IMAGES.snacks;
+  if (catKey.includes('meal') || catKey.includes('main') || catKey.includes('hot') || catKey.includes('rice')) return CATEGORY_FALLBACK_IMAGES.mains;
+  if (catKey.includes('drink') || catKey.includes('bev') || catKey.includes('cafe')) return CATEGORY_FALLBACK_IMAGES.beverages;
+  if (catKey.includes('dessert') || catKey.includes('sweet')) return CATEGORY_FALLBACK_IMAGES.desserts;
+  return 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=800&auto=format&fit=crop&q=80';
 }
 
 function isVegItem(it) {
@@ -1730,7 +1755,9 @@ const ITEM_DESCRIPTIONS = {
   'peri-peri salted fries': 'Skin-on golden potato fries tossed in fiery African peri-peri spice dust. Served with creamy garlic dip.',
   'artisan cold coffee': 'Slow-brewed dark roast espresso whipped with chilled creamy whole milk, chocolate drizzle, and vanilla bean froth.',
   'spiced masala buttermilk': 'Traditional desi chaas churned with fresh coriander, ginger, crushed green chillies, and roasted cumin.',
-  'warm gulab jamun (2 pcs)': 'Handmade khoya dumplings fried golden and immersed in simmering rosewater, saffron, and green cardamom nectar.'
+  'warm gulab jamun (2 pcs)': 'Handmade khoya dumplings fried golden and immersed in simmering rosewater, saffron, and green cardamom nectar.',
+  'belgian chocolate brownie': 'Warm, fudgy dark Belgian chocolate brownie studded with toasted walnuts and crowned with a dark chocolate drizzle.',
+  'paneer butter masala combo': 'Velvety cottage cheese cubes simmered in a rich tomato, butter, and cashew gravy, served with 2 butter naan and jeera rice.'
 };
 
 function getItemDesc(it) {
@@ -2547,10 +2574,13 @@ function renderStudentCart(state) {
       return `
         <div class="cart-line-container" data-item-id="${id}">
           <div class="cart-line">
-            <div class="menu-emoji" style="width:38px; height:38px; font-size:18px;">${renderItemIcon(it.emoji)}</div>
+            <div class="cart-food-thumb">
+              <img src="${getItemImage(it)}" alt="${escapeHtml(it.name)}" class="cart-item-img" onerror="this.src='https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&auto=format&fit=crop&q=80'">
+              <span class="food-type-icon ${isVegItem(it) ? 'veg' : 'non-veg'} cart-food-dot"></span>
+            </div>
             <div class="stub-info">
               <div class="t">${escapeHtml(it.name)}</div>
-              <div class="s mono">${it.price} each - ${lineTotal}</div>
+              <div class="s mono">Rs ${it.price} each &bull; Rs ${lineTotal}</div>
             </div>
             <div class="qty-ctrl">
               <button data-dec="${id}">-</button>
@@ -2752,13 +2782,16 @@ function renderShopperStore(state) {
       const status = getItemStatus(it);
       const isOut = status === 'out';
       return `
-        <div class="menu-card">
-          <div class="menu-emoji">${renderItemIcon(it.emoji)}</div>
+        <div class="menu-card menu-card--shopper">
+          <div class="shopper-card-media">
+            <img src="${getItemImage(it)}" alt="${escapeHtml(it.name)}" class="shopper-food-img" onerror="this.src='https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&auto=format&fit=crop&q=80'">
+            <span class="food-type-icon ${isVegItem(it) ? 'veg' : 'non-veg'} shopper-veg-badge"></span>
+          </div>
           <div class="menu-info">
-            <div class="mn">${it.name}</div>
-            <div class="mc">${it.cat} - ${it.counter}</div>
+            <div class="mn">${escapeHtml(it.name)}</div>
+            <div class="mc">${it.cat} &bull; ${it.counter}</div>
             <div class="mrow" style="margin-top:8px;">
-              <span class="rec-price mono">${it.price}</span>
+              <span class="rec-price mono">Rs ${it.price}</span>
               <div style="display:flex; align-items:center; gap:8px;">
                 ${sbHTML(status)}
                 <button class="dev-btn ${isOut ? '' : 'primary'}" data-shopper-add="${it.id}" ${isOut ? 'disabled' : ''}>
@@ -2811,13 +2844,16 @@ function renderShopperCart(state) {
       subtotal += lineTotal;
       return `
         <div class="cart-line">
-          <div class="menu-emoji" style="width:36px; height:36px;">${renderItemIcon(it.emoji)}</div>
+          <div class="cart-food-thumb">
+            <img src="${getItemImage(it)}" alt="${escapeHtml(it.name)}" class="cart-item-img" onerror="this.src='https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&auto=format&fit=crop&q=80'">
+            <span class="food-type-icon ${isVegItem(it) ? 'veg' : 'non-veg'} cart-food-dot"></span>
+          </div>
           <div class="stub-info">
-            <div class="t">${it.name}</div>
-            <div class="s mono">${it.price} each</div>
+            <div class="t">${escapeHtml(it.name)}</div>
+            <div class="s mono">Rs ${it.price} each &bull; Rs ${lineTotal}</div>
           </div>
           <div class="qty-ctrl">
-            <button data-shopper-dec="${id}">'</button>
+            <button data-shopper-dec="${id}">-</button>
             <span>${qty}</span>
             <button data-shopper-inc="${id}">+</button>
           </div>
@@ -3185,9 +3221,11 @@ function renderKitchenPos(state) {
             const isOut = it.stock <= 0;
             return `
               <button class="pos-item-btn" data-pos-add="${it.id}" ${isOut ? 'disabled' : ''}>
-                <span class="pos-item-emoji">${renderItemIcon(it.emoji)}</span>
-                <span class="pos-item-name">${it.name}</span>
-                <span class="pos-item-price">${it.price} (${it.stock} left)</span>
+                <span class="pos-item-thumb">
+                  <img src="${getItemImage(it)}" alt="${escapeHtml(it.name)}" class="pos-thumb-img" onerror="this.src='https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&auto=format&fit=crop&q=80'">
+                </span>
+                <span class="pos-item-name">${escapeHtml(it.name)}</span>
+                <span class="pos-item-price">Rs ${it.price} (${it.stock} left)</span>
               </button>
             `;
           })
@@ -3214,15 +3252,18 @@ function renderKitchenPos(state) {
         const lineTotal = it.price * qty;
         subtotal += lineTotal;
         return `
-          <div style="display:flex; justify-content:space-between; align-items:center; padding:6px 0; font-size:12.5px;">
-            <div>
-              <strong>${it.name}</strong>
-              <div style="font-size:11px; color:var(--md-sys-color-on-surface-variant);">${it.price}  - ${qty}</div>
+          <div style="display:flex; justify-content:space-between; align-items:center; padding:8px 0; font-size:12.5px; border-bottom:1px solid var(--md-sys-color-outline-variant);">
+            <div style="display:flex; align-items:center; gap:8px;">
+              <img src="${getItemImage(it)}" alt="${escapeHtml(it.name)}" style="width:34px; height:34px; border-radius:6px; object-fit:cover;" onerror="this.src='https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&auto=format&fit=crop&q=80'">
+              <div>
+                <strong>${escapeHtml(it.name)}</strong>
+                <div style="font-size:11px; color:var(--md-sys-color-on-surface-variant);">Rs ${it.price} &bull; ${qty}x</div>
+              </div>
             </div>
             <div style="display:flex; align-items:center; gap:8px;">
-              <span class="mono" style="font-weight:700;">${lineTotal}</span>
+              <span class="mono" style="font-weight:700;">Rs ${lineTotal}</span>
               <div class="inline-stock-ctrl">
-                <button data-pos-dec="${id}">'</button>
+                <button data-pos-dec="${id}">-</button>
                 <span>${qty}</span>
                 <button data-pos-inc="${id}">+</button>
               </div>

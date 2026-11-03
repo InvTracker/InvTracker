@@ -29,21 +29,21 @@ export const spendingData = [
 
 // Diverse catalog of potential campus food items to sample randomly from
 const ITEM_POOL = [
-  { name: 'Chicken Dum Biryani', emoji: '', basePrice: 180, cat: 'Hot Meals', counter: 'Counter 1 (Hot Meals)', diet: 'non-veg', spice: 'Medium', isExpress: false },
-  { name: 'Hyderabadi Veg Biryani', emoji: '', basePrice: 150, cat: 'Hot Meals', counter: 'Counter 1 (Hot Meals)', diet: 'veg', spice: 'Medium', isExpress: false },
-  { name: 'Ghee Podi Masala Dosa', emoji: '', basePrice: 90, cat: 'Hot Meals', counter: 'Counter 1 (Hot Meals)', diet: 'veg', spice: 'Mild', isExpress: false },
-  { name: 'Crispy Veg Patty Burger', emoji: '', basePrice: 70, cat: 'Quick Bites', counter: 'Counter 2 (Quick Bites)', diet: 'veg', spice: 'Mild', isExpress: true },
-  { name: 'Grilled Cheese Sandwich', emoji: '', basePrice: 60, cat: 'Quick Bites', counter: 'Counter 2 (Quick Bites)', diet: 'veg', spice: 'Mild', isExpress: true },
-  { name: 'Wood-Fired Pizza Slice', emoji: '', basePrice: 120, cat: 'Quick Bites', counter: 'Counter 2 (Quick Bites)', diet: 'veg', spice: 'Medium', isExpress: false },
-  { name: 'Peri-Peri Salted Fries', emoji: '', basePrice: 55, cat: 'Quick Bites', counter: 'Counter 2 (Quick Bites)', diet: 'veg', spice: 'Hot', isExpress: true },
-  { name: 'Artisan Cold Coffee', emoji: '', basePrice: 45, cat: 'Beverages', counter: 'Counter 3 (Cafe & Drinks)', diet: 'veg', spice: null, isExpress: true },
-  { name: 'Spiced Masala Buttermilk', emoji: '', basePrice: 25, cat: 'Beverages', counter: 'Counter 3 (Cafe & Drinks)', diet: 'veg', spice: 'Mild', isExpress: true },
-  { name: 'Chilled Mango Lassi', emoji: '', basePrice: 50, cat: 'Beverages', counter: 'Counter 3 (Cafe & Drinks)', diet: 'veg', spice: null, isExpress: true },
-  { name: 'Warm Gulab Jamun (2 pcs)', emoji: '', basePrice: 30, cat: 'Desserts', counter: 'Counter 3 (Cafe & Drinks)', diet: 'veg', spice: null, isExpress: true },
-  { name: 'Belgian Chocolate Brownie', emoji: '', basePrice: 65, cat: 'Desserts', counter: 'Counter 3 (Cafe & Drinks)', diet: 'veg', spice: null, isExpress: true },
-  { name: 'Paneer Tikka Roll', emoji: '', basePrice: 95, cat: 'Quick Bites', counter: 'Counter 2 (Quick Bites)', diet: 'veg', spice: 'Medium', isExpress: false },
-  { name: 'Chole Bhature Platter', emoji: '', basePrice: 110, cat: 'Hot Meals', counter: 'Counter 1 (Hot Meals)', diet: 'veg', spice: 'Medium', isExpress: false },
-  { name: 'Iced Lemon Mint Tea', emoji: '', basePrice: 35, cat: 'Beverages', counter: 'Counter 3 (Cafe & Drinks)', diet: 'veg', spice: null, isExpress: true }
+  { name: 'Chicken Dum Biryani', emoji: 'restaurant', basePrice: 180, cat: 'Hot Meals', counter: 'Counter 1 (Hot Meals)', diet: 'non-veg', spice: 'Medium', isExpress: false, image: 'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=800&auto=format&fit=crop&q=80' },
+  { name: 'Hyderabadi Veg Biryani', emoji: 'rice_bowl', basePrice: 150, cat: 'Hot Meals', counter: 'Counter 1 (Hot Meals)', diet: 'veg', spice: 'Medium', isExpress: false, image: 'https://images.unsplash.com/photo-1633945274405-b6c8069047b0?w=800&auto=format&fit=crop&q=80' },
+  { name: 'Ghee Podi Masala Dosa', emoji: 'breakfast_dining', basePrice: 90, cat: 'Hot Meals', counter: 'Counter 1 (Hot Meals)', diet: 'veg', spice: 'Mild', isExpress: false, image: 'https://images.unsplash.com/photo-1668236543090-82eba5ee5976?w=800&auto=format&fit=crop&q=80' },
+  { name: 'Crispy Veg Patty Burger', emoji: 'lunch_dining', basePrice: 70, cat: 'Quick Bites', counter: 'Counter 2 (Quick Bites)', diet: 'veg', spice: 'Mild', isExpress: true, image: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=800&auto=format&fit=crop&q=80' },
+  { name: 'Grilled Cheese Sandwich', emoji: 'bakery_dining', basePrice: 60, cat: 'Quick Bites', counter: 'Counter 2 (Quick Bites)', diet: 'veg', spice: 'Mild', isExpress: true, image: 'https://images.unsplash.com/photo-1528735602780-2552fd46c7af?w=800&auto=format&fit=crop&q=80' },
+  { name: 'Wood-Fired Pizza Slice', emoji: 'local_pizza', basePrice: 120, cat: 'Quick Bites', counter: 'Counter 2 (Quick Bites)', diet: 'veg', spice: 'Medium', isExpress: false, image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=800&auto=format&fit=crop&q=80' },
+  { name: 'Peri-Peri Salted Fries', emoji: 'fastfood', basePrice: 55, cat: 'Quick Bites', counter: 'Counter 2 (Quick Bites)', diet: 'veg', spice: 'Hot', isExpress: true, image: 'https://images.unsplash.com/photo-1576107232684-1279f3908594?w=800&auto=format&fit=crop&q=80' },
+  { name: 'Artisan Cold Coffee', emoji: 'local_cafe', basePrice: 45, cat: 'Beverages', counter: 'Counter 3 (Cafe & Drinks)', diet: 'veg', spice: null, isExpress: true, image: 'https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?w=800&auto=format&fit=crop&q=80' },
+  { name: 'Spiced Masala Buttermilk', emoji: 'emoji_food_beverage', basePrice: 25, cat: 'Beverages', counter: 'Counter 3 (Cafe & Drinks)', diet: 'veg', spice: 'Mild', isExpress: true, image: 'https://images.unsplash.com/photo-1556881286-fc6915169721?w=800&auto=format&fit=crop&q=80' },
+  { name: 'Chilled Mango Lassi', emoji: 'local_cafe', basePrice: 50, cat: 'Beverages', counter: 'Counter 3 (Cafe & Drinks)', diet: 'veg', spice: null, isExpress: true, image: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=800&auto=format&fit=crop&q=80' },
+  { name: 'Warm Gulab Jamun (2 pcs)', emoji: 'icecream', basePrice: 30, cat: 'Desserts', counter: 'Counter 3 (Cafe & Drinks)', diet: 'veg', spice: null, isExpress: true, image: 'https://images.unsplash.com/photo-1601050690597-df0568f70950?w=800&auto=format&fit=crop&q=80' },
+  { name: 'Belgian Chocolate Brownie', emoji: 'cookie', basePrice: 65, cat: 'Desserts', counter: 'Counter 3 (Cafe & Drinks)', diet: 'veg', spice: null, isExpress: true, image: 'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=800&auto=format&fit=crop&q=80' },
+  { name: 'Paneer Tikka Roll', emoji: 'lunch_dining', basePrice: 95, cat: 'Quick Bites', counter: 'Counter 2 (Quick Bites)', diet: 'veg', spice: 'Medium', isExpress: false, image: 'https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?w=800&auto=format&fit=crop&q=80' },
+  { name: 'Chole Bhature Platter', emoji: 'dinner_dining', basePrice: 110, cat: 'Hot Meals', counter: 'Counter 1 (Hot Meals)', diet: 'veg', spice: 'Medium', isExpress: false, image: 'https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?w=800&auto=format&fit=crop&q=80' },
+  { name: 'Iced Lemon Mint Tea', emoji: 'emoji_food_beverage', basePrice: 35, cat: 'Beverages', counter: 'Counter 3 (Cafe & Drinks)', diet: 'veg', spice: null, isExpress: true, image: 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=800&auto=format&fit=crop&q=80' }
 ];
 
 /**
@@ -84,7 +84,8 @@ export function generateRandomExampleData() {
       spice: template.spice,
       isExpress: template.isExpress,
       stock,
-      status
+      status,
+      image: template.image
     };
   });
 
