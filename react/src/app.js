@@ -9,23 +9,7 @@ try {
 } catch(e) {}
 
 // storage_sanitizer_added
-/**
- * InvenTrack - Campus Food & Cafe Inventory Platform
- * Material Design 3 (Material You / M3) Architecture
- * 
- * Supports 4 Unified Roles:
- * 1. Student (Live ordering, token tracking, spending analytics, feedback)
- * 2. Shopper (Fast-track quick order, express token checkout, receipts)
- * 3. Kitchen Staff (Live Kanban queue, stock adjuster, counter POS, complaints)
- * 4. Admin Management (Revenue metrics, demand matrix, audit table, CSV export)
- */
 
-
-/**
- * CRITICAL DATA REQUIREMENT:
- * Zero pre-populated records by default. External datasets can be injected
- * directly into DATA_INJECTION_SLOT without breaking the UI.
- */
 const DATA_INJECTION_SLOT = {
   menuItems: [],
   orders: [],
@@ -33,24 +17,20 @@ const DATA_INJECTION_SLOT = {
   feedbacks: []
 };
 
-/**
- * Toggleable Demo Fixture for Campus Dining.
- * Material Symbols and food catalog.
- */
 const CAMPUS_DEMO_FIXTURE = {
-    menuItems: [
-    { id: 'item-1', name: 'Chicken Dum Biryani', emoji: 'restaurant', price: 185, cat: 'Hot Meals', counter: 'Counter 1 (Hot Meals)', stock: 25, lowThreshold: 8, restockTime: '15 min', diet: 'non-veg', spice: 'Medium', isExpress: false },
-    { id: 'item-2', name: 'Hyderabadi Veg Biryani', emoji: 'rice_bowl', price: 150, cat: 'Hot Meals', counter: 'Counter 1 (Hot Meals)', stock: 18, lowThreshold: 5, restockTime: '20 min', diet: 'veg', spice: 'Medium', isExpress: false },
-    { id: 'item-3', name: 'Ghee Podi Masala Dosa', emoji: 'breakfast_dining', price: 90, cat: 'Hot Meals', counter: 'Counter 1 (Hot Meals)', stock: 4, lowThreshold: 6, restockTime: '10 min', diet: 'veg', spice: 'Mild', isExpress: false },
-    { id: 'item-4', name: 'Crispy Veg Patty Burger', emoji: 'lunch_dining', price: 70, cat: 'Quick Bites', counter: 'Counter 2 (Quick Bites)', stock: 22, lowThreshold: 5, restockTime: '12 min', diet: 'veg', spice: 'Mild', isExpress: true },
-    { id: 'item-5', name: 'Grilled Cheese Sandwich', emoji: 'bakery_dining', price: 60, cat: 'Quick Bites', counter: 'Counter 2 (Quick Bites)', stock: 3, lowThreshold: 5, restockTime: '8 min', diet: 'veg', spice: 'Mild', isExpress: true },
-    { id: 'item-6', name: 'Wood-Fired Pizza Slice', emoji: 'local_pizza', price: 120, cat: 'Quick Bites', counter: 'Counter 2 (Quick Bites)', stock: 0, lowThreshold: 4, restockTime: '25 min', diet: 'veg', spice: 'Medium', isExpress: false },
-    { id: 'item-7', name: 'Peri-Peri Salted Fries', emoji: 'fastfood', price: 55, cat: 'Quick Bites', counter: 'Counter 2 (Quick Bites)', stock: 30, lowThreshold: 8, restockTime: '5 min', diet: 'veg', spice: 'Hot', isExpress: true },
-    { id: 'item-8', name: 'Artisan Cold Coffee', emoji: 'local_cafe', price: 45, cat: 'Beverages', counter: 'Counter 3 (Cafe & Drinks)', stock: 35, lowThreshold: 10, restockTime: '5 min', diet: 'veg', spice: null, isExpress: true },
-    { id: 'item-9', name: 'Spiced Masala Buttermilk', emoji: 'emoji_food_beverage', price: 25, cat: 'Beverages', counter: 'Counter 3 (Cafe & Drinks)', stock: 5, lowThreshold: 10, restockTime: '5 min', diet: 'veg', spice: 'Mild', isExpress: true },
-    { id: 'item-10', name: 'Warm Gulab Jamun (2 pcs)', emoji: 'icecream', price: 30, cat: 'Desserts', counter: 'Counter 3 (Cafe & Drinks)', stock: 14, lowThreshold: 5, restockTime: '15 min', diet: 'veg', spice: null, isExpress: true },
-    { id: 'item-11', name: 'Belgian Chocolate Brownie', emoji: 'cookie', price: 65, cat: 'Desserts', counter: 'Counter 3 (Cafe & Drinks)', stock: 2, lowThreshold: 5, restockTime: '15 min', diet: 'veg', spice: null, isExpress: true },
-    { id: 'item-12', name: 'Paneer Butter Masala Combo', emoji: 'dinner_dining', price: 160, cat: 'Hot Meals', counter: 'Counter 1 (Hot Meals)', stock: 12, lowThreshold: 5, restockTime: '15 min', diet: 'veg', spice: 'Medium', isExpress: false }
+      menuItems: [
+    { id: 'item-1', name: 'Chicken Dum Biryani', emoji: 'restaurant', price: 185, cat: 'Hot Meals', counter: 'Counter 1 (Hot Meals)', stock: 25, lowThreshold: 8, restockTime: '15 min', diet: 'non-veg', spice: 'Medium', isExpress: false, image: 'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=800&auto=format&fit=crop&q=80' },
+    { id: 'item-2', name: 'Hyderabadi Veg Biryani', emoji: 'rice_bowl', price: 150, cat: 'Hot Meals', counter: 'Counter 1 (Hot Meals)', stock: 18, lowThreshold: 5, restockTime: '20 min', diet: 'veg', spice: 'Medium', isExpress: false, image: 'https://images.unsplash.com/photo-1633945274405-b6c8069047b0?w=800&auto=format&fit=crop&q=80' },
+    { id: 'item-3', name: 'Ghee Podi Masala Dosa', emoji: 'breakfast_dining', price: 90, cat: 'Hot Meals', counter: 'Counter 1 (Hot Meals)', stock: 4, lowThreshold: 6, restockTime: '10 min', diet: 'veg', spice: 'Mild', isExpress: false, image: 'https://images.unsplash.com/photo-1668236543090-82eba5ee5976?w=800&auto=format&fit=crop&q=80' },
+    { id: 'item-4', name: 'Crispy Veg Patty Burger', emoji: 'lunch_dining', price: 70, cat: 'Quick Bites', counter: 'Counter 2 (Quick Bites)', stock: 22, lowThreshold: 5, restockTime: '12 min', diet: 'veg', spice: 'Mild', isExpress: true, image: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=800&auto=format&fit=crop&q=80' },
+    { id: 'item-5', name: 'Grilled Cheese Sandwich', emoji: 'bakery_dining', price: 60, cat: 'Quick Bites', counter: 'Counter 2 (Quick Bites)', stock: 3, lowThreshold: 5, restockTime: '8 min', diet: 'veg', spice: 'Mild', isExpress: true, image: 'https://images.unsplash.com/photo-1528735602780-2552fd46c7af?w=800&auto=format&fit=crop&q=80' },
+    { id: 'item-6', name: 'Wood-Fired Pizza Slice', emoji: 'local_pizza', price: 120, cat: 'Quick Bites', counter: 'Counter 2 (Quick Bites)', stock: 0, lowThreshold: 4, restockTime: '25 min', diet: 'veg', spice: 'Medium', isExpress: false, image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=800&auto=format&fit=crop&q=80' },
+    { id: 'item-7', name: 'Peri-Peri Salted Fries', emoji: 'fastfood', price: 55, cat: 'Quick Bites', counter: 'Counter 2 (Quick Bites)', stock: 30, lowThreshold: 8, restockTime: '5 min', diet: 'veg', spice: 'Hot', isExpress: true, image: 'https://images.unsplash.com/photo-1576107232684-1279f3908594?w=800&auto=format&fit=crop&q=80' },
+    { id: 'item-8', name: 'Artisan Cold Coffee', emoji: 'local_cafe', price: 45, cat: 'Beverages', counter: 'Counter 3 (Cafe & Drinks)', stock: 35, lowThreshold: 10, restockTime: '5 min', diet: 'veg', spice: null, isExpress: true, image: 'https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?w=800&auto=format&fit=crop&q=80' },
+    { id: 'item-9', name: 'Spiced Masala Buttermilk', emoji: 'emoji_food_beverage', price: 25, cat: 'Beverages', counter: 'Counter 3 (Cafe & Drinks)', stock: 5, lowThreshold: 10, restockTime: '5 min', diet: 'veg', spice: 'Mild', isExpress: true, image: 'https://images.unsplash.com/photo-1556881286-fc6915169721?w=800&auto=format&fit=crop&q=80' },
+    { id: 'item-10', name: 'Warm Gulab Jamun (2 pcs)', emoji: 'icecream', price: 30, cat: 'Desserts', counter: 'Counter 3 (Cafe & Drinks)', stock: 14, lowThreshold: 5, restockTime: '15 min', diet: 'veg', spice: null, isExpress: true, image: 'https://images.unsplash.com/photo-1601050690597-df0568f70950?w=800&auto=format&fit=crop&q=80' },
+    { id: 'item-11', name: 'Belgian Chocolate Brownie', emoji: 'cookie', price: 65, cat: 'Desserts', counter: 'Counter 3 (Cafe & Drinks)', stock: 2, lowThreshold: 5, restockTime: '15 min', diet: 'veg', spice: null, isExpress: true, image: 'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=800&auto=format&fit=crop&q=80' },
+    { id: 'item-12', name: 'Paneer Butter Masala Combo', emoji: 'dinner_dining', price: 160, cat: 'Hot Meals', counter: 'Counter 1 (Hot Meals)', stock: 12, lowThreshold: 5, restockTime: '15 min', diet: 'veg', spice: 'Medium', isExpress: false, image: 'https://images.unsplash.com/photo-1631452180519-c014fe946bc7?w=800&auto=format&fit=crop&q=80' }
   ],
   orders: [
     {
@@ -59,8 +39,8 @@ const CAMPUS_DEMO_FIXTURE = {
       customerName: 'Rohan Sharma',
       role: 'Student',
       items: [
-        { id: 'item-1', name: 'Chicken Dum Biryani', qty: 1, price: 185 },
-        { id: 'item-8', name: 'Artisan Cold Coffee', qty: 1, price: 45 }
+        { id: 'item-1', name: 'Chicken Dum Biryani', qty: 1, price: 185, note: 'Extra spicy, less oil' },
+        { id: 'item-8', name: 'Artisan Cold Coffee', qty: 1, price: 45, note: 'Less ice' }
       ],
       subtotal: 230,
       packing: 10,
@@ -94,7 +74,7 @@ const CAMPUS_DEMO_FIXTURE = {
       customerName: 'Walk-in Faculty',
       role: 'Shopper',
       items: [
-        { id: 'item-4', name: 'Crispy Veg Patty Burger', qty: 1, price: 70 },
+        { id: 'item-4', name: 'Crispy Veg Patty Burger', qty: 1, price: 70, note: 'No onion' },
         { id: 'item-7', name: 'Peri-Peri Salted Fries', qty: 1, price: 55 }
       ],
       subtotal: 125,
@@ -138,13 +118,9 @@ const CAMPUS_DEMO_FIXTURE = {
   ]
 };
 
-
 const STORAGE_KEY = 'inventrack_m3_state';
 const stages = ['Placed', 'Preparing', 'Ready', 'Picked up'];
-
-// Comprehensive Role-Based Access Control (RBAC) & Permissions Matrix
 const ROLE_PERMISSIONS = {
-  // Combined student + shopper customer role
   user: {
     label: 'User Portal',
     badgeText: 'Campus User (Dining & Store Access)',
@@ -272,7 +248,26 @@ class InvenTrackStore {
   }
 
   loadInitialState() {
-        let authUser = null;
+    // Hydrate dedicated cart and active token from localStorage
+    let cachedCart = {};
+    try {
+      const rawCart = localStorage.getItem('invenTrack_cart');
+      if (rawCart) cachedCart = JSON.parse(rawCart);
+    } catch (e) {}
+
+    let cachedCartNotes = {};
+    try {
+      const rawNotes = localStorage.getItem('invenTrack_cart_notes');
+      if (rawNotes) cachedCartNotes = JSON.parse(rawNotes);
+    } catch (e) {}
+
+    let cachedActiveOrder = null;
+    try {
+      const rawOrder = localStorage.getItem('invenTrack_active_order');
+      if (rawOrder) cachedActiveOrder = JSON.parse(rawOrder);
+    } catch (e) {}
+
+    let authUser = null;
     try {
       const stored = localStorage.getItem('invenTrack_user');
       if (stored) authUser = JSON.parse(stored);
@@ -289,19 +284,16 @@ class InvenTrackStore {
         console.warn('Failed to parse localStorage', e);
       }
     }
-
-    // Determine current user and authentication status
     const currentUser = authUser || (parsed && parsed.loggedIn && parsed.currentUser ? parsed.currentUser : null);
     const isLoggedIn = !!currentUser;
 
     if (!isLoggedIn) {
-      // Unauthenticated: Redirect directly to Landing Page
       try {
         window.location.replace(window.location.protocol === 'file:' ? 'landing.html' : '/landing');
       } catch (e) {}
 
       return {
-        menuItems: [...DATA_INJECTION_SLOT.menuItems],
+        menuItems: (DATA_INJECTION_SLOT.menuItems && DATA_INJECTION_SLOT.menuItems.length > 0) ? [...DATA_INJECTION_SLOT.menuItems] : [...CAMPUS_DEMO_FIXTURE.menuItems],
         orders: [...DATA_INJECTION_SLOT.orders],
         users: [...DATA_INJECTION_SLOT.users],
         feedbacks: [...DATA_INJECTION_SLOT.feedbacks],
@@ -317,16 +309,12 @@ class InvenTrackStore {
         counterFilter: 'All'
       };
     }
-
-    // User is authenticated: Setup role & dashboard view
     const role = (currentUser && currentUser.role) || 'user';
     const activeRole = role === 'admin' ? (parsed && parsed.activeRole ? parsed.activeRole : 'admin') : role;
     const defaultPage = role === 'admin' ? 'admin-overview' : (role === 'kitchen' ? 'kitchen-kanban' : 'home');
     const activePage = (parsed && parsed.activePage && ROLE_PERMISSIONS[role] && ROLE_PERMISSIONS[role].allowedPages && ROLE_PERMISSIONS[role].allowedPages.includes(parsed.activePage))
       ? parsed.activePage
       : defaultPage;
-
-    // Apply Back-of-House theme automatically for Kitchen role
     if (role === 'kitchen') {
       try {
         document.documentElement.setAttribute('data-theme', 'kitchen');
@@ -350,6 +338,7 @@ class InvenTrackStore {
         users: parsed.users || [...DATA_INJECTION_SLOT.users],
         feedbacks: parsed.feedbacks || [...DATA_INJECTION_SLOT.feedbacks],
         cart: (parsed.cart && Object.keys(parsed.cart).length > 0) ? parsed.cart : cachedCart,
+        cartNotes: (parsed.cartNotes && typeof parsed.cartNotes === 'object') ? parsed.cartNotes : (cachedCartNotes || {}),
         shopperCart: parsed.shopperCart || {},
         posCart: parsed.posCart || {},
         currentUser,
@@ -363,11 +352,12 @@ class InvenTrackStore {
     }
 
     return {
-      menuItems: [...DATA_INJECTION_SLOT.menuItems],
+      menuItems: (DATA_INJECTION_SLOT.menuItems && DATA_INJECTION_SLOT.menuItems.length > 0) ? [...DATA_INJECTION_SLOT.menuItems] : [...CAMPUS_DEMO_FIXTURE.menuItems],
       orders: [...DATA_INJECTION_SLOT.orders],
       users: [...DATA_INJECTION_SLOT.users],
       feedbacks: [...DATA_INJECTION_SLOT.feedbacks],
-      cart: {},
+      cart: cachedCart || {},
+      cartNotes: cachedCartNotes || {},
       shopperCart: {},
       posCart: {},
       currentUser,
@@ -382,6 +372,8 @@ class InvenTrackStore {
 
   save() {
     try {
+      localStorage.setItem('invenTrack_cart', JSON.stringify(this.state.cart || {}));
+      localStorage.setItem('invenTrack_cart_notes', JSON.stringify(this.state.cartNotes || {}));
       localStorage.setItem(
         STORAGE_KEY,
         JSON.stringify({
@@ -390,6 +382,7 @@ class InvenTrackStore {
           users: this.state.users,
           feedbacks: this.state.feedbacks,
           cart: this.state.cart,
+          cartNotes: this.state.cartNotes || {},
           shopperCart: this.state.shopperCart,
           currentUser: this.state.currentUser,
           loggedIn: this.state.loggedIn,
@@ -400,19 +393,7 @@ class InvenTrackStore {
     } catch (e) {
       console.warn('Failed to persist state', e);
     }
-          // Dedicated Cart & Active Token Sync Cache
-      try {
-        localStorage.setItem('invenTrack_cart', JSON.stringify(this.state.cart || {}));
-        const activeOrder = (this.state.orders || []).find((o) => o.status !== 'Picked up' && (o.role === 'Student' || !o.role || this.state.activeRole === 'user'));
-        if (activeOrder) {
-          localStorage.setItem('invenTrack_active_token', activeOrder.token);
-          localStorage.setItem('invenTrack_active_order', JSON.stringify(activeOrder));
-        } else {
-          localStorage.removeItem('invenTrack_active_token');
-          localStorage.removeItem('invenTrack_active_order');
-        }
-      } catch (e) {}
-      this.notify();
+    this.notify();
   }
 
   subscribe(listener) {
@@ -431,8 +412,6 @@ class InvenTrackStore {
       }
     });
   }
-
-  // --- ACTIONS ---
 
   generateRandomExampleData() {
     const shuffled = [...CAMPUS_DEMO_FIXTURE.menuItems].sort(() => 0.5 - Math.random());
@@ -502,9 +481,23 @@ class InvenTrackStore {
   }
 
   setRole(role) {
-    const userRole = (this.state.currentUser && this.state.currentUser.role) || 'user';
-    
-    // Top bar switcher is for Admin only
+    const rawRole = (this.state.currentUser && (this.state.currentUser.role || (window.getUserRole ? window.getUserRole(this.state.currentUser.email) : 'student'))) || 'student';
+    const userRole = (rawRole === 'student' || rawRole === 'user') ? 'student' : rawRole;
+
+    if (userRole === 'student') {
+      if (role === 'admin' || role === 'kitchen') {
+        alert("Access denied: Students cannot access this section");
+        const isLocal = window.location.protocol === 'file:';
+        window.location.replace(isLocal ? 'student-dashboard.html' : '/student-dashboard.html');
+        return;
+      }
+    } else if (userRole === 'kitchen') {
+      if (role === 'admin') {
+        alert("Access denied: Kitchen staff cannot access Admin Dashboard");
+        return;
+      }
+    }
+
     if (userRole !== 'admin') {
       toast(' Role switching is only permitted for Administrators.', 'error');
       return;
@@ -519,20 +512,23 @@ class InvenTrackStore {
   }
 
   setPage(page) {
-    const userRole = (this.state.currentUser && this.state.currentUser.role) || 'user';
-    const config = ROLE_PERMISSIONS[userRole] || ROLE_PERMISSIONS.user;
+    const rawRole = (this.state.currentUser && (this.state.currentUser.role || (window.getUserRole ? window.getUserRole(this.state.currentUser.email) : 'student'))) || 'student';
+    const userRole = (rawRole === 'student' || rawRole === 'user') ? 'student' : rawRole;
 
-    // Admin can navigate to any permitted page; Kitchen and User are strictly bounded
-    if (userRole !== 'admin' && config.allowedPages && !config.allowedPages.includes(page)) {
-      if (userRole === 'kitchen') {
-        toast(' Access Restricted: Kitchen accounts can only access kitchen features.', 'error');
-        this.state.activePage = 'kitchen-kanban';
-      } else {
-        toast(' Access Restricted: Users can only access dining & store features.', 'error');
-        this.state.activePage = 'home';
+    if (userRole === 'student') {
+      if (page.startsWith('admin-') || page.startsWith('kitchen-')) {
+        alert("Access denied: Students cannot access this section");
+        const isLocal = window.location.protocol === 'file:';
+        window.location.replace(isLocal ? 'student-dashboard.html' : '/student-dashboard.html');
+        return;
       }
-      this.save();
-      return;
+    } else if (userRole === 'kitchen') {
+      if (page.startsWith('admin-')) {
+        alert("Access denied: Kitchen staff cannot access Admin Dashboard");
+        this.state.activePage = 'kitchen-kanban';
+        this.save();
+        return;
+      }
     }
 
     this.state.activePage = page;
@@ -563,7 +559,7 @@ class InvenTrackStore {
     toast(`Signed in as ${userObj.name} (${role.toUpperCase()})`, 'verified_user');
   }
 
-  logout() {
+  async logout() {
     this.state.loggedIn = false;
     this.state.currentUser = null;
     this.state.activeRole = 'user';
@@ -571,28 +567,34 @@ class InvenTrackStore {
     try {
       localStorage.removeItem('invenTrack_user');
     } catch (e) {}
+    try {
+      if (window.__FIREBASE_CONFIG__) {
+        const { initializeApp } = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js");
+        const { getAuth, signOut } = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js");
+        const auth = getAuth(initializeApp(window.__FIREBASE_CONFIG__));
+        await signOut(auth);
+      }
+    } catch (e) {}
     this.save();
     toast('Logged out successfully. Redirecting to landing page...', 'logout');
     setTimeout(() => {
       window.location.replace(window.location.protocol === 'file:' ? 'landing.html' : '/landing');
     }, 600);
   }
-
-  // Stock Adjustment - Protected by canAdjustStock permission
   adjustStock(itemId, delta) {
     if (!this.hasPermission('canAdjustStock')) {
-      toast(' Permission Denied: Users cannot alter item stock levels or remaining quantities.', 'error');
+      toast('Permission Denied: Users cannot alter item stock levels or remaining quantities.', 'error');
       return;
     }
 
-    const item = this.state.menuItems.find((m) => m.id === itemId);
+    const item = findCatalogItem(this.state, itemId);
     if (!item) return;
     const oldStock = item.stock;
     item.stock = Math.max(0, item.stock + delta);
     if (item.stock === 0 && oldStock > 0) {
-      toast(` "${item.name}" is now OUT OF STOCK`, 'warning');
+      toast(`"${item.name}" is now OUT OF STOCK`, 'warning');
     } else if (item.stock > 0 && oldStock === 0) {
-      toast(` "${item.name}" is RESTOCKED (${item.stock} available)`, 'check_circle');
+      toast(`"${item.name}" is RESTOCKED (${item.stock} available)`, 'check_circle');
     } else {
       toast(`Stock updated: ${item.name} (${item.stock})`, 'inventory');
     }
@@ -601,21 +603,19 @@ class InvenTrackStore {
 
   setStockZero(itemId) {
     if (!this.hasPermission('canAdjustStock')) {
-      toast(' Permission Denied: Only kitchen staff and admin can alter item availability.', 'error');
+      toast('Permission Denied: Only kitchen staff and admin can alter item availability.', 'error');
       return;
     }
 
-    const item = this.state.menuItems.find((m) => m.id === itemId);
+    const item = findCatalogItem(this.state, itemId);
     if (!item) return;
     item.stock = 0;
-    toast(` Marked "${item.name}" as Out of Stock`, 'cancel');
+    toast(`Marked "${item.name}" as Out of Stock`, 'cancel');
     this.save();
   }
-
-  // Menu Catalog Modification - Protected by canEditMenu permission
   addMenuItem(itemData) {
     if (!this.hasPermission('canEditMenu')) {
-      toast(' Permission Denied: Users cannot add or modify menu catalog items.', 'error');
+      toast('Permission Denied: Users cannot add or modify menu catalog items.', 'error');
       return false;
     }
 
@@ -636,8 +636,6 @@ class InvenTrackStore {
     toast(`Added "${newItem.name}" to menu catalog`, 'check_circle');
     return true;
   }
-
-  // Cart operations (Student)
   async addToCart(itemId) {
     const prevCart = { ...(this.state.cart || {}) };
     const currentQty = this.state.cart[itemId] || 0;
@@ -650,7 +648,7 @@ class InvenTrackStore {
 
     // 2. Inventory & Network Verification
     try {
-      const item = this.state.menuItems.find((m) => m.id === itemId);
+      const item = findCatalogItem(this.state, itemId);
       if (!item || item.stock <= 0 || (currentQty + 1) > item.stock) {
         throw new Error('OUT_OF_STOCK');
       }
@@ -682,6 +680,7 @@ class InvenTrackStore {
     // 1. Optimistic Update: Immediately apply next quantity and re-render
     if (next <= 0) {
       delete this.state.cart[itemId];
+      if (this.state.cartNotes) delete this.state.cartNotes[itemId];
     } else {
       this.state.cart[itemId] = next;
     }
@@ -691,7 +690,7 @@ class InvenTrackStore {
     // 2. Inventory verification if increasing quantity
     if (delta > 0) {
       try {
-        const item = this.state.menuItems.find((m) => m.id === itemId);
+        const item = findCatalogItem(this.state, itemId);
         if (!item || item.stock <= 0 || next > item.stock) {
           throw new Error('OUT_OF_STOCK');
         }
@@ -716,8 +715,20 @@ class InvenTrackStore {
     }
   }
 
+  setCartItemNote(itemId, noteText) {
+    if (!this.state.cartNotes) this.state.cartNotes = {};
+    const trimmed = (noteText || '').trim().slice(0, 60);
+    if (!trimmed) {
+      delete this.state.cartNotes[itemId];
+    } else {
+      this.state.cartNotes[itemId] = trimmed;
+    }
+    this.save();
+  }
+
   removeCartItem(itemId) {
     delete this.state.cart[itemId];
+    if (this.state.cartNotes) delete this.state.cartNotes[itemId];
     this.state.shopperCart = this.state.cart;
     this.save();
     toast('Item removed from cart', 'delete');
@@ -743,7 +754,7 @@ class InvenTrackStore {
     this.save();
   }
 
-  createOrder({ itemsMap, customerName, role, counter, paymentMethod, pickupTime = 'Instant', packagingFee = 10 }) {
+  createOrder({ itemsMap, customerName, role, counter, paymentMethod, pickupTime = 'Instant', packagingFee = 10, cartNotes }) {
     const itemEntries = Object.entries(itemsMap);
     if (!itemEntries.length) return null;
 
@@ -762,12 +773,17 @@ class InvenTrackStore {
 
     const orderItems = itemEntries.map(([id, qty]) => {
       const it = this.state.menuItems.find((m) => m.id === id);
-      return {
+      const note = (cartNotes && cartNotes[id]) || (this.state.cartNotes && this.state.cartNotes[id]) || '';
+      const itemObj = {
         id,
         name: it.name,
         qty,
         price: it.price
       };
+      if (note && note.trim()) {
+        itemObj.note = note.trim().slice(0, 60);
+      }
+      return itemObj;
     });
 
     const subtotal = orderItems.reduce((acc, curr) => acc + curr.price * curr.qty, 0);
@@ -816,14 +832,22 @@ class InvenTrackStore {
     this.save();
     return newOrder;
   }
-
-  // Advance Kitchen Order Status
   advanceOrderStatus(orderId) {
     const order = this.state.orders.find((o) => o.id === orderId);
     if (!order) return;
     if (order.stageIndex < stages.length - 1) {
       order.stageIndex++;
       order.status = stages[order.stageIndex];
+      if (order.status === 'Picked up') {
+        try {
+          localStorage.removeItem('invenTrack_active_token');
+          localStorage.removeItem('invenTrack_active_order');
+        } catch (e) {}
+      } else {
+        try {
+          localStorage.setItem('invenTrack_active_order', JSON.stringify(order));
+        } catch (e) {}
+      }
       if (order.status === 'Ready' || order.status === 'Ready for Pickup') {
         playPickupChime();
         triggerHaptic(80);
@@ -832,8 +856,6 @@ class InvenTrackStore {
       this.save();
     }
   }
-
-  // Feedback Submission
   addFeedback({ rating, category, comment }) {
     const studentName = this.state.currentUser ? this.state.currentUser.name : 'Student Diner';
     const newFb = {
@@ -849,10 +871,7 @@ class InvenTrackStore {
     this.save();
   }
 }
-
-// Global Store Instance
 const store = new InvenTrackStore();
-
 
 const $ = (sel, el = document) => el.querySelector(sel);
 const $$ = (sel, el = document) => Array.from(el.querySelectorAll(sel));
@@ -873,9 +892,6 @@ function getItemStatus(item) {
   return 'available';
 }
 
-/**
- * M3 Assist Chip with Material Symbol
- */
 function sbHTML(status) {
   const meta = {
     available: { label: 'AVAIL', icon: 'check_circle' },
@@ -893,6 +909,16 @@ function getGaugeColor(status) {
 function getGaugeWidth(item) {
   const maxRef = Math.max(40, (item.lowThreshold || 5) * 4);
   return Math.max(4, Math.min(100, Math.round((item.stock / maxRef) * 100)));
+}
+
+function escapeHtml(str) {
+  if (!str) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
 }
 
 function renderItemIcon(emoji) {
@@ -916,6 +942,23 @@ function initials(name) {
   );
 }
 
+
+function isDevModeEnabled() {
+  try {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('debug') === 'true' || params.get('dev') === 'true') {
+      localStorage.setItem('invenTrack_debug', 'true');
+      return true;
+    }
+    if (params.get('debug') === 'false' || params.get('dev') === 'false') {
+      localStorage.removeItem('invenTrack_debug');
+      return false;
+    }
+    return localStorage.getItem('invenTrack_debug') === 'true';
+  } catch(e) {
+    return false;
+  }
+}
 
 const roleLabels = {
   user: 'User Portal',
@@ -1036,10 +1079,17 @@ function openTokenSheet(state) {
 
 function renderShell(state) {
   const { activeRole, activePage, currentUser } = state;
-  const userRole = (currentUser && currentUser.role) || 'user';
+  const userRole = (currentUser && currentUser.role) || 'student';
   const isAdmin = userRole === 'admin';
+  const isKitchen = userRole === 'kitchen';
+  const isStudent = !isAdmin && !isKitchen;
+  const isDev = isDevModeEnabled();
 
-  // 1. Role Switcher in Top Bar: Kept ONLY for Admin logins!
+  const devPill = $('#devPersonaPill');
+  if (devPill) {
+    devPill.style.display = (isDev || isAdmin) ? 'block' : 'none';
+  }
+
   const roleSwitcher = $('#roleSwitcher');
   if (roleSwitcher) {
     if (isAdmin) {
@@ -1056,8 +1106,7 @@ function renderShell(state) {
       roleSwitcher.style.display = 'none';
     }
   }
-
-    const brandSub = $('#brandSubRole');
+  const brandSub = $('#brandSubRole');
   if (brandSub) {
     if (isAdmin) {
       const viewName = activeRole === 'user' ? 'User Store View' : activeRole === 'kitchen' ? 'Kitchen Staff View' : 'Executive Overview';
@@ -1068,59 +1117,92 @@ function renderShell(state) {
       brandSub.textContent = 'User Portal';
     }
   }
-
-    const navUser = $('#navGroupUser');
+  const navUser = $('#navGroupUser');
   const navKitchen = $('#navGroupKitchen');
   const navAdmin = $('#navGroupAdmin');
 
   if (isAdmin) {
-    // Admin can access all features; navigation reflects their active view
     if (navUser) navUser.style.display = activeRole === 'user' ? 'flex' : 'none';
     if (navKitchen) navKitchen.style.display = activeRole === 'kitchen' ? 'flex' : 'none';
     if (navAdmin) navAdmin.style.display = activeRole === 'admin' ? 'flex' : 'none';
   } else if (userRole === 'kitchen') {
-    // Kitchen accounts ONLY see kitchen features
     if (navUser) navUser.style.display = 'none';
     if (navKitchen) navKitchen.style.display = 'flex';
     if (navAdmin) navAdmin.style.display = 'none';
   } else {
-    // User accounts ONLY see user features
     if (navUser) navUser.style.display = 'flex';
     if (navKitchen) navKitchen.style.display = 'none';
     if (navAdmin) navAdmin.style.display = 'none';
   }
+  const mobileRoleBadge = $('#mobileRoleBadge');
+  if (mobileRoleBadge) {
+    mobileRoleBadge.textContent = activeRole.toUpperCase();
+  }
+  const bottomUser = $('#bottomNavUser');
+  const bottomKitchen = $('#bottomNavKitchen');
+  const bottomAdmin = $('#bottomNavAdmin');
 
-    $$('.nav-item[data-page]').forEach((item) => {
+  if (userRole === 'student' || userRole === 'user') {
+    if (bottomUser) bottomUser.style.display = 'flex';
+    if (bottomKitchen) bottomKitchen.style.display = 'none';
+    if (bottomAdmin) bottomAdmin.style.display = 'none';
+    const kBtn = document.querySelector('#roleSwitcher [data-role="kitchen"]');
+    const aBtn = document.querySelector('#roleSwitcher [data-role="admin"]');
+    if (kBtn) kBtn.style.display = 'none';
+    if (aBtn) aBtn.style.display = 'none';
+    if (roleSwitcher) roleSwitcher.style.display = 'none';
+    if (navKitchen) navKitchen.style.display = 'none';
+    if (navAdmin) navAdmin.style.display = 'none';
+  } else if (userRole === 'kitchen') {
+    if (bottomUser) bottomUser.style.display = 'none';
+    if (bottomKitchen) bottomKitchen.style.display = 'flex';
+    if (bottomAdmin) bottomAdmin.style.display = 'none';
+    const aBtn = document.querySelector('#roleSwitcher [data-role="admin"]');
+    if (aBtn) aBtn.style.display = 'none';
+    if (navAdmin) navAdmin.style.display = 'none';
+  } else {
+    if (bottomUser) bottomUser.style.display = activeRole === 'user' ? 'flex' : 'none';
+    if (bottomKitchen) bottomKitchen.style.display = activeRole === 'kitchen' ? 'flex' : 'none';
+    if (bottomAdmin) bottomAdmin.style.display = activeRole === 'admin' ? 'flex' : 'none';
+  }
+  $$('.nav-item[data-page], .m3-bottom-nav-item[data-page]').forEach((item) => {
     item.classList.toggle('active', item.dataset.page === activePage);
   });
-
-    $$('.page').forEach((pg) => pg.classList.remove('active'));
+  $$('.page').forEach((pg) => pg.classList.remove('active'));
   const targetPage = $(`#page-${activePage}`);
   if (targetPage) targetPage.classList.add('active');
+  const devBar = $('#devFixtureBar');
+  if (devBar) {
+    devBar.style.display = isDev ? 'flex' : 'none';
+  }
 
-    const badge = $('#dataModeBadge');
+  const badge = $('#dataModeBadge');
   const stats = $('#dataStatsText');
-  if (badge && stats) {
-    const isDemoLoaded = state.menuItems.length > 0;
+  const isDemoLoaded = state.menuItems.length > 0;
+  const activeCount = state.orders.filter((o) => o.status !== 'Picked up').length;
+
+  if (badge) {
     badge.textContent = isDemoLoaded ? 'Active Live State' : 'Empty Schema []';
     badge.style.backgroundColor = isDemoLoaded ? 'var(--md-sys-color-primary-container)' : 'var(--md-sys-color-surface-container-highest)';
     badge.style.color = isDemoLoaded ? 'var(--md-sys-color-on-primary-container)' : 'var(--md-sys-color-on-surface)';
-    const activeCount = state.orders.filter((o) => o.status !== 'Picked up').length;
+  }
+  if (stats) {
     stats.textContent = `(${state.menuItems.length} items, ${activeCount} active orders)`;
+  }
+
+  if (isDev) {
+    console.debug('[InvenTrack State Engine]', isDemoLoaded ? 'Active Live State' : 'Empty Schema []', `(${state.menuItems.length} items, ${activeCount} active orders)`);
   }
 
   const clearTopBtn = $('#clearDataBtnTop');
   if (clearTopBtn) {
     clearTopBtn.style.display = state.menuItems.length > 0 ? 'inline-flex' : 'none';
   }
-
-  // Gated Add Item Button - Only visible if user has permission to edit menu details
   const openItemBtn = $('#openAddItemModalBtn');
   if (openItemBtn) {
     openItemBtn.style.display = store.hasPermission('canEditMenu') ? 'inline-flex' : 'none';
   }
-
-    const unifiedCartCount = Object.values(state.cart).reduce((a, b) => a + b, 0);
+  const unifiedCartCount = Object.values(state.cart).reduce((a, b) => a + b, 0);
   const cartBadge = $('#cartBadge');
   if (cartBadge) {
     cartBadge.textContent = unifiedCartCount;
@@ -1148,8 +1230,7 @@ function renderShell(state) {
     kitchenBadge.textContent = inPrepCount;
     kitchenBadge.classList.toggle('hide', inPrepCount === 0);
   }
-
-    const sideAvatar = $('#sideAvatar');
+  const sideAvatar = $('#sideAvatar');
   const sideName = $('#sideName');
   const sideRole = $('#sideRole');
   if (state.currentUser) {
@@ -1160,8 +1241,6 @@ function renderShell(state) {
       else if (userRole === 'kitchen') sideRole.textContent = 'Kitchen Staff';
       else sideRole.textContent = 'Student';
     }
-
-    // Populate Settings Account Panel
     if ($('#accName')) $('#accName').textContent = state.currentUser.name;
     if ($('#accEmail')) $('#accEmail').textContent = state.currentUser.email || 'rohan@student.campus.edu';
     if ($('#accRoleType')) {
@@ -1178,8 +1257,6 @@ function renderShell(state) {
       roleBadge.textContent = userRole.toUpperCase();
       roleBadge.className = `status-badge ${isAdmin ? 'available' : userRole === 'kitchen' ? 'low' : 'available'}`;
     }
-
-    // Update permission indicator badges in settings
     const permStoreEl = $('#permStoreView');
     if (permStoreEl) {
       const canStore = store.hasPermission('canViewStore');
@@ -1263,9 +1340,6 @@ function renderShell(state) {
   }
 
 }
-
-
-// Live Order Ticket (Home)
 
 function renderCanteenRushMeter(state) {
   const inPrepCount = (state.orders || []).filter((o) => o.status === 'Placed' || o.status === 'Preparing').length;
@@ -1441,8 +1515,9 @@ function renderQuickReorder(state) {
     return `
       <div class="reorder-card">
         <div class="reorder-card-top">
-          <div class="reorder-card-icon">
-            ${renderItemIcon(it.emoji)}
+          <div class="reorder-card-thumb">
+            <img src="${getItemImage(it)}" alt="${safeName}" class="reorder-card-img" onerror="this.src='https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&auto=format&fit=crop&q=80'">
+            <span class="food-type-icon ${isVegItem(it) ? 'veg' : 'non-veg'} reorder-veg-badge"></span>
           </div>
           <div class="reorder-card-info">
             <div class="reorder-card-title" title="${safeName}">${it.name}</div>
@@ -1480,7 +1555,7 @@ function renderStudentTicket(state) {
     if (ticketDesc) ticketDesc.textContent = 'Browse the menu to place an order and track your live token.';
     if (queueNo) queueNo.textContent = '#---';
     if (etaPill) etaPill.textContent = 'No active order';
-    if (ticketPaid) ticketPaid.textContent = 'Rs. 0';
+    if (ticketPaid) ticketPaid.textContent = '0';
     if (advanceBtn) {
       advanceBtn.disabled = true;
       advanceBtn.innerHTML = '<span>No active order</span>';
@@ -1489,20 +1564,20 @@ function renderStudentTicket(state) {
     return;
   }
 
-  const itemsSummary = activeOrder.items.map((i) => `${i.qty} ${i.name}`).join(' + ');
+  const itemsSummary = activeOrder.items.map((i) => `${i.qty} - ${i.name}`).join(' + ');
   if (ticketTitle) ticketTitle.textContent = itemsSummary;
   if (ticketDesc) {
     const sched = (activeOrder.pickupTime && activeOrder.pickupTime !== 'Instant') ? ` - Scheduled: ${activeOrder.pickupTime}` : '';
     ticketDesc.textContent = `Order placed - ${activeOrder.counter} - ${activeOrder.paymentMethod}${sched}`;
   }
   if (queueNo) queueNo.textContent = activeOrder.token;
-  if (ticketPaid) ticketPaid.textContent = `Rs. ${activeOrder.total}`;
+  if (ticketPaid) ticketPaid.textContent = `${activeOrder.total}`;
 
   const etaMap = [
     '~12 min to ready',
     '~7 min to ready',
-    'Ready - collect at counter!',
-    'Order complete '
+    'Ready " collect at counter!',
+    'Order complete "'
   ];
   if (etaPill) etaPill.textContent = etaMap[activeOrder.stageIndex] || 'In progress';
 
@@ -1516,26 +1591,23 @@ function renderStudentTicket(state) {
     const isDone = activeOrder.stageIndex >= stages.length - 1;
     advanceBtn.disabled = isDone;
     advanceBtn.innerHTML = isDone 
-      ? '<span class="material-symbols-outlined">check_circle</span><span>Picked up </span>' 
+      ? '<span class="material-symbols-outlined">check_circle</span><span>Picked up "</span>' 
       : `<span class="material-symbols-outlined">arrow_forward</span><span>Advance "${stages[activeOrder.stageIndex + 1]}"</span>`;
     advanceBtn.dataset.orderId = activeOrder.id;
   }
 }
-
-// Live Counter Strip
 function renderCounterStrip(state) {
   const container = $('#counterStrip');
   if (!container) return;
 
   if (!state.menuItems.length) {
     container.innerHTML = `
-      <div class="empty-state" style="padding:24px; width:100%; grid-column:1 / -1;">
-        <div class="em"><span class="material-symbols-outlined" style="font-size:36px;">inventory_2</span></div>
-        <strong>No counter items available</strong>
-        <div style="font-size:12px; color:var(--md-sys-color-on-surface-variant); margin-top:4px;">
-          Inject records into <code>DATA_INJECTION_SLOT</code> or click 
-          <button class="dev-btn primary" style="margin-left:6px;" onclick="store.loadDemoFixture()">Load Sample Data</button>
+      <div class="empty-state-card" style="grid-column: 1 / -1; width: 100%; padding: 24px 16px;">
+        <div class="icon-bubble" style="width: 48px; height: 48px;">
+          <span class="material-symbols-outlined" style="font-size:24px;">soup_kitchen</span>
         </div>
+        <div class="empty-title" style="font-size:15px;">Live Stations Updating</div>
+        <div class="empty-subtitle" style="font-size:12.5px;">Live counter meal lines and hot stations will display availability here as service opens.</div>
       </div>
     `;
     return;
@@ -1546,22 +1618,26 @@ function renderCounterStrip(state) {
     .map((it) => {
       const status = getItemStatus(it);
       return `
-        <div class="counter-item">
-          <div class="counter-meta">
-            <span class="counter-name">${it.name}</span>
-            ${sbHTML(status)}
+        <div class="counter-item counter-item--with-img">
+          <div class="counter-thumb-wrap">
+            <img class="counter-item-img" src="${getItemImage(it)}" alt="${escapeHtml(it.name)}" onerror="this.src='https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&auto=format&fit=crop&q=80'">
+            <span class="food-type-icon ${isVegItem(it) ? 'veg' : 'non-veg'} counter-veg-dot"></span>
           </div>
-          <div class="stock-count">${it.stock} servings left - <span style="color:var(--md-sys-color-on-surface-variant); font-size:11px;">${it.restockTime || '15 min'}</span></div>
-          <div class="gauge">
-            <span style="width:${getGaugeWidth(it)}%; background:${getGaugeColor(status)}"></span>
+          <div class="counter-content">
+            <div class="counter-meta">
+              <span class="counter-name">${it.name}</span>
+              ${sbHTML(status)}
+            </div>
+            <div class="stock-count">${it.stock} servings left &bull; <span style="color:var(--md-sys-color-on-surface-variant); font-size:11px;">${it.restockTime || '15 min'}</span></div>
+            <div class="gauge">
+              <span style="width:${getGaugeWidth(it)}%; background:${getGaugeColor(status)}"></span>
+            </div>
           </div>
         </div>
       `;
     })
     .join('');
 }
-
-// M3 Student Menu Grid with M3 Filter Chips
 
 function getDietaryInfo(it) {
   if (it.diet) {
@@ -1595,14 +1671,524 @@ function isExpressItem(it) {
   return cat.includes('snack') || cat.includes('beverage') || cat.includes('dessert') || cat.includes('quick') || nameLower.includes('coffee') || nameLower.includes('fries') || nameLower.includes('burger') || nameLower.includes('sandwich') || nameLower.includes('jamun') || nameLower.includes('brownie') || nameLower.includes('tea') || nameLower.includes('lassi');
 }
 
+// =========================================================================
+// ZOMATO & SWIGGY STYLE FOOD METADATA & ASSET RESOLVERS
+// =========================================================================
+
+const FOOD_REAL_IMAGES = {
+  'chicken dum biryani': 'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=800&auto=format&fit=crop&q=80',
+  'hyderabadi veg biryani': 'https://images.unsplash.com/photo-1633945274405-b6c8069047b0?w=800&auto=format&fit=crop&q=80',
+  'ghee podi masala dosa': 'https://images.unsplash.com/photo-1668236543090-82eba5ee5976?w=800&auto=format&fit=crop&q=80',
+  'crispy veg patty burger': 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=800&auto=format&fit=crop&q=80',
+  'grilled cheese sandwich': 'https://images.unsplash.com/photo-1528735602780-2552fd46c7af?w=800&auto=format&fit=crop&q=80',
+  'wood-fired pizza slice': 'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=800&auto=format&fit=crop&q=80',
+  'peri-peri salted fries': 'https://images.unsplash.com/photo-1576107232684-1279f3908594?w=800&auto=format&fit=crop&q=80',
+  'artisan cold coffee': 'https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?w=800&auto=format&fit=crop&q=80',
+  'spiced masala buttermilk': 'https://images.unsplash.com/photo-1556881286-fc6915169721?w=800&auto=format&fit=crop&q=80',
+  'warm gulab jamun (2 pcs)': 'https://images.unsplash.com/photo-1601050690597-df0568f70950?w=800&auto=format&fit=crop&q=80',
+  'warm gulab jamun': 'https://images.unsplash.com/photo-1601050690597-df0568f70950?w=800&auto=format&fit=crop&q=80',
+  'belgian chocolate brownie': 'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=800&auto=format&fit=crop&q=80',
+  'paneer butter masala combo': 'https://images.unsplash.com/photo-1631452180519-c014fe946bc7?w=800&auto=format&fit=crop&q=80',
+  'paneer butter masala': 'https://images.unsplash.com/photo-1631452180519-c014fe946bc7?w=800&auto=format&fit=crop&q=80',
+  'smoky paneer tikka roll': 'https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?w=800&auto=format&fit=crop&q=80',
+  'spicy schezwan hakka noodles': 'https://images.unsplash.com/photo-1585032226651-759b368d7246?w=800&auto=format&fit=crop&q=80',
+  'crispy chicken tenders & cajun fries': 'https://images.unsplash.com/photo-1562967914-608f82629710?w=800&auto=format&fit=crop&q=80',
+  'royal north indian thali': 'https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=800&auto=format&fit=crop&q=80',
+  'truffle mushroom melt panini': 'https://images.unsplash.com/photo-1528735602780-2552fd46c7af?w=800&auto=format&fit=crop&q=80',
+  'steamed himalayan chicken dimsums (6 pcs)': 'https://images.unsplash.com/photo-1496116218417-1a781b1c416c?w=800&auto=format&fit=crop&q=80',
+  'biscoff caramel frappe': 'https://images.unsplash.com/photo-1572490122747-3968b75cc699?w=800&auto=format&fit=crop&q=80',
+  'berry burst belgian waffle': 'https://images.unsplash.com/photo-1562376552-0d160a2f238d?w=800&auto=format&fit=crop&q=80'
+};
+
+const CATEGORY_FALLBACK_IMAGES = {
+  mains: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=800&auto=format&fit=crop&q=80',
+  snacks: 'https://images.unsplash.com/photo-1606755962773-d324e0a13086?w=800&auto=format&fit=crop&q=80',
+  beverages: 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=800&auto=format&fit=crop&q=80',
+  desserts: 'https://images.unsplash.com/photo-1551024601-bec78aea704b?w=800&auto=format&fit=crop&q=80'
+};
+
+function getItemImage(it) {
+  if (!it) return 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=800&auto=format&fit=crop&q=80';
+  if (it.image && typeof it.image === 'string' && it.image.startsWith('http')) return it.image;
+  const key = (it.name || '').toLowerCase().trim();
+  if (FOOD_REAL_IMAGES[key]) return FOOD_REAL_IMAGES[key];
+  for (const [nameKey, url] of Object.entries(FOOD_REAL_IMAGES)) {
+    if (key.includes(nameKey) || nameKey.includes(key)) return url;
+  }
+  const catKey = (it.cat || '').toLowerCase().trim();
+  if (CATEGORY_FALLBACK_IMAGES[catKey]) return CATEGORY_FALLBACK_IMAGES[catKey];
+  if (catKey.includes('snack') || catKey.includes('quick')) return CATEGORY_FALLBACK_IMAGES.snacks;
+  if (catKey.includes('meal') || catKey.includes('main') || catKey.includes('hot') || catKey.includes('rice')) return CATEGORY_FALLBACK_IMAGES.mains;
+  if (catKey.includes('drink') || catKey.includes('bev') || catKey.includes('cafe')) return CATEGORY_FALLBACK_IMAGES.beverages;
+  if (catKey.includes('dessert') || catKey.includes('sweet')) return CATEGORY_FALLBACK_IMAGES.desserts;
+  return 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=800&auto=format&fit=crop&q=80';
+}
+
+function isVegItem(it) {
+  if (typeof it.isVeg === 'boolean') return it.isVeg;
+  const name = (it.name || '').toLowerCase();
+  if (name.includes('chicken') || name.includes('mutton') || name.includes('fish') || name.includes('egg') || name.includes('prawn') || name.includes('meat')) {
+    return false;
+  }
+  return true;
+}
+
+function getItemSize(it) {
+  if (it.cardSize) return it.cardSize;
+  const name = (it.name || '').toLowerCase();
+  if (name.includes('dum biryani') || name.includes('pizza') || name.includes('platter') || name.includes('combo')) {
+    return 'featured';
+  }
+  if (name.includes('burger') || name.includes('coffee') || name.includes('fries') || name.includes('jamun') || name.includes('lassi')) {
+    return 'tall';
+  }
+  return 'standard';
+}
+
+const ITEM_DESCRIPTIONS = {
+  'chicken dum biryani': 'Slow-cooked fragrant basmati rice layered with spiced tender chicken, saffron, and caramelised onions. Served with spiced mint raita.',
+  'hyderabadi veg biryani': 'Fragrant long-grain basmati layered with garden-fresh vegetables, paneer cubes, and aromatic Nizam spices.',
+  'ghee podi masala dosa': 'Crisp golden crepe roasted in pure desi ghee and Gunpowder chutney podi, wrapped around spiced potato masala.',
+  'crispy veg patty burger': 'Crispy herb-crumbed vegetable patty with fresh lettuce, sliced tomatoes, gherkins and smoky tandoori mayo in a toasted bun.',
+  'grilled cheese sandwich': 'Thick sourdough toast grilled with a three-cheese blend of mozzarella, cheddar, and processed cheese with herb butter.',
+  'wood-fired pizza slice': 'Authentic stone-oven baked slice with san marzano tomato reduction, fresh basil leaves, and stringy fior di latte mozzarella.',
+  'peri-peri salted fries': 'Skin-on golden potato fries tossed in fiery African peri-peri spice dust. Served with creamy garlic dip.',
+  'artisan cold coffee': 'Slow-brewed dark roast espresso whipped with chilled creamy whole milk, chocolate drizzle, and vanilla bean froth.',
+  'spiced masala buttermilk': 'Traditional desi chaas churned with fresh coriander, ginger, crushed green chillies, and roasted cumin.',
+  'warm gulab jamun (2 pcs)': 'Handmade khoya dumplings fried golden and immersed in simmering rosewater, saffron, and green cardamom nectar.',
+  'belgian chocolate brownie': 'Warm, fudgy dark Belgian chocolate brownie studded with toasted walnuts and crowned with a dark chocolate drizzle.',
+  'paneer butter masala combo': 'Velvety cottage cheese cubes simmered in a rich tomato, butter, and cashew gravy, served with 2 butter naan and jeera rice.'
+};
+
+function getItemDesc(it) {
+  if (it.desc) return it.desc;
+  const key = (it.name || '').toLowerCase().trim();
+  if (ITEM_DESCRIPTIONS[key]) return ITEM_DESCRIPTIONS[key];
+  for (const [nameKey, val] of Object.entries(ITEM_DESCRIPTIONS)) {
+    if (key.includes(nameKey) || nameKey.includes(key)) return val;
+  }
+  return `${it.name} freshly prepared at ${it.counter || 'Counter 1'} with authentic campus cafeteria ingredients.`;
+}
+
+// M3 Student Menu Grid with Zomato & Swiggy Style Multi-Sized Interactive Cards
+
+// =========================================================================
+// =========================================================================
+// QUICK RE-ORDER FREQUENT FAVORITES (Real Food Cards for Home Page)
+// =========================================================================
+
+const QUICK_REORDER_ITEMS = [
+  {
+    id: 'item-3',
+    name: 'Ghee Podi Masala Dosa',
+    emoji: 'breakfast_dining',
+    price: 80,
+    cat: 'Mains',
+    counter: 'Counter 1 (Hot Meals)',
+    stock: 14,
+    lowThreshold: 5,
+    restockTime: '10 min',
+    isVeg: true,
+    rating: 4.9,
+    ratingCount: 284,
+    badge: 'Ordered 2x',
+    recReason: 'Ordered 2x this week - Counter 1',
+    cardSize: 'standard',
+    desc: 'Crisp golden crepe roasted in pure desi ghee and Gunpowder chutney podi, wrapped around spiced potato masala.',
+    image: 'https://images.unsplash.com/photo-1668236543090-82eba5ee5976?w=800&auto=format&fit=crop&q=80'
+  },
+  {
+    id: 'item-1',
+    name: 'Chicken Dum Biryani',
+    emoji: 'restaurant',
+    price: 180,
+    cat: 'Mains',
+    counter: 'Counter 1 (Hot Meals)',
+    stock: 22,
+    lowThreshold: 8,
+    restockTime: '15 min',
+    isVeg: false,
+    rating: 4.8,
+    ratingCount: 342,
+    badge: 'Recent order',
+    recReason: 'Recent order - Counter 1 (Hot Meals)',
+    cardSize: 'standard',
+    desc: 'Slow-cooked fragrant basmati rice layered with spiced tender chicken, saffron, and caramelised onions. Served with spiced mint raita.',
+    image: 'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=800&auto=format&fit=crop&q=80'
+  },
+  {
+    id: 'item-8',
+    name: 'Artisan Cold Coffee',
+    emoji: 'local_cafe',
+    price: 50,
+    cat: 'Beverages',
+    counter: 'Counter 3 (Cafe & Drinks)',
+    stock: 28,
+    lowThreshold: 10,
+    restockTime: '5 min',
+    isVeg: true,
+    rating: 4.9,
+    ratingCount: 410,
+    badge: 'Recent order',
+    recReason: 'Recent order - Counter 3 (Cafe & Drinks)',
+    cardSize: 'standard',
+    desc: 'Slow-steeped dark roast espresso blended with chilled creamy milk, turbinado brown sugar, and dark chocolate drizzle.',
+    image: 'https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?w=800&auto=format&fit=crop&q=80'
+  }
+];
+
+// =========================================================================
+// CURATED "FOR YOU" RECOMMENDATION CATALOG (Distinct items from Menu)
+// =========================================================================
+
+const FOR_YOU_ITEMS = [
+  {
+    id: 'foryou-1',
+    name: 'Smoky Paneer Tikka Roll',
+    emoji: 'lunch_dining',
+    price: 135,
+    cat: 'Wraps & Rolls',
+    counter: 'Counter 2 (Quick Bites)',
+    stock: 16,
+    lowThreshold: 5,
+    restockTime: '10 min',
+    isVeg: true,
+    rating: 4.8,
+    ratingCount: 312,
+    badge: 'Trending Combo',
+    recReason: '98% Match - Frequently paired with Cold Coffee',
+    cardSize: 'featured',
+    desc: 'Soft handmade rumali roti wrapped around clay-oven charred paneer tikka, crunchy bell peppers, pickled onions, and house mint-coriander mayonnaise.',
+    image: 'https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?w=800&auto=format&fit=crop&q=80'
+  },
+  {
+    id: 'foryou-2',
+    name: 'Spicy Schezwan Hakka Noodles',
+    emoji: 'ramen_dining',
+    price: 110,
+    cat: 'Asian Wok',
+    counter: 'Counter 1 (Hot Meals)',
+    stock: 20,
+    lowThreshold: 6,
+    restockTime: '12 min',
+    isVeg: true,
+    rating: 4.7,
+    ratingCount: 245,
+    badge: 'Chef Special',
+    recReason: 'Evening Pick - Wok-tossed fresh on order',
+    cardSize: 'standard',
+    desc: 'Flame-tossed noodles with shredded cabbage, crunchy carrots, bell peppers, and fiery homemade Schezwan sauce topped with fresh scallions.',
+    image: 'https://images.unsplash.com/photo-1585032226651-759b368d7246?w=800&auto=format&fit=crop&q=80'
+  },
+  {
+    id: 'foryou-3',
+    name: 'Crispy Chicken Tenders & Cajun Fries',
+    emoji: 'dinner_dining',
+    price: 160,
+    cat: 'Snacks & Combos',
+    counter: 'Counter 2 (Quick Bites)',
+    stock: 12,
+    lowThreshold: 4,
+    restockTime: '15 min',
+    isVeg: false,
+    rating: 4.9,
+    ratingCount: 428,
+    badge: 'Student Favorite',
+    recReason: '#1 Campus Combo - High Reorder Velocity',
+    cardSize: 'tall',
+    desc: 'Crispy golden buttermilk-marinated chicken strips served with a generous portion of cajun dusted fries, creamy garlic mayo, and smoky BBQ dip.',
+    image: 'https://images.unsplash.com/photo-1562967914-608f82629710?w=800&auto=format&fit=crop&q=80'
+  },
+  {
+    id: 'foryou-4',
+    name: 'Royal North Indian Thali',
+    emoji: 'set_meal',
+    price: 195,
+    cat: 'Full Meals',
+    counter: 'Counter 1 (Hot Meals)',
+    stock: 14,
+    lowThreshold: 5,
+    restockTime: '20 min',
+    isVeg: true,
+    rating: 4.9,
+    ratingCount: 516,
+    badge: 'Value Feast',
+    recReason: 'Complete Lunch - Balanced nutrition & fresh phulkas',
+    cardSize: 'featured',
+    desc: 'Executive campus lunch platter: creamy Dal Makhani, Paneer Butter Masala, 2 hot butter phulkas, fragrant Jeera Basmati rice, fresh salad, and sweet gulab jamun.',
+    image: 'https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=800&auto=format&fit=crop&q=80'
+  },
+  {
+    id: 'foryou-5',
+    name: 'Truffle Mushroom Melt Panini',
+    emoji: 'bakery_dining',
+    price: 125,
+    cat: 'Artisan Cafe',
+    counter: 'Counter 2 (Quick Bites)',
+    stock: 8,
+    lowThreshold: 3,
+    restockTime: '10 min',
+    isVeg: true,
+    rating: 4.6,
+    ratingCount: 164,
+    badge: 'Cafe Special',
+    recReason: 'Gourmet Pick - 3-Cheese blend on sourdough',
+    cardSize: 'standard',
+    desc: 'Herb-crusted sourdough panini pressed with pan-seared garlic button mushrooms, caramelized balsamic onions, and melted Swiss mozzarella cheese.',
+    image: 'https://images.unsplash.com/photo-1528735602780-2552fd46c7af?w=800&auto=format&fit=crop&q=80'
+  },
+  {
+    id: 'foryou-6',
+    name: 'Steamed Himalayan Chicken Dimsums (6 pcs)',
+    emoji: 'kebab_dining',
+    price: 120,
+    cat: 'Street Bites',
+    counter: 'Counter 2 (Quick Bites)',
+    stock: 25,
+    lowThreshold: 6,
+    restockTime: '8 min',
+    isVeg: false,
+    rating: 4.8,
+    ratingCount: 380,
+    badge: 'Must Try',
+    recReason: 'Quick Grab - Steaming hot & ready in 5 mins',
+    cardSize: 'standard',
+    desc: 'Delicate handmade steamed momos filled with seasoned ground chicken, spring onions, and ginger. Served with fiery Himalayan roasted red chili dip.',
+    image: 'https://images.unsplash.com/photo-1496116218417-1a781b1c416c?w=800&auto=format&fit=crop&q=80'
+  },
+  {
+    id: 'foryou-7',
+    name: 'Biscoff Caramel Frappe',
+    emoji: 'local_cafe',
+    price: 95,
+    cat: 'Beverages',
+    counter: 'Counter 3 (Cafe & Drinks)',
+    stock: 30,
+    lowThreshold: 8,
+    restockTime: '5 min',
+    isVeg: true,
+    rating: 4.9,
+    ratingCount: 680,
+    badge: 'Best Seller',
+    recReason: 'Energy Boost - Real Lotus Biscoff & double espresso',
+    cardSize: 'tall',
+    desc: 'Iced blended double shot Arabica espresso churned with rich Lotus Biscoff spread, salted caramel drizzle, whipped dairy cream, and crushed biscuit topping.',
+    image: 'https://images.unsplash.com/photo-1572490122747-3968b75cc699?w=800&auto=format&fit=crop&q=80'
+  },
+  {
+    id: 'foryou-8',
+    name: 'Berry Burst Belgian Waffle',
+    emoji: 'cake',
+    price: 85,
+    cat: 'Desserts',
+    counter: 'Counter 3 (Cafe & Drinks)',
+    stock: 15,
+    lowThreshold: 4,
+    restockTime: '10 min',
+    isVeg: true,
+    rating: 4.8,
+    ratingCount: 295,
+    badge: 'Sweet Treat',
+    recReason: 'Dessert Pairing - Made fresh on Belgian iron',
+    cardSize: 'tall',
+    desc: 'Crisp malted Belgian waffle loaded with warm wild blueberry-strawberry compote, melted dark chocolate drizzle, and a dusting of powdered sugar.',
+    image: 'https://images.unsplash.com/photo-1562376552-0d160a2f238d?w=800&auto=format&fit=crop&q=80'
+  }
+];
+
+function findCatalogItem(state, id) {
+  if (!id) return null;
+  if (state && state.menuItems) {
+    const found = state.menuItems.find((m) => m.id === id);
+    if (found) return found;
+  }
+  const foryou = FOR_YOU_ITEMS.find((m) => m.id === id);
+  if (foryou) return foryou;
+  if (typeof QUICK_REORDER_ITEMS !== 'undefined') {
+    const quick = QUICK_REORDER_ITEMS.find((m) => m.id === id);
+    if (quick) return quick;
+  }
+  return null;
+}
+
+// =========================================================================
+// SHARED FOOD CARD RENDERER (Menu Page & For You Page)
+// =========================================================================
+
+function renderFoodCardHTML(it, state) {
+  const status = getItemStatus(it);
+  const isOut = status === 'out';
+  const inCart = (state.cart && state.cart[it.id]) || 0;
+  const imgUrl = getItemImage(it);
+  const isVeg = isVegItem(it);
+  const rating = it.rating || 4.6;
+  const ratingCount = it.ratingCount || (120 + (it.stock || 5) * 6);
+  const badge = it.badge || (isOut ? null : (status === 'low' ? 'Only Few Left' : null));
+  const cardSize = it.cardSize || getItemSize(it);
+  const desc = it.desc || getItemDesc(it);
+  const originalPrice = Math.round(it.price * 1.18);
+  const recBadge = it.recReason ? `<div class="rec-pill-badge">${it.recReason}</div>` : '';
+
+  // Render Add / Stepper control
+  let actionControl = '';
+  if (isOut) {
+    actionControl = `<button class="swiggy-add-btn" disabled title="Sold out">SOLD OUT</button>`;
+  } else if (inCart > 0) {
+    actionControl = `
+      <div class="swiggy-qty-controller">
+        <button class="swiggy-qty-btn" data-dec="${it.id}" title="Decrease quantity" aria-label="Decrease">&minus;</button>
+        <span class="swiggy-qty-val">${inCart}</span>
+        <button class="swiggy-qty-btn" data-inc="${it.id}" title="Increase quantity" aria-label="Increase">&plus;</button>
+      </div>
+    `;
+  } else {
+    actionControl = `
+      <button class="swiggy-add-btn" data-add="${it.id}" title="Add to Cart">
+        ADD <span style="font-size:14px; margin-left:2px;">+</span>
+      </button>
+    `;
+  }
+
+  // Veg / Non-Veg badge markup
+  const vegBadge = `<span class="food-type-icon ${isVeg ? 'veg' : 'non-veg'}" title="${isVeg ? 'Vegetarian' : 'Non-Vegetarian'}"></span>`;
+
+  // Rating badge markup
+  const ratingMarkup = `
+    <div style="display:inline-flex; align-items:center; gap:4px;">
+      <span class="swiggy-rating-pill"><span class="star">*</span> ${rating}</span>
+      <span class="swiggy-rating-count">(${ratingCount})</span>
+    </div>
+  `;
+
+  // Stock and Gauge HTML
+  const stockGaugeHTML = `
+    <div style="margin-top:8px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; font-size:11px; margin-bottom:4px;">
+        <span style="color:var(--md-sys-color-on-surface-variant); font-weight:600;">Stock: <strong>${it.stock}</strong> left</span>
+        <span style="color:${getGaugeColor(status)}; font-weight:700; text-transform:uppercase; font-size:10.5px;">${status}</span>
+      </div>
+      <div class="gauge" style="height:4px; margin:0;">
+        <span style="width:${getGaugeWidth(it)}%; background:${getGaugeColor(status)}"></span>
+      </div>
+    </div>
+  `;
+
+  // Template 1: FEATURED CARD (Hero Landscape)
+  if (cardSize === 'featured') {
+    return `
+      <div class="menu-card menu-card--featured ${isOut ? 'is-out-of-stock' : ''}">
+        <div class="card-main-content">
+          <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+            ${vegBadge}
+            ${badge ? `<span class="swiggy-ribbon bestseller"><span class="material-symbols-outlined" style="font-size:13px;">workspace_premium</span>${badge}</span>` : ''}
+            <span style="font-size:11px; font-weight:600; background:var(--md-sys-color-primary-container); color:var(--md-sys-color-on-primary-container); padding:2px 8px; border-radius:6px;">${it.counter || 'Counter 1'}</span>
+          </div>
+          ${recBadge}
+          <div class="card-item-title" style="font-size:17px; margin-top:4px;">${it.name}</div>
+          <div style="margin-top:2px; margin-bottom:6px;">${ratingMarkup}</div>
+          <div class="card-item-price-row">
+            <span class="card-item-price" style="font-size:16.5px;">Rs ${it.price}</span>
+            <span class="card-item-original-price">Rs ${originalPrice}</span>
+            <span style="font-size:11px; font-weight:700; color:#1ba672;">SAVE Rs ${originalPrice - it.price}</span>
+          </div>
+          <div class="card-item-desc" style="-webkit-line-clamp:3;">${desc}</div>
+          <div style="margin-top:auto; padding-top:10px;">
+            ${stockGaugeHTML}
+          </div>
+        </div>
+        <div class="card-media-side">
+          <div class="food-img-box">
+            <img class="food-img" src="${imgUrl}" alt="${it.name}" loading="lazy" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=800&auto=format&fit=crop&q=80'">
+            ${isOut ? '<div style="position:absolute; inset:0; background:rgba(0,0,0,0.6); display:flex; align-items:center; justify-content:center; color:#fff; font-weight:800; font-size:12px; letter-spacing:1px;">SOLD OUT</div>' : ''}
+          </div>
+          <div class="card-action-wrap">
+            ${actionControl}
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  // Template 2: TALL CARD (Portrait Visual)
+  if (cardSize === 'tall') {
+    return `
+      <div class="menu-card menu-card--tall ${isOut ? 'is-out-of-stock' : ''}">
+        <div class="food-img-box">
+          <img class="food-img" src="${imgUrl}" alt="${it.name}" loading="lazy" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=800&auto=format&fit=crop&q=80'">
+          <div style="position:absolute; top:10px; left:10px; z-index:2; display:flex; gap:6px; align-items:center;">
+            <span style="background:rgba(255,255,255,0.92); backdrop-filter:blur(4px); padding:4px; border-radius:6px; display:inline-flex; align-items:center; justify-content:center; box-shadow:0 2px 6px rgba(0,0,0,0.15);">${vegBadge}</span>
+            ${badge ? `<span class="swiggy-ribbon chef" style="box-shadow:0 2px 6px rgba(0,0,0,0.2);">${badge}</span>` : ''}
+          </div>
+          <div style="position:absolute; top:10px; right:10px; z-index:2;">
+            ${ratingMarkup}
+          </div>
+          ${isOut ? '<div style="position:absolute; inset:0; background:rgba(0,0,0,0.6); display:flex; align-items:center; justify-content:center; color:#fff; font-weight:800; font-size:13px; letter-spacing:1px;">SOLD OUT</div>' : ''}
+          <div class="card-action-wrap">
+            ${actionControl}
+          </div>
+        </div>
+        <div class="card-main-content">
+          <div class="card-item-title">${it.name}</div>
+          ${recBadge}
+          <div style="font-size:11.5px; color:var(--md-sys-color-on-surface-variant); margin-bottom:4px;">
+            ${it.cat} &middot; <span style="font-weight:600;">${it.counter || 'Counter 1'}</span>
+          </div>
+          <div class="card-item-price-row">
+            <span class="card-item-price">Rs ${it.price}</span>
+            <span class="card-item-original-price">Rs ${originalPrice}</span>
+          </div>
+          <div class="card-item-desc">${desc}</div>
+          <div style="margin-top:auto; padding-top:10px;">
+            ${stockGaugeHTML}
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  // Template 3: STANDARD CARD (Signature Swiggy Split Layout)
+  return `
+    <div class="menu-card menu-card--standard ${isOut ? 'is-out-of-stock' : ''}">
+      <div class="card-main-content">
+        <div style="display:flex; align-items:center; gap:8px;">
+          ${vegBadge}
+          ${badge ? `<span class="swiggy-ribbon trending">${badge}</span>` : ''}
+        </div>
+        ${recBadge}
+        <div class="card-item-title">${it.name}</div>
+        <div class="card-item-price-row">
+          <span class="card-item-price">Rs ${it.price}</span>
+          <span class="card-item-original-price">Rs ${originalPrice}</span>
+        </div>
+        <div style="margin-bottom:6px;">${ratingMarkup}</div>
+        <div class="card-item-desc">${desc}</div>
+        <div style="margin-top:auto; padding-top:10px;">
+          ${stockGaugeHTML}
+        </div>
+      </div>
+      <div class="card-media-side">
+        <div class="food-img-box">
+          <img class="food-img" src="${imgUrl}" alt="${it.name}" loading="lazy" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=800&auto=format&fit=crop&q=80'">
+          ${isOut ? '<div style="position:absolute; inset:0; background:rgba(0,0,0,0.6); display:flex; align-items:center; justify-content:center; color:#fff; font-weight:800; font-size:11px; letter-spacing:0.5px;">SOLD OUT</div>' : ''}
+        </div>
+        <div class="card-action-wrap">
+          ${actionControl}
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+
+
 function renderStudentMenu(state, searchQuery = '') {
   const grid = $('#menuGrid');
   const filterRow = $('#filterRow');
   if (!grid) return;
 
-  const cats = ['All', ...new Set(state.menuItems.map((m) => m.cat))];
+  const CATEGORY_CHIPS = ['All', 'Express / Grab and Go', 'Hot Meals', 'Quick Bites', 'Beverages', 'Desserts'];
   if (filterRow) {
-    filterRow.innerHTML = cats
+    filterRow.innerHTML = CATEGORY_CHIPS
       .map((c) => {
         const isActive = c === state.activeCat;
         return `
@@ -1619,107 +2205,77 @@ function renderStudentMenu(state, searchQuery = '') {
   const counterVal = $('#counterFilterSelect') ? $('#counterFilterSelect').value : 'All';
 
   const items = state.menuItems.filter((m) => {
-    const matchCat = state.activeCat === 'All' || m.cat === state.activeCat;
+    let matchCat = true;
+    if (state.activeCat && state.activeCat !== 'All') {
+      if (state.activeCat.includes('Express')) {
+        matchCat = isExpressItem(m);
+      } else if (state.activeCat === 'Hot Meals') {
+        matchCat = m.cat === 'Hot Meals' || m.cat === 'Mains' || (m.counter && m.counter.toLowerCase().includes('hot meals'));
+      } else if (state.activeCat === 'Quick Bites') {
+        matchCat = m.cat === 'Quick Bites' || m.cat === 'Snacks' || (m.counter && m.counter.toLowerCase().includes('quick bites'));
+      } else if (state.activeCat === 'Beverages') {
+        matchCat = m.cat === 'Beverages' || (m.counter && m.counter.toLowerCase().includes('cafe'));
+      } else if (state.activeCat === 'Desserts') {
+        matchCat = m.cat === 'Desserts';
+      } else {
+        matchCat = m.cat === state.activeCat;
+      }
+    }
     const matchCounter = counterVal === 'All' || m.counter === counterVal;
-    const matchQuery = !q || m.name.toLowerCase().includes(q) || m.cat.toLowerCase().includes(q);
+    const matchQuery = !q || m.name.toLowerCase().includes(q) || (m.cat && m.cat.toLowerCase().includes(q));
     return matchCat && matchCounter && matchQuery;
   });
 
   if (!items.length) {
+    const isCatalogEmpty = state.menuItems.length === 0;
     grid.innerHTML = `
-      <div class="empty-state" style="padding:48px 20px; grid-column:1 / -1; width:100%;">
-        <div class="em"><span class="material-symbols-outlined" style="font-size:40px;">search</span></div>
-        <strong>No menu items found</strong>
-        <div style="font-size:12.5px; color:var(--md-sys-color-on-surface-variant); margin-top:6px; max-width:420px; margin-left:auto; margin-right:auto;">
-          ${
-            state.menuItems.length === 0
-              ? 'Catalog is empty. Inject custom items into <code>DATA_INJECTION_SLOT</code> or load the live demo fixture.'
-              : 'Try clearing your category/counter filters or search keyword.'
-          }
+      <div class="empty-state-card" style="grid-column: 1 / -1; width: 100%; padding: 48px 24px;">
+        <div class="icon-bubble">
+          <span class="material-symbols-outlined" style="font-size:32px;">${isCatalogEmpty ? 'soup_kitchen' : 'search_off'}</span>
         </div>
-        ${
-          state.menuItems.length === 0
-            ? '<button class="dev-btn primary" style="margin-top:14px;" onclick="store.loadDemoFixture()"><span class="material-symbols-outlined" style="font-size:16px;">bolt</span><span>Load Campus Demo Fixture</span></button>'
-            : ''
-        }
+        <div class="empty-title">${isCatalogEmpty ? 'Menu being freshly prepared' : 'No menu items match your search'}</div>
+        <div class="empty-subtitle">
+          ${isCatalogEmpty
+            ? 'The kitchen is preparing fresh daily specials. Check back in a few moments to order.'
+            : 'Try selecting a different food category or clearing your search keywords above.'}
+        </div>
+        ${!isCatalogEmpty ? '<button class="mini-btn" style="margin-top:10px;" onclick="if($(\'#searchInput\')) $(\'#searchInput\').value=\'\'; store.state.activeCat=\'All\'; renderStudentMenu(store.state);">Reset Filters</button>' : ''}
       </div>
     `;
     return;
   }
 
-  grid.innerHTML = items
-    .map((it) => {
-      const status = getItemStatus(it);
-      const isOut = status === 'out';
-      const inCart = state.cart[it.id] || 0;
-
-      return `
-        <div class="menu-card">
-          <div class="menu-emoji">${renderItemIcon(it.emoji)}</div>
-          <div class="menu-info">
-            <div class="mn">${it.name}</div>
-            <div class="mc">${it.cat} - <span>${it.counter || 'Counter 1'}</span></div>
-            <div style="font-size:11px; color:var(--md-sys-color-on-surface-variant); margin-top:4px;">
-              Stock: <strong>${it.stock}</strong> - Gauge: 
-              <span style="color:${getGaugeColor(status)}; font-weight:700;">${status.toUpperCase()}</span>
-            </div>
-            <div class="gauge" style="margin:6px 0 8px;">
-              <span style="width:${getGaugeWidth(it)}%; background:${getGaugeColor(status)}"></span>
-            </div>
-            <div class="mrow">
-              <span class="rec-price mono">Rs. ${it.price}</span>
-              <div style="display:flex; align-items:center; gap:8px;">
-                ${sbHTML(status)}
-                <button class="add-btn" data-add="${it.id}" ${isOut ? 'disabled title="Sold out"' : 'title="Add to Cart"'}>
-                  ${inCart > 0 ? inCart : '+'}
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      `;
-    })
-    .join('');
+  grid.innerHTML = items.map((it) => renderFoodCardHTML(it, state)).join('');
 }
-
-// Recommendations Section
 function renderRecommendations(state) {
+  // Update Welcome heading with current user's name
+  const welcomeHeading = $('#homeWelcomeHeading');
+  if (welcomeHeading) {
+    const userName = (state.currentUser && state.currentUser.name) || 'Rohan Sharma';
+    welcomeHeading.textContent = `Welcome back, ${userName}!`;
+  }
+
+  // Render Real Food Cards in Quick Re-Order Grid on Home Page
+  const quickReorderGrid = $('#quickReorderGrid');
+  if (quickReorderGrid) {
+    quickReorderGrid.innerHTML = QUICK_REORDER_ITEMS.map((it) => renderFoodCardHTML(it, state)).join('');
+  }
+
+  // Render Real Food Cards in Home Recommendations Grid ("You may also like")
   const homeRec = $('#homeRecGrid');
-  const foryouRec = $('#foryouGrid');
-
-  const recItems = state.menuItems.filter((m) => m.stock > 0).slice(0, 4);
-
-  const makeCardHTML = (it) => {
-    const status = getItemStatus(it);
-    return `
-      <div class="rec-card">
-        <div class="rec-img">${renderItemIcon(it.emoji)}</div>
-        <div class="rec-body">
-          <div class="rec-name">${it.name}</div>
-          <div class="rec-tag">${status === 'low' ? 'Only few remaining' : 'Pairs with your usual'}</div>
-          <div class="rec-row">
-            <span class="rec-price mono">Rs. ${it.price}</span>
-            <button class="add-btn" data-add="${it.id}">+</button>
-          </div>
-        </div>
-      </div>
-    `;
-  };
-
   if (homeRec) {
+    const recItems = FOR_YOU_ITEMS.slice(0, 4);
     homeRec.innerHTML = recItems.length
-      ? recItems.map(makeCardHTML).join('')
+      ? recItems.map((it) => renderFoodCardHTML(it, state)).join('')
       : '<div class="empty-state" style="grid-column:1 / -1;"><div class="em"><span class="material-symbols-outlined">auto_awesome</span></div>No recommendations available.</div>';
   }
 
+  // Render Real Food Cards in For You Page
+  const foryouRec = $('#foryouGrid');
   if (foryouRec) {
-    foryouRec.innerHTML = state.menuItems.length
-      ? state.menuItems.slice(0, 8).map(makeCardHTML).join('')
-      : '<div class="empty-state" style="grid-column:1 / -1;"><div class="em"><span class="material-symbols-outlined">auto_awesome</span></div>Load items to view graph-inspired recommendations.</div>';
+    foryouRec.innerHTML = FOR_YOU_ITEMS.map((it) => renderFoodCardHTML(it, state)).join('');
   }
 }
-
-// Student Cart Page
 
 let upiCountdownInterval = null;
 let upiCountdownRemainingSecs = 300;
@@ -1997,9 +2553,9 @@ function renderStudentCart(state) {
         <button class="mini-btn" style="margin-top:14px;" data-goto="menu">Browse Live Menu</button>
       </div>
     `;
-    if (subtotalEl) subtotalEl.textContent = 'Rs. 0';
-    if (packingEl) packingEl.textContent = 'Rs. 0';
-    if (totalEl) totalEl.textContent = 'Rs. 0';
+    if (subtotalEl) subtotalEl.textContent = '0';
+    if (packingEl) packingEl.textContent = '0';
+    if (totalEl) totalEl.textContent = '0';
     if (checkoutBtn) checkoutBtn.disabled = true;
     renderPaymentMethodDetails(state);
     return;
@@ -2008,26 +2564,74 @@ function renderStudentCart(state) {
   let subtotal = 0;
   cartList.innerHTML = itemEntries
     .map(([id, qty]) => {
-      const it = state.menuItems.find((m) => m.id === id);
+      const it = findCatalogItem(state, id);
       if (!it) return '';
       const lineTotal = it.price * qty;
       subtotal += lineTotal;
+      const currentNote = (state.cartNotes && state.cartNotes[id]) || '';
+      const hasNote = Boolean(currentNote && currentNote.trim());
 
       return `
-        <div class="cart-line">
-          <div class="menu-emoji" style="width:38px; height:38px; font-size:18px;">${renderItemIcon(it.emoji)}</div>
-          <div class="stub-info">
-            <div class="t">${it.name}</div>
-            <div class="s mono">Rs. ${it.price} each - Rs. ${lineTotal}</div>
+        <div class="cart-line-container" data-item-id="${id}">
+          <div class="cart-line">
+            <div class="cart-food-thumb">
+              <img src="${getItemImage(it)}" alt="${escapeHtml(it.name)}" class="cart-item-img" onerror="this.src='https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&auto=format&fit=crop&q=80'">
+              <span class="food-type-icon ${isVegItem(it) ? 'veg' : 'non-veg'} cart-food-dot"></span>
+            </div>
+            <div class="stub-info">
+              <div class="t">${escapeHtml(it.name)}</div>
+              <div class="s mono">Rs ${it.price} each &bull; Rs ${lineTotal}</div>
+            </div>
+            <div class="qty-ctrl">
+              <button data-dec="${id}">-</button>
+              <span>${qty}</span>
+              <button data-inc="${id}">+</button>
+            </div>
+            <button class="remove-x" data-remove="${id}" title="Remove">
+              <span class="material-symbols-outlined" style="font-size:18px;">close</span>
+            </button>
           </div>
-          <div class="qty-ctrl">
-            <button data-dec="${id}"></button>
-            <span>${qty}</span>
-            <button data-inc="${id}">+</button>
+          <div class="cart-note-wrapper">
+            ${hasNote ? `
+              <div class="cart-note-active-pill" id="cartNoteActive-${id}">
+                <div class="cart-note-active-left">
+                  <span class="material-symbols-outlined note-icon">edit_note</span>
+                  <span class="cart-note-saved-text">"${escapeHtml(currentNote)}"</span>
+                </div>
+                <div class="cart-note-pill-actions">
+                  <button type="button" class="cart-note-btn-link" data-edit-note="${id}" title="Edit note">Edit</button>
+                  <button type="button" class="cart-note-btn-link remove" data-clear-note="${id}" title="Remove note">
+                    <span class="material-symbols-outlined" style="font-size:14px;">close</span>
+                  </button>
+                </div>
+              </div>
+              <div class="cart-note-input-row" id="cartNoteInputRow-${id}" style="display:none;">
+                <div class="cart-note-input-field-wrap">
+                  <input type="text" class="cart-note-input" id="cartNoteInput-${id}" maxlength="60" value="${escapeHtml(currentNote)}" placeholder="e.g., Less ice, Extra spicy, No onion" data-note-input="${id}">
+                  <span class="cart-note-counter" id="cartNoteCounter-${id}">${currentNote.length}/60 max</span>
+                </div>
+                <div class="cart-note-btn-group">
+                  <button type="button" class="cart-note-cancel-btn" data-cancel-note="${id}">Cancel</button>
+                  <button type="button" class="cart-note-save-btn" data-save-note="${id}">Save</button>
+                </div>
+              </div>
+            ` : `
+              <button type="button" class="cart-note-expand-link" id="cartNoteExpandBtn-${id}" data-toggle-note="${id}">
+                <span class="material-symbols-outlined" style="font-size:15px;">note_add</span>
+                <span>Add cooking request / note</span>
+              </button>
+              <div class="cart-note-input-row" id="cartNoteInputRow-${id}" style="display:none;">
+                <div class="cart-note-input-field-wrap">
+                  <input type="text" class="cart-note-input" id="cartNoteInput-${id}" maxlength="60" placeholder="e.g., Less ice, Extra spicy, No onion" data-note-input="${id}">
+                  <span class="cart-note-counter" id="cartNoteCounter-${id}">0/60 max</span>
+                </div>
+                <div class="cart-note-btn-group">
+                  <button type="button" class="cart-note-cancel-btn" data-cancel-note="${id}">Cancel</button>
+                  <button type="button" class="cart-note-save-btn" data-save-note="${id}">Save</button>
+                </div>
+              </div>
+            `}
           </div>
-          <button class="remove-x" data-remove="${id}" title="Remove">
-            <span class="material-symbols-outlined" style="font-size:18px;">close</span>
-          </button>
         </div>
       `;
     })
@@ -2036,21 +2640,19 @@ function renderStudentCart(state) {
   const packing = 10;
   const total = subtotal + packing;
 
-  if (subtotalEl) subtotalEl.textContent = `Rs. ${subtotal}`;
-  if (packingEl) packingEl.textContent = `Rs. ${packing}`;
-  if (totalEl) totalEl.textContent = `Rs. ${total}`;
+  if (subtotalEl) subtotalEl.textContent = `${subtotal}`;
+  if (packingEl) packingEl.textContent = `${packing}`;
+  if (totalEl) totalEl.textContent = `${total}`;
   if (checkoutBtn) checkoutBtn.disabled = false;
   renderPaymentMethodDetails(state);
 }
-
-// Student Orders Page
 function renderOrdersList(state) {
   const homeList = $('#homeOrderList');
   const fullList = $('#ordersFullList');
 
   const makeRowHTML = (o, isFull = false) => {
     const isDone = o.status === 'Picked up';
-    const summary = o.items ? o.items.map((i) => `${i.qty} ${i.name}`).join(', ') : 'Campus Meal';
+    const summary = o.items ? o.items.map((i) => `${i.qty} - ${i.name}`).join(', ') : 'Campus Meal';
 
     return `
       <div class="stub-list-item">
@@ -2062,7 +2664,7 @@ function renderOrdersList(state) {
           <div class="s">${o.token} - ${o.counter || 'Counter'} - ${new Date(o.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
         </div>
         <div>
-          <div class="stub-amt mono">Rs. ${o.total}</div>
+          <div class="stub-amt mono">${o.total}</div>
           <div class="stub-status ${isDone ? 'done' : 'progress'}">${o.status}</div>
         </div>
         ${
@@ -2086,8 +2688,6 @@ function renderOrdersList(state) {
       : '<div class="empty-state" style="padding:48px 0;"><div class="em"><span class="material-symbols-outlined">receipt</span></div>No orders placed yet.<br><button class="mini-btn" style="margin-top:12px;" data-goto="menu">Browse menu</button></div>';
   }
 }
-
-// Spending Bars
 function renderSpendingBars(state) {
   const days = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'];
   const dayTotals = { MON: 0, TUE: 0, WED: 0, THU: 0, FRI: 0, SAT: 0, SUN: 0 };
@@ -2111,7 +2711,7 @@ function renderSpendingBars(state) {
         const pct = Math.round((val / maxSpend) * 100);
         const isPeak = val > 0 && val === maxSpend;
         return `
-          <div class="bar-col ${isPeak ? 'peak' : ''}" title="${day}: Rs. ${val}">
+          <div class="bar-col ${isPeak ? 'peak' : ''}" title="${day}: ${val}">
             <div class="bar" style="height:100%"><span style="height:${pct}%"></span></div>
             <div class="bar-label">${day}</div>
           </div>
@@ -2128,19 +2728,18 @@ function renderSpendingBars(state) {
 
   const homeAmt = $('#homeSpendTotalAmt');
   const homeLbl = $('#homeSpendTotalLbl');
-  if (homeAmt) homeAmt.textContent = `Rs. ${totalSpent}`;
+  if (homeAmt) homeAmt.textContent = `${totalSpent}`;
   if (homeLbl) {
     homeLbl.textContent = totalSpent > 0 ? `spent this week across ${state.orders.length} orders` : 'spent this week - No orders placed yet';
   }
 
   const spAmt = $('#spendingPageTotalAmt');
   const spLbl = $('#spendingPageTotalLbl');
-  if (spAmt) spAmt.textContent = `Rs. ${totalSpent}`;
+  if (spAmt) spAmt.textContent = `${totalSpent}`;
   if (spLbl) {
     spLbl.textContent = totalSpent > 0 ? `total recorded spend across campus counters` : 'total recorded spend - No orders placed yet';
   }
 }
-
 
 function renderShopperStore(state) {
   const grid = $('#shopperGrid');
@@ -2183,13 +2782,16 @@ function renderShopperStore(state) {
       const status = getItemStatus(it);
       const isOut = status === 'out';
       return `
-        <div class="menu-card">
-          <div class="menu-emoji">${renderItemIcon(it.emoji)}</div>
+        <div class="menu-card menu-card--shopper">
+          <div class="shopper-card-media">
+            <img src="${getItemImage(it)}" alt="${escapeHtml(it.name)}" class="shopper-food-img" onerror="this.src='https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&auto=format&fit=crop&q=80'">
+            <span class="food-type-icon ${isVegItem(it) ? 'veg' : 'non-veg'} shopper-veg-badge"></span>
+          </div>
           <div class="menu-info">
-            <div class="mn">${it.name}</div>
-            <div class="mc">${it.cat} - ${it.counter}</div>
+            <div class="mn">${escapeHtml(it.name)}</div>
+            <div class="mc">${it.cat} &bull; ${it.counter}</div>
             <div class="mrow" style="margin-top:8px;">
-              <span class="rec-price mono">Rs. ${it.price}</span>
+              <span class="rec-price mono">Rs ${it.price}</span>
               <div style="display:flex; align-items:center; gap:8px;">
                 ${sbHTML(status)}
                 <button class="dev-btn ${isOut ? '' : 'primary'}" data-shopper-add="${it.id}" ${isOut ? 'disabled' : ''}>
@@ -2226,9 +2828,9 @@ function renderShopperCart(state) {
         <div style="font-size:12px; color:var(--md-sys-color-on-surface-variant); margin-top:4px;">Tap "+ Fast Add" on any item in the store.</div>
       </div>
     `;
-    if (sumSub) sumSub.textContent = 'Rs. 0';
-    if (sumPack) sumPack.textContent = 'Rs. 0';
-    if (sumTot) sumTot.textContent = 'Rs. 0';
+    if (sumSub) sumSub.textContent = '0';
+    if (sumPack) sumPack.textContent = '0';
+    if (sumTot) sumTot.textContent = '0';
     if (btn) btn.disabled = true;
     return;
   }
@@ -2236,19 +2838,22 @@ function renderShopperCart(state) {
   let subtotal = 0;
   list.innerHTML = entries
     .map(([id, qty]) => {
-      const it = state.menuItems.find((m) => m.id === id);
+      const it = findCatalogItem(state, id);
       if (!it) return '';
       const lineTotal = it.price * qty;
       subtotal += lineTotal;
       return `
         <div class="cart-line">
-          <div class="menu-emoji" style="width:36px; height:36px;">${renderItemIcon(it.emoji)}</div>
+          <div class="cart-food-thumb">
+            <img src="${getItemImage(it)}" alt="${escapeHtml(it.name)}" class="cart-item-img" onerror="this.src='https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&auto=format&fit=crop&q=80'">
+            <span class="food-type-icon ${isVegItem(it) ? 'veg' : 'non-veg'} cart-food-dot"></span>
+          </div>
           <div class="stub-info">
-            <div class="t">${it.name}</div>
-            <div class="s mono">Rs. ${it.price} each</div>
+            <div class="t">${escapeHtml(it.name)}</div>
+            <div class="s mono">Rs ${it.price} each &bull; Rs ${lineTotal}</div>
           </div>
           <div class="qty-ctrl">
-            <button data-shopper-dec="${id}"></button>
+            <button data-shopper-dec="${id}">-</button>
             <span>${qty}</span>
             <button data-shopper-inc="${id}">+</button>
           </div>
@@ -2259,9 +2864,9 @@ function renderShopperCart(state) {
 
   const packing = 10;
   const total = subtotal + packing;
-  if (sumSub) sumSub.textContent = `Rs. ${subtotal}`;
-  if (sumPack) sumPack.textContent = `Rs. ${packing}`;
-  if (sumTot) sumTot.textContent = `Rs. ${total}`;
+  if (sumSub) sumSub.textContent = `${subtotal}`;
+  if (sumPack) sumPack.textContent = `${packing}`;
+  if (sumTot) sumTot.textContent = `${total}`;
   if (btn) btn.disabled = false;
 }
 
@@ -2289,10 +2894,10 @@ function renderShopperReceipts(state) {
         </div>
         <div class="stub-info">
           <div class="t">${o.token} - ${o.customerName}</div>
-          <div class="s">${o.items.map((i) => `${i.qty} ${i.name}`).join(', ')}</div>
+          <div class="s">${o.items.map((i) => `${i.qty} - ${i.name}`).join(', ')}</div>
         </div>
         <div>
-          <div class="stub-amt mono">Rs. ${o.total}</div>
+          <div class="stub-amt mono">${o.total}</div>
           <div class="stub-status ${o.status === 'Picked up' ? 'done' : 'progress'}">${o.status}</div>
         </div>
         <div class="stub-actions">
@@ -2302,7 +2907,6 @@ function renderShopperReceipts(state) {
     `)
     .join('');
 }
-
 
 
 let kitchenAlertsMuted = typeof localStorage !== 'undefined' && localStorage.getItem('invenTrack_kitchen_muted') === 'true';
@@ -2485,13 +3089,20 @@ function renderKitchenKanban(state) {
 
         const isNewPulse = recentNewOrderIds.has(o.id);
         const timeStr = new Date(orderTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-        const itemsList = o.items
+        const itemsList = (o.items || [])
           .map(
             (i) => `
               <div class="kanban-item-line">
-                <span><strong>${i.qty} - </strong> ${i.name}</span>
+                <span><strong>${i.qty} - </strong> ${escapeHtml(i.name)}</span>
                 <span class="mono">Rs ${i.price * i.qty}</span>
               </div>
+              ${i.note ? `
+                <div class="kanban-item-note-chip">
+                  <span class="material-symbols-outlined note-chip-icon">edit_note</span>
+                  <span class="note-chip-label">Note:</span>
+                  <strong class="note-chip-text">${escapeHtml(i.note)}</strong>
+                </div>
+              ` : ''}
             `
           )
           .join('');
@@ -2559,7 +3170,7 @@ function renderKitchenStock(state) {
               </div>
               <div>
                 <strong>${it.name}</strong>
-                <div style="font-size:11px; color:var(--md-sys-color-on-surface-variant);">${it.cat} - Rs. ${it.price}</div>
+                <div style="font-size:11px; color:var(--md-sys-color-on-surface-variant);">${it.cat} - ${it.price}</div>
               </div>
             </div>
           </td>
@@ -2573,7 +3184,7 @@ function renderKitchenStock(state) {
           <td class="mono" style="font-weight:700;">${it.stock}</td>
           <td>
             <div class="inline-stock-ctrl">
-              <button data-stock-dec="${it.id}" title="Decrease stock"></button>
+              <button data-stock-dec="${it.id}" title="Decrease stock">'</button>
               <span>${it.stock}</span>
               <button data-stock-inc="${it.id}" title="Increase stock">+</button>
             </div>
@@ -2610,9 +3221,11 @@ function renderKitchenPos(state) {
             const isOut = it.stock <= 0;
             return `
               <button class="pos-item-btn" data-pos-add="${it.id}" ${isOut ? 'disabled' : ''}>
-                <span class="pos-item-emoji">${renderItemIcon(it.emoji)}</span>
-                <span class="pos-item-name">${it.name}</span>
-                <span class="pos-item-price">Rs. ${it.price} (${it.stock} left)</span>
+                <span class="pos-item-thumb">
+                  <img src="${getItemImage(it)}" alt="${escapeHtml(it.name)}" class="pos-thumb-img" onerror="this.src='https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&auto=format&fit=crop&q=80'">
+                </span>
+                <span class="pos-item-name">${escapeHtml(it.name)}</span>
+                <span class="pos-item-price">Rs ${it.price} (${it.stock} left)</span>
               </button>
             `;
           })
@@ -2624,9 +3237,9 @@ function renderKitchenPos(state) {
     const entries = Object.entries(state.posCart);
     if (!entries.length) {
       lines.innerHTML = '<div style="padding:16px 0; text-align:center; color:var(--md-sys-color-on-surface-variant); font-size:12px;">Register bill empty. Tap items to add.</div>';
-      if (subEl) subEl.textContent = 'Rs. 0';
-      if (packEl) packEl.textContent = 'Rs. 0';
-      if (totEl) totEl.textContent = 'Rs. 0';
+      if (subEl) subEl.textContent = '0';
+      if (packEl) packEl.textContent = '0';
+      if (totEl) totEl.textContent = '0';
       if (submitBtn) submitBtn.disabled = true;
       return;
     }
@@ -2634,20 +3247,23 @@ function renderKitchenPos(state) {
     let subtotal = 0;
     lines.innerHTML = entries
       .map(([id, qty]) => {
-        const it = state.menuItems.find((m) => m.id === id);
+        const it = findCatalogItem(state, id);
         if (!it) return '';
         const lineTotal = it.price * qty;
         subtotal += lineTotal;
         return `
-          <div style="display:flex; justify-content:space-between; align-items:center; padding:6px 0; font-size:12.5px;">
-            <div>
-              <strong>${it.name}</strong>
-              <div style="font-size:11px; color:var(--md-sys-color-on-surface-variant);">Rs. ${it.price}  ${qty}</div>
+          <div style="display:flex; justify-content:space-between; align-items:center; padding:8px 0; font-size:12.5px; border-bottom:1px solid var(--md-sys-color-outline-variant);">
+            <div style="display:flex; align-items:center; gap:8px;">
+              <img src="${getItemImage(it)}" alt="${escapeHtml(it.name)}" style="width:34px; height:34px; border-radius:6px; object-fit:cover;" onerror="this.src='https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&auto=format&fit=crop&q=80'">
+              <div>
+                <strong>${escapeHtml(it.name)}</strong>
+                <div style="font-size:11px; color:var(--md-sys-color-on-surface-variant);">Rs ${it.price} &bull; ${qty}x</div>
+              </div>
             </div>
             <div style="display:flex; align-items:center; gap:8px;">
-              <span class="mono" style="font-weight:700;">Rs. ${lineTotal}</span>
+              <span class="mono" style="font-weight:700;">Rs ${lineTotal}</span>
               <div class="inline-stock-ctrl">
-                <button data-pos-dec="${id}"></button>
+                <button data-pos-dec="${id}">-</button>
                 <span>${qty}</span>
                 <button data-pos-inc="${id}">+</button>
               </div>
@@ -2659,9 +3275,9 @@ function renderKitchenPos(state) {
 
     const packing = entries.length ? 10 : 0;
     const total = subtotal + packing;
-    if (subEl) subEl.textContent = `Rs. ${subtotal}`;
-    if (packEl) packEl.textContent = `Rs. ${packing}`;
-    if (totEl) totEl.textContent = `Rs. ${total}`;
+    if (subEl) subEl.textContent = `${subtotal}`;
+    if (packEl) packEl.textContent = `${packing}`;
+    if (totEl) totEl.textContent = `${total}`;
     if (submitBtn) submitBtn.disabled = false;
   }
 }
@@ -2690,7 +3306,7 @@ function renderKitchenFeedback(state) {
         <div class="stub-info">
           <div class="t">
             <strong>${fb.studentName}</strong> - 
-            <span style="color:var(--md-sys-color-primary); font-weight:700;">${''.repeat(fb.rating)}</span> 
+            <span style="color:var(--md-sys-color-primary); font-weight:700;">${'...'.repeat(fb.rating)}</span> 
             <span class="dev-fixture-badge" style="margin-left:6px;">${fb.category}</span>
           </div>
           <div class="s" style="margin-top:4px; font-size:12.5px; color:var(--md-sys-color-on-surface);">${fb.comment}</div>
@@ -2701,12 +3317,11 @@ function renderKitchenFeedback(state) {
     .join('');
 }
 
-
 function renderAdminOverview(state) {
   const rev = state.orders.reduce((sum, o) => sum + (o.total || 0), 0);
   const revEl = $('#metricTotalRevenue');
   const revSub = $('#metricTotalRevenueSub');
-  if (revEl) revEl.textContent = `Rs. ${rev}`;
+  if (revEl) revEl.textContent = `${rev}`;
   if (revSub) revSub.textContent = `Across ${state.orders.length} total orders`;
 
   const volEl = $('#metricOrderVolume');
@@ -2831,7 +3446,7 @@ function renderAdminAudit(state) {
           <td>${sbHTML(status)}</td>
           <td>
             <span style="color:${isCritical ? 'var(--md-sys-color-low)' : 'var(--md-sys-color-avail)'}; font-weight:600; font-size:12px;">
-              ${isCritical ? ' Urgent Restock' : ' Normal'}
+              ${isCritical ? 'Urgent Restock' : 'Normal'}
             </span>
           </td>
           <td>
@@ -2873,14 +3488,13 @@ function exportAuditCsv(state) {
   toast('Audit CSV exported successfully!', 'download');
 }
 
-
 function showReceiptModal(order) {
   const modal = $('#receiptModal');
   if (!modal || !order) return;
 
   $('#modalTokenNum').textContent = order.token;
   $('#modalCounterName').textContent = order.counter || 'Campus Dining Counter';
-  $('#modalTotalPaid').textContent = `Rs. ${order.total}`;
+  $('#modalTotalPaid').textContent = `${order.total}`;
   $('#modalReceiptStatus').textContent = order.status;
 
   const lines = $('#modalReceiptLines');
@@ -2888,9 +3502,12 @@ function showReceiptModal(order) {
     lines.innerHTML = (order.items || [])
       .map(
         (it) => `
-          <div class="receipt-row">
-            <span>${it.qty} ${it.name}</span>
-            <span class="mono">Rs. ${it.price * it.qty}</span>
+          <div class="receipt-row" style="flex-direction:column; align-items:flex-start; gap:2px;">
+            <div style="display:flex; justify-content:space-between; width:100%;">
+              <span>${it.qty} - ${escapeHtml(it.name)}</span>
+              <span class="mono">${it.price * it.qty}</span>
+            </div>
+            ${it.note ? `<div style="font-size:11.5px; color:#b45309; font-weight:600; display:flex; align-items:center; gap:4px; padding-left:4px;"><span class="material-symbols-outlined" style="font-size:13px;">edit_note</span>Note: ${escapeHtml(it.note)}</div>` : ''}
           </div>
         `
       )
@@ -2902,7 +3519,7 @@ function showReceiptModal(order) {
         </div>
         <div class="receipt-row" style="color:var(--md-sys-color-on-surface-variant); font-size:12px;">
           <span>Packaging Fee</span>
-          <span class="mono">Rs. ${order.packing || 10}</span>
+          <span class="mono">${order.packing || 10}</span>
         </div>
       `;
   }
@@ -2914,7 +3531,6 @@ function hideReceiptModal() {
   const modal = $('#receiptModal');
   if (modal) modal.classList.add('hide');
 }
-
 
 function setupEventHandlers() {
 
@@ -2974,7 +3590,27 @@ function setupEventHandlers() {
     });
   }
 
-  // 1. Role Switcher (Admin Only)
+  const devPillBtn = $('#devPillToggle');
+  const devPill = $('#devPersonaPill');
+  if (devPillBtn && devPill) {
+    devPillBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      devPill.classList.toggle('open');
+    });
+    document.addEventListener('click', (e) => {
+      if (!devPill.contains(e.target)) {
+        devPill.classList.remove('open');
+      }
+    });
+    $$('#devPillMenu .dev-pill-btn').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const targetRole = btn.dataset.role;
+        store.setRole(targetRole);
+        devPill.classList.remove('open');
+      });
+    });
+  }
+
   const roleSwitcher = $('#roleSwitcher');
   if (roleSwitcher) {
     roleSwitcher.addEventListener('click', (e) => {
@@ -2982,7 +3618,7 @@ function setupEventHandlers() {
       if (!btn) return;
       const userRole = (store.state.currentUser && store.state.currentUser.role) || 'user';
       if (userRole !== 'admin') {
-        toast(' Access Restricted: The top bar role switcher is exclusively available for Administrators.', 'error');
+        toast('Access Restricted: The top bar role switcher is exclusively available for Administrators.', 'error');
         return;
       }
       const newRole = btn.dataset.role;
@@ -2990,12 +3626,52 @@ function setupEventHandlers() {
       toast(`Switched perspective to ${roleLabels[newRole] || newRole}`, 'sync');
     });
   }
+  const sidebar = $('#appSidebar');
+  const drawerBackdrop = $('#drawerBackdrop');
+  function openMobileDrawer() {
+    if (sidebar) sidebar.classList.add('open');
+    if (drawerBackdrop) drawerBackdrop.classList.add('show');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeMobileDrawer() {
+    if (sidebar) sidebar.classList.remove('open');
+    if (drawerBackdrop) drawerBackdrop.classList.remove('show');
+    document.body.style.overflow = '';
+  }
 
-    document.addEventListener('click', (e) => {
+  const mobileMenuBtn = $('#mobileMenuBtn');
+  if (mobileMenuBtn) mobileMenuBtn.addEventListener('click', openMobileDrawer);
+
+  const drawerCloseBtn = $('#drawerCloseBtn');
+  if (drawerCloseBtn) drawerCloseBtn.addEventListener('click', closeMobileDrawer);
+
+  if (drawerBackdrop) drawerBackdrop.addEventListener('click', closeMobileDrawer);
+
+  const bottomMoreBtns = [$('#bottomMoreBtn'), $('#bottomMoreKitchenBtn'), $('#bottomMoreAdminBtn')];
+  bottomMoreBtns.forEach((btn) => {
+    if (btn) btn.addEventListener('click', openMobileDrawer);
+  });
+  const mobileThemeToggleBtn = $('#mobileThemeToggleBtn');
+  if (mobileThemeToggleBtn) {
+    mobileThemeToggleBtn.addEventListener('click', () => {
+      const isKitchen = document.body.getAttribute('data-theme') === 'kitchen';
+      if (isKitchen) {
+        document.body.removeAttribute('data-theme');
+        const icon = $('#mobileThemeIcon');
+        if (icon) icon.textContent = 'dark_mode';
+      } else {
+        document.body.setAttribute('data-theme', 'kitchen');
+        const icon = $('#mobileThemeIcon');
+        if (icon) icon.textContent = 'light_mode';
+      }
+    });
+  }
+  document.addEventListener('click', (e) => {
     const navBtn = e.target.closest('.nav-item[data-page], .m3-bottom-nav-item[data-page]');
     if (navBtn) {
       const pageKey = navBtn.dataset.page;
       store.setPage(pageKey);
+      closeMobileDrawer();
       window.scrollTo({ top: 0, behavior: 'smooth' });
       return;
     }
@@ -3004,12 +3680,30 @@ function setupEventHandlers() {
     if (gotoBtn) {
       const pageKey = gotoBtn.dataset.goto;
       store.setPage(pageKey);
+      closeMobileDrawer();
       window.scrollTo({ top: 0, behavior: 'smooth' });
       return;
     }
   });
+    const themeToggleBtn = $('#themeToggleBtn');
+  if (themeToggleBtn) {
+    themeToggleBtn.addEventListener('click', (e) => {
+      if (typeof window.toggleInvenTrackTheme === 'function') {
+        window.toggleInvenTrackTheme(e);
+      } else {
+        const isDark = document.body.getAttribute('data-theme') === 'kitchen';
+        if (isDark) {
+          document.body.removeAttribute('data-theme');
+          document.documentElement.removeAttribute('data-theme');
+        } else {
+          document.body.setAttribute('data-theme', 'kitchen');
+          document.documentElement.setAttribute('data-theme', 'kitchen');
+        }
+      }
+    });
+  }
 
-    const themeToggle = $('#themeToggle');
+  const themeToggle = $('#themeToggle');
   if (themeToggle) {
     themeToggle.addEventListener('click', (e) => {
       const btn = e.target.closest('button[data-mode]');
@@ -3022,8 +3716,7 @@ function setupEventHandlers() {
       $$('#themeToggle button[data-mode]').forEach((b) => b.classList.toggle('on', b === btn));
     });
   }
-
-    const bellBtn = $('#bellBtn');
+  const bellBtn = $('#bellBtn');
   if (bellBtn) {
     bellBtn.addEventListener('click', (e) => {
       e.stopPropagation();
@@ -3037,8 +3730,7 @@ function setupEventHandlers() {
       if (notif) notif.classList.remove('open');
     }
   });
-
-    const searchInput = $('#searchInput');
+  const searchInput = $('#searchInput');
   if (searchInput) {
     searchInput.addEventListener('input', (e) => {
       if (store.state.activeRole === 'user' || store.state.activeRole === 'student') {
@@ -3047,8 +3739,7 @@ function setupEventHandlers() {
       }
     });
   }
-
-    document.addEventListener('click', (e) => {
+  document.addEventListener('click', (e) => {
     const chip = e.target.closest('.filter-chip[data-cat]');
     if (chip) {
       store.state.activeCat = chip.dataset.cat;
@@ -3079,8 +3770,7 @@ function setupEventHandlers() {
       renderKitchenKanban(store.state);
     });
   }
-
-    document.addEventListener('click', (e) => {
+  document.addEventListener('click', (e) => {
     const addBtn = e.target.closest('[data-add]');
     if (addBtn) {
       triggerHaptic(50);
@@ -3108,9 +3798,100 @@ function setupEventHandlers() {
       store.removeCartItem(removeBtn.dataset.remove);
       return;
     }
+
+    // Expand cooking request input
+    const toggleNoteBtn = e.target.closest('[data-toggle-note]');
+    if (toggleNoteBtn) {
+      triggerHaptic(40);
+      const id = toggleNoteBtn.dataset.toggleNote;
+      const inputRow = document.getElementById(`cartNoteInputRow-${id}`);
+      if (inputRow) {
+        inputRow.style.display = 'flex';
+        toggleNoteBtn.style.display = 'none';
+        const input = document.getElementById(`cartNoteInput-${id}`);
+        if (input) input.focus();
+      }
+      return;
+    }
+
+    // Edit cooking request note
+    const editNoteBtn = e.target.closest('[data-edit-note]');
+    if (editNoteBtn) {
+      triggerHaptic(40);
+      const id = editNoteBtn.dataset.editNote;
+      const activePill = document.getElementById(`cartNoteActive-${id}`);
+      const inputRow = document.getElementById(`cartNoteInputRow-${id}`);
+      if (activePill) activePill.style.display = 'none';
+      if (inputRow) {
+        inputRow.style.display = 'flex';
+        const input = document.getElementById(`cartNoteInput-${id}`);
+        if (input) {
+          input.focus();
+          input.select();
+        }
+      }
+      return;
+    }
+
+    // Cancel cooking request edit
+    const cancelNoteBtn = e.target.closest('[data-cancel-note]');
+    if (cancelNoteBtn) {
+      triggerHaptic(30);
+      renderStudentCart(store.state);
+      return;
+    }
+
+    // Save cooking request note
+    const saveNoteBtn = e.target.closest('[data-save-note]');
+    if (saveNoteBtn) {
+      triggerHaptic(50);
+      const id = saveNoteBtn.dataset.saveNote;
+      const input = document.getElementById(`cartNoteInput-${id}`);
+      const noteVal = input ? input.value : '';
+      store.setCartItemNote(id, noteVal);
+      toast('Cooking request saved', 'check');
+      renderStudentCart(store.state);
+      return;
+    }
+
+    // Clear cooking request note
+    const clearNoteBtn = e.target.closest('[data-clear-note]');
+    if (clearNoteBtn) {
+      triggerHaptic(40);
+      const id = clearNoteBtn.dataset.clearNote;
+      store.setCartItemNote(id, '');
+      toast('Cooking note removed', 'delete');
+      renderStudentCart(store.state);
+      return;
+    }
   });
 
-    const paymentGrid = $('#paymentOptions');
+  // Note live character counter
+  document.addEventListener('input', (e) => {
+    const noteInput = e.target.closest('[data-note-input]');
+    if (noteInput) {
+      const id = noteInput.dataset.noteInput;
+      const counterEl = document.getElementById(`cartNoteCounter-${id}`);
+      if (counterEl) {
+        counterEl.textContent = `${noteInput.value.length}/60 max`;
+      }
+    }
+  });
+
+  // Save note on Enter key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      const noteInput = e.target.closest('[data-note-input]');
+      if (noteInput) {
+        e.preventDefault();
+        const id = noteInput.dataset.noteInput;
+        store.setCartItemNote(id, noteInput.value);
+        toast('Cooking request saved', 'check');
+        renderStudentCart(store.state);
+      }
+    }
+  });
+  const paymentGrid = $('#paymentOptions');
   if (paymentGrid) {
     paymentGrid.addEventListener('click', (e) => {
       const chip = e.target.closest('.payment-chip');
@@ -3122,8 +3903,7 @@ function setupEventHandlers() {
       triggerHaptic(40);
     });
   }
-
-    const checkoutBtn = $('#checkoutBtn');
+  const checkoutBtn = $('#checkoutBtn');
   if (checkoutBtn) {
     checkoutBtn.addEventListener('click', () => {
       triggerHaptic(60);
@@ -3147,11 +3927,17 @@ function setupEventHandlers() {
         role: 'User',
         counter,
         paymentMethod,
-        pickupTime
+        pickupTime,
+        cartNotes: store.state.cartNotes
       });
 
       if (order) {
         store.state.cart = {};
+        store.state.cartNotes = {};
+        try {
+          localStorage.removeItem('invenTrack_cart');
+          localStorage.removeItem('invenTrack_cart_notes');
+        } catch (e) {}
         store.save();
         toast(`Order ${order.token} placed successfully!`, 'check_circle');
         showReceiptModal(order);
@@ -3159,16 +3945,14 @@ function setupEventHandlers() {
       }
     });
   }
-
-    const advanceBtn = $('#advanceBtn');
+  const advanceBtn = $('#advanceBtn');
   if (advanceBtn) {
     advanceBtn.addEventListener('click', () => {
       const orderId = advanceBtn.dataset.orderId;
       if (orderId) store.advanceOrderStatus(orderId);
     });
   }
-
-    document.addEventListener('click', (e) => {
+  document.addEventListener('click', (e) => {
     const shopperAdd = e.target.closest('[data-shopper-add]');
     if (shopperAdd) {
       store.addToShopperCart(shopperAdd.dataset.shopperAdd);
@@ -3209,16 +3993,14 @@ function setupEventHandlers() {
       }
     });
   }
-
-    document.addEventListener('click', (e) => {
+  document.addEventListener('click', (e) => {
     const kAdvance = e.target.closest('[data-kitchen-advance]');
     if (kAdvance) {
       store.advanceOrderStatus(kAdvance.dataset.kitchenAdvance);
       return;
     }
   });
-
-    document.addEventListener('click', (e) => {
+  document.addEventListener('click', (e) => {
     const stockInc = e.target.closest('[data-stock-inc]');
     if (stockInc) {
       store.adjustStock(stockInc.dataset.stockInc, 1);
@@ -3249,8 +4031,7 @@ function setupEventHandlers() {
       return;
     }
   });
-
-    document.addEventListener('click', (e) => {
+  document.addEventListener('click', (e) => {
     const posAdd = e.target.closest('[data-pos-add]');
     if (posAdd) {
       store.addToPosCart(posAdd.dataset.posAdd);
@@ -3300,8 +4081,7 @@ function setupEventHandlers() {
       }
     });
   }
-
-    document.addEventListener('click', (e) => {
+  document.addEventListener('click', (e) => {
     const viewBtn = e.target.closest('[data-view-receipt]');
     if (viewBtn) {
       const order = store.state.orders.find((o) => o.id === viewBtn.dataset.viewReceipt);
@@ -3321,12 +4101,11 @@ function setupEventHandlers() {
       if (e.target === modalBackdrop) hideReceiptModal();
     });
   }
-
-    const enterTopBtn = $('#enterExampleDataBtnTop');
+  const enterTopBtn = $('#enterExampleDataBtnTop');
   if (enterTopBtn) {
     enterTopBtn.addEventListener('click', () => {
       store.generateRandomExampleData();
-      toast(' Random example campus data injected!', 'casino');
+      toast('Random example campus data injected!', 'casino');
     });
   }
 
@@ -3334,7 +4113,7 @@ function setupEventHandlers() {
   if (clearTopBtnEl) {
     clearTopBtnEl.addEventListener('click', () => {
       store.resetToEmptyState();
-      toast(' All data cleared. Website is now empty [].', 'delete_sweep');
+      toast('All data cleared. Website is now empty [].', 'delete_sweep');
     });
   }
 
@@ -3342,7 +4121,7 @@ function setupEventHandlers() {
   if (loadFixtureBtn) {
     loadFixtureBtn.addEventListener('click', () => {
       store.generateRandomExampleData();
-      toast(' Random example campus data injected!', 'casino');
+      toast('Random example campus data injected!', 'casino');
     });
   }
 
@@ -3350,15 +4129,14 @@ function setupEventHandlers() {
   if (resetDataBtn) {
     resetDataBtn.addEventListener('click', () => {
       store.resetToEmptyState();
-      toast(' State reset to empty schema []', 'restart_alt');
+      toast('State reset to empty schema []', 'restart_alt');
     });
   }
-
-    const openItemBtn = $('#openAddItemModalBtn');
+  const openItemBtn = $('#openAddItemModalBtn');
   if (openItemBtn) {
     openItemBtn.addEventListener('click', () => {
       if (!store.hasPermission('canEditMenu')) {
-        toast(' Permission Denied: Users cannot alter menu details or add items.', 'error');
+        toast('Permission Denied: Users cannot alter menu details or add items.', 'error');
         return;
       }
       store.setRole('admin');
@@ -3370,7 +4148,7 @@ function setupEventHandlers() {
   if (openItemBtnStock) {
     openItemBtnStock.addEventListener('click', () => {
       if (!store.hasPermission('canEditMenu')) {
-        toast(' Permission Denied: Users cannot alter menu details or add items.', 'error');
+        toast('Permission Denied: Users cannot alter menu details or add items.', 'error');
         return;
       }
       store.setRole('admin');
@@ -3382,14 +4160,12 @@ function setupEventHandlers() {
   if (openItemBtnAdmin) {
     openItemBtnAdmin.addEventListener('click', () => {
       if (!store.hasPermission('canEditMenu')) {
-        toast(' Permission Denied: Users cannot alter menu details or add items.', 'error');
+        toast('Permission Denied: Users cannot alter menu details or add items.', 'error');
         return;
       }
       store.setPage('admin-items');
     });
   }
-
-  // Staff Mode Testing Toggle
   const toggleStaffBtn = $('#toggleStaffUnlockBtn');
   if (toggleStaffBtn) {
     toggleStaffBtn.addEventListener('click', () => {
@@ -3420,13 +4196,11 @@ function setupEventHandlers() {
       store.setPage('admin-audit');
     });
   }
-
-    const exportCsvBtn = $('#exportCsvBtn');
+  const exportCsvBtn = $('#exportCsvBtn');
   if (exportCsvBtn) {
     exportCsvBtn.addEventListener('click', () => exportAuditCsv(store.state));
   }
-
-    let selectedStars = 0;
+  let selectedStars = 0;
   let selectedFeedbackCat = 'Food Quality';
 
   const starRow = $('#starRow');
@@ -3466,8 +4240,7 @@ function setupEventHandlers() {
       $$('#starRow .star').forEach((s) => s.classList.remove('on'));
     });
   }
-
-    const qUser = $('#quickLoginUser');
+  const qUser = $('#quickLoginUser');
   if (qUser) {
     qUser.addEventListener('click', () => {
       store.login('user@student.campus.edu', 'Rohan Sharma');
@@ -3516,8 +4289,70 @@ function setupEventHandlers() {
       store.logout();
     });
   }
-}
 
+  document.addEventListener('click', (e) => {
+    const navItem = e.target.closest('[data-page]');
+    if (navItem) {
+      const pageKey = navItem.dataset.page;
+      const rawRole = (store.state.currentUser && (store.state.currentUser.role || (window.getUserRole ? window.getUserRole(store.state.currentUser.email) : 'student'))) || 'student';
+      const role = (rawRole === 'student' || rawRole === 'user') ? 'student' : rawRole;
+      if (role === 'student' && (pageKey.startsWith('admin-') || pageKey.startsWith('kitchen-'))) {
+        e.preventDefault();
+        e.stopPropagation();
+        alert("Access denied: Students cannot access this section");
+        const isLocal = window.location.protocol === 'file:';
+        window.location.replace(isLocal ? 'student-dashboard.html' : '/student-dashboard.html');
+        return;
+      }
+      if (role === 'kitchen' && pageKey.startsWith('admin-')) {
+        e.preventDefault();
+        e.stopPropagation();
+        alert("Access denied: Kitchen staff cannot access Admin Dashboard");
+        store.setPage('kitchen-kanban');
+        return;
+      }
+    }
+    const roleBtn = e.target.closest('.role-btn[data-role]');
+    if (roleBtn) {
+      const targetRole = roleBtn.dataset.role;
+      const rawRole = (store.state.currentUser && (store.state.currentUser.role || (window.getUserRole ? window.getUserRole(store.state.currentUser.email) : 'student'))) || 'student';
+      const role = (rawRole === 'student' || rawRole === 'user') ? 'student' : rawRole;
+      if (role === 'student' && (targetRole === 'admin' || targetRole === 'kitchen')) {
+        e.preventDefault();
+        e.stopPropagation();
+        alert("Access denied: Students cannot access this section");
+        const isLocal = window.location.protocol === 'file:';
+        window.location.replace(isLocal ? 'student-dashboard.html' : '/student-dashboard.html');
+        return;
+      }
+      if (role === 'kitchen' && targetRole === 'admin') {
+        e.preventDefault();
+        e.stopPropagation();
+        alert("Access denied: Kitchen staff cannot access Admin Dashboard");
+        return;
+      }
+    }
+  }, true);
+
+  window.addEventListener('hashchange', () => {
+    const hash = (window.location.hash || '').replace('#', '');
+    if (!hash) return;
+    const rawRole = (store.state.currentUser && (store.state.currentUser.role || (window.getUserRole ? window.getUserRole(store.state.currentUser.email) : 'student'))) || 'student';
+    const role = (rawRole === 'student' || rawRole === 'user') ? 'student' : rawRole;
+    if (role === 'student' && (hash.startsWith('admin') || hash.startsWith('kitchen'))) {
+      alert("Access denied: Students cannot access this section");
+      const isLocal = window.location.protocol === 'file:';
+      window.location.replace(isLocal ? 'student-dashboard.html' : '/student-dashboard.html');
+      return;
+    }
+    if (role === 'kitchen' && hash.startsWith('admin')) {
+      alert("Access denied: Kitchen staff cannot access Admin Dashboard");
+      store.setPage('kitchen-kanban');
+      return;
+    }
+    store.setPage(hash);
+  });
+}
 
 function renderApp(state) {
   renderShell(state);
@@ -3544,16 +4379,11 @@ function renderApp(state) {
   renderAdminOverview(state);
   renderAdminAudit(state);
 }
-
-// Subscribe renderer to reactive store
 store.subscribe((state) => {
   renderApp(state);
 });
-
-// Setup event delegation and perform initial render
 setupEventHandlers();
 renderApp(store.state);
-
 try {
   if ('BroadcastChannel' in window) {
     const authChannel = new BroadcastChannel('inventrack_auth');
@@ -3615,6 +4445,49 @@ window.addEventListener('storage', (e) => {
     }
   }
 });
+
+
+(async function initFirebaseObserver() {
+  if (typeof window === 'undefined' || !window.__FIREBASE_CONFIG__) return;
+  try {
+    const { initializeApp } = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js");
+    const { getAuth, onAuthStateChanged } = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js");
+    const app = initializeApp(window.__FIREBASE_CONFIG__);
+    const auth = getAuth(app);
+    window.__FIREBASE_AUTH__ = auth;
+
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        const determinedRole = window.getUserRole ? window.getUserRole(user.email) : 'student';
+        if (store.state.currentUser) {
+          store.state.currentUser.email = user.email;
+          store.state.currentUser.role = determinedRole;
+          store.state.currentUser.name = user.displayName || store.state.currentUser.name;
+          store.state.currentUser.photoURL = user.photoURL || store.state.currentUser.photoURL;
+        }
+        if (determinedRole === 'student' || determinedRole === 'user') {
+          const currentPage = store.state.activePage || '';
+          if (currentPage.startsWith('admin-') || currentPage.startsWith('kitchen-')) {
+            alert("Access denied: Students cannot access this section");
+            const isLocal = window.location.protocol === 'file:';
+            window.location.replace(isLocal ? 'student-dashboard.html' : '/student-dashboard.html');
+            return;
+          }
+        } else if (determinedRole === 'kitchen') {
+          const currentPage = store.state.activePage || '';
+          if (currentPage.startsWith('admin-')) {
+            alert("Access denied: Kitchen staff cannot access Admin Dashboard");
+            store.setPage('kitchen-kanban');
+            return;
+          }
+        }
+        renderApp(store.state);
+      }
+    });
+  } catch(e) {
+    console.warn('Firebase observer init in app.js:', e);
+  }
+})();
 
 
 // Live Aging Ticker for Kitchen Kanban
