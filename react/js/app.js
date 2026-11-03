@@ -1622,7 +1622,7 @@ function renderCounterStrip(state) {
           </div>
           <div class="counter-content">
             <div class="counter-meta">
-              <span class="counter-name">${it.name}</span>
+              <span class="counter-name" title="${escapeHtml(it.name)}">${it.name}</span>
               ${sbHTML(status)}
             </div>
             <div class="stock-count">${it.stock} servings left &bull; <span style="color:var(--md-sys-color-on-surface-variant); font-size:11px;">${it.restockTime || '15 min'}</span></div>

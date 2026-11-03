@@ -1013,14 +1013,20 @@ main {
   padding: 12px;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 8px;
+  min-width: 0;
+  overflow: hidden;
+  box-sizing: border-box;
+  position: relative;
 }
 
 .counter-meta {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 8px;
+  gap: 6px;
+  width: 100%;
+  min-width: 0;
 }
 
 .counter-name {
@@ -1029,15 +1035,24 @@ main {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  flex: 1 1 auto;
+  min-width: 0;
+  text-align: left;
 }
 
 .stock-count {
   font-size: 11px;
   color: var(--md-sys-color-on-surface-variant);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+  text-align: left;
 }
 
 .gauge {
   height: 6px;
+  width: 100%;
   background-color: var(--md-sys-color-surface-container-highest);
   border-radius: var(--md-sys-shape-corner-full);
   overflow: hidden;
@@ -1060,6 +1075,8 @@ main {
   gap: 4px;
   text-transform: uppercase;
   letter-spacing: 0.04em;
+  flex-shrink: 0;
+  white-space: nowrap;
 }
 
 .status-badge.available {
