@@ -3598,6 +3598,7 @@ textarea {
 
 /* Sticky Mobile Cart Bar */
 .sticky-cart-bar {
+  display: none !important;
   position: fixed;
   left: 16px;
   right: 16px;
@@ -3840,6 +3841,7 @@ body.has-sticky-cart .floating-token-bar {
 
 @media (min-width: 769px) {
   .sticky-cart-bar {
+  display: none !important;
     max-width: 440px;
     left: auto;
     right: 24px;
@@ -8192,28 +8194,7 @@ function renderShell(state) {
     if (sideRole) sideRole.textContent = 'Sign In to Access';
   }
 
-  // Sticky Mobile Cart Bar
-  const stickyCartBar = $('#stickyCartBar');
-  const stickyCartCount = $('#stickyCartCount');
-  const stickyCartTotal = $('#stickyCartTotal');
-  const cartItemCount = Object.values(state.cart || {}).reduce((s, q) => s + q, 0);
-  if (stickyCartBar) {
-    if (cartItemCount > 0 && state.activePage !== 'cart') {
-      stickyCartBar.classList.remove('hide');
-      document.body.classList.add('has-sticky-cart');
-      if (stickyCartCount) stickyCartCount.textContent = `${cartItemCount} ${cartItemCount === 1 ? 'item' : 'items'}`;
-      if (stickyCartTotal) {
-        const total = Object.entries(state.cart || {}).reduce((sum, [id, qty]) => {
-          const item = (state.catalog || []).find((c) => c.id === id);
-          return sum + (item ? item.price * qty : 0);
-        }, 0);
-        stickyCartTotal.textContent = `Rs ${total}`;
-      }
-    } else {
-      stickyCartBar.classList.add('hide');
-      document.body.classList.remove('has-sticky-cart');
-    }
-  }
+
 
   // Persistent Floating Active Token Bar
   const floatingTokenBar = $('#floatingTokenBar');
@@ -10456,14 +10437,7 @@ function setupEventHandlers() {
     }
   });
 
-  const stickyCartBtn = $('#stickyCartBtn');
-  if (stickyCartBtn) {
-    stickyCartBtn.addEventListener('click', () => {
-      triggerHaptic(50);
-      store.setPage('cart');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
-  }
+
 
   const floatingTokenBar = $('#floatingTokenBar');
   if (floatingTokenBar) {
@@ -11399,30 +11373,6 @@ setInterval(() => {
 </script>
 
     <!-- Floating Persona Pill for Dev / Demo Mode -->
-    
-  <!-- Sticky Bottom Cart Bar (Mobile App-like) -->
-  <div class="sticky-cart-bar hide" id="stickyCartBar">
-    <div class="sticky-cart-info">
-      <span class="sticky-cart-count" id="stickyCartCount">0 items</span>
-      <span class="sticky-cart-total" id="stickyCartTotal">Rs 0</span>
-    </div>
-    <button type="button" class="sticky-cart-btn" id="stickyCartBtn">
-      <span>View Order</span>
-      <span class="material-symbols-outlined" style="font-size: 16px;">arrow_forward</span>
-    </button>
-  </div>
-
-  <!-- Persistent Floating Active Token Bar -->
-  <div class="floating-token-bar hide" id="floatingTokenBar">
-    <div class="token-pill-left">
-      <span class="token-pulse-dot placed" id="tokenPulseDot"></span>
-      <span class="token-pill-text" id="tokenPillText">Token #A-001 - Placed - Counter 1</span>
-    </div>
-    <div class="token-pill-action">
-      <span>Track</span>
-      <span class="material-symbols-outlined" style="font-size: 16px;">expand_less</span>
-    </div>
-  </div>
 
   <!-- Slide-Up Token Details Bottom Sheet -->
   <div class="bottom-sheet-overlay" id="tokenSheetOverlay">

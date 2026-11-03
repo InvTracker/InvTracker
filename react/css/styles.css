@@ -3536,6 +3536,7 @@ textarea {
 
 /* Sticky Mobile Cart Bar */
 .sticky-cart-bar {
+  display: none !important;
   position: fixed;
   left: 16px;
   right: 16px;
@@ -3778,6 +3779,7 @@ body.has-sticky-cart .floating-token-bar {
 
 @media (min-width: 769px) {
   .sticky-cart-bar {
+  display: none !important;
     max-width: 440px;
     left: auto;
     right: 24px;

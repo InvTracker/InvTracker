@@ -1296,28 +1296,7 @@ function renderShell(state) {
     if (sideRole) sideRole.textContent = 'Sign In to Access';
   }
 
-  // Sticky Mobile Cart Bar
-  const stickyCartBar = $('#stickyCartBar');
-  const stickyCartCount = $('#stickyCartCount');
-  const stickyCartTotal = $('#stickyCartTotal');
-  const cartItemCount = Object.values(state.cart || {}).reduce((s, q) => s + q, 0);
-  if (stickyCartBar) {
-    if (cartItemCount > 0 && state.activePage !== 'cart') {
-      stickyCartBar.classList.remove('hide');
-      document.body.classList.add('has-sticky-cart');
-      if (stickyCartCount) stickyCartCount.textContent = `${cartItemCount} ${cartItemCount === 1 ? 'item' : 'items'}`;
-      if (stickyCartTotal) {
-        const total = Object.entries(state.cart || {}).reduce((sum, [id, qty]) => {
-          const item = (state.catalog || []).find((c) => c.id === id);
-          return sum + (item ? item.price * qty : 0);
-        }, 0);
-        stickyCartTotal.textContent = `Rs ${total}`;
-      }
-    } else {
-      stickyCartBar.classList.add('hide');
-      document.body.classList.remove('has-sticky-cart');
-    }
-  }
+
 
   // Persistent Floating Active Token Bar
   const floatingTokenBar = $('#floatingTokenBar');
@@ -3560,14 +3539,7 @@ function setupEventHandlers() {
     }
   });
 
-  const stickyCartBtn = $('#stickyCartBtn');
-  if (stickyCartBtn) {
-    stickyCartBtn.addEventListener('click', () => {
-      triggerHaptic(50);
-      store.setPage('cart');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
-  }
+
 
   const floatingTokenBar = $('#floatingTokenBar');
   if (floatingTokenBar) {
