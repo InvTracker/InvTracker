@@ -19,6 +19,22 @@ try {
         raw = raw.split('photo-1626777552726-4a6b54c97e46').join('photo-1626700051175-6818013e1d4f');
         changed = true;
       }
+      if (k === 'inventrack_m3_state') {
+        try {
+          const parsed = JSON.parse(raw);
+          if (parsed && Array.isArray(parsed.menuItems)) {
+            parsed.menuItems.forEach((m) => {
+              if (typeof m.stock === 'number' && m.stock < 15) {
+                m.stock = Math.max(m.stock, 28);
+                changed = true;
+              }
+            });
+            if (changed) {
+              raw = JSON.stringify(parsed);
+            }
+          }
+        } catch(pe) {}
+      }
       if (changed) {
         localStorage.setItem(k, raw);
       }
@@ -39,15 +55,15 @@ const CAMPUS_DEMO_FIXTURE = {
       menuItems: [
     { id: 'item-1', name: 'Chicken Dum Biryani', emoji: 'restaurant', price: 185, cat: 'Hot Meals', counter: 'Counter 1 (Hot Meals)', stock: 25, lowThreshold: 8, restockTime: '15 min', diet: 'non-veg', spice: 'Medium', isExpress: false, image: 'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=800&auto=format&fit=crop&q=80' },
     { id: 'item-2', name: 'Hyderabadi Veg Biryani', emoji: 'rice_bowl', price: 150, cat: 'Hot Meals', counter: 'Counter 1 (Hot Meals)', stock: 18, lowThreshold: 5, restockTime: '20 min', diet: 'veg', spice: 'Medium', isExpress: false, image: 'https://images.unsplash.com/photo-1633945274405-b6c8069047b0?w=800&auto=format&fit=crop&q=80' },
-    { id: 'item-3', name: 'Ghee Podi Masala Dosa', emoji: 'breakfast_dining', price: 90, cat: 'Hot Meals', counter: 'Counter 1 (Hot Meals)', stock: 4, lowThreshold: 6, restockTime: '10 min', diet: 'veg', spice: 'Mild', isExpress: false, image: 'https://images.unsplash.com/photo-1668236543090-82eba5ee5976?w=800&auto=format&fit=crop&q=80' },
+    { id: 'item-3', name: 'Ghee Podi Masala Dosa', emoji: 'breakfast_dining', price: 90, cat: 'Hot Meals', counter: 'Counter 1 (Hot Meals)', stock: 30, lowThreshold: 6, restockTime: '10 min', diet: 'veg', spice: 'Mild', isExpress: false, image: 'https://images.unsplash.com/photo-1668236543090-82eba5ee5976?w=800&auto=format&fit=crop&q=80' },
     { id: 'item-4', name: 'Crispy Veg Patty Burger', emoji: 'lunch_dining', price: 70, cat: 'Quick Bites', counter: 'Counter 2 (Quick Bites)', stock: 22, lowThreshold: 5, restockTime: '12 min', diet: 'veg', spice: 'Mild', isExpress: true, image: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=800&auto=format&fit=crop&q=80' },
-    { id: 'item-5', name: 'Grilled Cheese Sandwich', emoji: 'bakery_dining', price: 60, cat: 'Quick Bites', counter: 'Counter 2 (Quick Bites)', stock: 3, lowThreshold: 5, restockTime: '8 min', diet: 'veg', spice: 'Mild', isExpress: true, image: 'https://images.unsplash.com/photo-1528735602780-2552fd46c7af?w=800&auto=format&fit=crop&q=80' },
-    { id: 'item-6', name: 'Wood-Fired Pizza Slice', emoji: 'local_pizza', price: 120, cat: 'Quick Bites', counter: 'Counter 2 (Quick Bites)', stock: 0, lowThreshold: 4, restockTime: '25 min', diet: 'veg', spice: 'Medium', isExpress: false, image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=800&auto=format&fit=crop&q=80' },
+    { id: 'item-5', name: 'Grilled Cheese Sandwich', emoji: 'bakery_dining', price: 60, cat: 'Quick Bites', counter: 'Counter 2 (Quick Bites)', stock: 22, lowThreshold: 5, restockTime: '8 min', diet: 'veg', spice: 'Mild', isExpress: true, image: 'https://images.unsplash.com/photo-1528735602780-2552fd46c7af?w=800&auto=format&fit=crop&q=80' },
+    { id: 'item-6', name: 'Wood-Fired Pizza Slice', emoji: 'local_pizza', price: 120, cat: 'Quick Bites', counter: 'Counter 2 (Quick Bites)', stock: 20, lowThreshold: 4, restockTime: '25 min', diet: 'veg', spice: 'Medium', isExpress: false, image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=800&auto=format&fit=crop&q=80' },
     { id: 'item-7', name: 'Peri-Peri Salted Fries', emoji: 'fastfood', price: 55, cat: 'Quick Bites', counter: 'Counter 2 (Quick Bites)', stock: 30, lowThreshold: 8, restockTime: '5 min', diet: 'veg', spice: 'Hot', isExpress: true, image: 'https://images.unsplash.com/photo-1576107232684-1279f3908594?w=800&auto=format&fit=crop&q=80' },
     { id: 'item-8', name: 'Artisan Cold Coffee', emoji: 'local_cafe', price: 45, cat: 'Beverages', counter: 'Counter 3 (Cafe & Drinks)', stock: 35, lowThreshold: 10, restockTime: '5 min', diet: 'veg', spice: null, isExpress: true, image: 'https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?w=800&auto=format&fit=crop&q=80' },
-    { id: 'item-9', name: 'Spiced Masala Buttermilk', emoji: 'emoji_food_beverage', price: 25, cat: 'Beverages', counter: 'Counter 3 (Cafe & Drinks)', stock: 5, lowThreshold: 10, restockTime: '5 min', diet: 'veg', spice: 'Mild', isExpress: true, image: 'https://images.unsplash.com/photo-1637792357005-c3ba175df533?w=800&auto=format&fit=crop&q=80' },
-    { id: 'item-10', name: 'Warm Gulab Jamun (2 pcs)', emoji: 'icecream', price: 30, cat: 'Desserts', counter: 'Counter 3 (Cafe & Drinks)', stock: 14, lowThreshold: 5, restockTime: '15 min', diet: 'veg', spice: null, isExpress: true, image: 'https://images.unsplash.com/photo-1666190092159-3171cf0fbb12?w=800&auto=format&fit=crop&q=80' },
-    { id: 'item-11', name: 'Belgian Chocolate Brownie', emoji: 'cookie', price: 65, cat: 'Desserts', counter: 'Counter 3 (Cafe & Drinks)', stock: 2, lowThreshold: 5, restockTime: '15 min', diet: 'veg', spice: null, isExpress: true, image: 'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=800&auto=format&fit=crop&q=80' },
+    { id: 'item-9', name: 'Spiced Masala Buttermilk', emoji: 'emoji_food_beverage', price: 25, cat: 'Beverages', counter: 'Counter 3 (Cafe & Drinks)', stock: 28, lowThreshold: 10, restockTime: '5 min', diet: 'veg', spice: 'Mild', isExpress: true, image: 'https://images.unsplash.com/photo-1637792357005-c3ba175df533?w=800&auto=format&fit=crop&q=80' },
+    { id: 'item-10', name: 'Warm Gulab Jamun (2 pcs)', emoji: 'icecream', price: 30, cat: 'Desserts', counter: 'Counter 3 (Cafe & Drinks)', stock: 26, lowThreshold: 5, restockTime: '15 min', diet: 'veg', spice: null, isExpress: true, image: 'https://images.unsplash.com/photo-1666190092159-3171cf0fbb12?w=800&auto=format&fit=crop&q=80' },
+    { id: 'item-11', name: 'Belgian Chocolate Brownie', emoji: 'cookie', price: 65, cat: 'Desserts', counter: 'Counter 3 (Cafe & Drinks)', stock: 22, lowThreshold: 5, restockTime: '15 min', diet: 'veg', spice: null, isExpress: true, image: 'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=800&auto=format&fit=crop&q=80' },
     { id: 'item-12', name: 'Paneer Butter Masala Combo', emoji: 'dinner_dining', price: 160, cat: 'Hot Meals', counter: 'Counter 1 (Hot Meals)', stock: 12, lowThreshold: 5, restockTime: '15 min', diet: 'veg', spice: 'Medium', isExpress: false, image: 'https://images.unsplash.com/photo-1631452180519-c014fe946bc7?w=800&auto=format&fit=crop&q=80' }
   ],
   orders: [
@@ -777,7 +793,7 @@ class InvenTrackStore {
     if (!itemEntries.length) return null;
 
     for (const [id, qty] of itemEntries) {
-      const item = this.state.menuItems.find((m) => m.id === id);
+      const item = findCatalogItem(this.state, id) || this.state.menuItems.find((m) => m.id === id);
       if (!item || item.stock < qty) {
         toast(`Insufficient stock for ${item ? item.name : 'item'}`, 'cancel');
         return null;
@@ -785,12 +801,19 @@ class InvenTrackStore {
     }
 
     for (const [id, qty] of itemEntries) {
-      const item = this.state.menuItems.find((m) => m.id === id);
+      let item = this.state.menuItems.find((m) => m.id === id);
+      if (!item) {
+        const catItem = findCatalogItem(this.state, id);
+        if (catItem) {
+          item = { ...catItem };
+          this.state.menuItems.push(item);
+        }
+      }
       if (item) item.stock = Math.max(0, item.stock - qty);
     }
 
     const orderItems = itemEntries.map(([id, qty]) => {
-      const it = this.state.menuItems.find((m) => m.id === id);
+      const it = findCatalogItem(this.state, id) || this.state.menuItems.find((m) => m.id === id) || { name: 'Item', price: 0 };
       const note = (cartNotes && cartNotes[id]) || (this.state.cartNotes && this.state.cartNotes[id]) || '';
       const itemObj = {
         id,
@@ -1805,7 +1828,7 @@ const QUICK_REORDER_ITEMS = [
     price: 80,
     cat: 'Mains',
     counter: 'Counter 1 (Hot Meals)',
-    stock: 14,
+    stock: 30,
     lowThreshold: 5,
     restockTime: '10 min',
     isVeg: true,
@@ -2036,8 +2059,11 @@ function findCatalogItem(state, id) {
 // =========================================================================
 
 function renderFoodCardHTML(it, state) {
-  const status = getItemStatus(it);
-  const isOut = status === 'out';
+  const liveItem = (state && state.menuItems) ? state.menuItems.find((m) => m.id === it.id || (m.name && it.name && m.name.toLowerCase() === it.name.toLowerCase())) : null;
+  const currentStock = liveItem ? liveItem.stock : (typeof it.stock === 'number' ? it.stock : 25);
+  const itemForStatus = liveItem || { ...it, stock: currentStock };
+  const status = getItemStatus(itemForStatus);
+  const isOut = status === 'out' || currentStock <= 0;
   const inCart = (state.cart && state.cart[it.id]) || 0;
   const imgUrl = getItemImage(it);
   const isVeg = isVegItem(it);
@@ -2084,7 +2110,7 @@ function renderFoodCardHTML(it, state) {
   const stockGaugeHTML = `
     <div style="margin-top:8px;">
       <div style="display:flex; justify-content:space-between; align-items:center; font-size:11px; margin-bottom:4px;">
-        <span style="color:var(--md-sys-color-on-surface-variant); font-weight:600;">Stock: <strong>${it.stock}</strong> left</span>
+        <span style="color:var(--md-sys-color-on-surface-variant); font-weight:600;">Stock: <strong>${currentStock}</strong> left</span>
         <span style="color:${getGaugeColor(status)}; font-weight:700; text-transform:uppercase; font-size:10.5px;">${status}</span>
       </div>
       <div class="gauge" style="height:4px; margin:0;">
@@ -3982,7 +4008,7 @@ function setupEventHandlers() {
       if (paymentMethod === 'Meal Pass') {
         const curBal = (store.state.currentUser && typeof store.state.currentUser.balance === 'number') ? store.state.currentUser.balance : 450;
         const totalAmount = Object.entries(store.state.cart).reduce((sum, [id, qty]) => {
-          const it = store.state.menuItems.find((m) => m.id === id);
+          const it = findCatalogItem(store.state, id) || store.state.menuItems.find((m) => m.id === id);
           return sum + (it ? it.price * qty : 0);
         }, 0) + 10;
         if (curBal < totalAmount) {

@@ -5,7 +5,7 @@ import { logger } from '../utils/logger.js';
 
 export const INITIAL_MENU_ITEMS: MenuItem[] = [
   {
-    id: 'item-dum-biryani',
+    id: 'item-1',
     name: 'Chicken Dum Biryani',
     cat: 'Meals',
     price: 180,
@@ -17,7 +17,7 @@ export const INITIAL_MENU_ITEMS: MenuItem[] = [
     tags: ['Best Seller', 'Spicy', 'Signature']
   },
   {
-    id: 'item-paneer-butter',
+    id: 'item-12',
     name: 'Paneer Butter Masala Combo',
     cat: 'Meals',
     price: 150,
@@ -29,19 +29,19 @@ export const INITIAL_MENU_ITEMS: MenuItem[] = [
     tags: ['Vegetarian', 'Popular']
   },
   {
-    id: 'item-masala-dosa',
-    name: 'Crispy Masala Dosa',
+    id: 'item-3',
+    name: 'Ghee Podi Masala Dosa',
     cat: 'Quick Bites',
     price: 80,
-    stock: 14,
+    stock: 30,
     threshold: 5,
-    counter: 'Counter 2 (Quick Bites)',
+    counter: 'Counter 1 (Hot Station)',
     image: 'https://images.unsplash.com/photo-1668236543090-82eba5ee5976?w=600&auto=format&fit=crop&q=80',
     prepTime: '4 min',
     tags: ['Crispy', 'Breakfast']
   },
   {
-    id: 'item-veg-burger',
+    id: 'item-4',
     name: 'Double Patty Crunch Burger',
     cat: 'Quick Bites',
     price: 95,
@@ -53,7 +53,7 @@ export const INITIAL_MENU_ITEMS: MenuItem[] = [
     tags: ['Snack', 'Express']
   },
   {
-    id: 'item-cold-coffee',
+    id: 'item-8',
     name: 'Frappe Cold Coffee',
     cat: 'Beverages',
     price: 60,
