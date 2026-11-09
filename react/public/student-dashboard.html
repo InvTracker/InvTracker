@@ -5968,12 +5968,396 @@ body[data-theme="dark"] {
   background: #dc2626;
 }
 
+/* ==========================================================================
+   Admin Unified Portal & Advanced Analytics Styles
+   ========================================================================== */
+
+/* Clickable KPI Card */
+.metric-card.clickable-kpi {
+  cursor: pointer;
+  transition: transform 0.2s cubic-bezier(0.2, 0, 0, 1), box-shadow 0.2s ease, border-color 0.2s ease;
+}
+.metric-card.clickable-kpi:hover {
+  transform: translateY(-2px);
+  border-color: var(--md-sys-color-primary, #C3562A);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+}
+
+/* Revenue Change Badges */
+.change-pill-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 6px;
+  flex-wrap: wrap;
+}
+.change-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.3;
+}
+.change-pill.up {
+  background: rgba(27, 166, 114, 0.15);
+  color: #1ba672;
+  border: 1px solid rgba(27, 166, 114, 0.3);
+}
+
+/* Filter Capsules for Timeframe & Ranking Criteria */
+.velocity-controls-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 12px 0 16px;
+}
+.filter-capsule {
+  display: inline-flex;
+  background: var(--md-sys-color-surface-container, rgba(0, 0, 0, 0.05));
+  border: 1px solid var(--md-sys-color-outline-variant, rgba(0, 0, 0, 0.1));
+  border-radius: var(--md-sys-shape-corner-full, 999px);
+  padding: 3px;
+  gap: 3px;
+}
+[data-theme="kitchen"] .filter-capsule,
+[data-theme="dark"] .filter-capsule {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(250, 220, 192, 0.15);
+}
+.capsule-btn {
+  border: none;
+  background: transparent;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface-variant);
+  cursor: pointer;
+  transition: all 0.18s ease;
+  min-height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.capsule-btn:hover {
+  color: var(--md-sys-color-on-surface);
+  background: rgba(255, 255, 255, 0.04);
+}
+.capsule-btn.active {
+  background: var(--md-sys-color-primary, #C3562A);
+  color: #ffffff;
+  box-shadow: 0 2px 6px rgba(195, 86, 42, 0.3);
+}
+[data-theme="kitchen"] .capsule-btn.active,
+[data-theme="dark"] .capsule-btn.active {
+  background: #F08B5D;
+  color: #12191a;
+  box-shadow: 0 2px 8px rgba(240, 139, 93, 0.35);
+}
+
+/* Clickable Velocity Rows */
+.velocity-bar-row.clickable-product {
+  cursor: pointer;
+  padding: 6px 8px;
+  border-radius: 8px;
+  transition: background-color 0.18s ease;
+}
+.velocity-bar-row.clickable-product:hover {
+  background: var(--md-sys-color-surface-container, rgba(0, 0, 0, 0.04));
+}
+[data-theme="kitchen"] .velocity-bar-row.clickable-product:hover,
+[data-theme="dark"] .velocity-bar-row.clickable-product:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+/* Category Financial Breakdown */
+.category-breakdown-panel {
+  margin-top: 24px;
+}
+.cat-breakdown-bar {
+  display: flex;
+  height: 14px;
+  border-radius: 999px;
+  overflow: hidden;
+  margin: 12px 0 16px;
+  background: var(--md-sys-color-surface-container);
+}
+.cat-segment {
+  height: 100%;
+  transition: width 0.3s ease;
+}
+.cat-legend-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px;
+}
+.cat-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.cat-legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.cat-legend-name {
+  font-size: 12px;
+  color: var(--md-sys-color-on-surface-variant);
+}
+.cat-legend-val {
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--md-sys-color-on-surface);
+}
+
+/* Product Sales Drilldown Modal */
+.product-drilldown-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 1100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  animation: fadeIn 0.2s ease;
+}
+.product-drilldown-modal-backdrop.hide {
+  display: none !important;
+}
+.product-drilldown-card {
+  background: var(--md-sys-color-surface-container-high, #162425);
+  border: 1px solid var(--md-sys-color-outline-variant, rgba(250, 220, 192, 0.2));
+  border-radius: var(--md-sys-shape-corner-extra-large, 24px);
+  padding: 24px;
+  max-width: 580px;
+  width: 100%;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
+  animation: scaleUp 0.22s cubic-bezier(0.2, 0, 0, 1);
+  box-sizing: border-box;
+}
+@keyframes scaleUp {
+  from { opacity: 0; transform: scale(0.96) translateY(12px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+.drilldown-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  border-bottom: 1px solid var(--md-sys-color-outline-variant, rgba(255, 255, 255, 0.08));
+  padding-bottom: 14px;
+}
+.drilldown-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--md-sys-color-primary, #C3562A), #18403F);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.drilldown-title {
+  font-size: 18px;
+  font-weight: 800;
+  margin: 0 0 4px;
+  color: var(--md-sys-color-on-surface);
+}
+.drilldown-sub {
+  font-size: 12.5px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.drilldown-close-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  background: var(--md-sys-color-surface-container, rgba(255, 255, 255, 0.08));
+  color: var(--md-sys-color-on-surface-variant);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.drilldown-close-btn:hover {
+  background: var(--md-sys-color-surface-container-highest, rgba(255, 255, 255, 0.16));
+  color: var(--md-sys-color-on-surface);
+}
+.drilldown-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+  margin-bottom: 20px;
+}
+@media (max-width: 480px) {
+  .drilldown-metrics-grid {
+    grid-template-columns: 1fr;
+  }
+}
+.drilldown-metric-box {
+  background: var(--md-sys-color-surface-container, rgba(0, 0, 0, 0.04));
+  border: 1px solid var(--md-sys-color-outline-variant, rgba(255, 255, 255, 0.08));
+  border-radius: 14px;
+  padding: 14px;
+}
+[data-theme="kitchen"] .drilldown-metric-box,
+[data-theme="dark"] .drilldown-metric-box {
+  background: rgba(255, 255, 255, 0.03);
+}
+.drilldown-metric-label {
+  font-size: 10.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--md-sys-color-on-surface-variant);
+  margin-bottom: 6px;
+  letter-spacing: 0.05em;
+}
+.drilldown-metric-big {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--md-sys-color-on-surface);
+}
+.drilldown-metric-sub {
+  font-size: 11.5px;
+  color: var(--md-sys-color-on-surface-variant);
+  margin-top: 4px;
+}
+.drilldown-units-breakdown div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  padding: 3px 0;
+  color: var(--md-sys-color-on-surface-variant);
+}
+.drilldown-units-breakdown .val {
+  font-weight: 700;
+  color: var(--md-sys-color-on-surface);
+}
+.drilldown-units-breakdown .val.highlight {
+  color: var(--md-sys-color-primary, #C3562A);
+}
+.drilldown-dynamic-stat {
+  font-size: 12px;
+  display: flex;
+  justify-content: space-between;
+  color: var(--md-sys-color-on-surface-variant);
+}
+.drilldown-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding-top: 14px;
+  border-top: 1px solid var(--md-sys-color-outline-variant, rgba(255, 255, 255, 0.08));
+}
+
+/* Mobile Hamburger Button in Topbar */
+.mobile-menu-btn {
+  display: none;
+  width: 44px;
+  height: 44px;
+  min-height: 44px;
+  min-width: 44px;
+  border-radius: 50%;
+  background: var(--md-sys-color-surface-container, rgba(0, 0, 0, 0.06));
+  border: 1px solid var(--md-sys-color-outline-variant, rgba(0, 0, 0, 0.1));
+  color: var(--md-sys-color-on-surface);
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  padding: 0;
+}
+[data-theme="kitchen"] .mobile-menu-btn,
+[data-theme="dark"] .mobile-menu-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(250, 220, 192, 0.18);
+  color: #F08B5D;
+}
+@media (max-width: 768px) {
+  .mobile-menu-btn {
+    display: inline-flex !important;
+  }
+}
+
+/* Touch Targets Optimization */
+.nav-item,
+.capsule-btn,
+.dev-btn,
+.filter-chip,
+.role-btn {
+  min-height: 44px;
+  box-sizing: border-box;
+}
+
+/* Inline Price & Stock Stepper in Tables */
+.stock-stepper {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--md-sys-color-outline-variant, rgba(255, 255, 255, 0.12));
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--md-sys-color-surface-container);
+}
+.stepper-btn {
+  border: none;
+  background: transparent;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--md-sys-color-on-surface);
+  transition: background 0.15s ease;
+}
+.stepper-btn:hover {
+  background: var(--md-sys-color-surface-container-highest);
+}
+.stepper-val {
+  width: 42px;
+  text-align: center;
+  border: none;
+  background: transparent;
+  font-family: var(--md-sys-typescale-mono-font, monospace);
+  font-weight: 700;
+  font-size: 13.5px;
+  color: var(--md-sys-color-on-surface);
+}
+.inline-price-input {
+  width: 68px;
+  padding: 6px 8px;
+  border: 1px solid var(--md-sys-color-outline-variant, rgba(255, 255, 255, 0.12));
+  border-radius: 8px;
+  background: var(--md-sys-color-surface-container);
+  color: var(--md-sys-color-on-surface);
+  font-family: var(--md-sys-typescale-mono-font, monospace);
+  font-weight: 700;
+  font-size: 13.5px;
+}
+
 </style>
 </head>
 <body>
   <div class="shell">
     
-    <aside class="sidebar">
+    <div class="drawer-backdrop" id="drawerBackdrop"></div>
+    <aside class="sidebar" id="appSidebar">
       <div class="brand" style="gap: 12px; align-items: center;">
         <div class="brand-mark" style="background: transparent; padding: 0; width: 42px; height: 42px; border-radius: 50%; overflow: hidden; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(0,0,0,0.18);">
           <img src="assets/inventrack-badge.png" alt="InvenTrack Logo" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%; display: block;" onerror="this.src='/assets/inventrack-badge.png'">
@@ -6047,22 +6431,34 @@ body[data-theme="dark"] {
       </nav>
 
       <nav class="nav role-nav" id="navGroupAdmin" style="display:none;">
-        <div class="nav-label">Management</div>
+        <div class="nav-label">Executive Administration</div>
         <button class="nav-item active" data-page="admin-overview">
           <span class="material-symbols-outlined">dashboard</span>
           <span>Executive Overview</span>
         </button>
-        <button class="nav-item" data-page="admin-audit" style="display:none !important;">
-          <span class="material-symbols-outlined">fact_check</span>
-          <span>Inventory Audit &amp; CSV</span>
+        <button class="nav-item" data-page="admin-analytics">
+          <span class="material-symbols-outlined">analytics</span>
+          <span>Product Analytics</span>
         </button>
-        <button class="nav-item" data-page="admin-items" style="display:none !important;">
-          <span class="material-symbols-outlined">add_circle</span>
-          <span>Item Manager</span>
+        <button class="nav-item" data-page="admin-stock">
+          <span class="material-symbols-outlined">inventory_2</span>
+          <span>Inventory &amp; Menu Manager</span>
+        </button>
+        <button class="nav-item" data-page="admin-orders">
+          <span class="material-symbols-outlined">receipt_long</span>
+          <span>Order Logs &amp; Reports</span>
         </button>
       </nav>
 
       <div class="sidebar-foot">
+        <div class="admin-persona-quick-bar" id="adminPersonaQuickBar" style="margin-bottom:12px; width:100%;">
+          <div style="font-size:10.5px; text-transform:uppercase; font-weight:700; color:var(--md-sys-color-on-surface-variant); margin-bottom:5px; letter-spacing:0.04em;">Active Persona View</div>
+          <div class="filter-capsule" id="personaFilterCapsule" style="display:flex; width:100%;">
+            <button class="capsule-btn active" data-persona="admin" style="flex:1;">Admin</button>
+            <button class="capsule-btn" data-persona="kitchen" style="flex:1;">Kitchen</button>
+            <button class="capsule-btn" data-persona="student" style="flex:1;">Student</button>
+          </div>
+        </div>
         <button class="nav-item" id="sidebarProfileBtn" data-page="settings" style="margin-bottom:10px; padding:6px 12px;">
           <div class="who">
             <div class="avatar" id="sideAvatar">RS</div>
@@ -6082,6 +6478,9 @@ body[data-theme="dark"] {
     <main>
       
       <div class="topbar">
+        <button id="mobileMenuBtn" class="mobile-menu-btn" title="Open Navigation Menu" aria-label="Open Navigation Drawer">
+          <span class="material-symbols-outlined">menu</span>
+        </button>
         <div class="page-title" id="pageTitle">Home</div>
 
 
@@ -6862,6 +7261,10 @@ body[data-theme="dark"] {
             </div>
             <div class="metric-val mono" id="metricTotalRevenue">&#8377;0</div>
             <div class="metric-sub" id="metricTotalRevenueSub">Gross campus transactions</div>
+            <div class="change-pill-row">
+              <span class="change-pill up" id="revChangeToday">&#9650; +12.4% Today</span>
+              <span class="change-pill up" id="revChangeWeek">&#9650; +18.2% Week</span>
+            </div>
           </div>
           <div class="metric-card">
             <div class="metric-header">
@@ -6871,13 +7274,17 @@ body[data-theme="dark"] {
             <div class="metric-val mono" id="metricOrderVolume">0</div>
             <div class="metric-sub" id="metricOrderVolumeSub">Orders placed across counters</div>
           </div>
-          <div class="metric-card">
+          <div class="metric-card clickable-kpi" id="metricLowStockCard" title="Click to view and restock depleted items">
             <div class="metric-header">
               <span>Critical Low Stock</span>
               <span class="material-symbols-outlined" style="font-size:20px; color:var(--md-sys-color-low);">warning</span>
             </div>
             <div class="metric-val mono" id="metricLowStockCount">0</div>
             <div class="metric-sub" id="metricLowStockSub">Items at or below threshold</div>
+            <div style="margin-top:6px; font-size:11px; color:var(--md-sys-color-primary, #C3562A); font-weight:700; display:flex; align-items:center; gap:3px;">
+              <span>Click to view &amp; restock</span>
+              <span class="material-symbols-outlined" style="font-size:13px;">arrow_forward</span>
+            </div>
           </div>
           <div class="metric-card">
             <div class="metric-header">
@@ -6901,9 +7308,219 @@ body[data-theme="dark"] {
           </div>
           <div class="panel">
             <div class="panel-title">Top Re-Order Velocity</div>
-            <div class="panel-sub">Fastest moving items by units sold</div>
+            <div class="panel-sub">Fastest moving items with product-level sales drill-down</div>
+            <div class="velocity-controls-bar">
+              <div class="filter-capsule" id="velocityTimeframeGroup">
+                <button class="capsule-btn active" data-timeframe="today">Today</button>
+                <button class="capsule-btn" data-timeframe="week">This Week</button>
+                <button class="capsule-btn" data-timeframe="all">All Time</button>
+              </div>
+              <div class="filter-capsule" id="velocityCriteriaGroup">
+                <button class="capsule-btn active" data-criteria="units">Units Sold</button>
+                <button class="capsule-btn" data-criteria="revenue">Revenue (&#8377;)</button>
+              </div>
+            </div>
             <div id="adminVelocityList"></div>
           </div>
+        </div>
+
+        <!-- Revenue & Financial Breakdown Section -->
+        <div class="panel category-breakdown-panel" style="margin-top:24px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:12px;">
+            <div>
+              <div class="panel-title">Revenue &amp; Category Financial Breakdown</div>
+              <div class="panel-sub">Sales distribution across cafeteria meal categories and order fulfillment health</div>
+            </div>
+            <div style="font-size:12.5px; font-weight:700; color:var(--md-sys-color-primary, #C3562A);" id="financialAovDisplay">
+              Average Order Value (AOV): &#8377;0.00
+            </div>
+          </div>
+
+          <!-- Segmented Category Breakdown Bar -->
+          <div class="cat-breakdown-bar" id="catBreakdownBar">
+            <div class="cat-segment" style="width:45%; background:#C3562A;" title="Mains &amp; Meals"></div>
+            <div class="cat-segment" style="width:28%; background:#F08B5D;" title="Quick Bites &amp; Snacks"></div>
+            <div class="cat-segment" style="width:18%; background:#006874;" title="Beverages &amp; Cafe"></div>
+            <div class="cat-segment" style="width:9%; background:#1ba672;" title="Desserts &amp; Sweets"></div>
+          </div>
+
+          <!-- Category Legend Grid -->
+          <div class="cat-legend-grid" id="catLegendGrid">
+            <div class="cat-legend-item">
+              <div class="cat-legend-dot" style="background:#C3562A;"></div>
+              <div><div class="cat-legend-name">Mains</div><div class="cat-legend-val" id="catValMains">&#8377;0 (0%)</div></div>
+            </div>
+            <div class="cat-legend-item">
+              <div class="cat-legend-dot" style="background:#F08B5D;"></div>
+              <div><div class="cat-legend-name">Snacks</div><div class="cat-legend-val" id="catValSnacks">&#8377;0 (0%)</div></div>
+            </div>
+            <div class="cat-legend-item">
+              <div class="cat-legend-dot" style="background:#006874;"></div>
+              <div><div class="cat-legend-name">Beverages</div><div class="cat-legend-val" id="catValBeverages">&#8377;0 (0%)</div></div>
+            </div>
+            <div class="cat-legend-item">
+              <div class="cat-legend-dot" style="background:#1ba672;"></div>
+              <div><div class="cat-legend-name">Desserts</div><div class="cat-legend-val" id="catValDesserts">&#8377;0 (0%)</div></div>
+            </div>
+          </div>
+
+          <!-- Financial Status Split -->
+          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:12px; margin-top:20px; padding-top:16px; border-top:1px solid var(--md-sys-color-outline-variant, rgba(255,255,255,0.08));">
+            <div style="background:var(--md-sys-color-surface-container); padding:10px 14px; border-radius:10px;">
+              <div style="font-size:11px; font-weight:700; color:var(--md-sys-color-on-surface-variant); text-transform:uppercase;">Completed Revenue</div>
+              <div class="mono" style="font-size:17px; font-weight:800; color:#1ba672; margin-top:2px;" id="revCompleted">&#8377;0</div>
+            </div>
+            <div style="background:var(--md-sys-color-surface-container); padding:10px 14px; border-radius:10px;">
+              <div style="font-size:11px; font-weight:700; color:var(--md-sys-color-on-surface-variant); text-transform:uppercase;">In-Flight Revenue</div>
+              <div class="mono" style="font-size:17px; font-weight:800; color:#F08B5D; margin-top:2px;" id="revInFlight">&#8377;0</div>
+            </div>
+            <div style="background:var(--md-sys-color-surface-container); padding:10px 14px; border-radius:10px;">
+              <div style="font-size:11px; font-weight:700; color:var(--md-sys-color-on-surface-variant); text-transform:uppercase;">Cancelled / Refunded</div>
+              <div class="mono" style="font-size:17px; font-weight:800; color:var(--md-sys-color-on-surface-variant); margin-top:2px;" id="revCancelled">&#8377;0</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Product Analytics Deep Dive Page -->
+      <section class="page" id="page-admin-analytics">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:16px;">
+          <div>
+            <div class="section-title">Product &amp; Sales Velocity Analytics</div>
+            <div style="font-size:12px; color:var(--md-sys-color-on-surface-variant); margin-top:2px;">
+              Comprehensive drill-down into menu item velocity, sales volume, and customer re-order frequency. Click any item for detailed analytics.
+            </div>
+          </div>
+        </div>
+
+        <div class="panel" style="margin-bottom:24px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:14px;">
+            <div class="panel-title">Product Performance Leaderboard</div>
+            <div class="velocity-controls-bar" style="margin:0;">
+              <div class="filter-capsule" id="analyticsTimeframeGroup">
+                <button class="capsule-btn active" data-analytics-timeframe="today">Today</button>
+                <button class="capsule-btn" data-analytics-timeframe="week">This Week</button>
+                <button class="capsule-btn" data-analytics-timeframe="all">All Time</button>
+              </div>
+              <div class="filter-capsule" id="analyticsCriteriaGroup">
+                <button class="capsule-btn active" data-analytics-criteria="units">Units Sold</button>
+                <button class="capsule-btn" data-analytics-criteria="revenue">Revenue (&#8377;)</button>
+              </div>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table class="data-table" id="analyticsTable">
+              <thead>
+                <tr>
+                  <th>Rank &amp; Item</th>
+                  <th>Category</th>
+                  <th>Counter</th>
+                  <th>Units Sold</th>
+                  <th>Total Revenue</th>
+                  <th>Current Stock</th>
+                  <th>Performance</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="analyticsTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- Inventory & Menu Manager Page -->
+      <section class="page" id="page-admin-stock">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:16px;">
+          <div>
+            <div class="section-title">Inventory &amp; Menu Catalog Manager</div>
+            <div style="font-size:12px; color:var(--md-sys-color-on-surface-variant); margin-top:2px;">
+              Live price updating, stock increment/decrement, availability toggle, and new item creation.
+            </div>
+          </div>
+          <div style="display:flex; gap:8px; flex-wrap:wrap;">
+            <button class="dev-btn primary" id="openAddItemModalBtnStockManager">
+              <span class="material-symbols-outlined" style="font-size:16px;">add</span>
+              <span>Add New Item</span>
+            </button>
+            <button class="dev-btn" id="exportAuditCsvStockBtn">
+              <span class="material-symbols-outlined" style="font-size:16px;">download</span>
+              <span>Export Audit CSV</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="filters" style="margin-bottom:16px;" id="adminStockCategoryFilters">
+          <button class="filter-chip active" data-stock-cat="all">All Items</button>
+          <button class="filter-chip" data-stock-cat="low">Low Stock Only</button>
+          <button class="filter-chip" data-stock-cat="Mains">Mains</button>
+          <button class="filter-chip" data-stock-cat="Snacks">Snacks</button>
+          <button class="filter-chip" data-stock-cat="Beverages">Beverages</button>
+          <button class="filter-chip" data-stock-cat="Desserts">Desserts</button>
+        </div>
+
+        <div class="table-wrap">
+          <table class="data-table" id="adminStockTable">
+            <thead>
+              <tr>
+                <th>Item &amp; ID</th>
+                <th>Category</th>
+                <th>Price (&#8377;)</th>
+                <th>Stock Level</th>
+                <th>Availability</th>
+                <th>Quick Restock</th>
+                <th>Analytics</th>
+              </tr>
+            </thead>
+            <tbody id="adminStockTableBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Order History & Reports Page -->
+      <section class="page" id="page-admin-orders">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:16px;">
+          <div>
+            <div class="section-title">Order History &amp; Campus Transaction Reports</div>
+            <div style="font-size:12px; color:var(--md-sys-color-on-surface-variant); margin-top:2px;">
+              Audit all campus orders, filter by status or customer, execute supervisor overrides, and download CSV reconciliations.
+            </div>
+          </div>
+          <button class="dev-btn primary" id="exportOrdersCsvBtn">
+            <span class="material-symbols-outlined" style="font-size:16px;">download</span>
+            <span>Export Orders to CSV</span>
+          </button>
+        </div>
+
+        <div style="display:flex; gap:12px; margin-bottom:16px; flex-wrap:wrap; align-items:center;">
+          <div class="search" style="flex:1; max-width:360px;">
+            <span class="material-symbols-outlined">search</span>
+            <input id="adminOrderSearchInput" placeholder="Filter by Token #, Student, Item...">
+          </div>
+          <div class="filters" id="adminOrderStatusFilters" style="margin:0;">
+            <button class="filter-chip active" data-order-status="all">All Orders</button>
+            <button class="filter-chip" data-order-status="Placed">Placed</button>
+            <button class="filter-chip" data-order-status="Preparing">Preparing</button>
+            <button class="filter-chip" data-order-status="Ready">Ready</button>
+            <button class="filter-chip" data-order-status="Picked up">Completed</button>
+            <button class="filter-chip" data-order-status="Cancelled">Cancelled</button>
+          </div>
+        </div>
+
+        <div class="table-wrap">
+          <table class="data-table" id="adminOrdersTable">
+            <thead>
+              <tr>
+                <th>Token #</th>
+                <th>Date &amp; Time</th>
+                <th>Student</th>
+                <th>Items Ordered</th>
+                <th>Total</th>
+                <th>Status</th>
+                <th>Supervisor Actions</th>
+              </tr>
+            </thead>
+            <tbody id="adminOrdersTableBody"></tbody>
+          </table>
         </div>
       </section>
 
@@ -8228,18 +8845,24 @@ function renderShell(state) {
   const navAdmin = $('#navGroupAdmin');
 
   if (isAdmin) {
-    if (navUser) navUser.style.display = activeRole === 'user' ? 'flex' : 'none';
-    if (navKitchen) navKitchen.style.display = activeRole === 'kitchen' ? 'flex' : 'none';
-    if (navAdmin) navAdmin.style.display = activeRole === 'admin' ? 'flex' : 'none';
-  } else if (userRole === 'kitchen') {
-    if (navUser) navUser.style.display = 'none';
+    // Admin has unified access to all 3 portals!
+    if (navAdmin) navAdmin.style.display = 'flex';
     if (navKitchen) navKitchen.style.display = 'flex';
-    if (navAdmin) navAdmin.style.display = 'none';
-  } else {
     if (navUser) navUser.style.display = 'flex';
-    if (navKitchen) navKitchen.style.display = 'none';
+  } else if (userRole === 'kitchen') {
     if (navAdmin) navAdmin.style.display = 'none';
+    if (navKitchen) navKitchen.style.display = 'flex';
+    if (navUser) navUser.style.display = 'none';
+  } else {
+    if (navAdmin) navAdmin.style.display = 'none';
+    if (navKitchen) navKitchen.style.display = 'none';
+    if (navUser) navUser.style.display = 'flex';
   }
+
+  // Update persona filter capsule active state
+  $$('#personaFilterCapsule .capsule-btn').forEach((b) => {
+    b.classList.toggle('active', b.dataset.persona === userRole);
+  });
   const mobileRoleBadge = $('#mobileRoleBadge');
   if (mobileRoleBadge) {
     mobileRoleBadge.textContent = activeRole.toUpperCase();
@@ -9195,7 +9818,7 @@ function renderFoodCardHTML(it, state) {
             <span style="font-size:11px; font-weight:600; background:var(--md-sys-color-primary-container); color:var(--md-sys-color-on-primary-container); padding:2px 8px; border-radius:6px;">${it.counter || 'Counter 1'}</span>
           </div>
           ${recBadge}
-          <div class="card-item-title" style="font-size:17px; margin-top:4px;">${it.name}</div>
+          <div class="card-item-title clickable-product" data-product-drilldown="${it.id}" style="font-size:17px; margin-top:4px;" title="Click to view product drilldown">${it.name}</div>
           <div style="margin-top:2px; margin-bottom:6px;">${ratingMarkup}</div>
           <div class="card-item-price-row">
             <span class="card-item-price" style="font-size:16.5px;">Rs ${it.price}</span>
@@ -9239,7 +9862,7 @@ function renderFoodCardHTML(it, state) {
           </div>
         </div>
         <div class="card-main-content">
-          <div class="card-item-title">${it.name}</div>
+          <div class="card-item-title clickable-product" data-product-drilldown="${it.id}" title="Click to view product drilldown">${it.name}</div>
           ${recBadge}
           <div style="font-size:11.5px; color:var(--md-sys-color-on-surface-variant); margin-bottom:4px;">
             ${it.cat} &middot; <span style="font-weight:600;">${it.counter || 'Counter 1'}</span>
@@ -9266,7 +9889,7 @@ function renderFoodCardHTML(it, state) {
           ${badge ? `<span class="swiggy-ribbon trending">${badge}</span>` : ''}
         </div>
         ${recBadge}
-        <div class="card-item-title">${it.name}</div>
+        <div class="card-item-title clickable-product" data-product-drilldown="${it.id}" title="Click to view product drilldown">${it.name}</div>
         <div class="card-item-price-row">
           <span class="card-item-price">Rs ${it.price}</span>
           <span class="card-item-original-price">Rs ${originalPrice}</span>
@@ -10462,6 +11085,20 @@ function renderKitchenFeedback(state) {
     .join('');
 }
 
+
+// ==========================================================================
+// UNIFIED ADMIN ACCESS & ADVANCED ANALYTICS ENGINE
+// ==========================================================================
+
+let velocityTimeframe = 'today';
+let velocityCriteria = 'units';
+let analyticsTimeframe = 'today';
+let analyticsCriteria = 'units';
+let adminStockFilter = 'all';
+let adminOrderStatusFilter = 'all';
+let adminOrderSearchQuery = '';
+let currentDrilldownItem = null;
+
 function renderAdminOverview(state) {
   const rev = state.orders.reduce((sum, o) => sum + (o.total || 0), 0);
   const revEl = $('#metricTotalRevenue');
@@ -10486,6 +11123,7 @@ function renderAdminOverview(state) {
   if (infEl) infEl.textContent = inFlight;
   if (infSub) infSub.textContent = 'Active in kitchen queue';
 
+  // Peak Hours Demand Matrix
   const hours = [
     { label: '8-10', name: 'Breakfast', count: 0 },
     { label: '10-12', name: 'Brunch', count: 0 },
@@ -10523,40 +11161,398 @@ function renderAdminOverview(state) {
       .join('');
   }
 
+  // Filtered Top Re-Order Velocity with Drilldown triggers
+  renderAdminVelocityList(state);
+
+  // Revenue & Financial Breakdown
+  renderRevenueBreakdown(state);
+}
+
+function filterOrdersByTimeframe(orders, tf) {
+  const now = Date.now();
+  const dayMs = 24 * 60 * 60 * 1000;
+  if (tf === 'today') {
+    return orders.filter(o => (now - new Date(o.createdAt).getTime()) <= dayMs);
+  } else if (tf === 'week') {
+    return orders.filter(o => (now - new Date(o.createdAt).getTime()) <= 7 * dayMs);
+  }
+  return orders;
+}
+
+function renderAdminVelocityList(state) {
   const velocityEl = $('#adminVelocityList');
-  if (velocityEl) {
-    const salesMap = {};
-    state.orders.forEach((o) => {
-      (o.items || []).forEach((it) => {
-        salesMap[it.name] = (salesMap[it.name] || 0) + it.qty;
-      });
+  if (!velocityEl) return;
+
+  const filteredOrders = filterOrdersByTimeframe(state.orders, velocityTimeframe);
+  const scoreMap = {};
+
+  filteredOrders.forEach((o) => {
+    (o.items || []).forEach((it) => {
+      const val = velocityCriteria === 'revenue' ? ((it.price || 0) * (it.qty || 1)) : (it.qty || 1);
+      scoreMap[it.name] = (scoreMap[it.name] || 0) + val;
     });
+  });
 
-    const sortedVelocity = Object.entries(salesMap)
-      .sort((a, b) => b[1] - a[1])
-      .slice(0, 5);
+  const sortedVelocity = Object.entries(scoreMap)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 5);
 
-    if (!sortedVelocity.length) {
-      velocityEl.innerHTML = '<div style="padding:20px; color:var(--md-sys-color-on-surface-variant); text-align:center; font-size:12px;">No order velocity recorded yet.</div>';
-    } else {
-      const topQty = sortedVelocity[0][1];
-      velocityEl.innerHTML = sortedVelocity
-        .map(([name, qty]) => {
-          const pct = Math.round((qty / topQty) * 100);
-          return `
-            <div class="velocity-bar-row">
-              <span class="velocity-label">${name}</span>
-              <div class="velocity-track">
-                <div class="velocity-fill" style="width:${pct}%;"></div>
-              </div>
-              <span class="velocity-stat mono">${qty} orders</span>
+  if (!sortedVelocity.length) {
+    velocityEl.innerHTML = '<div style="padding:24px; color:var(--md-sys-color-on-surface-variant); text-align:center; font-size:12.5px;">No sales recorded for this timeframe.</div>';
+  } else {
+    const topScore = sortedVelocity[0][1] || 1;
+    velocityEl.innerHTML = sortedVelocity
+      .map(([name, score]) => {
+        const pct = Math.round((score / topScore) * 100);
+        const displayStat = velocityCriteria === 'revenue' ? `Rs ${score}` : `${score} units`;
+        return `
+          <div class="velocity-bar-row clickable-product" data-product-drilldown="${name}" title="Click to view product drilldown for ${name}">
+            <div style="display:flex; justify-content:space-between; align-items:center; width:100%; margin-bottom:4px;">
+              <span class="velocity-label" style="font-weight:600;">${name}</span>
+              <span class="velocity-stat mono" style="font-weight:700;">${displayStat}</span>
             </div>
-          `;
-        })
-        .join('');
-    }
+            <div class="velocity-track">
+              <div class="velocity-fill" style="width:${pct}%;"></div>
+            </div>
+          </div>
+        `;
+      })
+      .join('');
   }
 }
+
+function renderRevenueBreakdown(state) {
+  const totalRev = state.orders.reduce((sum, o) => sum + (o.total || 0), 0);
+  const completedRev = state.orders.filter(o => o.status === 'Picked up').reduce((sum, o) => sum + (o.total || 0), 0);
+  const inFlightRev = state.orders.filter(o => o.status === 'Placed' || o.status === 'Preparing' || o.status === 'Ready').reduce((sum, o) => sum + (o.total || 0), 0);
+  const cancelledRev = state.orders.filter(o => o.status === 'Cancelled').reduce((sum, o) => sum + (o.total || 0), 0);
+  const aov = state.orders.length ? (totalRev / state.orders.length).toFixed(2) : '0.00';
+
+  if ($('#financialAovDisplay')) $('#financialAovDisplay').textContent = `Average Order Value (AOV): Rs ${aov}`;
+  if ($('#revCompleted')) $('#revCompleted').textContent = `Rs ${completedRev}`;
+  if ($('#revInFlight')) $('#revInFlight').textContent = `Rs ${inFlightRev}`;
+  if ($('#revCancelled')) $('#revCancelled').textContent = `Rs ${cancelledRev}`;
+
+  // Category breakdown
+  const catMap = { Mains: 0, Snacks: 0, Beverages: 0, Desserts: 0 };
+  state.orders.forEach(o => {
+    (o.items || []).forEach(it => {
+      const match = state.menuItems.find(m => m.name === it.name);
+      const cat = (match && match.cat) || 'Mains';
+      if (catMap[cat] !== undefined) {
+        catMap[cat] += (it.price || 0) * (it.qty || 1);
+      } else {
+        catMap.Mains += (it.price || 0) * (it.qty || 1);
+      }
+    });
+  });
+
+  const catTotal = Object.values(catMap).reduce((a, b) => a + b, 0) || 1;
+  const pMains = Math.round((catMap.Mains / catTotal) * 100);
+  const pSnacks = Math.round((catMap.Snacks / catTotal) * 100);
+  const pBev = Math.round((catMap.Beverages / catTotal) * 100);
+  const pDes = Math.max(0, 100 - (pMains + pSnacks + pBev));
+
+  if ($('#catValMains')) $('#catValMains').textContent = `Rs ${catMap.Mains} (${pMains}%)`;
+  if ($('#catValSnacks')) $('#catValSnacks').textContent = `Rs ${catMap.Snacks} (${pSnacks}%)`;
+  if ($('#catValBeverages')) $('#catValBeverages').textContent = `Rs ${catMap.Beverages} (${pBev}%)`;
+  if ($('#catValDesserts')) $('#catValDesserts').textContent = `Rs ${catMap.Desserts} (${pDes}%)`;
+
+  const bar = $('#catBreakdownBar');
+  if (bar) {
+    bar.innerHTML = `
+      <div class="cat-segment" style="width:${pMains}%; background:#C3562A;" title="Mains: Rs ${catMap.Mains} (${pMains}%)"></div>
+      <div class="cat-segment" style="width:${pSnacks}%; background:#F08B5D;" title="Snacks: Rs ${catMap.Snacks} (${pSnacks}%)"></div>
+      <div class="cat-segment" style="width:${pBev}%; background:#006874;" title="Beverages: Rs ${catMap.Beverages} (${pBev}%)"></div>
+      <div class="cat-segment" style="width:${pDes}%; background:#1ba672;" title="Desserts: Rs ${catMap.Desserts} (${pDes}%)"></div>
+    `;
+  }
+}
+
+function renderAdminAnalytics(state) {
+  const tbody = $('#analyticsTableBody');
+  if (!tbody) return;
+
+  const filteredOrders = filterOrdersByTimeframe(state.orders, analyticsTimeframe);
+  const data = state.menuItems.map(item => {
+    let units = 0;
+    filteredOrders.forEach(o => {
+      (o.items || []).forEach(it => {
+        if (it.name === item.name) units += (it.qty || 1);
+      });
+    });
+    const rev = units * (item.price || 0);
+    return { ...item, units, rev };
+  });
+
+  data.sort((a, b) => analyticsCriteria === 'revenue' ? (b.rev - a.rev) : (b.units - a.units));
+
+  tbody.innerHTML = data.map((item, idx) => {
+    const isTop = idx < 3 && (item.units > 0 || item.rev > 0);
+    return `
+      <tr class="clickable-product" data-product-drilldown="${item.id}" style="cursor:pointer;">
+        <td>
+          <div style="display:flex; align-items:center; gap:10px;">
+            <span style="font-weight:800; font-size:12px; color:${idx===0?'#f59e0b':idx===1?'#94a3b8':idx===2?'#d97706':'var(--md-sys-color-on-surface-variant)'};">#${idx+1}</span>
+            <div>
+              <strong>${item.name}</strong>
+              <div class="mono" style="font-size:11px; color:var(--md-sys-color-on-surface-variant);">${item.id}</div>
+            </div>
+          </div>
+        </td>
+        <td><span class="diet-tag ${item.diet==='non-veg'?'non-veg':'veg'}">${item.cat}</span></td>
+        <td style="font-size:12px;">${item.counter}</td>
+        <td class="mono" style="font-weight:700;">${item.units}</td>
+        <td class="mono" style="font-weight:700; color:#1ba672;">Rs ${item.rev}</td>
+        <td class="mono">${item.stock} left</td>
+        <td>
+          <span class="status-badge ${isTop ? 'available' : 'low'}" style="font-size:11px;">
+            ${isTop ? 'High Velocity' : 'Steady'}
+          </span>
+        </td>
+        <td>
+          <button class="dev-btn primary" data-product-drilldown="${item.id}" style="padding:4px 10px; font-size:11.5px;">Drill Down</button>
+        </td>
+      </tr>
+    `;
+  }).join('');
+}
+
+function renderAdminStockManager(state) {
+  const tbody = $('#adminStockTableBody');
+  if (!tbody) return;
+
+  let items = [...state.menuItems];
+  if (adminStockFilter === 'low') {
+    items = items.filter(it => it.stock <= (it.lowThreshold || 5));
+  } else if (adminStockFilter !== 'all') {
+    items = items.filter(it => it.cat === adminStockFilter);
+  }
+
+  if (!items.length) {
+    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding:32px; color:var(--md-sys-color-on-surface-variant);">No items matching this filter.</td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = items.map(it => {
+    const isAvail = it.stock > 0;
+    return `
+      <tr>
+        <td>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <div style="width:34px; height:34px; border-radius:8px; overflow:hidden; background:var(--md-sys-color-surface-container);">
+              <img src="${it.image || ''}" style="width:100%; height:100%; object-fit:cover;" onerror="this.src='/assets/inventrack-badge.png'">
+            </div>
+            <div>
+              <strong class="clickable-product" data-product-drilldown="${it.id}" style="cursor:pointer;" title="View sales drill-down">${it.name}</strong>
+              <div class="mono" style="font-size:10.5px; color:var(--md-sys-color-on-surface-variant);">${it.id} &bull; ${it.counter}</div>
+            </div>
+          </div>
+        </td>
+        <td><span class="diet-tag ${it.diet==='non-veg'?'non-veg':'veg'}">${it.cat}</span></td>
+        <td>
+          <input type="number" class="inline-price-input" data-edit-price="${it.id}" value="${it.price}" min="1" title="Edit price and press Enter">
+        </td>
+        <td>
+          <div class="stock-stepper">
+            <button class="stepper-btn" data-stock-step="-1" data-item-id="${it.id}" title="Decrease stock">-</button>
+            <input class="stepper-val" value="${it.stock}" readonly>
+            <button class="stepper-btn" data-stock-step="1" data-item-id="${it.id}" title="Increase stock">+</button>
+          </div>
+        </td>
+        <td>
+          <button class="status-badge ${isAvail ? 'available' : 'out'}" data-toggle-avail="${it.id}" style="cursor:pointer; border:none;" title="Click to toggle availability">
+            ${isAvail ? 'In Stock' : 'Out of Stock'}
+          </button>
+        </td>
+        <td>
+          <button class="dev-btn primary" data-admin-restock="${it.id}" style="padding:4px 10px; font-size:11.5px;">+20 Units</button>
+        </td>
+        <td>
+          <button class="dev-btn" data-product-drilldown="${it.id}" style="padding:4px 10px; font-size:11.5px;">
+            <span class="material-symbols-outlined" style="font-size:14px;">analytics</span>
+            <span>Analytics</span>
+          </button>
+        </td>
+      </tr>
+    `;
+  }).join('');
+}
+
+function renderAdminOrderHistory(state) {
+  const tbody = $('#adminOrdersTableBody');
+  if (!tbody) return;
+
+  let orders = [...(state.orders || [])];
+
+  if (adminOrderStatusFilter !== 'all') {
+    orders = orders.filter(o => o.status === adminOrderStatusFilter);
+  }
+
+  if (adminOrderSearchQuery.trim()) {
+    const q = adminOrderSearchQuery.toLowerCase();
+    orders = orders.filter(o => 
+      (o.token && o.token.toLowerCase().includes(q)) ||
+      (o.customerName && o.customerName.toLowerCase().includes(q)) ||
+      (o.counter && o.counter.toLowerCase().includes(q)) ||
+      (o.items && o.items.some(i => i.name.toLowerCase().includes(q)))
+    );
+  }
+
+  if (!orders.length) {
+    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding:32px; color:var(--md-sys-color-on-surface-variant);">No order records found.</td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = orders.map(o => {
+    const isDone = o.status === 'Picked up';
+    const isCancelled = o.status === 'Cancelled';
+    const timeStr = new Date(o.createdAt || Date.now()).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    const itemsSummary = (o.items || []).map(i => `${i.qty}x ${i.name}`).join(', ');
+
+    return `
+      <tr>
+        <td><strong class="mono" style="font-size:13px;">#${o.token}</strong></td>
+        <td style="font-size:12px; color:var(--md-sys-color-on-surface-variant);">${timeStr}</td>
+        <td>
+          <div style="font-weight:600; font-size:13px;">${o.customerName || 'Student'}</div>
+          <div style="font-size:11px; color:var(--md-sys-color-on-surface-variant);">${o.counter || 'Counter 1'}</div>
+        </td>
+        <td style="max-width:240px; font-size:12px;" title="${itemsSummary}">${itemsSummary}</td>
+        <td class="mono" style="font-weight:700;">Rs ${o.total || 0}</td>
+        <td>
+          <span class="status-badge ${isDone ? 'available' : isCancelled ? 'out' : 'low'}">${o.status}</span>
+        </td>
+        <td>
+          <div style="display:flex; gap:6px;">
+            ${!isDone && !isCancelled ? `
+              <button class="dev-btn primary" data-admin-complete-order="${o.id}" style="padding:4px 8px; font-size:11px; background:#1ba672; border-color:#1ba672;" title="Mark as Completed">
+                <span class="material-symbols-outlined" style="font-size:13px;">check</span>
+                <span>Complete</span>
+              </button>
+              <button class="dev-btn" data-admin-cancel-order="${o.id}" style="padding:4px 8px; font-size:11px; color:#ba1a1a;" title="Cancel & Refund">
+                <span class="material-symbols-outlined" style="font-size:13px;">close</span>
+                <span>Cancel</span>
+              </button>
+            ` : `<span style="font-size:11px; color:var(--md-sys-color-on-surface-variant); font-style:italic;">No action needed</span>`}
+          </div>
+        </td>
+      </tr>
+    `;
+  }).join('');
+}
+
+function openProductDrilldown(idOrName) {
+  const rawRole = (store.state.currentUser && (store.state.currentUser.role || (window.getUserRole ? window.getUserRole(store.state.currentUser.email) : 'student'))) || 'student';
+  if (rawRole !== 'admin') return;
+
+  const modal = $('#productDrilldownModal');
+  if (!modal) return;
+
+  const item = store.state.menuItems.find(m => m.id === idOrName || m.name.toLowerCase() === idOrName.toLowerCase());
+  if (!item) return;
+
+  currentDrilldownItem = item;
+
+  // Calculate sales
+  const now = Date.now();
+  const dayMs = 24 * 60 * 60 * 1000;
+  let unitsToday = 0;
+  let unitsWeek = 0;
+  let unitsAll = 0;
+  let orderCount = 0;
+  const hourHits = {};
+
+  store.state.orders.forEach(o => {
+    const oTime = new Date(o.createdAt).getTime();
+    (o.items || []).forEach(it => {
+      if (it.name.toLowerCase() === item.name.toLowerCase()) {
+        const qty = it.qty || 1;
+        unitsAll += qty;
+        orderCount++;
+        if ((now - oTime) <= dayMs) unitsToday += qty;
+        if ((now - oTime) <= 7 * dayMs) unitsWeek += qty;
+
+        const hr = new Date(o.createdAt).getHours();
+        hourHits[hr] = (hourHits[hr] || 0) + qty;
+      }
+    });
+  });
+
+  const totalRev = unitsAll * (item.price || 0);
+  const avgQty = orderCount ? (unitsAll / orderCount).toFixed(1) : '1.0';
+
+  // Find peak hour
+  let peakHr = 12;
+  let maxHit = 0;
+  Object.entries(hourHits).forEach(([hr, hit]) => {
+    if (hit > maxHit) {
+      maxHit = hit;
+      peakHr = parseInt(hr, 10);
+    }
+  });
+  const peakStr = `${peakHr}:00 - ${peakHr + 2}:00 (Peak)`;
+
+  if ($('#drilldownName')) $('#drilldownName').textContent = item.name;
+  if ($('#drilldownCategory')) $('#drilldownCategory').textContent = item.cat;
+  if ($('#drilldownCounter')) $('#drilldownCounter').textContent = item.counter;
+  if ($('#drilldownDiet')) {
+    $('#drilldownDiet').className = `diet-tag ${item.diet === 'non-veg' ? 'non-veg' : 'veg'}`;
+    $('#drilldownDiet').textContent = (item.diet || 'veg').toUpperCase();
+  }
+  if ($('#drilldownUnitsToday')) $('#drilldownUnitsToday').textContent = unitsToday;
+  if ($('#drilldownUnitsWeek')) $('#drilldownUnitsWeek').textContent = unitsWeek;
+  if ($('#drilldownUnitsAll')) $('#drilldownUnitsAll').textContent = unitsAll;
+  if ($('#drilldownTotalRevenue')) $('#drilldownTotalRevenue').textContent = `Rs ${totalRev}`;
+  if ($('#drilldownPriceDetail')) $('#drilldownPriceDetail').textContent = `Unit Price: Rs ${item.price}`;
+  if ($('#drilldownStockLevel')) $('#drilldownStockLevel').textContent = `${item.stock} left`;
+  if ($('#drilldownStockBadge')) {
+    $('#drilldownStockBadge').textContent = item.stock > 0 ? (item.stock <= (item.lowThreshold || 5) ? 'CRITICAL LOW' : 'AVAILABLE') : 'OUT OF STOCK';
+    $('#drilldownStockBadge').style.color = item.stock > 0 ? (item.stock <= (item.lowThreshold || 5) ? '#f59e0b' : '#1ba672') : '#ba1a1a';
+    $('#drilldownStockBadge').style.fontWeight = '700';
+  }
+  if ($('#drilldownAvgQty')) $('#drilldownAvgQty').textContent = `${avgQty} items/order`;
+  if ($('#drilldownPeakTime')) $('#drilldownPeakTime').textContent = peakStr;
+
+  modal.classList.remove('hide');
+}
+
+function closeProductDrilldown() {
+  const modal = $('#productDrilldownModal');
+  if (modal) modal.classList.add('hide');
+  currentDrilldownItem = null;
+}
+
+function exportOrdersCsv(state) {
+  const orders = state.orders || [];
+  if (!orders.length) {
+    toast('No order records available to export.', 'warning');
+    return;
+  }
+
+  const headers = ['Token', 'Timestamp', 'Student Name', 'Student Email', 'Counter', 'Items Summary', 'Total (INR)', 'Status'];
+  const rows = orders.map(o => [
+    `"${o.token || ''}"`,
+    `"${new Date(o.createdAt || Date.now()).toISOString()}"`,
+    `"${(o.customerName || 'Student').replace(/"/g, '""')}"`,
+    `"${(o.customerEmail || '').replace(/"/g, '""')}"`,
+    `"${(o.counter || 'Counter 1').replace(/"/g, '""')}"`,
+    `"${(o.items || []).map(i => `${i.qty}x ${i.name}`).join('; ').replace(/"/g, '""')}"`,
+    o.total || 0,
+    `"${o.status || 'Placed'}"`
+  ]);
+
+  const csvContent = 'data:text/csv;charset=utf-8,' + [headers.join(','), ...rows.map(e => e.join(','))].join('\n');
+  const encodedUri = encodeURI(csvContent);
+  const link = document.createElement('a');
+  link.setAttribute('href', encodedUri);
+  link.setAttribute('download', `inventrack_orders_${new Date().toISOString().slice(0, 10)}.csv`);
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  toast('Order history CSV exported successfully!', 'download');
+}
+
 
 function renderAdminAudit(state) {
   const tbody = $('#adminAuditTbody');
@@ -11374,10 +12370,248 @@ function setupEventHandlers() {
       store.addMenuItem({ name, emoji, cat, counter, price, stock, lowThreshold, restockTime });
       $('#itemFormName').value = '';
       $('#itemFormPrice').value = '';
-      store.setPage('admin-audit');
+      store.setPage('admin-stock');
     });
   }
-  const exportCsvBtn = $('#exportCsvBtn');
+
+  // Unified Admin Event Handlers
+  const lowCard = $('#metricLowStockCard');
+  if (lowCard) {
+    lowCard.addEventListener('click', () => {
+      adminStockFilter = 'low';
+      $$('#adminStockCategoryFilters .filter-chip').forEach(c => c.classList.toggle('active', c.dataset.stockCat === 'low'));
+      store.setPage('admin-stock');
+    });
+  }
+
+  // Velocity timeframe & criteria
+  const tfGroup = $('#velocityTimeframeGroup');
+  if (tfGroup) {
+    tfGroup.addEventListener('click', (e) => {
+      const btn = e.target.closest('.capsule-btn[data-timeframe]');
+      if (!btn) return;
+      velocityTimeframe = btn.dataset.timeframe;
+      $$('#velocityTimeframeGroup .capsule-btn').forEach(b => b.classList.toggle('active', b === btn));
+      renderAdminVelocityList(store.state);
+    });
+  }
+
+  const critGroup = $('#velocityCriteriaGroup');
+  if (critGroup) {
+    critGroup.addEventListener('click', (e) => {
+      const btn = e.target.closest('.capsule-btn[data-criteria]');
+      if (!btn) return;
+      velocityCriteria = btn.dataset.criteria;
+      $$('#velocityCriteriaGroup .capsule-btn').forEach(b => b.classList.toggle('active', b === btn));
+      renderAdminVelocityList(store.state);
+    });
+  }
+
+  // Analytics page filters
+  const aTfGroup = $('#analyticsTimeframeGroup');
+  if (aTfGroup) {
+    aTfGroup.addEventListener('click', (e) => {
+      const btn = e.target.closest('.capsule-btn[data-analytics-timeframe]');
+      if (!btn) return;
+      analyticsTimeframe = btn.dataset.analyticsTimeframe;
+      $$('#analyticsTimeframeGroup .capsule-btn').forEach(b => b.classList.toggle('active', b === btn));
+      renderAdminAnalytics(store.state);
+    });
+  }
+
+  const aCritGroup = $('#analyticsCriteriaGroup');
+  if (aCritGroup) {
+    aCritGroup.addEventListener('click', (e) => {
+      const btn = e.target.closest('.capsule-btn[data-analytics-criteria]');
+      if (!btn) return;
+      analyticsCriteria = btn.dataset.analyticsCriteria;
+      $$('#analyticsCriteriaGroup .capsule-btn').forEach(b => b.classList.toggle('active', b === btn));
+      renderAdminAnalytics(store.state);
+    });
+  }
+
+  // Admin Stock category filters
+  const stockFilters = $('#adminStockCategoryFilters');
+  if (stockFilters) {
+    stockFilters.addEventListener('click', (e) => {
+      const chip = e.target.closest('.filter-chip[data-stock-cat]');
+      if (!chip) return;
+      adminStockFilter = chip.dataset.stockCat;
+      $$('#adminStockCategoryFilters .filter-chip').forEach(c => c.classList.toggle('active', c === chip));
+      renderAdminStockManager(store.state);
+    });
+  }
+
+  // Admin Orders status filters & search
+  const orderFilters = $('#adminOrderStatusFilters');
+  if (orderFilters) {
+    orderFilters.addEventListener('click', (e) => {
+      const chip = e.target.closest('.filter-chip[data-order-status]');
+      if (!chip) return;
+      adminOrderStatusFilter = chip.dataset.orderStatus;
+      $$('#adminOrderStatusFilters .filter-chip').forEach(c => c.classList.toggle('active', c === chip));
+      renderAdminOrderHistory(store.state);
+    });
+  }
+
+  const orderSearch = $('#adminOrderSearchInput');
+  if (orderSearch) {
+    orderSearch.addEventListener('input', (e) => {
+      adminOrderSearchQuery = e.target.value;
+      renderAdminOrderHistory(store.state);
+    });
+  }
+
+  const exportOrdersBtn = $('#exportOrdersCsvBtn');
+  if (exportOrdersBtn) {
+    exportOrdersBtn.addEventListener('click', () => exportOrdersCsv(store.state));
+  }
+
+  const exportStockCsvBtn = $('#exportAuditCsvStockBtn');
+  if (exportStockCsvBtn) {
+    exportStockCsvBtn.addEventListener('click', () => exportAuditCsv(store.state));
+  }
+
+  const openAddItemBtn = $('#openAddItemModalBtnStockManager');
+  if (openAddItemBtn) {
+    openAddItemBtn.addEventListener('click', () => {
+      store.setPage('admin-items');
+    });
+  }
+
+  // Persona switcher capsule
+  const personaCapsule = $('#personaFilterCapsule');
+  if (personaCapsule) {
+    personaCapsule.addEventListener('click', (e) => {
+      const btn = e.target.closest('.capsule-btn[data-persona]');
+      if (!btn) return;
+      const persona = btn.dataset.persona;
+      if (persona === 'admin') {
+        store.state.currentUser = { ...DEMO_ACCOUNTS.admin };
+        store.state.activePage = 'admin-overview';
+      } else if (persona === 'kitchen') {
+        store.state.currentUser = { ...DEMO_ACCOUNTS.kitchen };
+        store.state.activePage = 'kitchen-kanban';
+      } else {
+        store.state.currentUser = { ...DEMO_ACCOUNTS.user };
+        store.state.activePage = 'home';
+      }
+      try { localStorage.setItem('invenTrack_user', JSON.stringify(store.state.currentUser)); } catch(e){}
+      store.save();
+      toast(`Switched perspective to ${roleLabels[persona] || persona}`, 'sync');
+    });
+  }
+
+  // Product Drilldown Delegation
+  document.addEventListener('click', (e) => {
+    const drilldownEl = e.target.closest('[data-product-drilldown]');
+    if (drilldownEl) {
+      const p = drilldownEl.dataset.productDrilldown;
+      if (p) openProductDrilldown(p);
+      return;
+    }
+  });
+
+  const drilldownClose = $('#drilldownCloseBtn');
+  if (drilldownClose) drilldownClose.addEventListener('click', closeProductDrilldown);
+
+  const drilldownModal = $('#productDrilldownModal');
+  if (drilldownModal) {
+    drilldownModal.addEventListener('click', (e) => {
+      if (e.target === drilldownModal) closeProductDrilldown();
+    });
+  }
+
+  // Drilldown actions
+  const restock10Btn = $('#drilldownRestock10Btn');
+  if (restock10Btn) {
+    restock10Btn.addEventListener('click', () => {
+      if (!currentDrilldownItem) return;
+      currentDrilldownItem.stock += 10;
+      store.save();
+      openProductDrilldown(currentDrilldownItem.id);
+      toast(`Added +10 stock to ${currentDrilldownItem.name}`, 'sync');
+    });
+  }
+
+  const restock25Btn = $('#drilldownRestock25Btn');
+  if (restock25Btn) {
+    restock25Btn.addEventListener('click', () => {
+      if (!currentDrilldownItem) return;
+      currentDrilldownItem.stock += 25;
+      store.save();
+      openProductDrilldown(currentDrilldownItem.id);
+      toast(`Added +25 stock to ${currentDrilldownItem.name}`, 'sync');
+    });
+  }
+
+  const toggleAvailBtn = $('#drilldownToggleAvailBtn');
+  if (toggleAvailBtn) {
+    toggleAvailBtn.addEventListener('click', () => {
+      if (!currentDrilldownItem) return;
+      if (currentDrilldownItem.stock > 0) {
+        currentDrilldownItem.stock = 0;
+        toast(`${currentDrilldownItem.name} marked Out of Stock`, 'warning');
+      } else {
+        currentDrilldownItem.stock = 20;
+        toast(`${currentDrilldownItem.name} restocked & available (20 servings)`, 'sync');
+      }
+      store.save();
+      openProductDrilldown(currentDrilldownItem.id);
+    });
+  }
+
+  // Inline stock stepping
+  document.addEventListener('click', (e) => {
+    const stepBtn = e.target.closest('[data-stock-step]');
+    if (stepBtn) {
+      const step = parseInt(stepBtn.dataset.stockStep, 10);
+      const itemId = stepBtn.dataset.itemId;
+      const item = store.state.menuItems.find(m => m.id === itemId);
+      if (item) {
+        item.stock = Math.max(0, item.stock + step);
+        store.save();
+        renderAdminStockManager(store.state);
+        toast(`${item.name} stock: ${item.stock}`, 'sync');
+      }
+      return;
+    }
+
+    const toggleBtn = e.target.closest('[data-toggle-avail]');
+    if (toggleBtn) {
+      const itemId = toggleBtn.dataset.toggleAvail;
+      const item = store.state.menuItems.find(m => m.id === itemId);
+      if (item) {
+        if (item.stock > 0) {
+          item.stock = 0;
+          toast(`${item.name} marked Out of Stock`, 'warning');
+        } else {
+          item.stock = 25;
+          toast(`${item.name} restocked to 25 servings`, 'sync');
+        }
+        store.save();
+        renderAdminStockManager(store.state);
+      }
+      return;
+    }
+  });
+
+  // Inline price edit change / blur
+  document.addEventListener('change', (e) => {
+    const priceInput = e.target.closest('.inline-price-input[data-edit-price]');
+    if (priceInput) {
+      const itemId = priceInput.dataset.editPrice;
+      const newPrice = Math.max(1, parseInt(priceInput.value, 10) || 1);
+      const item = store.state.menuItems.find(m => m.id === itemId);
+      if (item) {
+        item.price = newPrice;
+        store.save();
+        toast(`Updated ${item.name} price to Rs ${newPrice}`, 'sync');
+      }
+    }
+  });
+
+    const exportCsvBtn = $('#exportCsvBtn');
   if (exportCsvBtn) {
     exportCsvBtn.addEventListener('click', () => exportAuditCsv(store.state));
   }
@@ -11558,6 +12792,9 @@ function renderApp(state) {
   renderKitchenFeedback(state);
 
   renderAdminOverview(state);
+  renderAdminAnalytics(state);
+  renderAdminStockManager(state);
+  renderAdminOrderHistory(state);
   renderAdminAudit(state);
 }
 store.subscribe((state) => {
@@ -11875,5 +13112,75 @@ setInterval(() => {
       }
     })();
   </script>
+
+  <!-- Product Sales Drilldown Modal -->
+  <div class="product-drilldown-modal-backdrop hide" id="productDrilldownModal">
+    <div class="product-drilldown-card">
+      <div class="drilldown-header">
+        <div style="display:flex; align-items:center; gap:12px;">
+          <div class="drilldown-icon" id="drilldownIcon">
+            <span class="material-symbols-outlined" id="drilldownEmojiIcon">restaurant</span>
+          </div>
+          <div>
+            <h2 class="drilldown-title" id="drilldownName">Item Name</h2>
+            <div class="drilldown-sub">
+              <span class="diet-tag veg" id="drilldownDiet">VEG</span>
+              <span id="drilldownCategory" style="color:var(--md-sys-color-primary, #C3562A); font-weight:600;">Mains</span>
+              &bull;
+              <span id="drilldownCounter" style="color:var(--md-sys-color-on-surface-variant);">Counter 1</span>
+            </div>
+          </div>
+        </div>
+        <button class="drilldown-close-btn" id="drilldownCloseBtn" aria-label="Close Drilldown">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+
+      <!-- Metrics Grid -->
+      <div class="drilldown-metrics-grid">
+        <div class="drilldown-metric-box">
+          <div class="drilldown-metric-label">UNITS SOLD</div>
+          <div class="drilldown-units-breakdown">
+            <div><span class="lbl">Today</span> <span class="val mono" id="drilldownUnitsToday">0</span></div>
+            <div><span class="lbl">This Week</span> <span class="val mono" id="drilldownUnitsWeek">0</span></div>
+            <div><span class="lbl">All Time</span> <span class="val mono highlight" id="drilldownUnitsAll">0</span></div>
+          </div>
+        </div>
+
+        <div class="drilldown-metric-box">
+          <div class="drilldown-metric-label">TOTAL REVENUE</div>
+          <div class="drilldown-metric-big mono" id="drilldownTotalRevenue">&#8377;0</div>
+          <div class="drilldown-metric-sub" id="drilldownPriceDetail">Base Price: &#8377;0</div>
+        </div>
+
+        <div class="drilldown-metric-box">
+          <div class="drilldown-metric-label">STOCK STATUS</div>
+          <div class="drilldown-metric-big mono" id="drilldownStockLevel">0 left</div>
+          <div class="drilldown-metric-sub" id="drilldownStockBadge">AVAILABLE</div>
+        </div>
+
+        <div class="drilldown-metric-box">
+          <div class="drilldown-metric-label">ORDER DYNAMICS</div>
+          <div class="drilldown-dynamic-stat">
+            <span>Avg Qty / Order:</span> <strong class="mono" id="drilldownAvgQty">1.0</strong>
+          </div>
+          <div class="drilldown-dynamic-stat" style="margin-top:4px;">
+            <span>Peak Demand Time:</span> <strong id="drilldownPeakTime">12:00 - 14:00</strong>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Actions -->
+      <div class="drilldown-actions">
+        <div style="font-size:12px; font-weight:600; color:var(--md-sys-color-on-surface-variant);">Quick Inventory Action:</div>
+        <div style="display:flex; gap:8px; flex-wrap:wrap;">
+          <button class="dev-btn primary" id="drilldownRestock10Btn" type="button">+10 Stock</button>
+          <button class="dev-btn primary" id="drilldownRestock25Btn" type="button">+25 Stock</button>
+          <button class="dev-btn" id="drilldownToggleAvailBtn" type="button">Toggle Out of Stock</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </body>
 </html>

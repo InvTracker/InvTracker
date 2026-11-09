@@ -1181,18 +1181,24 @@ function renderShell(state) {
   const navAdmin = $('#navGroupAdmin');
 
   if (isAdmin) {
-    if (navUser) navUser.style.display = activeRole === 'user' ? 'flex' : 'none';
-    if (navKitchen) navKitchen.style.display = activeRole === 'kitchen' ? 'flex' : 'none';
-    if (navAdmin) navAdmin.style.display = activeRole === 'admin' ? 'flex' : 'none';
-  } else if (userRole === 'kitchen') {
-    if (navUser) navUser.style.display = 'none';
+    // Admin has unified access to all 3 portals!
+    if (navAdmin) navAdmin.style.display = 'flex';
     if (navKitchen) navKitchen.style.display = 'flex';
-    if (navAdmin) navAdmin.style.display = 'none';
-  } else {
     if (navUser) navUser.style.display = 'flex';
-    if (navKitchen) navKitchen.style.display = 'none';
+  } else if (userRole === 'kitchen') {
     if (navAdmin) navAdmin.style.display = 'none';
+    if (navKitchen) navKitchen.style.display = 'flex';
+    if (navUser) navUser.style.display = 'none';
+  } else {
+    if (navAdmin) navAdmin.style.display = 'none';
+    if (navKitchen) navKitchen.style.display = 'none';
+    if (navUser) navUser.style.display = 'flex';
   }
+
+  // Update persona filter capsule active state
+  $$('#personaFilterCapsule .capsule-btn').forEach((b) => {
+    b.classList.toggle('active', b.dataset.persona === userRole);
+  });
   const mobileRoleBadge = $('#mobileRoleBadge');
   if (mobileRoleBadge) {
     mobileRoleBadge.textContent = activeRole.toUpperCase();
@@ -2148,7 +2154,7 @@ function renderFoodCardHTML(it, state) {
             <span style="font-size:11px; font-weight:600; background:var(--md-sys-color-primary-container); color:var(--md-sys-color-on-primary-container); padding:2px 8px; border-radius:6px;">${it.counter || 'Counter 1'}</span>
           </div>
           ${recBadge}
-          <div class="card-item-title" style="font-size:17px; margin-top:4px;">${it.name}</div>
+          <div class="card-item-title clickable-product" data-product-drilldown="${it.id}" style="font-size:17px; margin-top:4px;" title="Click to view product drilldown">${it.name}</div>
           <div style="margin-top:2px; margin-bottom:6px;">${ratingMarkup}</div>
           <div class="card-item-price-row">
             <span class="card-item-price" style="font-size:16.5px;">Rs ${it.price}</span>
@@ -2192,7 +2198,7 @@ function renderFoodCardHTML(it, state) {
           </div>
         </div>
         <div class="card-main-content">
-          <div class="card-item-title">${it.name}</div>
+          <div class="card-item-title clickable-product" data-product-drilldown="${it.id}" title="Click to view product drilldown">${it.name}</div>
           ${recBadge}
           <div style="font-size:11.5px; color:var(--md-sys-color-on-surface-variant); margin-bottom:4px;">
             ${it.cat} &middot; <span style="font-weight:600;">${it.counter || 'Counter 1'}</span>
@@ -2219,7 +2225,7 @@ function renderFoodCardHTML(it, state) {
           ${badge ? `<span class="swiggy-ribbon trending">${badge}</span>` : ''}
         </div>
         ${recBadge}
-        <div class="card-item-title">${it.name}</div>
+        <div class="card-item-title clickable-product" data-product-drilldown="${it.id}" title="Click to view product drilldown">${it.name}</div>
         <div class="card-item-price-row">
           <span class="card-item-price">Rs ${it.price}</span>
           <span class="card-item-original-price">Rs ${originalPrice}</span>
@@ -3415,6 +3421,20 @@ function renderKitchenFeedback(state) {
     .join('');
 }
 
+
+// ==========================================================================
+// UNIFIED ADMIN ACCESS & ADVANCED ANALYTICS ENGINE
+// ==========================================================================
+
+let velocityTimeframe = 'today';
+let velocityCriteria = 'units';
+let analyticsTimeframe = 'today';
+let analyticsCriteria = 'units';
+let adminStockFilter = 'all';
+let adminOrderStatusFilter = 'all';
+let adminOrderSearchQuery = '';
+let currentDrilldownItem = null;
+
 function renderAdminOverview(state) {
   const rev = state.orders.reduce((sum, o) => sum + (o.total || 0), 0);
   const revEl = $('#metricTotalRevenue');
@@ -3439,6 +3459,7 @@ function renderAdminOverview(state) {
   if (infEl) infEl.textContent = inFlight;
   if (infSub) infSub.textContent = 'Active in kitchen queue';
 
+  // Peak Hours Demand Matrix
   const hours = [
     { label: '8-10', name: 'Breakfast', count: 0 },
     { label: '10-12', name: 'Brunch', count: 0 },
@@ -3476,40 +3497,398 @@ function renderAdminOverview(state) {
       .join('');
   }
 
+  // Filtered Top Re-Order Velocity with Drilldown triggers
+  renderAdminVelocityList(state);
+
+  // Revenue & Financial Breakdown
+  renderRevenueBreakdown(state);
+}
+
+function filterOrdersByTimeframe(orders, tf) {
+  const now = Date.now();
+  const dayMs = 24 * 60 * 60 * 1000;
+  if (tf === 'today') {
+    return orders.filter(o => (now - new Date(o.createdAt).getTime()) <= dayMs);
+  } else if (tf === 'week') {
+    return orders.filter(o => (now - new Date(o.createdAt).getTime()) <= 7 * dayMs);
+  }
+  return orders;
+}
+
+function renderAdminVelocityList(state) {
   const velocityEl = $('#adminVelocityList');
-  if (velocityEl) {
-    const salesMap = {};
-    state.orders.forEach((o) => {
-      (o.items || []).forEach((it) => {
-        salesMap[it.name] = (salesMap[it.name] || 0) + it.qty;
-      });
+  if (!velocityEl) return;
+
+  const filteredOrders = filterOrdersByTimeframe(state.orders, velocityTimeframe);
+  const scoreMap = {};
+
+  filteredOrders.forEach((o) => {
+    (o.items || []).forEach((it) => {
+      const val = velocityCriteria === 'revenue' ? ((it.price || 0) * (it.qty || 1)) : (it.qty || 1);
+      scoreMap[it.name] = (scoreMap[it.name] || 0) + val;
     });
+  });
 
-    const sortedVelocity = Object.entries(salesMap)
-      .sort((a, b) => b[1] - a[1])
-      .slice(0, 5);
+  const sortedVelocity = Object.entries(scoreMap)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 5);
 
-    if (!sortedVelocity.length) {
-      velocityEl.innerHTML = '<div style="padding:20px; color:var(--md-sys-color-on-surface-variant); text-align:center; font-size:12px;">No order velocity recorded yet.</div>';
-    } else {
-      const topQty = sortedVelocity[0][1];
-      velocityEl.innerHTML = sortedVelocity
-        .map(([name, qty]) => {
-          const pct = Math.round((qty / topQty) * 100);
-          return `
-            <div class="velocity-bar-row">
-              <span class="velocity-label">${name}</span>
-              <div class="velocity-track">
-                <div class="velocity-fill" style="width:${pct}%;"></div>
-              </div>
-              <span class="velocity-stat mono">${qty} orders</span>
+  if (!sortedVelocity.length) {
+    velocityEl.innerHTML = '<div style="padding:24px; color:var(--md-sys-color-on-surface-variant); text-align:center; font-size:12.5px;">No sales recorded for this timeframe.</div>';
+  } else {
+    const topScore = sortedVelocity[0][1] || 1;
+    velocityEl.innerHTML = sortedVelocity
+      .map(([name, score]) => {
+        const pct = Math.round((score / topScore) * 100);
+        const displayStat = velocityCriteria === 'revenue' ? `Rs ${score}` : `${score} units`;
+        return `
+          <div class="velocity-bar-row clickable-product" data-product-drilldown="${name}" title="Click to view product drilldown for ${name}">
+            <div style="display:flex; justify-content:space-between; align-items:center; width:100%; margin-bottom:4px;">
+              <span class="velocity-label" style="font-weight:600;">${name}</span>
+              <span class="velocity-stat mono" style="font-weight:700;">${displayStat}</span>
             </div>
-          `;
-        })
-        .join('');
-    }
+            <div class="velocity-track">
+              <div class="velocity-fill" style="width:${pct}%;"></div>
+            </div>
+          </div>
+        `;
+      })
+      .join('');
   }
 }
+
+function renderRevenueBreakdown(state) {
+  const totalRev = state.orders.reduce((sum, o) => sum + (o.total || 0), 0);
+  const completedRev = state.orders.filter(o => o.status === 'Picked up').reduce((sum, o) => sum + (o.total || 0), 0);
+  const inFlightRev = state.orders.filter(o => o.status === 'Placed' || o.status === 'Preparing' || o.status === 'Ready').reduce((sum, o) => sum + (o.total || 0), 0);
+  const cancelledRev = state.orders.filter(o => o.status === 'Cancelled').reduce((sum, o) => sum + (o.total || 0), 0);
+  const aov = state.orders.length ? (totalRev / state.orders.length).toFixed(2) : '0.00';
+
+  if ($('#financialAovDisplay')) $('#financialAovDisplay').textContent = `Average Order Value (AOV): Rs ${aov}`;
+  if ($('#revCompleted')) $('#revCompleted').textContent = `Rs ${completedRev}`;
+  if ($('#revInFlight')) $('#revInFlight').textContent = `Rs ${inFlightRev}`;
+  if ($('#revCancelled')) $('#revCancelled').textContent = `Rs ${cancelledRev}`;
+
+  // Category breakdown
+  const catMap = { Mains: 0, Snacks: 0, Beverages: 0, Desserts: 0 };
+  state.orders.forEach(o => {
+    (o.items || []).forEach(it => {
+      const match = state.menuItems.find(m => m.name === it.name);
+      const cat = (match && match.cat) || 'Mains';
+      if (catMap[cat] !== undefined) {
+        catMap[cat] += (it.price || 0) * (it.qty || 1);
+      } else {
+        catMap.Mains += (it.price || 0) * (it.qty || 1);
+      }
+    });
+  });
+
+  const catTotal = Object.values(catMap).reduce((a, b) => a + b, 0) || 1;
+  const pMains = Math.round((catMap.Mains / catTotal) * 100);
+  const pSnacks = Math.round((catMap.Snacks / catTotal) * 100);
+  const pBev = Math.round((catMap.Beverages / catTotal) * 100);
+  const pDes = Math.max(0, 100 - (pMains + pSnacks + pBev));
+
+  if ($('#catValMains')) $('#catValMains').textContent = `Rs ${catMap.Mains} (${pMains}%)`;
+  if ($('#catValSnacks')) $('#catValSnacks').textContent = `Rs ${catMap.Snacks} (${pSnacks}%)`;
+  if ($('#catValBeverages')) $('#catValBeverages').textContent = `Rs ${catMap.Beverages} (${pBev}%)`;
+  if ($('#catValDesserts')) $('#catValDesserts').textContent = `Rs ${catMap.Desserts} (${pDes}%)`;
+
+  const bar = $('#catBreakdownBar');
+  if (bar) {
+    bar.innerHTML = `
+      <div class="cat-segment" style="width:${pMains}%; background:#C3562A;" title="Mains: Rs ${catMap.Mains} (${pMains}%)"></div>
+      <div class="cat-segment" style="width:${pSnacks}%; background:#F08B5D;" title="Snacks: Rs ${catMap.Snacks} (${pSnacks}%)"></div>
+      <div class="cat-segment" style="width:${pBev}%; background:#006874;" title="Beverages: Rs ${catMap.Beverages} (${pBev}%)"></div>
+      <div class="cat-segment" style="width:${pDes}%; background:#1ba672;" title="Desserts: Rs ${catMap.Desserts} (${pDes}%)"></div>
+    `;
+  }
+}
+
+function renderAdminAnalytics(state) {
+  const tbody = $('#analyticsTableBody');
+  if (!tbody) return;
+
+  const filteredOrders = filterOrdersByTimeframe(state.orders, analyticsTimeframe);
+  const data = state.menuItems.map(item => {
+    let units = 0;
+    filteredOrders.forEach(o => {
+      (o.items || []).forEach(it => {
+        if (it.name === item.name) units += (it.qty || 1);
+      });
+    });
+    const rev = units * (item.price || 0);
+    return { ...item, units, rev };
+  });
+
+  data.sort((a, b) => analyticsCriteria === 'revenue' ? (b.rev - a.rev) : (b.units - a.units));
+
+  tbody.innerHTML = data.map((item, idx) => {
+    const isTop = idx < 3 && (item.units > 0 || item.rev > 0);
+    return `
+      <tr class="clickable-product" data-product-drilldown="${item.id}" style="cursor:pointer;">
+        <td>
+          <div style="display:flex; align-items:center; gap:10px;">
+            <span style="font-weight:800; font-size:12px; color:${idx===0?'#f59e0b':idx===1?'#94a3b8':idx===2?'#d97706':'var(--md-sys-color-on-surface-variant)'};">#${idx+1}</span>
+            <div>
+              <strong>${item.name}</strong>
+              <div class="mono" style="font-size:11px; color:var(--md-sys-color-on-surface-variant);">${item.id}</div>
+            </div>
+          </div>
+        </td>
+        <td><span class="diet-tag ${item.diet==='non-veg'?'non-veg':'veg'}">${item.cat}</span></td>
+        <td style="font-size:12px;">${item.counter}</td>
+        <td class="mono" style="font-weight:700;">${item.units}</td>
+        <td class="mono" style="font-weight:700; color:#1ba672;">Rs ${item.rev}</td>
+        <td class="mono">${item.stock} left</td>
+        <td>
+          <span class="status-badge ${isTop ? 'available' : 'low'}" style="font-size:11px;">
+            ${isTop ? 'High Velocity' : 'Steady'}
+          </span>
+        </td>
+        <td>
+          <button class="dev-btn primary" data-product-drilldown="${item.id}" style="padding:4px 10px; font-size:11.5px;">Drill Down</button>
+        </td>
+      </tr>
+    `;
+  }).join('');
+}
+
+function renderAdminStockManager(state) {
+  const tbody = $('#adminStockTableBody');
+  if (!tbody) return;
+
+  let items = [...state.menuItems];
+  if (adminStockFilter === 'low') {
+    items = items.filter(it => it.stock <= (it.lowThreshold || 5));
+  } else if (adminStockFilter !== 'all') {
+    items = items.filter(it => it.cat === adminStockFilter);
+  }
+
+  if (!items.length) {
+    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding:32px; color:var(--md-sys-color-on-surface-variant);">No items matching this filter.</td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = items.map(it => {
+    const isAvail = it.stock > 0;
+    return `
+      <tr>
+        <td>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <div style="width:34px; height:34px; border-radius:8px; overflow:hidden; background:var(--md-sys-color-surface-container);">
+              <img src="${it.image || ''}" style="width:100%; height:100%; object-fit:cover;" onerror="this.src='/assets/inventrack-badge.png'">
+            </div>
+            <div>
+              <strong class="clickable-product" data-product-drilldown="${it.id}" style="cursor:pointer;" title="View sales drill-down">${it.name}</strong>
+              <div class="mono" style="font-size:10.5px; color:var(--md-sys-color-on-surface-variant);">${it.id} &bull; ${it.counter}</div>
+            </div>
+          </div>
+        </td>
+        <td><span class="diet-tag ${it.diet==='non-veg'?'non-veg':'veg'}">${it.cat}</span></td>
+        <td>
+          <input type="number" class="inline-price-input" data-edit-price="${it.id}" value="${it.price}" min="1" title="Edit price and press Enter">
+        </td>
+        <td>
+          <div class="stock-stepper">
+            <button class="stepper-btn" data-stock-step="-1" data-item-id="${it.id}" title="Decrease stock">-</button>
+            <input class="stepper-val" value="${it.stock}" readonly>
+            <button class="stepper-btn" data-stock-step="1" data-item-id="${it.id}" title="Increase stock">+</button>
+          </div>
+        </td>
+        <td>
+          <button class="status-badge ${isAvail ? 'available' : 'out'}" data-toggle-avail="${it.id}" style="cursor:pointer; border:none;" title="Click to toggle availability">
+            ${isAvail ? 'In Stock' : 'Out of Stock'}
+          </button>
+        </td>
+        <td>
+          <button class="dev-btn primary" data-admin-restock="${it.id}" style="padding:4px 10px; font-size:11.5px;">+20 Units</button>
+        </td>
+        <td>
+          <button class="dev-btn" data-product-drilldown="${it.id}" style="padding:4px 10px; font-size:11.5px;">
+            <span class="material-symbols-outlined" style="font-size:14px;">analytics</span>
+            <span>Analytics</span>
+          </button>
+        </td>
+      </tr>
+    `;
+  }).join('');
+}
+
+function renderAdminOrderHistory(state) {
+  const tbody = $('#adminOrdersTableBody');
+  if (!tbody) return;
+
+  let orders = [...(state.orders || [])];
+
+  if (adminOrderStatusFilter !== 'all') {
+    orders = orders.filter(o => o.status === adminOrderStatusFilter);
+  }
+
+  if (adminOrderSearchQuery.trim()) {
+    const q = adminOrderSearchQuery.toLowerCase();
+    orders = orders.filter(o => 
+      (o.token && o.token.toLowerCase().includes(q)) ||
+      (o.customerName && o.customerName.toLowerCase().includes(q)) ||
+      (o.counter && o.counter.toLowerCase().includes(q)) ||
+      (o.items && o.items.some(i => i.name.toLowerCase().includes(q)))
+    );
+  }
+
+  if (!orders.length) {
+    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding:32px; color:var(--md-sys-color-on-surface-variant);">No order records found.</td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = orders.map(o => {
+    const isDone = o.status === 'Picked up';
+    const isCancelled = o.status === 'Cancelled';
+    const timeStr = new Date(o.createdAt || Date.now()).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    const itemsSummary = (o.items || []).map(i => `${i.qty}x ${i.name}`).join(', ');
+
+    return `
+      <tr>
+        <td><strong class="mono" style="font-size:13px;">#${o.token}</strong></td>
+        <td style="font-size:12px; color:var(--md-sys-color-on-surface-variant);">${timeStr}</td>
+        <td>
+          <div style="font-weight:600; font-size:13px;">${o.customerName || 'Student'}</div>
+          <div style="font-size:11px; color:var(--md-sys-color-on-surface-variant);">${o.counter || 'Counter 1'}</div>
+        </td>
+        <td style="max-width:240px; font-size:12px;" title="${itemsSummary}">${itemsSummary}</td>
+        <td class="mono" style="font-weight:700;">Rs ${o.total || 0}</td>
+        <td>
+          <span class="status-badge ${isDone ? 'available' : isCancelled ? 'out' : 'low'}">${o.status}</span>
+        </td>
+        <td>
+          <div style="display:flex; gap:6px;">
+            ${!isDone && !isCancelled ? `
+              <button class="dev-btn primary" data-admin-complete-order="${o.id}" style="padding:4px 8px; font-size:11px; background:#1ba672; border-color:#1ba672;" title="Mark as Completed">
+                <span class="material-symbols-outlined" style="font-size:13px;">check</span>
+                <span>Complete</span>
+              </button>
+              <button class="dev-btn" data-admin-cancel-order="${o.id}" style="padding:4px 8px; font-size:11px; color:#ba1a1a;" title="Cancel & Refund">
+                <span class="material-symbols-outlined" style="font-size:13px;">close</span>
+                <span>Cancel</span>
+              </button>
+            ` : `<span style="font-size:11px; color:var(--md-sys-color-on-surface-variant); font-style:italic;">No action needed</span>`}
+          </div>
+        </td>
+      </tr>
+    `;
+  }).join('');
+}
+
+function openProductDrilldown(idOrName) {
+  const rawRole = (store.state.currentUser && (store.state.currentUser.role || (window.getUserRole ? window.getUserRole(store.state.currentUser.email) : 'student'))) || 'student';
+  if (rawRole !== 'admin') return;
+
+  const modal = $('#productDrilldownModal');
+  if (!modal) return;
+
+  const item = store.state.menuItems.find(m => m.id === idOrName || m.name.toLowerCase() === idOrName.toLowerCase());
+  if (!item) return;
+
+  currentDrilldownItem = item;
+
+  // Calculate sales
+  const now = Date.now();
+  const dayMs = 24 * 60 * 60 * 1000;
+  let unitsToday = 0;
+  let unitsWeek = 0;
+  let unitsAll = 0;
+  let orderCount = 0;
+  const hourHits = {};
+
+  store.state.orders.forEach(o => {
+    const oTime = new Date(o.createdAt).getTime();
+    (o.items || []).forEach(it => {
+      if (it.name.toLowerCase() === item.name.toLowerCase()) {
+        const qty = it.qty || 1;
+        unitsAll += qty;
+        orderCount++;
+        if ((now - oTime) <= dayMs) unitsToday += qty;
+        if ((now - oTime) <= 7 * dayMs) unitsWeek += qty;
+
+        const hr = new Date(o.createdAt).getHours();
+        hourHits[hr] = (hourHits[hr] || 0) + qty;
+      }
+    });
+  });
+
+  const totalRev = unitsAll * (item.price || 0);
+  const avgQty = orderCount ? (unitsAll / orderCount).toFixed(1) : '1.0';
+
+  // Find peak hour
+  let peakHr = 12;
+  let maxHit = 0;
+  Object.entries(hourHits).forEach(([hr, hit]) => {
+    if (hit > maxHit) {
+      maxHit = hit;
+      peakHr = parseInt(hr, 10);
+    }
+  });
+  const peakStr = `${peakHr}:00 - ${peakHr + 2}:00 (Peak)`;
+
+  if ($('#drilldownName')) $('#drilldownName').textContent = item.name;
+  if ($('#drilldownCategory')) $('#drilldownCategory').textContent = item.cat;
+  if ($('#drilldownCounter')) $('#drilldownCounter').textContent = item.counter;
+  if ($('#drilldownDiet')) {
+    $('#drilldownDiet').className = `diet-tag ${item.diet === 'non-veg' ? 'non-veg' : 'veg'}`;
+    $('#drilldownDiet').textContent = (item.diet || 'veg').toUpperCase();
+  }
+  if ($('#drilldownUnitsToday')) $('#drilldownUnitsToday').textContent = unitsToday;
+  if ($('#drilldownUnitsWeek')) $('#drilldownUnitsWeek').textContent = unitsWeek;
+  if ($('#drilldownUnitsAll')) $('#drilldownUnitsAll').textContent = unitsAll;
+  if ($('#drilldownTotalRevenue')) $('#drilldownTotalRevenue').textContent = `Rs ${totalRev}`;
+  if ($('#drilldownPriceDetail')) $('#drilldownPriceDetail').textContent = `Unit Price: Rs ${item.price}`;
+  if ($('#drilldownStockLevel')) $('#drilldownStockLevel').textContent = `${item.stock} left`;
+  if ($('#drilldownStockBadge')) {
+    $('#drilldownStockBadge').textContent = item.stock > 0 ? (item.stock <= (item.lowThreshold || 5) ? 'CRITICAL LOW' : 'AVAILABLE') : 'OUT OF STOCK';
+    $('#drilldownStockBadge').style.color = item.stock > 0 ? (item.stock <= (item.lowThreshold || 5) ? '#f59e0b' : '#1ba672') : '#ba1a1a';
+    $('#drilldownStockBadge').style.fontWeight = '700';
+  }
+  if ($('#drilldownAvgQty')) $('#drilldownAvgQty').textContent = `${avgQty} items/order`;
+  if ($('#drilldownPeakTime')) $('#drilldownPeakTime').textContent = peakStr;
+
+  modal.classList.remove('hide');
+}
+
+function closeProductDrilldown() {
+  const modal = $('#productDrilldownModal');
+  if (modal) modal.classList.add('hide');
+  currentDrilldownItem = null;
+}
+
+function exportOrdersCsv(state) {
+  const orders = state.orders || [];
+  if (!orders.length) {
+    toast('No order records available to export.', 'warning');
+    return;
+  }
+
+  const headers = ['Token', 'Timestamp', 'Student Name', 'Student Email', 'Counter', 'Items Summary', 'Total (INR)', 'Status'];
+  const rows = orders.map(o => [
+    `"${o.token || ''}"`,
+    `"${new Date(o.createdAt || Date.now()).toISOString()}"`,
+    `"${(o.customerName || 'Student').replace(/"/g, '""')}"`,
+    `"${(o.customerEmail || '').replace(/"/g, '""')}"`,
+    `"${(o.counter || 'Counter 1').replace(/"/g, '""')}"`,
+    `"${(o.items || []).map(i => `${i.qty}x ${i.name}`).join('; ').replace(/"/g, '""')}"`,
+    o.total || 0,
+    `"${o.status || 'Placed'}"`
+  ]);
+
+  const csvContent = 'data:text/csv;charset=utf-8,' + [headers.join(','), ...rows.map(e => e.join(','))].join('\n');
+  const encodedUri = encodeURI(csvContent);
+  const link = document.createElement('a');
+  link.setAttribute('href', encodedUri);
+  link.setAttribute('download', `inventrack_orders_${new Date().toISOString().slice(0, 10)}.csv`);
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  toast('Order history CSV exported successfully!', 'download');
+}
+
 
 function renderAdminAudit(state) {
   const tbody = $('#adminAuditTbody');
@@ -4327,10 +4706,248 @@ function setupEventHandlers() {
       store.addMenuItem({ name, emoji, cat, counter, price, stock, lowThreshold, restockTime });
       $('#itemFormName').value = '';
       $('#itemFormPrice').value = '';
-      store.setPage('admin-audit');
+      store.setPage('admin-stock');
     });
   }
-  const exportCsvBtn = $('#exportCsvBtn');
+
+  // Unified Admin Event Handlers
+  const lowCard = $('#metricLowStockCard');
+  if (lowCard) {
+    lowCard.addEventListener('click', () => {
+      adminStockFilter = 'low';
+      $$('#adminStockCategoryFilters .filter-chip').forEach(c => c.classList.toggle('active', c.dataset.stockCat === 'low'));
+      store.setPage('admin-stock');
+    });
+  }
+
+  // Velocity timeframe & criteria
+  const tfGroup = $('#velocityTimeframeGroup');
+  if (tfGroup) {
+    tfGroup.addEventListener('click', (e) => {
+      const btn = e.target.closest('.capsule-btn[data-timeframe]');
+      if (!btn) return;
+      velocityTimeframe = btn.dataset.timeframe;
+      $$('#velocityTimeframeGroup .capsule-btn').forEach(b => b.classList.toggle('active', b === btn));
+      renderAdminVelocityList(store.state);
+    });
+  }
+
+  const critGroup = $('#velocityCriteriaGroup');
+  if (critGroup) {
+    critGroup.addEventListener('click', (e) => {
+      const btn = e.target.closest('.capsule-btn[data-criteria]');
+      if (!btn) return;
+      velocityCriteria = btn.dataset.criteria;
+      $$('#velocityCriteriaGroup .capsule-btn').forEach(b => b.classList.toggle('active', b === btn));
+      renderAdminVelocityList(store.state);
+    });
+  }
+
+  // Analytics page filters
+  const aTfGroup = $('#analyticsTimeframeGroup');
+  if (aTfGroup) {
+    aTfGroup.addEventListener('click', (e) => {
+      const btn = e.target.closest('.capsule-btn[data-analytics-timeframe]');
+      if (!btn) return;
+      analyticsTimeframe = btn.dataset.analyticsTimeframe;
+      $$('#analyticsTimeframeGroup .capsule-btn').forEach(b => b.classList.toggle('active', b === btn));
+      renderAdminAnalytics(store.state);
+    });
+  }
+
+  const aCritGroup = $('#analyticsCriteriaGroup');
+  if (aCritGroup) {
+    aCritGroup.addEventListener('click', (e) => {
+      const btn = e.target.closest('.capsule-btn[data-analytics-criteria]');
+      if (!btn) return;
+      analyticsCriteria = btn.dataset.analyticsCriteria;
+      $$('#analyticsCriteriaGroup .capsule-btn').forEach(b => b.classList.toggle('active', b === btn));
+      renderAdminAnalytics(store.state);
+    });
+  }
+
+  // Admin Stock category filters
+  const stockFilters = $('#adminStockCategoryFilters');
+  if (stockFilters) {
+    stockFilters.addEventListener('click', (e) => {
+      const chip = e.target.closest('.filter-chip[data-stock-cat]');
+      if (!chip) return;
+      adminStockFilter = chip.dataset.stockCat;
+      $$('#adminStockCategoryFilters .filter-chip').forEach(c => c.classList.toggle('active', c === chip));
+      renderAdminStockManager(store.state);
+    });
+  }
+
+  // Admin Orders status filters & search
+  const orderFilters = $('#adminOrderStatusFilters');
+  if (orderFilters) {
+    orderFilters.addEventListener('click', (e) => {
+      const chip = e.target.closest('.filter-chip[data-order-status]');
+      if (!chip) return;
+      adminOrderStatusFilter = chip.dataset.orderStatus;
+      $$('#adminOrderStatusFilters .filter-chip').forEach(c => c.classList.toggle('active', c === chip));
+      renderAdminOrderHistory(store.state);
+    });
+  }
+
+  const orderSearch = $('#adminOrderSearchInput');
+  if (orderSearch) {
+    orderSearch.addEventListener('input', (e) => {
+      adminOrderSearchQuery = e.target.value;
+      renderAdminOrderHistory(store.state);
+    });
+  }
+
+  const exportOrdersBtn = $('#exportOrdersCsvBtn');
+  if (exportOrdersBtn) {
+    exportOrdersBtn.addEventListener('click', () => exportOrdersCsv(store.state));
+  }
+
+  const exportStockCsvBtn = $('#exportAuditCsvStockBtn');
+  if (exportStockCsvBtn) {
+    exportStockCsvBtn.addEventListener('click', () => exportAuditCsv(store.state));
+  }
+
+  const openAddItemBtn = $('#openAddItemModalBtnStockManager');
+  if (openAddItemBtn) {
+    openAddItemBtn.addEventListener('click', () => {
+      store.setPage('admin-items');
+    });
+  }
+
+  // Persona switcher capsule
+  const personaCapsule = $('#personaFilterCapsule');
+  if (personaCapsule) {
+    personaCapsule.addEventListener('click', (e) => {
+      const btn = e.target.closest('.capsule-btn[data-persona]');
+      if (!btn) return;
+      const persona = btn.dataset.persona;
+      if (persona === 'admin') {
+        store.state.currentUser = { ...DEMO_ACCOUNTS.admin };
+        store.state.activePage = 'admin-overview';
+      } else if (persona === 'kitchen') {
+        store.state.currentUser = { ...DEMO_ACCOUNTS.kitchen };
+        store.state.activePage = 'kitchen-kanban';
+      } else {
+        store.state.currentUser = { ...DEMO_ACCOUNTS.user };
+        store.state.activePage = 'home';
+      }
+      try { localStorage.setItem('invenTrack_user', JSON.stringify(store.state.currentUser)); } catch(e){}
+      store.save();
+      toast(`Switched perspective to ${roleLabels[persona] || persona}`, 'sync');
+    });
+  }
+
+  // Product Drilldown Delegation
+  document.addEventListener('click', (e) => {
+    const drilldownEl = e.target.closest('[data-product-drilldown]');
+    if (drilldownEl) {
+      const p = drilldownEl.dataset.productDrilldown;
+      if (p) openProductDrilldown(p);
+      return;
+    }
+  });
+
+  const drilldownClose = $('#drilldownCloseBtn');
+  if (drilldownClose) drilldownClose.addEventListener('click', closeProductDrilldown);
+
+  const drilldownModal = $('#productDrilldownModal');
+  if (drilldownModal) {
+    drilldownModal.addEventListener('click', (e) => {
+      if (e.target === drilldownModal) closeProductDrilldown();
+    });
+  }
+
+  // Drilldown actions
+  const restock10Btn = $('#drilldownRestock10Btn');
+  if (restock10Btn) {
+    restock10Btn.addEventListener('click', () => {
+      if (!currentDrilldownItem) return;
+      currentDrilldownItem.stock += 10;
+      store.save();
+      openProductDrilldown(currentDrilldownItem.id);
+      toast(`Added +10 stock to ${currentDrilldownItem.name}`, 'sync');
+    });
+  }
+
+  const restock25Btn = $('#drilldownRestock25Btn');
+  if (restock25Btn) {
+    restock25Btn.addEventListener('click', () => {
+      if (!currentDrilldownItem) return;
+      currentDrilldownItem.stock += 25;
+      store.save();
+      openProductDrilldown(currentDrilldownItem.id);
+      toast(`Added +25 stock to ${currentDrilldownItem.name}`, 'sync');
+    });
+  }
+
+  const toggleAvailBtn = $('#drilldownToggleAvailBtn');
+  if (toggleAvailBtn) {
+    toggleAvailBtn.addEventListener('click', () => {
+      if (!currentDrilldownItem) return;
+      if (currentDrilldownItem.stock > 0) {
+        currentDrilldownItem.stock = 0;
+        toast(`${currentDrilldownItem.name} marked Out of Stock`, 'warning');
+      } else {
+        currentDrilldownItem.stock = 20;
+        toast(`${currentDrilldownItem.name} restocked & available (20 servings)`, 'sync');
+      }
+      store.save();
+      openProductDrilldown(currentDrilldownItem.id);
+    });
+  }
+
+  // Inline stock stepping
+  document.addEventListener('click', (e) => {
+    const stepBtn = e.target.closest('[data-stock-step]');
+    if (stepBtn) {
+      const step = parseInt(stepBtn.dataset.stockStep, 10);
+      const itemId = stepBtn.dataset.itemId;
+      const item = store.state.menuItems.find(m => m.id === itemId);
+      if (item) {
+        item.stock = Math.max(0, item.stock + step);
+        store.save();
+        renderAdminStockManager(store.state);
+        toast(`${item.name} stock: ${item.stock}`, 'sync');
+      }
+      return;
+    }
+
+    const toggleBtn = e.target.closest('[data-toggle-avail]');
+    if (toggleBtn) {
+      const itemId = toggleBtn.dataset.toggleAvail;
+      const item = store.state.menuItems.find(m => m.id === itemId);
+      if (item) {
+        if (item.stock > 0) {
+          item.stock = 0;
+          toast(`${item.name} marked Out of Stock`, 'warning');
+        } else {
+          item.stock = 25;
+          toast(`${item.name} restocked to 25 servings`, 'sync');
+        }
+        store.save();
+        renderAdminStockManager(store.state);
+      }
+      return;
+    }
+  });
+
+  // Inline price edit change / blur
+  document.addEventListener('change', (e) => {
+    const priceInput = e.target.closest('.inline-price-input[data-edit-price]');
+    if (priceInput) {
+      const itemId = priceInput.dataset.editPrice;
+      const newPrice = Math.max(1, parseInt(priceInput.value, 10) || 1);
+      const item = store.state.menuItems.find(m => m.id === itemId);
+      if (item) {
+        item.price = newPrice;
+        store.save();
+        toast(`Updated ${item.name} price to Rs ${newPrice}`, 'sync');
+      }
+    }
+  });
+
+    const exportCsvBtn = $('#exportCsvBtn');
   if (exportCsvBtn) {
     exportCsvBtn.addEventListener('click', () => exportAuditCsv(store.state));
   }
@@ -4511,6 +5128,9 @@ function renderApp(state) {
   renderKitchenFeedback(state);
 
   renderAdminOverview(state);
+  renderAdminAnalytics(state);
+  renderAdminStockManager(state);
+  renderAdminOrderHistory(state);
   renderAdminAudit(state);
 }
 store.subscribe((state) => {
