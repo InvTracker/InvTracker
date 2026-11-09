@@ -6351,6 +6351,15 @@ body[data-theme="dark"] {
   font-size: 13.5px;
 }
 
+
+/* Hide developer mode pill and active persona switcher */
+.dev-persona-pill,
+#devPersonaPill,
+#adminPersonaQuickBar,
+.admin-persona-quick-bar {
+  display: none !important;
+}
+
 </style>
 </head>
 <body>
@@ -6451,14 +6460,6 @@ body[data-theme="dark"] {
       </nav>
 
       <div class="sidebar-foot">
-        <div class="admin-persona-quick-bar" id="adminPersonaQuickBar" style="margin-bottom:12px; width:100%;">
-          <div style="font-size:10.5px; text-transform:uppercase; font-weight:700; color:var(--md-sys-color-on-surface-variant); margin-bottom:5px; letter-spacing:0.04em;">Active Persona View</div>
-          <div class="filter-capsule" id="personaFilterCapsule" style="display:flex; width:100%;">
-            <button class="capsule-btn active" data-persona="admin" style="flex:1;">Admin</button>
-            <button class="capsule-btn" data-persona="kitchen" style="flex:1;">Kitchen</button>
-            <button class="capsule-btn" data-persona="student" style="flex:1;">Student</button>
-          </div>
-        </div>
         <button class="nav-item" id="sidebarProfileBtn" data-page="settings" style="margin-bottom:10px; padding:6px 12px;">
           <div class="who">
             <div class="avatar" id="sideAvatar">RS</div>
@@ -8810,7 +8811,7 @@ function renderShell(state) {
 
   const devPill = $('#devPersonaPill');
   if (devPill) {
-    devPill.style.display = (isDev || isAdmin) ? 'block' : 'none';
+    devPill.style.display = 'none';
   }
 
   const roleSwitcher = $('#roleSwitcher');
@@ -12970,28 +12971,6 @@ setInterval(() => {
   <button id="scrollToTopBtn" class="scroll-to-top-btn" aria-label="Scroll to top" title="Scroll to top">
     <span class="material-symbols-outlined">arrow_upward</span>
   </button>
-
-    <div class="dev-persona-pill" id="devPersonaPill"  style="display:none;">
-      <button class="dev-pill-toggle" id="devPillToggle" title="Developer persona switcher">
-        <span class="material-symbols-outlined">developer_mode</span>
-        <span>Dev Mode</span>
-      </button>
-      <div class="dev-pill-menu" id="devPillMenu">
-        <div class="dev-pill-header">Active Persona</div>
-        <button class="dev-pill-btn" data-role="user">
-          <span class="material-symbols-outlined">person</span>
-          <span>Student</span>
-        </button>
-        <button class="dev-pill-btn" data-role="kitchen">
-          <span class="material-symbols-outlined">skillet</span>
-          <span>Kitchen</span>
-        </button>
-        <button class="dev-pill-btn" data-role="admin">
-          <span class="material-symbols-outlined">admin_panel_settings</span>
-          <span>Admin</span>
-        </button>
-      </div>
-    </div>
 
   <!-- Robust Theme Controller (Light/Dark Toggle) -->
   <script>

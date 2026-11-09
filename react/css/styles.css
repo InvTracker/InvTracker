@@ -6269,3 +6269,12 @@ body[data-theme="dark"] {
   font-weight: 700;
   font-size: 13.5px;
 }
+
+
+/* Hide developer mode pill and active persona switcher */
+.dev-persona-pill,
+#devPersonaPill,
+#adminPersonaQuickBar,
+.admin-persona-quick-bar {
+  display: none !important;
+}

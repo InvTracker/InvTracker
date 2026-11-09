@@ -1146,7 +1146,7 @@ function renderShell(state) {
 
   const devPill = $('#devPersonaPill');
   if (devPill) {
-    devPill.style.display = (isDev || isAdmin) ? 'block' : 'none';
+    devPill.style.display = 'none';
   }
 
   const roleSwitcher = $('#roleSwitcher');
