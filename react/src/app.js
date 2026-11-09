@@ -4633,3 +4633,39 @@ setInterval(() => {
     }
   }
 }, 10000);
+
+// ==========================================
+// Floating Scroll-to-Top Controller
+// ==========================================
+(function() {
+  function initScrollToTop() {
+    var scrollBtn = document.getElementById('scrollToTopBtn');
+    if (!scrollBtn) return;
+
+    var onScroll = function() {
+      if (window.pageYOffset > 240 || document.documentElement.scrollTop > 240) {
+        scrollBtn.classList.add('visible');
+      } else {
+        scrollBtn.classList.remove('visible');
+      }
+    };
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+
+    scrollBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    });
+
+    onScroll();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initScrollToTop);
+  } else {
+    initScrollToTop();
+  }
+})();
