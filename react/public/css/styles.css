@@ -1485,6 +1485,7 @@ main {
   margin-top: 4px;
   display: -webkit-box;
   -webkit-line-clamp: 2;
+  line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -4937,9 +4938,7 @@ body.has-sticky-cart .floating-token-bar {
   transform: scale(1.05);
 }
 
-color: var(--md-sys-color-on-surface);
-   font-size: 14.5px;
- }
+
 
 
 /* ==========================================================================
