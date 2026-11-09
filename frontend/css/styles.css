@@ -6278,3 +6278,12 @@ body[data-theme="dark"] {
 .admin-persona-quick-bar {
   display: none !important;
 }
+
+
+.admin-persona-quick-bar,
+#adminPersonaQuickBar,
+#personaFilterCapsule,
+.dev-persona-pill,
+#devPersonaPill {
+  display: none !important;
+}

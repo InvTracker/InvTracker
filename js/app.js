@@ -1195,10 +1195,7 @@ function renderShell(state) {
     if (navUser) navUser.style.display = 'flex';
   }
 
-  // Update persona filter capsule active state
-  $$('#personaFilterCapsule .capsule-btn').forEach((b) => {
-    b.classList.toggle('active', b.dataset.persona === userRole);
-  });
+
   const mobileRoleBadge = $('#mobileRoleBadge');
   if (mobileRoleBadge) {
     mobileRoleBadge.textContent = activeRole.toUpperCase();
@@ -4812,29 +4809,6 @@ function setupEventHandlers() {
   if (openAddItemBtn) {
     openAddItemBtn.addEventListener('click', () => {
       store.setPage('admin-items');
-    });
-  }
-
-  // Persona switcher capsule
-  const personaCapsule = $('#personaFilterCapsule');
-  if (personaCapsule) {
-    personaCapsule.addEventListener('click', (e) => {
-      const btn = e.target.closest('.capsule-btn[data-persona]');
-      if (!btn) return;
-      const persona = btn.dataset.persona;
-      if (persona === 'admin') {
-        store.state.currentUser = { ...DEMO_ACCOUNTS.admin };
-        store.state.activePage = 'admin-overview';
-      } else if (persona === 'kitchen') {
-        store.state.currentUser = { ...DEMO_ACCOUNTS.kitchen };
-        store.state.activePage = 'kitchen-kanban';
-      } else {
-        store.state.currentUser = { ...DEMO_ACCOUNTS.user };
-        store.state.activePage = 'home';
-      }
-      try { localStorage.setItem('invenTrack_user', JSON.stringify(store.state.currentUser)); } catch(e){}
-      store.save();
-      toast(`Switched perspective to ${roleLabels[persona] || persona}`, 'sync');
     });
   }
 
