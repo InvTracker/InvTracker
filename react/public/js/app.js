@@ -524,23 +524,56 @@ class InvenTrackStore {
   }
 
   setRole(role) {
+    const rawRole = (this.state.currentUser && (this.state.currentUser.role || (window.getUserRole ? window.getUserRole(this.state.currentUser.email) : 'student'))) || 'student';
+    const userRole = (rawRole === 'student' || rawRole === 'user') ? 'student' : rawRole;
+
+    if (userRole === 'student') {
+      if (role === 'admin' || role === 'kitchen') {
+        alert("Access denied: Students cannot access this section");
+        const isLocal = window.location.protocol === 'file:';
+        window.location.replace(isLocal ? 'student-dashboard.html' : '/student-dashboard.html');
+        return;
+      }
+    } else if (userRole === 'kitchen') {
+      if (role === 'admin') {
+        alert("Access denied: Kitchen staff cannot access Admin Dashboard");
+        return;
+      }
+    }
+
+    if (userRole !== 'admin') {
+      toast(' Role switching is only permitted for Administrators.', 'error');
+      return;
+    }
+
     if (role === 'student' || role === 'shopper') role = 'user';
     this.state.activeRole = role;
     if (role === 'user') this.state.activePage = 'home';
     else if (role === 'kitchen') this.state.activePage = 'kitchen-kanban';
     else if (role === 'admin') this.state.activePage = 'admin-overview';
     this.save();
-    toast(`Switched to ${roleLabels[role] || role} Portal`, 'sync');
   }
 
   setPage(page) {
-    if (page.startsWith('kitchen-')) {
-      this.state.activeRole = 'kitchen';
-    } else if (page.startsWith('admin-')) {
-      this.state.activeRole = 'admin';
-    } else {
-      this.state.activeRole = 'user';
+    const rawRole = (this.state.currentUser && (this.state.currentUser.role || (window.getUserRole ? window.getUserRole(this.state.currentUser.email) : 'student'))) || 'student';
+    const userRole = (rawRole === 'student' || rawRole === 'user') ? 'student' : rawRole;
+
+    if (userRole === 'student') {
+      if (page.startsWith('admin-') || page.startsWith('kitchen-')) {
+        alert("Access denied: Students cannot access this section");
+        const isLocal = window.location.protocol === 'file:';
+        window.location.replace(isLocal ? 'student-dashboard.html' : '/student-dashboard.html');
+        return;
+      }
+    } else if (userRole === 'kitchen') {
+      if (page.startsWith('admin-')) {
+        alert("Access denied: Kitchen staff cannot access Admin Dashboard");
+        this.state.activePage = 'kitchen-kanban';
+        this.save();
+        return;
+      }
     }
+
     this.state.activePage = page;
     this.save();
   }
@@ -1106,52 +1139,91 @@ function openTokenSheet(state) {
 function renderShell(state) {
   const { activeRole, activePage, currentUser } = state;
   const userRole = (currentUser && currentUser.role) || 'student';
+  const isAdmin = userRole === 'admin';
+  const isKitchen = userRole === 'kitchen';
+  const isStudent = !isAdmin && !isKitchen;
+  const isDev = isDevModeEnabled();
 
-  // Completely hide developer persona floating pill
   const devPill = $('#devPersonaPill');
-  if (devPill) devPill.style.display = 'none';
-
-  // Sync sidebar portal buttons
-  $$('#sidebarPortalNav .portal-tab-btn').forEach((btn) => {
-    const role = btn.dataset.role;
-    btn.classList.toggle('active', role === activeRole);
-  });
-
-  const roleSwitcher = $('#roleSwitcher');
-  if (roleSwitcher) roleSwitcher.style.display = 'none';
-
-  const brandSub = $('#brandSubRole');
-  if (brandSub) {
-    if (activeRole === 'admin') {
-      brandSub.textContent = 'Admin Portal (Executive Powers)';
-    } else if (activeRole === 'kitchen') {
-      brandSub.textContent = 'Kitchen Operations (Back of House)';
-    } else {
-      brandSub.textContent = 'Campus Dining & Student Portal';
-    }
+  if (devPill) {
+    devPill.style.display = (isDev || isAdmin) ? 'block' : 'none';
   }
 
-
+  const roleSwitcher = $('#roleSwitcher');
+  if (roleSwitcher) {
+    if (isAdmin) {
+      roleSwitcher.style.display = 'inline-flex';
+      $$('#roleSwitcher .role-btn').forEach((btn) => {
+        const role = btn.dataset.role;
+        btn.classList.toggle('active', role === activeRole);
+        btn.classList.remove('restricted');
+        const lockIcon = btn.querySelector('.perm-lock');
+        if (lockIcon) lockIcon.remove();
+        btn.title = `Switch to ${roleLabels[role] || role}`;
+      });
+    } else {
+      roleSwitcher.style.display = 'none';
+    }
+  }
+  const brandSub = $('#brandSubRole');
+  if (brandSub) {
+    if (isAdmin) {
+      const viewName = activeRole === 'user' ? 'User Store View' : activeRole === 'kitchen' ? 'Kitchen Staff View' : 'Executive Overview';
+      brandSub.textContent = `Admin Portal (${viewName})`;
+    } else if (userRole === 'kitchen') {
+      brandSub.textContent = 'Kitchen Staff Portal';
+    } else {
+      brandSub.textContent = 'User Portal';
+    }
+  }
   const navUser = $('#navGroupUser');
   const navKitchen = $('#navGroupKitchen');
   const navAdmin = $('#navGroupAdmin');
 
-  if (navUser) navUser.style.display = activeRole === 'user' ? 'flex' : 'none';
-  if (navKitchen) navKitchen.style.display = activeRole === 'kitchen' ? 'flex' : 'none';
-  if (navAdmin) navAdmin.style.display = activeRole === 'admin' ? 'flex' : 'none';
-
+  if (isAdmin) {
+    if (navUser) navUser.style.display = activeRole === 'user' ? 'flex' : 'none';
+    if (navKitchen) navKitchen.style.display = activeRole === 'kitchen' ? 'flex' : 'none';
+    if (navAdmin) navAdmin.style.display = activeRole === 'admin' ? 'flex' : 'none';
+  } else if (userRole === 'kitchen') {
+    if (navUser) navUser.style.display = 'none';
+    if (navKitchen) navKitchen.style.display = 'flex';
+    if (navAdmin) navAdmin.style.display = 'none';
+  } else {
+    if (navUser) navUser.style.display = 'flex';
+    if (navKitchen) navKitchen.style.display = 'none';
+    if (navAdmin) navAdmin.style.display = 'none';
+  }
   const mobileRoleBadge = $('#mobileRoleBadge');
   if (mobileRoleBadge) {
     mobileRoleBadge.textContent = activeRole.toUpperCase();
   }
-
   const bottomUser = $('#bottomNavUser');
   const bottomKitchen = $('#bottomNavKitchen');
   const bottomAdmin = $('#bottomNavAdmin');
 
-  if (bottomUser) bottomUser.style.display = activeRole === 'user' ? 'flex' : 'none';
-  if (bottomKitchen) bottomKitchen.style.display = activeRole === 'kitchen' ? 'flex' : 'none';
-  if (bottomAdmin) bottomAdmin.style.display = activeRole === 'admin' ? 'flex' : 'none';
+  if (userRole === 'student' || userRole === 'user') {
+    if (bottomUser) bottomUser.style.display = 'flex';
+    if (bottomKitchen) bottomKitchen.style.display = 'none';
+    if (bottomAdmin) bottomAdmin.style.display = 'none';
+    const kBtn = document.querySelector('#roleSwitcher [data-role="kitchen"]');
+    const aBtn = document.querySelector('#roleSwitcher [data-role="admin"]');
+    if (kBtn) kBtn.style.display = 'none';
+    if (aBtn) aBtn.style.display = 'none';
+    if (roleSwitcher) roleSwitcher.style.display = 'none';
+    if (navKitchen) navKitchen.style.display = 'none';
+    if (navAdmin) navAdmin.style.display = 'none';
+  } else if (userRole === 'kitchen') {
+    if (bottomUser) bottomUser.style.display = 'none';
+    if (bottomKitchen) bottomKitchen.style.display = 'flex';
+    if (bottomAdmin) bottomAdmin.style.display = 'none';
+    const aBtn = document.querySelector('#roleSwitcher [data-role="admin"]');
+    if (aBtn) aBtn.style.display = 'none';
+    if (navAdmin) navAdmin.style.display = 'none';
+  } else {
+    if (bottomUser) bottomUser.style.display = activeRole === 'user' ? 'flex' : 'none';
+    if (bottomKitchen) bottomKitchen.style.display = activeRole === 'kitchen' ? 'flex' : 'none';
+    if (bottomAdmin) bottomAdmin.style.display = activeRole === 'admin' ? 'flex' : 'none';
+  }
   $$('.nav-item[data-page], .m3-bottom-nav-item[data-page]').forEach((item) => {
     item.classList.toggle('active', item.dataset.page === activePage);
   });
@@ -1224,8 +1296,8 @@ function renderShell(state) {
     if (sideAvatar) sideAvatar.textContent = initials(state.currentUser.name);
     if (sideName) sideName.textContent = state.currentUser.name;
     if (sideRole) {
-      if (activeRole === 'admin') sideRole.textContent = 'Campus Admin';
-      else if (activeRole === 'kitchen') sideRole.textContent = 'Kitchen Chef';
+      if (isAdmin) sideRole.textContent = 'Administrator';
+      else if (userRole === 'kitchen') sideRole.textContent = 'Kitchen Staff';
       else sideRole.textContent = 'Student';
     }
     if ($('#accName')) $('#accName').textContent = state.currentUser.name;
@@ -4258,111 +4330,6 @@ function setupEventHandlers() {
       store.setPage('admin-audit');
     });
   }
-  
-  // Admin Powers Event Handlers
-  const adminInstantRestockAllBtn = $('#adminInstantRestockAllBtn');
-  if (adminInstantRestockAllBtn) {
-    adminInstantRestockAllBtn.addEventListener('click', () => {
-      let count = 0;
-      store.state.menuItems.forEach((it) => {
-        if (it.stock <= (it.lowThreshold || 5) || it.stock < 15) {
-          it.stock += 25;
-          count++;
-        }
-      });
-      store.save();
-      toast(`Executive Power: Restocked ${count} depleted items (+25 units each)!`, 'sync');
-    });
-  }
-
-  const adminMasterFreezeBtn = $('#adminMasterFreezeBtn');
-  if (adminMasterFreezeBtn) {
-    adminMasterFreezeBtn.addEventListener('click', () => {
-      store.state.isOnlineOrderingFrozen = !store.state.isOnlineOrderingFrozen;
-      if (store.state.isOnlineOrderingFrozen) {
-        store.state.campusAnnouncement = 'Master Notice: Online ordering is temporarily paused due to cafeteria rush.';
-      } else if (store.state.campusAnnouncement && store.state.campusAnnouncement.includes('temporarily paused')) {
-        store.state.campusAnnouncement = '';
-      }
-      store.save();
-      toast(store.state.isOnlineOrderingFrozen ? 'Online ordering FROZEN by Admin.' : 'Online ordering RESUMED.', 'sync');
-    });
-  }
-
-  const adminDownloadCsvPowersBtn = $('#adminDownloadCsvPowersBtn');
-  if (adminDownloadCsvPowersBtn) {
-    adminDownloadCsvPowersBtn.addEventListener('click', () => {
-      exportAuditCsv(store.state);
-    });
-  }
-
-  const adminResetCatalogBtn = $('#adminResetCatalogBtn');
-  if (adminResetCatalogBtn) {
-    adminResetCatalogBtn.addEventListener('click', () => {
-      store.state.menuItems.forEach((it) => {
-        it.stock = 35;
-      });
-      store.save();
-      toast('Store inventory successfully refilled to 35 units each!', 'success');
-    });
-  }
-
-  const adminSendBroadcastBtn = $('#adminSendBroadcastBtn');
-  if (adminSendBroadcastBtn) {
-    adminSendBroadcastBtn.addEventListener('click', () => {
-      const input = $('#adminBroadcastInput');
-      if (input && input.value.trim()) {
-        store.state.campusAnnouncement = input.value.trim();
-        store.save();
-        toast('Campus announcement broadcast live!', 'sync');
-      }
-    });
-  }
-
-  const adminClearBroadcastBtn = $('#adminClearBroadcastBtn');
-  if (adminClearBroadcastBtn) {
-    adminClearBroadcastBtn.addEventListener('click', () => {
-      store.state.campusAnnouncement = '';
-      const input = $('#adminBroadcastInput');
-      if (input) input.value = '';
-      store.save();
-      toast('Campus announcement cleared.', 'info');
-    });
-  }
-
-  const closeAnnouncementBtn = $('#closeAnnouncementBtn');
-  if (closeAnnouncementBtn) {
-    closeAnnouncementBtn.addEventListener('click', () => {
-      const banner = $('#campusAnnouncementBanner');
-      if (banner) banner.style.display = 'none';
-    });
-  }
-
-  document.addEventListener('click', (e) => {
-    const compBtn = e.target.closest('[data-admin-complete-order]');
-    if (compBtn) {
-      const orderId = compBtn.dataset.adminCompleteOrder;
-      const order = (store.state.orders || []).find((o) => o.id === orderId);
-      if (order) {
-        order.status = 'Picked up';
-        store.save();
-        toast(`Order #${order.token} marked as Complete / Picked up!`, 'sync');
-      }
-      return;
-    }
-    const cancelBtn = e.target.closest('[data-admin-cancel-order]');
-    if (cancelBtn) {
-      const orderId = cancelBtn.dataset.adminCancelOrder;
-      const order = (store.state.orders || []).find((o) => o.id === orderId);
-      if (order) {
-        order.status = 'Cancelled';
-        store.save();
-        toast(`Order #${order.token} cancelled and refunded.`, 'sync');
-      }
-      return;
-    }
-  });
-
   const exportCsvBtn = $('#exportCsvBtn');
   if (exportCsvBtn) {
     exportCsvBtn.addEventListener('click', () => exportAuditCsv(store.state));
@@ -4458,28 +4425,70 @@ function setupEventHandlers() {
   }
 
   document.addEventListener('click', (e) => {
-    const portalBtn = e.target.closest('.portal-tab-btn[data-role]');
-    if (portalBtn) {
-      const targetRole = portalBtn.dataset.role;
-      store.setRole(targetRole);
-      return;
-    }
-    const navItem = e.target.closest('.nav-item[data-page]');
+    const navItem = e.target.closest('[data-page]');
     if (navItem) {
       const pageKey = navItem.dataset.page;
-      store.setPage(pageKey);
+      const rawRole = (store.state.currentUser && (store.state.currentUser.role || (window.getUserRole ? window.getUserRole(store.state.currentUser.email) : 'student'))) || 'student';
+      const role = (rawRole === 'student' || rawRole === 'user') ? 'student' : rawRole;
+      if (role === 'student' && (pageKey.startsWith('admin-') || pageKey.startsWith('kitchen-'))) {
+        e.preventDefault();
+        e.stopPropagation();
+        alert("Access denied: Students cannot access this section");
+        const isLocal = window.location.protocol === 'file:';
+        window.location.replace(isLocal ? 'student-dashboard.html' : '/student-dashboard.html');
+        return;
+      }
+      if (role === 'kitchen' && pageKey.startsWith('admin-')) {
+        e.preventDefault();
+        e.stopPropagation();
+        alert("Access denied: Kitchen staff cannot access Admin Dashboard");
+        store.setPage('kitchen-kanban');
+        return;
+      }
     }
-  });
+    const roleBtn = e.target.closest('.role-btn[data-role]');
+    if (roleBtn) {
+      const targetRole = roleBtn.dataset.role;
+      const rawRole = (store.state.currentUser && (store.state.currentUser.role || (window.getUserRole ? window.getUserRole(store.state.currentUser.email) : 'student'))) || 'student';
+      const role = (rawRole === 'student' || rawRole === 'user') ? 'student' : rawRole;
+      if (role === 'student' && (targetRole === 'admin' || targetRole === 'kitchen')) {
+        e.preventDefault();
+        e.stopPropagation();
+        alert("Access denied: Students cannot access this section");
+        const isLocal = window.location.protocol === 'file:';
+        window.location.replace(isLocal ? 'student-dashboard.html' : '/student-dashboard.html');
+        return;
+      }
+      if (role === 'kitchen' && targetRole === 'admin') {
+        e.preventDefault();
+        e.stopPropagation();
+        alert("Access denied: Kitchen staff cannot access Admin Dashboard");
+        return;
+      }
+    }
+  }, true);
 
   window.addEventListener('hashchange', () => {
     const hash = (window.location.hash || '').replace('#', '');
     if (!hash) return;
+    const rawRole = (store.state.currentUser && (store.state.currentUser.role || (window.getUserRole ? window.getUserRole(store.state.currentUser.email) : 'student'))) || 'student';
+    const role = (rawRole === 'student' || rawRole === 'user') ? 'student' : rawRole;
+    if (role === 'student' && (hash.startsWith('admin') || hash.startsWith('kitchen'))) {
+      alert("Access denied: Students cannot access this section");
+      const isLocal = window.location.protocol === 'file:';
+      window.location.replace(isLocal ? 'student-dashboard.html' : '/student-dashboard.html');
+      return;
+    }
+    if (role === 'kitchen' && hash.startsWith('admin')) {
+      alert("Access denied: Kitchen staff cannot access Admin Dashboard");
+      store.setPage('kitchen-kanban');
+      return;
+    }
     store.setPage(hash);
   });
 }
 
 function renderApp(state) {
-  renderAdminPowers(state);
   renderShell(state);
   renderCanteenRushMeter(state);
   renderQuickReorder(state);
@@ -4590,7 +4599,22 @@ window.addEventListener('storage', (e) => {
           store.state.currentUser.name = user.displayName || store.state.currentUser.name;
           store.state.currentUser.photoURL = user.photoURL || store.state.currentUser.photoURL;
         }
-        // Direct rendering on auth state update
+        if (determinedRole === 'student' || determinedRole === 'user') {
+          const currentPage = store.state.activePage || '';
+          if (currentPage.startsWith('admin-') || currentPage.startsWith('kitchen-')) {
+            alert("Access denied: Students cannot access this section");
+            const isLocal = window.location.protocol === 'file:';
+            window.location.replace(isLocal ? 'student-dashboard.html' : '/student-dashboard.html');
+            return;
+          }
+        } else if (determinedRole === 'kitchen') {
+          const currentPage = store.state.activePage || '';
+          if (currentPage.startsWith('admin-')) {
+            alert("Access denied: Kitchen staff cannot access Admin Dashboard");
+            store.setPage('kitchen-kanban');
+            return;
+          }
+        }
         renderApp(store.state);
       }
     });
@@ -4645,68 +4669,3 @@ setInterval(() => {
     initScrollToTop();
   }
 })();
-
-
-function renderAdminPowers(state) {
-  const freezeBtn = $('#adminMasterFreezeBtn');
-  const freezeIcon = $('#adminFreezeIcon');
-  const freezeText = $('#adminFreezeText');
-  if (freezeBtn && freezeIcon && freezeText) {
-    if (state.isOnlineOrderingFrozen) {
-      freezeBtn.style.background = '#1ba672';
-      freezeBtn.style.color = '#ffffff';
-      freezeBtn.style.borderColor = '#1ba672';
-      freezeIcon.textContent = 'play_arrow';
-      freezeText.textContent = 'Resume Online Orders (Unfreeze)';
-    } else {
-      freezeBtn.style.background = '';
-      freezeBtn.style.color = '';
-      freezeBtn.style.borderColor = '';
-      freezeIcon.textContent = 'pause';
-      freezeText.textContent = 'Pause Online Orders (Freeze)';
-    }
-  }
-
-  // Render announcement banner on Home
-  const annBanner = $('#campusAnnouncementBanner');
-  const annText = $('#campusAnnouncementText');
-  if (annBanner && annText) {
-    if (state.campusAnnouncement) {
-      annText.textContent = state.campusAnnouncement;
-      annBanner.style.display = 'flex';
-      annBanner.classList.remove('hide');
-    } else {
-      annBanner.style.display = 'none';
-      annBanner.classList.add('hide');
-    }
-  }
-
-  // Render Admin Override Orders List
-  const list = $('#adminOverrideOrdersList');
-  if (list) {
-    const inFlight = (state.orders || []).filter((o) => o.status !== 'Picked up' && o.status !== 'Cancelled');
-    if (!inFlight.length) {
-      list.innerHTML = '<div style="color:var(--md-sys-color-on-surface-variant); font-size:12.5px; padding:12px 0;">No active in-flight orders currently. All orders fulfilled!</div>';
-    } else {
-      list.innerHTML = inFlight.map((o) => `
-        <div style="background:var(--md-sys-color-surface-container, rgba(0,0,0,0.03)); border:1px solid var(--md-sys-color-outline-variant); border-radius:8px; padding:10px 14px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
-          <div>
-            <div style="font-weight:700; font-size:13px;">Token #${o.token} - ${o.customerName || 'Student'}</div>
-            <div style="font-size:11.5px; color:var(--md-sys-color-on-surface-variant);">${(o.items || []).map((i) => `${i.qty}x ${i.name}`).join(', ')} (Rs ${o.total || 0})</div>
-            <div style="font-size:11px; color:#F08B5D; font-weight:600; margin-top:2px;">Status: ${o.status}</div>
-          </div>
-          <div style="display:flex; gap:6px;">
-            <button class="dev-btn primary" data-admin-complete-order="${o.id}" style="padding:4px 10px; font-size:11.5px; background:#1ba672; border-color:#1ba672;">
-              <span class="material-symbols-outlined" style="font-size:14px;">check_circle</span>
-              <span>Complete</span>
-            </button>
-            <button class="dev-btn" data-admin-cancel-order="${o.id}" style="padding:4px 10px; font-size:11.5px; color:#ba1a1a;">
-              <span class="material-symbols-outlined" style="font-size:14px;">cancel</span>
-              <span>Cancel</span>
-            </button>
-          </div>
-        </div>
-      `).join('');
-    }
-  }
-}
